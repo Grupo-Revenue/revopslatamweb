@@ -10,29 +10,30 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-/* ── Placeholder SVG Track Illustration ── */
-const TrackIllustration = () => (
-  <svg viewBox="0 0 320 280" className="w-full max-w-[320px] h-auto mx-auto" fill="none">
-    {/* Connection lines */}
-    <path d="M80 50 Q160 50 160 100 Q160 140 240 140" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" fill="none" />
-    <path d="M240 140 Q160 140 160 190 Q160 230 80 230" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" fill="none" />
-
-    {/* Piece 1 */}
-    <rect x="30" y="30" width="100" height="40" rx="12" fill="#BE1869" />
-    {/* Piece 2 */}
-    <rect x="190" y="120" width="100" height="40" rx="12" fill="#6224BE" />
-    {/* Piece 3 */}
-    <rect x="30" y="210" width="100" height="40" rx="12" fill="#0779D7" />
-    {/* Piece 4 — end */}
-    <rect x="190" y="210" width="100" height="40" rx="12" fill="#1CA398" />
-    {/* Connection line piece 3 to 4 */}
-    <line x1="130" y1="230" x2="190" y2="230" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" />
-
-    {/* Ball with glow */}
-    <circle cx="80" cy="50" r="8" fill="#F7BE1A" />
-    <circle cx="80" cy="50" r="14" fill="none" stroke="#F7BE1A" strokeWidth="1.5" opacity="0.3" />
-    <circle cx="80" cy="50" r="20" fill="none" stroke="#F7BE1A" strokeWidth="1" opacity="0.15" />
-  </svg>
+/* ── Gradient separator ── */
+const GradientSeparator = () => (
+  <div className="flex flex-col items-center justify-center" style={{ height: 48 }}>
+    <div className="relative flex items-center justify-center">
+      <div
+        className="rounded-full"
+        style={{
+          width: 80,
+          height: 3,
+          background: "linear-gradient(90deg, #BE1869, #6224BE, #1CA398)",
+          borderRadius: 9999,
+        }}
+      />
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: 8,
+          height: 8,
+          background: "linear-gradient(135deg, #BE1869, #6224BE, #1CA398)",
+          borderRadius: 9999,
+        }}
+      />
+    </div>
+  </div>
 );
 
 /* ── Track state cards data ── */
@@ -128,10 +129,12 @@ const Methodology = () => {
             </p>
           </motion.div>
 
-          {/* Track illustration placeholder */}
-          <motion.div {...fadeUp(0.3)} className="mt-12 mb-16">
-            <TrackIllustration />
+          {/* Gradient separator */}
+          <motion.div {...fadeUp(0.3)} className="mt-10">
+            <GradientSeparator />
           </motion.div>
+
+          <div className="h-16" />
 
           {/* 3 State Cards with arrows */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-0 items-stretch">
