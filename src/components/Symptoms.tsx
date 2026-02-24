@@ -60,7 +60,7 @@ const Symptoms = () => {
           className="mt-4 text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight max-w-[700px] mx-auto"
           style={{ color: "hsl(0 0% 100%)" }}
         >
-          Si dirigís una empresa que ya creció, probablemente reconocés esto.
+          Si diriges una empresa que ya creció, probablemente reconoces esto.
         </motion.h2>
 
         {/* Cards grid */}
