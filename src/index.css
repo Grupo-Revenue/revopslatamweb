@@ -155,11 +155,6 @@
   }
 
   /* Hide default cursor when custom cursor is active */
-  @media (pointer: fine) {
-    * {
-      cursor: none !important;
-    }
-  }
 
   /* Responsive text sizing helpers */
   .text-hero {
