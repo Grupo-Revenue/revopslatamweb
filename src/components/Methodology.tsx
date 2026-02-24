@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useCallback } from "react";
-import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, X, Zap, CheckCircle, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-/* ── fade-up helper ── */
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -10,164 +10,78 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-/* ── Track state data ── */
+/* ── Placeholder SVG Track Illustration ── */
+const TrackIllustration = () => (
+  <svg viewBox="0 0 320 280" className="w-full max-w-[320px] h-auto mx-auto" fill="none">
+    {/* Connection lines */}
+    <path d="M80 50 Q160 50 160 100 Q160 140 240 140" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" fill="none" />
+    <path d="M240 140 Q160 140 160 190 Q160 230 80 230" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" fill="none" />
+
+    {/* Piece 1 */}
+    <rect x="30" y="30" width="100" height="40" rx="12" fill="#BE1869" />
+    {/* Piece 2 */}
+    <rect x="190" y="120" width="100" height="40" rx="12" fill="#6224BE" />
+    {/* Piece 3 */}
+    <rect x="30" y="210" width="100" height="40" rx="12" fill="#0779D7" />
+    {/* Piece 4 — end */}
+    <rect x="190" y="210" width="100" height="40" rx="12" fill="#1CA398" />
+    {/* Connection line piece 3 to 4 */}
+    <line x1="130" y1="230" x2="190" y2="230" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round" />
+
+    {/* Ball with glow */}
+    <circle cx="80" cy="50" r="8" fill="#F7BE1A" />
+    <circle cx="80" cy="50" r="14" fill="none" stroke="#F7BE1A" strokeWidth="1.5" opacity="0.3" />
+    <circle cx="80" cy="50" r="20" fill="none" stroke="#F7BE1A" strokeWidth="1" opacity="0.15" />
+  </svg>
+);
+
+/* ── Track state cards data ── */
 const trackStates = [
   {
-    id: "broken",
-    dot: "337 74% 44%",
-    label: "Pista Rota",
+    id: "broken" as const,
+    label: "PISTA ROTA",
+    accent: "#BE1869",
+    accentBg: "rgba(190,24,105,0.04)",
+    accentBorder: "rgba(190,24,105,0.2)",
+    icon: X,
     title: "Procesos manuales, datos dispersos, equipos desconectados.",
     sub: "La bolita se pierde antes de la mitad.",
-    border: "hsl(337 74% 44%)",
+    badge: null,
+    response: "Necesitas diagnóstico urgente. Empecemos por entender dónde se rompe tu pista.",
+    cta: "Ver Diagnóstico del Motor de Ingresos",
   },
   {
-    id: "incomplete",
-    dot: "42 93% 54%",
-    label: "Pista Incompleta",
+    id: "incomplete" as const,
+    label: "PISTA INCOMPLETA",
+    accent: "#F7BE1A",
+    labelColor: "#B8860B",
+    accentBg: "rgba(247,190,26,0.04)",
+    accentBorder: "rgba(247,190,26,0.25)",
+    icon: Zap,
     title: "Herramientas instaladas, algunos procesos definidos.",
     sub: "La bolita avanza, pero lento, con fricciones constantes.",
-    border: "hsl(42 93% 54%)",
+    badge: null,
+    response: "Tienes base para crecer. Te ayudamos a conectar las piezas que faltan.",
+    cta: "Conocer nuestros servicios",
   },
   {
-    id: "complete",
-    dot: "175 73% 37%",
-    label: "Pista Bien Armada",
+    id: "complete" as const,
+    label: "PISTA BIEN ARMADA",
+    accent: "#1CA398",
+    accentBg: "rgba(28,163,152,0.06)",
+    accentBorder: "rgba(28,163,152,0.3)",
+    icon: CheckCircle,
     title: "Procesos integrados, datos confiables, equipos alineados.",
     sub: "La bolita fluye. El revenue es predecible y escalable.",
-    border: "hsl(175 73% 37%)",
+    badge: "El objetivo",
+    response: "Perfecto. Ahora es momento de escalar y potenciar con RevOps as a Service.",
+    cta: "Ver RevOps as a Service",
   },
 ];
 
-/* ── Mini Tracks SVGs ── */
-const MiniTrackBroken = () => (
-  <svg viewBox="0 0 280 80" className="w-full h-20">
-    <line x1="10" y1="40" x2="80" y2="40" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" />
-    <line x1="100" y1="40" x2="150" y2="40" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" opacity="0.4" strokeDasharray="4 4" />
-    <line x1="170" y1="45" x2="220" y2="50" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" opacity="0.3" />
-    <line x1="240" y1="40" x2="270" y2="40" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" opacity="0.2" />
-    <motion.circle
-      r="6"
-      fill="url(#ballGrad)"
-      filter="url(#ballGlow)"
-      initial={{ cx: 10, cy: 40 }}
-      animate={{ cx: [10, 80, 90, 92], cy: [40, 40, 55, 70] }}
-      transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
-    />
-    <motion.rect
-      x="82" y="30" width="16" height="20" rx="4"
-      fill="hsl(337 74% 44%)"
-      initial={{ opacity: 0.1 }}
-      animate={{ opacity: [0.1, 0.3, 0.1] }}
-      transition={{ duration: 1.5, repeat: Infinity }}
-    />
-    <defs>
-      <radialGradient id="ballGrad">
-        <stop offset="0%" stopColor="#F7BE1A" />
-        <stop offset="100%" stopColor="#BE1869" />
-      </radialGradient>
-      <filter id="ballGlow">
-        <feGaussianBlur stdDeviation="3" result="blur" />
-        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
-  </svg>
-);
-
-const MiniTrackIncomplete = () => (
-  <svg viewBox="0 0 280 80" className="w-full h-20">
-    <line x1="10" y1="40" x2="100" y2="40" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" />
-    <line x1="100" y1="40" x2="180" y2="40" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
-    <line x1="180" y1="40" x2="220" y2="42" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" opacity="0.4" strokeDasharray="6 3" />
-    <line x1="230" y1="40" x2="270" y2="40" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" opacity="0.5" />
-    <motion.circle
-      r="6"
-      fill="url(#ballGrad2)"
-      filter="url(#ballGlow2)"
-      initial={{ cx: 10, cy: 40 }}
-      animate={{ cx: [10, 100, 150, 180, 195, 200] }}
-      transition={{ duration: 3, repeat: Infinity, repeatDelay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-    />
-    <defs>
-      <radialGradient id="ballGrad2">
-        <stop offset="0%" stopColor="#F7BE1A" />
-        <stop offset="100%" stopColor="#BE1869" />
-      </radialGradient>
-      <filter id="ballGlow2">
-        <feGaussianBlur stdDeviation="3" result="blur" />
-        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
-  </svg>
-);
-
-const MiniTrackComplete = () => (
-  <svg viewBox="0 0 280 80" className="w-full h-20">
-    <line x1="10" y1="40" x2="260" y2="40" stroke="hsl(175 73% 37%)" strokeWidth="3" strokeLinecap="round" />
-    <motion.line
-      x1="10" y1="40" x2="10" y2="40"
-      stroke="hsl(42 93% 54%)"
-      strokeWidth="2"
-      strokeLinecap="round"
-      opacity="0.4"
-      animate={{ x2: [10, 260] }}
-      transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
-    />
-    <motion.circle
-      r="6"
-      fill="url(#ballGrad3)"
-      filter="url(#ballGlow3)"
-      initial={{ cx: 10, cy: 40 }}
-      animate={{ cx: [10, 260] }}
-      transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
-    />
-    <motion.circle
-      cx="260" cy="40" r="12"
-      fill="none"
-      stroke="hsl(175 73% 37%)"
-      strokeWidth="2"
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: [0, 0, 0.8, 0], scale: [0, 0, 1.2, 1.5] }}
-      transition={{ duration: 3.5, repeat: Infinity, repeatDelay: 0, ease: "easeOut" }}
-    />
-    <defs>
-      <radialGradient id="ballGrad3">
-        <stop offset="0%" stopColor="#F7BE1A" />
-        <stop offset="100%" stopColor="#BE1869" />
-      </radialGradient>
-      <filter id="ballGlow3">
-        <feGaussianBlur stdDeviation="3" result="blur" />
-        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
-  </svg>
-);
-
-const miniTracks: Record<string, React.FC> = {
-  broken: MiniTrackBroken,
-  incomplete: MiniTrackIncomplete,
-  complete: MiniTrackComplete,
-};
-
-/* ── Main Component ── */
 const Methodology = () => {
-  const [active, setActive] = useState(0);
-  const [userInteracted, setUserInteracted] = useState(false);
-
-  useEffect(() => {
-    if (userInteracted) return;
-    const timer = setInterval(() => {
-      setActive((prev) => (prev + 1) % 3);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [userInteracted]);
-
-  const handleClick = useCallback((i: number) => {
-    setActive(i);
-    setUserInteracted(true);
-    setTimeout(() => setUserInteracted(false), 9000);
-  }, []);
-
-  const ActiveTrack = miniTracks[trackStates[active].id];
+  const [selected, setSelected] = useState<string | null>(null);
+  const selectedState = trackStates.find((s) => s.id === selected);
 
   return (
     <section className="relative">
@@ -180,14 +94,16 @@ const Methodology = () => {
 
       <div className="pt-24 pb-24 px-6" style={{ background: "#F5F5F8" }}>
         <div className="max-w-[1200px] mx-auto">
+          {/* Eyebrow */}
           <motion.p
             {...fadeUp(0)}
             className="text-center text-[13px] font-semibold tracking-[0.15em] uppercase"
-            style={{ color: "hsl(337 74% 44%)" }}
+            style={{ color: "#BE1869" }}
           >
             Nuestra metodología
           </motion.p>
 
+          {/* Headline */}
           <motion.h2
             {...fadeUp(0.1)}
             className="mt-4 text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight max-w-[650px] mx-auto"
@@ -198,6 +114,7 @@ const Methodology = () => {
             <span className="text-gradient-brand">Se diseña, pieza a pieza.</span>
           </motion.h2>
 
+          {/* Intro paragraphs */}
           <motion.div
             {...fadeUp(0.2)}
             className="mt-8 mx-auto max-w-[620px] text-center text-[18px] leading-relaxed space-y-4"
@@ -211,62 +128,137 @@ const Methodology = () => {
             </p>
           </motion.div>
 
-          <motion.div {...fadeUp(0.35)} className="mt-16">
-            <div className="mx-auto max-w-md mb-10 rounded-2xl p-6" style={{ background: "white", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <ActiveTrack />
-                </motion.div>
-              </AnimatePresence>
+          {/* Track illustration placeholder */}
+          <motion.div {...fadeUp(0.3)} className="mt-12 mb-16">
+            <TrackIllustration />
+          </motion.div>
+
+          {/* 3 State Cards with arrows */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-0 items-stretch">
+            {trackStates.map((s, i) => {
+              const Icon = s.icon;
+              const lColor = s.labelColor || s.accent;
+              return (
+                <div key={s.id} className="flex items-stretch">
+                  <motion.div
+                    {...fadeUp(0.35 + i * 0.1)}
+                    className="relative flex-1 rounded-2xl p-7 transition-all duration-300"
+                    style={{
+                      background: s.accentBg,
+                      border: `1px solid ${s.accentBorder}`,
+                      borderTop: `4px solid ${s.accent}`,
+                    }}
+                  >
+                    {/* Badge */}
+                    {s.badge && (
+                      <span
+                        className="absolute top-4 right-4 px-2.5 py-1 rounded-full text-[11px] font-bold text-white"
+                        style={{ background: s.accent }}
+                      >
+                        {s.badge}
+                      </span>
+                    )}
+
+                    {/* Header */}
+                    <div className="flex items-center gap-3 mb-5">
+                      {/* Pulsing dot */}
+                      <span className="relative flex h-3 w-3 shrink-0">
+                        <span
+                          className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+                          style={{ background: s.accent }}
+                        />
+                        <span
+                          className="relative inline-flex rounded-full h-3 w-3"
+                          style={{ background: s.accent }}
+                        />
+                      </span>
+                      <span
+                        className="text-[13px] font-bold tracking-wide uppercase"
+                        style={{ color: lColor }}
+                      >
+                        {s.label}
+                      </span>
+                      <Icon size={28} style={{ color: s.accent }} className="ml-auto shrink-0" />
+                    </div>
+
+                    <h4
+                      className="text-[17px] leading-snug mb-3"
+                      style={{ color: "#1A1A2E", fontWeight: 700 }}
+                    >
+                      {s.title}
+                    </h4>
+                    <p className="text-[15px] leading-relaxed" style={{ color: "#6B7280" }}>
+                      {s.sub}
+                    </p>
+                  </motion.div>
+
+                  {/* Arrow between cards */}
+                  {i < trackStates.length - 1 && (
+                    <div className="hidden md:flex items-center justify-center px-2 shrink-0">
+                      <ChevronRight size={24} style={{ color: "#D1D5DB" }} />
+                    </div>
+                  )}
+                  {i < trackStates.length - 1 && (
+                    <div className="flex md:hidden items-center justify-center py-2 shrink-0">
+                      <ChevronRight size={24} className="rotate-90" style={{ color: "#D1D5DB" }} />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Interactive question */}
+          <motion.div {...fadeUp(0.6)} className="mt-14 text-center">
+            <p className="text-[20px] font-semibold mb-6" style={{ color: "#1A1A2E" }}>
+              ¿En qué estado está tu pista hoy?
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {trackStates.map((s) => {
+                const isActive = selected === s.id;
+                const lColor = s.labelColor || s.accent;
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => setSelected(isActive ? null : s.id)}
+                    className="px-6 py-2.5 rounded-full text-[14px] font-semibold transition-all duration-300"
+                    style={{
+                      background: isActive ? s.accent : "transparent",
+                      color: isActive ? "white" : lColor,
+                      border: `2px solid ${s.accent}`,
+                    }}
+                  >
+                    {s.label.charAt(0) + s.label.slice(1).toLowerCase()}
+                  </button>
+                );
+              })}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {trackStates.map((s, i) => (
-                <motion.button
-                  key={s.id}
-                  onClick={() => handleClick(i)}
-                  className={`text-left rounded-2xl p-7 transition-all duration-300 cursor-pointer ${
-                    active === i ? "shadow-lg -translate-y-1" : "hover:-translate-y-1"
-                  }`}
-                  style={{
-                    background: active === i ? "white" : "#EDEDF0",
-                    borderTop: `3px solid ${s.border}`,
-                    boxShadow: active === i ? `0 8px 30px ${s.border}33` : undefined,
-                  }}
-                  {...fadeUp(0.4 + i * 0.1)}
+            <AnimatePresence mode="wait">
+              {selectedState && (
+                <motion.div
+                  key={selectedState.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-6 max-w-[500px] mx-auto"
                 >
-                  <div className="flex items-center gap-2 mb-4">
-                    <span
-                      className="w-3 h-3 rounded-full"
-                      style={{ background: `hsl(${s.dot})` }}
-                    />
-                    <span
-                      className="text-[13px] font-semibold tracking-wide uppercase"
-                      style={{ color: `hsl(${s.dot})` }}
-                    >
-                      {s.label}
-                    </span>
-                  </div>
-                  <h4 className="text-[17px] font-semibold leading-snug mb-2" style={{ color: "#1A1A2E" }}>
-                    {s.title}
-                  </h4>
-                  <p className="text-[15px] leading-relaxed" style={{ color: "#6B7280" }}>
-                    {s.sub}
+                  <p className="text-[17px] leading-relaxed mb-4" style={{ color: "#1A1A2E" }}>
+                    {selectedState.response}
                   </p>
-                </motion.button>
-              ))}
-            </div>
+                  <Button size="lg" className="gap-2">
+                    {selectedState.cta}
+                    <ArrowRight size={18} />
+                  </Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
 
           {/* Closing box */}
           <motion.div
-            {...fadeUp(0.6)}
+            {...fadeUp(0.7)}
             className="mt-16 mx-auto max-w-[800px] rounded-[20px] p-12 text-center"
             style={{
               background: "#1A1A2E",
@@ -281,7 +273,7 @@ const Methodology = () => {
             </p>
             <button
               className="mt-6 inline-flex items-center gap-2 text-[16px] font-medium transition-opacity hover:opacity-80"
-              style={{ color: "hsl(175 73% 37%)" }}
+              style={{ color: "#1CA398" }}
             >
               Conoce nuestra metodología completa
               <ArrowRight size={18} />
