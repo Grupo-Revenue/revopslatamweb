@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
-import RevopsLogo from "@/components/RevopsLogo";
+import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 /* ─── Nav data ─── */
 const solucionesItems = [
@@ -118,12 +118,12 @@ const Navbar = () => {
       >
         <div className="container max-w-7xl mx-auto h-full flex items-center justify-between px-6">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <RevopsLogo size={32} />
-            <span className="text-[22px] font-bold leading-none text-primary-foreground">
-              Revops
-              <span className="font-light text-pink">LATAM</span>
-            </span>
+          <Link to="/" className="shrink-0">
+            <img
+              src={LogoWhiteColor}
+              alt="Revops LATAM"
+              className="h-8 w-auto"
+            />
           </Link>
 
           {/* Desktop nav */}
