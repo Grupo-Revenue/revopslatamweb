@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Target, Zap, Map } from "lucide-react";
+import { Gauge, Zap, Compass } from "lucide-react";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -9,24 +9,34 @@ const fadeUp = (delay: number) => ({
 });
 
 const benefits = [
-  { icon: Target, label: "Tu Score de Madurez RevOps" },
-  { icon: Zap, label: "Los 3 principales puntos de fricción" },
-  { icon: Map, label: "Recomendación de siguiente paso personalizada" },
+  { icon: Gauge, line1: "Tu Score de", line2: "Madurez RevOps" },
+  { icon: Zap, line1: "Los 3 principales", line2: "puntos de fricción" },
+  { icon: Compass, line1: "Recomendación de", line2: "siguiente paso" },
 ];
 
 const PulsoComercial = () => {
   return (
     <section className="relative py-24 px-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)" }}>
-      {/* Decorative shapes */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-20 -left-20 w-[300px] h-[300px] rounded-full" style={{ background: "rgba(255,255,255,0.05)", filter: "blur(80px)" }} />
         <div className="absolute -bottom-20 -right-20 w-[250px] h-[250px] rounded-full" style={{ background: "rgba(255,255,255,0.08)", filter: "blur(80px)" }} />
       </div>
 
       <div className="relative z-10 max-w-[800px] mx-auto text-center">
+        {/* Pill */}
         <motion.div {...fadeUp(0)}>
-          <span className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold tracking-wide uppercase"
-            style={{ background: "white", color: "hsl(337 74% 44%)" }}>
+          <span
+            className="inline-block rounded-full uppercase"
+            style={{
+              background: "rgba(255,255,255,0.15)",
+              border: "1px solid rgba(255,255,255,0.5)",
+              color: "#FFFFFF",
+              padding: "6px 16px",
+              fontSize: "12px",
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+            }}
+          >
             Diagnóstico gratuito
           </span>
         </motion.div>
@@ -39,20 +49,40 @@ const PulsoComercial = () => {
           El Pulso Comercial analiza el estado de tu motor de ingresos en 5 minutos. Sin formularios largos. Sin llamadas previas. Solo claridad.
         </motion.p>
 
-        <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-          {benefits.map((b) => {
+        {/* Benefits */}
+        <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-0">
+          {benefits.map((b, i) => {
             const Icon = b.icon;
             return (
-              <div key={b.label} className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "rgba(255,255,255,0.15)" }}>
-                  <Icon size={18} style={{ color: "white" }} />
+              <div key={i} className="flex items-center">
+                <div className="flex flex-col items-center text-center px-6 sm:px-8">
+                  <div
+                    className="flex items-center justify-center rounded-full mb-3"
+                    style={{
+                      width: 52,
+                      height: 52,
+                      background: "rgba(255,255,255,0.15)",
+                      border: "1px solid rgba(255,255,255,0.3)",
+                    }}
+                  >
+                    <Icon size={24} color="#FFFFFF" />
+                  </div>
+                  <span style={{ fontSize: "15px", fontWeight: 600, color: "#FFFFFF", lineHeight: 1.4 }}>
+                    {b.line1}
+                  </span>
+                  <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.75)", lineHeight: 1.4 }}>
+                    {b.line2}
+                  </span>
                 </div>
-                <span className="text-[15px] font-medium" style={{ color: "white" }}>{b.label}</span>
+                {i < benefits.length - 1 && (
+                  <div className="hidden sm:block w-px shrink-0" style={{ height: 40, background: "rgba(255,255,255,0.2)" }} />
+                )}
               </div>
             );
           })}
         </motion.div>
 
+        {/* CTA */}
         <motion.div {...fadeUp(0.4)} className="mt-10">
           <button
             className="px-12 py-[18px] rounded-full text-[18px] font-bold transition-all duration-300 hover:scale-[1.03]"
