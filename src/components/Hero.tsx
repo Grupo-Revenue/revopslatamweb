@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import RevenueTrack from "@/components/RevenueTrack";
+import IsometricTrack from "@/components/IsometricTrack";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -114,7 +114,7 @@ const Hero = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" as const }}
         >
-          <RevenueTrack />
+          <IsometricTrack />
         </motion.div>
       </div>
     </section>
