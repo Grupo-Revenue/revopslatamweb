@@ -1,0 +1,47 @@
+import { motion } from "framer-motion";
+
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-50px" },
+  transition: { duration: 0.5, delay, ease: "easeOut" as const },
+});
+
+const metrics = [
+  { value: "14", desc: "años construyendo sistemas de revenue" },
+  { value: "HubSpot", desc: "como plataforma central certificada" },
+  { value: "LATAM", desc: "foco en el contexto latinoamericano real" },
+];
+
+const Credibility = () => {
+  return (
+    <section className="py-20 px-6" style={{ background: "#F5F5F8" }}>
+      <div className="max-w-[1000px] mx-auto text-center">
+        <motion.h2 {...fadeUp(0)} className="text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "#1A1A2E" }}>
+          14 años. Una convicción.
+        </motion.h2>
+
+        <motion.p {...fadeUp(0.1)} className="mt-6 text-[18px] leading-relaxed max-w-[600px] mx-auto" style={{ color: "#6B7280" }}>
+          No llegamos a RevOps por tendencia. Llegamos porque vimos el mismo patrón repetirse empresa tras empresa: crecimiento sin estructura, tecnología sin proceso, equipos sin dirección común. Desde entonces, construimos una metodología que pone el diagnóstico antes que la implementación.
+        </motion.p>
+
+        {/* Metrics */}
+        <motion.div {...fadeUp(0.25)} className="mt-14 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-0">
+          {metrics.map((m, i) => (
+            <div key={m.value} className="flex items-center">
+              <div className="text-center px-8 md:px-12">
+                <span className="block text-[48px] font-bold leading-none text-gradient-brand">{m.value}</span>
+                <span className="block mt-2 text-[14px]" style={{ color: "#6B7280" }}>{m.desc}</span>
+              </div>
+              {i < metrics.length - 1 && (
+                <div className="hidden md:block w-px h-16" style={{ background: "#D1D5DB" }} />
+              )}
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Credibility;
