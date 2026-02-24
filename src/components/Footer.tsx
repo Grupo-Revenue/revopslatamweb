@@ -38,8 +38,14 @@ const Footer = () => {
             <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
               Ordenamos para crecer. Diseñamos, construimos y operamos sistemas de revenue para empresas latinoamericanas.
             </p>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center justify-center w-9 h-9 rounded-full transition-colors" style={{ background: "rgba(255,255,255,0.06)" }}>
-              <Linkedin size={16} style={{ color: "rgba(255,255,255,0.5)" }} />
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 hover:!bg-[#0779D7] hover:!border-[#0779D7]"
+              style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}
+            >
+              <Linkedin size={18} color="#FFFFFF" />
             </a>
           </div>
 

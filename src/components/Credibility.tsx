@@ -8,9 +8,9 @@ const fadeUp = (delay: number) => ({
 });
 
 const metrics = [
-  { value: "14", desc: "años construyendo sistemas de revenue" },
-  { value: "HubSpot", desc: "como plataforma central certificada" },
-  { value: "LATAM", desc: "foco en el contexto latinoamericano real" },
+  { value: "14", color: "#BE1869", desc: "años construyendo sistemas de revenue" },
+  { value: "HubSpot", color: "#1CA398", desc: "como plataforma central certificada" },
+  { value: "LATAM", color: "#0779D7", desc: "foco en el contexto latinoamericano real" },
 ];
 
 const Credibility = () => {
@@ -30,7 +30,7 @@ const Credibility = () => {
           {metrics.map((m, i) => (
             <div key={m.value} className="flex items-center">
               <div className="text-center px-8 md:px-12">
-                <span className="block text-[48px] font-bold leading-none text-gradient-brand">{m.value}</span>
+                <span className="block text-[48px] font-bold leading-none" style={{ color: m.color }}>{m.value}</span>
                 <span className="block mt-2 text-[14px]" style={{ color: "#6B7280" }}>{m.desc}</span>
               </div>
               {i < metrics.length - 1 && (

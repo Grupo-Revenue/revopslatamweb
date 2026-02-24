@@ -9,10 +9,10 @@ const fadeUp = (delay: number) => ({
 });
 
 const values = [
-  { icon: Stethoscope, title: "Primero diagnosticar, luego construir" },
-  { icon: TrendingUp, title: "Crecimiento real, no solo rápido" },
-  { icon: Heart, title: "Lideramos sirviendo" },
-  { icon: BookOpen, title: "Nunca paramos de aprender" },
+  { icon: Stethoscope, title: "Primero diagnosticar, luego construir", desc: "Entendemos antes de tocar cualquier herramienta." },
+  { icon: TrendingUp, title: "Crecimiento real, no solo rápido", desc: "Construimos para que dure, no para impresionar." },
+  { icon: Heart, title: "Lideramos sirviendo", desc: "El éxito de nuestros clientes es el nuestro." },
+  { icon: BookOpen, title: "Nunca paramos de aprender", desc: "Nos certificamos, experimentamos y enseñamos." },
 ];
 
 const AboutTeaser = () => {
@@ -21,7 +21,7 @@ const AboutTeaser = () => {
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Text column */}
         <div>
-          <motion.p {...fadeUp(0)} className="text-[13px] font-semibold tracking-[0.15em] uppercase" style={{ color: "hsl(337 74% 44%)" }}>
+          <motion.p {...fadeUp(0)} className="text-[13px] font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869" }}>
             Nuestra esencia
           </motion.p>
           <motion.h2 {...fadeUp(0.1)} className="mt-4 text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "white" }}>
@@ -38,7 +38,7 @@ const AboutTeaser = () => {
           <motion.button
             {...fadeUp(0.3)}
             className="mt-8 inline-flex items-center gap-2 text-[16px] font-medium transition-opacity hover:opacity-80"
-            style={{ color: "hsl(175 73% 37%)" }}
+            style={{ color: "#1CA398" }}
           >
             Conocer a Revops LATAM <ArrowRight size={18} />
           </motion.button>
@@ -57,10 +57,17 @@ const AboutTeaser = () => {
                 <div className="flex items-start gap-4 py-5">
                   <div className="relative pl-4">
                     <div className="absolute left-0 top-0 bottom-0 w-[2px] gradient-brand rounded-full" />
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-2" style={{ background: "rgba(190,24,105,0.1)" }}>
-                      <Icon size={20} style={{ color: "hsl(337 74% 44%)" }} />
+                    <div
+                      className="w-[44px] h-[44px] rounded-full flex items-center justify-center mb-2 shrink-0"
+                      style={{
+                        background: "rgba(190,24,105,0.15)",
+                        border: "1px solid rgba(190,24,105,0.3)",
+                      }}
+                    >
+                      <Icon size={20} color="#BE1869" />
                     </div>
                     <h4 className="text-[16px] font-semibold" style={{ color: "white" }}>{v.title}</h4>
+                    <p className="mt-1" style={{ color: "rgba(255,255,255,0.5)", fontSize: "13px" }}>{v.desc}</p>
                   </div>
                 </div>
                 {i < values.length - 1 && <div className="h-px" style={{ background: "rgba(255,255,255,0.06)" }} />}
