@@ -47,10 +47,10 @@ const Hero = () => {
         }}
       />
 
-      {/* Content grid */}
-      <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
-        {/* Text column */}
-        <div className="flex-1 min-w-0 lg:max-w-[55%] order-2 lg:order-1">
+      {/* Content */}
+      <div className="relative z-10 container max-w-[1100px] mx-auto">
+        {/* Text column — full width, track is positioned absolutely behind */}
+        <div className="relative z-10 max-w-[600px]">
           {/* Pill */}
           <motion.div {...fadeUp(0)}>
             <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider">
@@ -107,9 +107,9 @@ const Hero = () => {
           </motion.p>
         </div>
 
-        {/* Track animation column */}
+        {/* Track — absolutely positioned on desktop, hidden on mobile */}
         <motion.div
-          className="flex-shrink-0 w-full max-w-[260px] sm:max-w-[300px] lg:max-w-[380px] order-1 lg:order-2 will-change-transform"
+          className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-[420px] xl:w-[480px] will-change-transform pointer-events-auto"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" as const }}
