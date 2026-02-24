@@ -152,8 +152,8 @@ const Symptoms = () => {
           }}
         >
           <p className="text-[18px] leading-relaxed" style={{ color: "rgba(255,255,255,0.85)" }}>
-            Si reconociste al menos dos de estas situaciones, no tiene un problema de talento ni de herramientas.{" "}
-            <strong>Tiene una pista mal armada.</strong>
+            Si reconociste al menos dos de estas situaciones, no tienes un problema de talento ni de herramientas.{" "}
+            <strong>Tienes una pista mal armada.</strong>
           </p>
         </motion.div>
       </div>
