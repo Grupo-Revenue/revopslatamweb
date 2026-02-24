@@ -61,7 +61,7 @@ const Hero = () => {
           {/* Headline */}
           <motion.h1
             {...fadeUp(0.2)}
-            className="mt-7 text-[36px] md:text-[56px] font-bold leading-[1.1] tracking-tight"
+            className="mt-7 text-hero font-bold leading-[1.1] tracking-tight"
           >
             <span className="text-primary-foreground">Tu empresa creció.</span>
             <br />
@@ -109,7 +109,7 @@ const Hero = () => {
 
         {/* Track animation column */}
         <motion.div
-          className="flex-[0_0_45%] max-w-full lg:max-w-[45%] w-full"
+          className="flex-[0_0_45%] max-w-full lg:max-w-[45%] w-full will-change-transform"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" as const }}
