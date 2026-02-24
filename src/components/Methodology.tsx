@@ -38,15 +38,13 @@ const trackStates = [
   },
 ];
 
-/* ── Mini track SVG animations ── */
+/* ── Mini Tracks SVGs ── */
 const MiniTrackBroken = () => (
   <svg viewBox="0 0 280 80" className="w-full h-20">
-    {/* Track segments */}
     <line x1="10" y1="40" x2="80" y2="40" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" />
     <line x1="100" y1="40" x2="150" y2="40" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" opacity="0.4" strokeDasharray="4 4" />
     <line x1="170" y1="45" x2="220" y2="50" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" opacity="0.3" />
     <line x1="240" y1="40" x2="270" y2="40" stroke="hsl(337 74% 44%)" strokeWidth="3" strokeLinecap="round" opacity="0.2" />
-    {/* Ball falling */}
     <motion.circle
       r="6"
       fill="url(#ballGrad)"
@@ -55,7 +53,6 @@ const MiniTrackBroken = () => (
       animate={{ cx: [10, 80, 90, 92], cy: [40, 40, 55, 70] }}
       transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
     />
-    {/* Pulsing gap */}
     <motion.rect
       x="82" y="30" width="16" height="20" rx="4"
       fill="hsl(337 74% 44%)"
@@ -80,10 +77,8 @@ const MiniTrackIncomplete = () => (
   <svg viewBox="0 0 280 80" className="w-full h-20">
     <line x1="10" y1="40" x2="100" y2="40" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" />
     <line x1="100" y1="40" x2="180" y2="40" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" opacity="0.7" />
-    {/* Friction zone */}
     <line x1="180" y1="40" x2="220" y2="42" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" opacity="0.4" strokeDasharray="6 3" />
     <line x1="230" y1="40" x2="270" y2="40" stroke="hsl(42 93% 54%)" strokeWidth="3" strokeLinecap="round" opacity="0.5" />
-    {/* Ball slowing */}
     <motion.circle
       r="6"
       fill="url(#ballGrad2)"
@@ -108,7 +103,6 @@ const MiniTrackIncomplete = () => (
 const MiniTrackComplete = () => (
   <svg viewBox="0 0 280 80" className="w-full h-20">
     <line x1="10" y1="40" x2="260" y2="40" stroke="hsl(175 73% 37%)" strokeWidth="3" strokeLinecap="round" />
-    {/* Trail */}
     <motion.line
       x1="10" y1="40" x2="10" y2="40"
       stroke="hsl(42 93% 54%)"
@@ -118,7 +112,6 @@ const MiniTrackComplete = () => (
       animate={{ x2: [10, 260] }}
       transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
     />
-    {/* Ball */}
     <motion.circle
       r="6"
       fill="url(#ballGrad3)"
@@ -127,7 +120,6 @@ const MiniTrackComplete = () => (
       animate={{ cx: [10, 260] }}
       transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
     />
-    {/* End sparkle */}
     <motion.circle
       cx="260" cy="40" r="12"
       fill="none"
@@ -161,7 +153,6 @@ const Methodology = () => {
   const [active, setActive] = useState(0);
   const [userInteracted, setUserInteracted] = useState(false);
 
-  // Auto-cycle every 3s unless user interacted
   useEffect(() => {
     if (userInteracted) return;
     const timer = setInterval(() => {
@@ -173,7 +164,6 @@ const Methodology = () => {
   const handleClick = useCallback((i: number) => {
     setActive(i);
     setUserInteracted(true);
-    // Resume auto-cycle after 9s of inactivity
     setTimeout(() => setUserInteracted(false), 9000);
   }, []);
 
@@ -181,16 +171,15 @@ const Methodology = () => {
 
   return (
     <section className="relative">
-      {/* Wave transition from dark to light */}
+      {/* Wave transition */}
       <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0] -translate-y-[1px]">
         <svg viewBox="0 0 1440 80" preserveAspectRatio="none" className="w-full h-16 md:h-20">
-          <path d="M0,0 L1440,0 L1440,40 Q1080,80 720,60 Q360,40 0,80 Z" fill="#0D0D1A" />
+          <path d="M0,0 L1440,0 L1440,40 Q1080,80 720,60 Q360,40 0,80 Z" fill="#FFFFFF" />
         </svg>
       </div>
 
       <div className="pt-24 pb-24 px-6" style={{ background: "#F5F5F8" }}>
         <div className="max-w-[1200px] mx-auto">
-          {/* Eyebrow */}
           <motion.p
             {...fadeUp(0)}
             className="text-center text-[13px] font-semibold tracking-[0.15em] uppercase"
@@ -199,7 +188,6 @@ const Methodology = () => {
             Nuestra metodología
           </motion.p>
 
-          {/* Headline */}
           <motion.h2
             {...fadeUp(0.1)}
             className="mt-4 text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight max-w-[650px] mx-auto"
@@ -210,7 +198,6 @@ const Methodology = () => {
             <span className="text-gradient-brand">Se diseña, pieza a pieza.</span>
           </motion.h2>
 
-          {/* Intro paragraph */}
           <motion.div
             {...fadeUp(0.2)}
             className="mt-8 mx-auto max-w-[620px] text-center text-[18px] leading-relaxed space-y-4"
@@ -224,9 +211,7 @@ const Methodology = () => {
             </p>
           </motion.div>
 
-          {/* Track States Cards */}
           <motion.div {...fadeUp(0.35)} className="mt-16">
-            {/* Mini animation preview */}
             <div className="mx-auto max-w-md mb-10 rounded-2xl p-6" style={{ background: "white", boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
               <AnimatePresence mode="wait">
                 <motion.div
@@ -241,7 +226,6 @@ const Methodology = () => {
               </AnimatePresence>
             </div>
 
-            {/* Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {trackStates.map((s, i) => (
                 <motion.button
@@ -257,7 +241,6 @@ const Methodology = () => {
                   }}
                   {...fadeUp(0.4 + i * 0.1)}
                 >
-                  {/* Dot + label */}
                   <div className="flex items-center gap-2 mb-4">
                     <span
                       className="w-3 h-3 rounded-full"

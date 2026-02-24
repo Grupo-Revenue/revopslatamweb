@@ -17,7 +17,7 @@ const values = [
 
 const AboutTeaser = () => {
   return (
-    <section className="py-24 px-6" style={{ background: "#13132A" }}>
+    <section className="py-24 px-6" style={{ background: "#0D0D1A" }}>
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Text column */}
         <div>
@@ -34,12 +34,9 @@ const AboutTeaser = () => {
             <motion.p {...fadeUp(0.25)}>
               Somos Arquitectos del Revenue: diseñamos antes de construir, diagnosticamos antes de implementar, y medimos para mejorar de manera continua.
             </motion.p>
-            <motion.p {...fadeUp(0.3)}>
-              Llevamos 14 años en esto. Y seguimos haciéndonos la misma pregunta después de cada proyecto: ¿hay una mejor forma de armar esta pista?
-            </motion.p>
           </div>
           <motion.button
-            {...fadeUp(0.35)}
+            {...fadeUp(0.3)}
             className="mt-8 inline-flex items-center gap-2 text-[16px] font-medium transition-opacity hover:opacity-80"
             style={{ color: "hsl(175 73% 37%)" }}
           >
@@ -51,7 +48,7 @@ const AboutTeaser = () => {
         <motion.div
           {...fadeUp(0.2)}
           className="rounded-[20px] p-8"
-          style={{ background: "#0D0D1A", border: "1px solid rgba(255,255,255,0.06)" }}
+          style={{ background: "#13132A", border: "1px solid rgba(255,255,255,0.06)" }}
         >
           {values.map((v, i) => {
             const Icon = v.icon;
