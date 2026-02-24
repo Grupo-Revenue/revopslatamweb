@@ -24,19 +24,19 @@ const FinalCTA = () => {
           El primer paso es entender cómo fluye tu revenue hoy.
         </motion.p>
 
-        <motion.div {...fadeUp(0.25)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button size="lg" className="gap-2">
-            Agenda una conversación
-            <ArrowRight size={18} />
-          </Button>
-          <div className="text-center">
+        <motion.div {...fadeUp(0.25)} className="mt-10 flex flex-col items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button size="lg" className="gap-2">
+              Agenda una conversación
+              <ArrowRight size={18} />
+            </Button>
             <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
               Haz el Pulso Comercial primero
             </Button>
-            <p className="mt-2 text-[13px]" style={{ color: "rgba(255,255,255,0.5)" }}>
-              5 minutos · Gratuito · Resultado inmediato
-            </p>
           </div>
+          <p className="text-[13px]" style={{ color: "rgba(255,255,255,0.5)" }}>
+            5 minutos · Gratuito · Resultado inmediato
+          </p>
         </motion.div>
       </div>
     </section>
