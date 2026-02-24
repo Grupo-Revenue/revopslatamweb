@@ -24,26 +24,26 @@ const symptoms = [
   {
     icon: Monitor,
     accent: "208 95% 44%",
-    title: "Tenemos HubSpot pero no lo usamos bien.",
+    title: "Tienes HubSpot pero no lo usas bien.",
     text: "Pagaste la licencia, alguien lo configuró, y hoy es básicamente un Excel con login. El potencial está ahí. El uso, no.",
   },
   {
     icon: BarChart3,
     accent: "42 93% 54%",
-    title: "No puedo predecir el cierre de mes.",
+    title: "No puedes predecir el cierre de mes.",
     text: "Tu forecast es más una intuición que una proyección. El directorio pregunta. Tú adivinas. Eso no escala.",
   },
   {
     icon: UserRound,
     accent: "175 73% 37%",
-    title: "Contraté un Gerente Comercial y sigue el caos.",
+    title: "Contrataste un Gerente Comercial y sigue el caos.",
     text: "Buena persona, buen perfil. Pero sin procesos claros ni datos confiables, hasta el mejor Gerente Comercial opera a ciegas.",
   },
 ];
 
 const Symptoms = () => {
   return (
-    <section className="relative py-24 px-6" style={{ background: "#0D0D1A" }}>
+    <section className="relative py-24 px-6" style={{ background: "#FFFFFF" }}>
       <div className="max-w-[1200px] mx-auto">
         {/* Eyebrow */}
         <motion.p
@@ -58,13 +58,12 @@ const Symptoms = () => {
         <motion.h2
           {...fadeUp(0.1)}
           className="mt-4 text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight max-w-[700px] mx-auto"
-          style={{ color: "hsl(0 0% 100%)" }}
+          style={{ color: "#1A1A2E" }}
         >
           Si diriges una empresa que ya creció, probablemente reconoces esto.
         </motion.h2>
 
         {/* Cards grid */}
-        {/* First row: 3 cards */}
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {symptoms.slice(0, 3).map((s, i) => {
             const Icon = s.icon;
@@ -74,13 +73,10 @@ const Symptoms = () => {
                 {...fadeUp(0.15 + i * 0.1)}
                 className="group rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1"
                 style={{
-                  background: "#13132A",
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "#FFFFFF",
+                  border: "1px solid #E5E7EB",
                   borderLeft: `3px solid hsl(${s.accent})`,
-                }}
-                whileHover={{
-                  backgroundColor: "rgba(255,255,255,0.03)",
-                  borderLeftColor: `hsl(${s.accent})`,
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
                 }}
               >
                 <div
@@ -91,11 +87,11 @@ const Symptoms = () => {
                 </div>
                 <h4
                   className="text-[18px] font-semibold mb-3"
-                  style={{ color: "hsl(0 0% 100%)" }}
+                  style={{ color: "#1A1A2E" }}
                 >
                   {s.title}
                 </h4>
-                <p className="text-[15px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
+                <p className="text-[15px] leading-relaxed" style={{ color: "#6B7280" }}>
                   {s.text}
                 </p>
               </motion.div>
@@ -113,13 +109,10 @@ const Symptoms = () => {
                 {...fadeUp(0.45 + i * 0.1)}
                 className="group rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1"
                 style={{
-                  background: "#13132A",
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "#FFFFFF",
+                  border: "1px solid #E5E7EB",
                   borderLeft: `3px solid hsl(${s.accent})`,
-                }}
-                whileHover={{
-                  backgroundColor: "rgba(255,255,255,0.03)",
-                  borderLeftColor: `hsl(${s.accent})`,
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
                 }}
               >
                 <div
@@ -130,11 +123,11 @@ const Symptoms = () => {
                 </div>
                 <h4
                   className="text-[18px] font-semibold mb-3"
-                  style={{ color: "hsl(0 0% 100%)" }}
+                  style={{ color: "#1A1A2E" }}
                 >
                   {s.title}
                 </h4>
-                <p className="text-[15px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
+                <p className="text-[15px] leading-relaxed" style={{ color: "#6B7280" }}>
                   {s.text}
                 </p>
               </motion.div>
@@ -147,11 +140,11 @@ const Symptoms = () => {
           {...fadeUp(0.7)}
           className="mt-14 mx-auto max-w-[700px] text-center rounded-xl px-10 py-6"
           style={{
-            background: "rgba(190,24,105,0.08)",
-            border: "1px solid rgba(190,24,105,0.2)",
+            background: "hsl(337 74% 44% / 0.06)",
+            border: "1px solid hsl(337 74% 44% / 0.15)",
           }}
         >
-          <p className="text-[18px] leading-relaxed" style={{ color: "rgba(255,255,255,0.85)" }}>
+          <p className="text-[18px] leading-relaxed" style={{ color: "#1A1A2E" }}>
             Si reconociste al menos dos de estas situaciones, no tienes un problema de talento ni de herramientas.{" "}
             <strong>Tienes una pista mal armada.</strong>
           </p>

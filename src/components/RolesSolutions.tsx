@@ -38,12 +38,12 @@ const roles = [
 
 const RolesSolutions = () => {
   return (
-    <section className="py-24 px-6" style={{ background: "#0D0D1A" }}>
+    <section className="py-24 px-6" style={{ background: "#FFFFFF" }}>
       <div className="max-w-[1200px] mx-auto">
-        <motion.h2 {...fadeUp(0)} className="text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "white" }}>
+        <motion.h2 {...fadeUp(0)} className="text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "#1A1A2E" }}>
           ¿Cuál es tu rol en la empresa?
         </motion.h2>
-        <motion.p {...fadeUp(0.1)} className="mt-4 text-center text-[18px] max-w-[520px] mx-auto leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
+        <motion.p {...fadeUp(0.1)} className="mt-4 text-center text-[18px] max-w-[520px] mx-auto leading-relaxed" style={{ color: "#6B7280" }}>
           El motor de ingresos le importa a todos, pero cada rol lo vive diferente.
         </motion.p>
 
@@ -56,20 +56,21 @@ const RolesSolutions = () => {
                 {...fadeUp(0.15 + i * 0.1)}
                 className="group rounded-[20px] p-8 transition-all duration-[400ms] cursor-pointer hover:-translate-y-1.5"
                 style={{
-                  background: "#13132A",
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "#FFFFFF",
+                  border: "1px solid #E5E7EB",
+                  boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
                 }}
                 whileHover={{
                   borderColor: `hsl(${r.accent})`,
-                  boxShadow: `0 8px 40px hsl(${r.accent} / 0.15)`,
+                  boxShadow: `0 8px 40px hsl(${r.accent} / 0.12)`,
                 }}
               >
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
                   style={{ background: `hsl(${r.accent} / 0.12)` }}>
                   <Icon size={22} style={{ color: `hsl(${r.accent})` }} />
                 </div>
-                <h4 className="text-[20px] font-bold mb-3" style={{ color: "white" }}>{r.title}</h4>
-                <p className="text-[16px] leading-relaxed mb-5" style={{ color: "rgba(255,255,255,0.6)" }}>{r.text}</p>
+                <h4 className="text-[20px] font-bold mb-3" style={{ color: "#1A1A2E" }}>{r.title}</h4>
+                <p className="text-[16px] leading-relaxed mb-5" style={{ color: "#6B7280" }}>{r.text}</p>
                 <span className="inline-flex items-center gap-2 text-[15px] font-medium transition-opacity group-hover:opacity-100 opacity-70"
                   style={{ color: `hsl(${r.accent})` }}>
                   Ver mi perspectiva <ArrowRight size={16} />

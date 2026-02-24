@@ -11,14 +11,14 @@ const fadeUp = (delay: number) => ({
 
 const FinalCTA = () => {
   return (
-    <section className="relative py-24 px-6 overflow-hidden gradient-hero">
+    <section className="relative py-24 px-6 overflow-hidden" style={{ background: "#0D0D1A" }}>
       {/* Orbs */}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: -80, left: -150, background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: -50, right: -100, background: "radial-gradient(circle, rgba(98,36,190,0.15) 0%, transparent 70%)", filter: "blur(120px)" }} />
 
       <div className="relative z-10 max-w-[700px] mx-auto text-center">
         <motion.h2 {...fadeUp(0)} className="text-[32px] md:text-[48px] font-bold leading-[1.1] tracking-tight" style={{ color: "white" }}>
-          ¿Lista para armar tu pista?
+          ¿Listo para armar tu pista?
         </motion.h2>
         <motion.p {...fadeUp(0.1)} className="mt-5 text-[20px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
           El primer paso es entender cómo fluye tu revenue hoy.

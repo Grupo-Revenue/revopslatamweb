@@ -15,10 +15,7 @@ const Hero = () => {
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
-          width: 500,
-          height: 500,
-          top: -100,
-          left: -200,
+          width: 500, height: 500, top: -100, left: -200,
           background: "radial-gradient(circle, rgba(190,24,105,0.15) 0%, transparent 70%)",
           filter: "blur(120px)",
         }}
@@ -26,10 +23,7 @@ const Hero = () => {
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
-          width: 400,
-          height: 400,
-          top: 200,
-          right: -150,
+          width: 400, height: 400, top: 200, right: -150,
           background: "radial-gradient(circle, rgba(98,36,190,0.20) 0%, transparent 70%)",
           filter: "blur(120px)",
         }}
@@ -37,10 +31,7 @@ const Hero = () => {
       <div
         className="absolute rounded-full pointer-events-none"
         style={{
-          width: 350,
-          height: 350,
-          bottom: 0,
-          left: "40%",
+          width: 350, height: 350, bottom: 0, left: "40%",
           background: "radial-gradient(circle, rgba(7,121,215,0.12) 0%, transparent 70%)",
           filter: "blur(120px)",
         }}
@@ -48,7 +39,6 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 container max-w-[1100px] mx-auto">
-        {/* Text column — full width, track is positioned absolutely behind */}
         <div className="relative z-10 max-w-[600px]">
           {/* Pill */}
           <motion.div {...fadeUp(0)}>

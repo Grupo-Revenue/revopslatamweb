@@ -24,7 +24,6 @@ const PulsoComercial = () => {
       </div>
 
       <div className="relative z-10 max-w-[800px] mx-auto text-center">
-        {/* Eyebrow pill */}
         <motion.div {...fadeUp(0)}>
           <span className="inline-block px-4 py-1.5 rounded-full text-[13px] font-semibold tracking-wide uppercase"
             style={{ background: "white", color: "hsl(337 74% 44%)" }}>
@@ -40,7 +39,6 @@ const PulsoComercial = () => {
           El Pulso Comercial analiza el estado de tu motor de ingresos en 5 minutos. Sin formularios largos. Sin llamadas previas. Solo claridad.
         </motion.p>
 
-        {/* Benefits */}
         <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
           {benefits.map((b) => {
             const Icon = b.icon;
@@ -55,7 +53,6 @@ const PulsoComercial = () => {
           })}
         </motion.div>
 
-        {/* CTA */}
         <motion.div {...fadeUp(0.4)} className="mt-10">
           <button
             className="px-12 py-[18px] rounded-full text-[18px] font-bold transition-all duration-300 hover:scale-[1.03]"
