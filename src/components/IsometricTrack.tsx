@@ -156,9 +156,8 @@ const IsometricTrack = () => {
   }, [runLoop]);
 
   const ballPos = lerp(BALL_PATH, ballT);
-  const w = isMobile ? 300 : 400;
-  const h = isMobile ? 380 : 500;
-  const scale = w / 380;
+  // Fully fluid — container controls the size
+  const scale = 1;
 
   // Trail points
   const trailCount = 10;
@@ -175,10 +174,10 @@ const IsometricTrack = () => {
 
   return (
     <div
-      className="relative flex items-center justify-center will-change-transform"
+      className="relative w-full will-change-transform"
+      style={{ aspectRatio: "380 / 480" }}
       onMouseEnter={() => { pausedRef.current = true; }}
       onMouseLeave={() => { pausedRef.current = false; }}
-      style={{ width: w, height: h }}
     >
       {/* Base illustration */}
       <img
@@ -192,9 +191,7 @@ const IsometricTrack = () => {
       {/* SVG overlay for animations */}
       <svg
         viewBox="0 0 380 480"
-        width={w}
-        height={h}
-        className="absolute inset-0 overflow-visible pointer-events-none"
+        className="absolute inset-0 w-full h-full overflow-visible pointer-events-none"
       >
         <defs>
           <filter id="ball-glow-f" x="-300%" y="-300%" width="700%" height="700%">
@@ -295,8 +292,8 @@ const IsometricTrack = () => {
             transition={{ duration: 0.3 }}
             className="absolute pointer-events-none"
             style={{
-              left: ballPos.x * scale + 20,
-              top: ballPos.y * scale - 10,
+              left: `${(ballPos.x / 380) * 100 + 6}%`,
+              top: `${(ballPos.y / 480) * 100 - 3}%`,
             }}
           >
             <span
@@ -324,8 +321,8 @@ const IsometricTrack = () => {
             transition={{ duration: 0.35, type: "spring", stiffness: 300 }}
             className="absolute pointer-events-none"
             style={{
-              left: BALL_PATH[BALL_PATH.length - 1].x * scale - 30,
-              top: BALL_PATH[BALL_PATH.length - 1].y * scale + 14,
+              left: `${(BALL_PATH[BALL_PATH.length - 1].x / 380) * 100 - 8}%`,
+              top: `${(BALL_PATH[BALL_PATH.length - 1].y / 480) * 100 + 3}%`,
             }}
           >
             <span
