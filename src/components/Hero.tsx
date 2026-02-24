@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import IsometricTrack from "@/components/IsometricTrack";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -106,16 +105,6 @@ const Hero = () => {
             14 años de experiencia · HubSpot Partner · LATAM
           </motion.p>
         </div>
-
-        {/* Track — absolutely positioned on desktop, hidden on mobile */}
-        <motion.div
-          className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-[420px] xl:w-[480px] will-change-transform pointer-events-auto"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" as const }}
-        >
-          <IsometricTrack />
-        </motion.div>
       </div>
     </section>
   );
