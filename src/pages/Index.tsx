@@ -6,6 +6,9 @@ import Services from "@/components/Services";
 import PulsoComercial from "@/components/PulsoComercial";
 import Credibility from "@/components/Credibility";
 import RolesSolutions from "@/components/RolesSolutions";
+import AboutTeaser from "@/components/AboutTeaser";
+import FinalCTA from "@/components/FinalCTA";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -18,6 +21,9 @@ const Index = () => {
       <PulsoComercial />
       <Credibility />
       <RolesSolutions />
+      <AboutTeaser />
+      <FinalCTA />
+      <Footer />
     </div>
   );
 };
