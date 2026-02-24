@@ -24,6 +24,7 @@ export default {
         foreground: "hsl(var(--foreground))",
         pink: "hsl(var(--pink))",
         purple: "hsl(var(--purple))",
+        "nav-link": "hsl(var(--muted-foreground))",
         teal: "hsl(var(--teal))",
         yellow: "hsl(var(--yellow))",
         blue: "hsl(var(--blue))",

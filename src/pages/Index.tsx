@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import Navbar from "@/components/Navbar";
 
 const colorSwatches = [
   { name: "Pink", var: "bg-pink", hex: "#BE1869" },
@@ -21,8 +22,9 @@ const fadeUp = {
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <Navbar />
       {/* Hero – Dark section */}
-      <section className="gradient-hero py-24 px-6">
+      <section className="gradient-hero pt-32 pb-24 px-6">
         <div className="container max-w-5xl mx-auto">
           <motion.p
             initial={{ opacity: 0 }}
