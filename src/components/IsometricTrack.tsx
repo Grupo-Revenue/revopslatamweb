@@ -1,55 +1,70 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import trackImage from "@/assets/track-illustration.png";
 
 /**
- * IsometricTrack — 2D flat top-down serpentine track with animated marble.
- * Three phases loop: gap → connect → complete run.
+ * IsometricTrack — Uses the static track illustration as base,
+ * with animated marble, glows, and floating labels on top.
  */
-
-/* ─── Track path segments (4 curves forming an S-shape) ─── */
-const SEG1 = "M 190 40 Q 310 40 310 120";
-const SEG2 = "M 310 128 Q 310 210 190 210";
-const SEG3 = "M 190 218 Q 70 218 70 300";
-const SEG4 = "M 70 308 Q 70 390 190 390";
-const FULL_PATH = "M 190 40 Q 310 40 310 120 Q 310 210 190 210 Q 70 210 70 300 Q 70 390 190 390";
-
-const COLORS = ["#BE1869", "#6224BE", "#0779D7", "#1CA398"];
-
-// Connector positions (between segments)
-const CONNECTORS = [
-  { x: 310, y: 124 },
-  { x: 190, y: 214 },
-  { x: 70, y: 304 },
-];
-
-// The broken segment index (segment 2 is missing)
-const BROKEN_SEG = 1;
 
 type Phase = "gap" | "connect" | "complete";
 
 const PHASE_DUR: Record<Phase, number> = {
-  gap: 2000,
-  connect: 1000,
-  complete: 3000,
+  gap: 2500,
+  connect: 1200,
+  complete: 3500,
 };
 
-// Ease in-out quad
+// Path the ball follows over the image (pixel coords in 380x480 viewBox)
+// Traces the spiral and arrows visible in the illustration
+const BALL_PATH = [
+  { x: 220, y: 80 },   // top area near spiral start
+  { x: 260, y: 110 },
+  { x: 280, y: 150 },
+  { x: 270, y: 200 },  // spiral outer
+  { x: 240, y: 230 },
+  { x: 210, y: 220 },  // spiral inner
+  { x: 220, y: 190 },
+  { x: 250, y: 180 },  // spiral exit
+  { x: 270, y: 210 },
+  { x: 280, y: 260 },  // going down toward arrows
+  { x: 260, y: 300 },  // near blue piece
+  { x: 220, y: 340 },  // following arrows down
+  { x: 250, y: 370 },
+  { x: 280, y: 390 },
+  { x: 300, y: 410 },  // end
+];
+
+// Gap is between indices 4-6 (inside spiral)
+const GAP_STOP = 4;
+
 const easeInOut = (t: number) =>
   t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+function lerp(
+  pts: { x: number; y: number }[],
+  t: number
+): { x: number; y: number } {
+  const n = pts.length - 1;
+  const clamped = Math.max(0, Math.min(1, t));
+  const idx = Math.min(Math.floor(clamped * n), n - 1);
+  const frac = clamped * n - idx;
+  return {
+    x: pts[idx].x + (pts[idx + 1].x - pts[idx].x) * frac,
+    y: pts[idx].y + (pts[idx + 1].y - pts[idx].y) * frac,
+  };
+}
 
 const IsometricTrack = () => {
   const [phase, setPhase] = useState<Phase>("gap");
   const [ballT, setBallT] = useState(0);
-  const [seg2Visible, setSeg2Visible] = useState(false);
-  const [seg2Scale, setSeg2Scale] = useState(0);
-  const [flash, setFlash] = useState(false);
   const [showLost, setShowLost] = useState(false);
   const [showEnd, setShowEnd] = useState(false);
+  const [gapPulse, setGapPulse] = useState(true);
+  const [flashConnect, setFlashConnect] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const pausedRef = useRef(false);
   const animRef = useRef(0);
-  const pathRef = useRef<SVGPathElement>(null);
-  const [ballPos, setBallPos] = useState({ x: 190, y: 40 });
-  const [trail, setTrail] = useState<{ x: number; y: number; o: number }[]>([]);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -57,23 +72,6 @@ const IsometricTrack = () => {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
-
-  // Get point on full path at t [0,1]
-  const getPoint = useCallback((t: number) => {
-    if (!pathRef.current) return { x: 190, y: 40 };
-    const len = pathRef.current.getTotalLength();
-    const pt = pathRef.current.getPointAtLength(t * len);
-    return { x: pt.x, y: pt.y };
-  }, []);
-
-  // Update ball position from ballT
-  useEffect(() => {
-    const pos = getPoint(ballT);
-    setBallPos(pos);
-    if (phase === "complete" && ballT > 0.02) {
-      setTrail((prev) => [...prev, { ...pos, o: 1 }].slice(-14));
-    }
-  }, [ballT, getPoint, phase]);
 
   // Animation loop
   const runLoop = useCallback(() => {
@@ -84,14 +82,13 @@ const IsometricTrack = () => {
     const reset = () => {
       cur = "gap";
       start = performance.now();
+      lastTime = start;
       setPhase("gap");
       setBallT(0);
-      setSeg2Visible(false);
-      setSeg2Scale(0);
-      setFlash(false);
       setShowLost(false);
       setShowEnd(false);
-      setTrail([]);
+      setGapPulse(true);
+      setFlashConnect(false);
     };
 
     const tick = (now: number) => {
@@ -107,51 +104,41 @@ const IsometricTrack = () => {
 
       if (cur === "gap") {
         const t = Math.min(elapsed / dur, 1);
-        // Ball moves to ~22% (end of seg1 area) then bounces
-        const stopT = 0.22;
-        if (t < 0.6) {
-          setBallT(easeInOut(t / 0.6) * stopT);
+        const stopNorm = GAP_STOP / (BALL_PATH.length - 1);
+        if (t < 0.55) {
+          setBallT(easeInOut(t / 0.55) * stopNorm);
         } else {
-          // Small bounce
-          const bt = (t - 0.6) / 0.4;
-          const bounce = Math.sin(bt * Math.PI) * 0.015;
-          setBallT(stopT - bounce);
+          const bt = (t - 0.55) / 0.45;
+          const bounce = Math.sin(bt * Math.PI * 2) * 0.008;
+          setBallT(stopNorm + bounce);
         }
-        setShowLost(t > 0.55 && t < 0.92);
+        setShowLost(t > 0.5 && t < 0.9);
 
         if (elapsed >= dur) {
           cur = "connect";
           start = now;
           setPhase("connect");
           setShowLost(false);
-          setBallT(0.22);
+          setGapPulse(false);
         }
       } else if (cur === "connect") {
         const t = Math.min(elapsed / dur, 1);
-        // Spring-like scale for segment appearing
-        setSeg2Visible(true);
-        const spring = t < 0.7
-          ? easeInOut(t / 0.7) * 1.08
-          : 1.08 - 0.08 * easeInOut((t - 0.7) / 0.3);
-        setSeg2Scale(Math.min(spring, 1.08));
-        setFlash(t > 0.4 && t < 0.7);
+        setFlashConnect(t > 0.3 && t < 0.7);
 
         if (elapsed >= dur) {
           cur = "complete";
           start = now;
           setPhase("complete");
-          setSeg2Scale(1);
-          setFlash(false);
+          setFlashConnect(false);
           setBallT(0);
-          setTrail([]);
         }
       } else if (cur === "complete") {
         const t = Math.min(elapsed / dur, 1);
         setBallT(easeInOut(t));
-        setShowEnd(t > 0.88);
+        setShowEnd(t > 0.85);
 
         if (elapsed >= dur) {
-          setTimeout(reset, 500);
+          setTimeout(reset, 600);
           return;
         }
       }
@@ -168,15 +155,23 @@ const IsometricTrack = () => {
     return cleanup;
   }, [runLoop]);
 
-  const w = isMobile ? 320 : 380;
-  const h = isMobile ? 400 : 500;
+  const ballPos = lerp(BALL_PATH, ballT);
+  const w = isMobile ? 300 : 400;
+  const h = isMobile ? 380 : 500;
+  const scale = w / 380;
 
-  const segments = [SEG1, SEG2, SEG3, SEG4];
+  // Trail points
+  const trailCount = 10;
+  const trailPoints = phase === "complete"
+    ? Array.from({ length: trailCount }, (_, i) => {
+        const offset = (i + 1) * 0.015;
+        const tt = Math.max(0, ballT - offset);
+        return { ...lerp(BALL_PATH, tt), o: (i + 1) / trailCount };
+      }).reverse()
+    : [];
 
-  // Lost label position (near end of seg1)
-  const lostPos = getPoint(0.24);
-  // End label position
-  const endPos = { x: 190, y: 390 };
+  // Gap glow position (between points 4-6)
+  const gapCenter = lerp(BALL_PATH, 5 / (BALL_PATH.length - 1));
 
   return (
     <div
@@ -185,26 +180,24 @@ const IsometricTrack = () => {
       onMouseLeave={() => { pausedRef.current = false; }}
       style={{ width: w, height: h }}
     >
-      <svg viewBox="0 0 380 440" width={w} height={h} className="overflow-visible">
+      {/* Base illustration */}
+      <img
+        src={trackImage}
+        alt="Revenue track illustration"
+        className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+        loading="lazy"
+        draggable={false}
+      />
+
+      {/* SVG overlay for animations */}
+      <svg
+        viewBox="0 0 380 480"
+        width={w}
+        height={h}
+        className="absolute inset-0 overflow-visible pointer-events-none"
+      >
         <defs>
-          {/* Hidden full path for measuring */}
-          <path id="full-track-path" d={FULL_PATH} />
-
-          {/* Segment glow filters */}
-          {COLORS.map((c, i) => (
-            <filter key={i} id={`seg-glow-${i}`} x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="6" result="blur" />
-              <feFlood floodColor={c} floodOpacity="0.6" result="color" />
-              <feComposite in="color" in2="blur" operator="in" result="glow" />
-              <feMerge>
-                <feMergeNode in="glow" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          ))}
-
-          {/* Ball glow */}
-          <filter id="ball-glow" x="-200%" y="-200%" width="500%" height="500%">
+          <filter id="ball-glow-f" x="-300%" y="-300%" width="700%" height="700%">
             <feGaussianBlur stdDeviation="8" result="blur" />
             <feFlood floodColor="#F7BE1A" floodOpacity="0.7" result="color" />
             <feComposite in="color" in2="blur" operator="in" result="glow" />
@@ -213,267 +206,142 @@ const IsometricTrack = () => {
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-
-          {/* White flash */}
-          <filter id="white-flash" x="-200%" y="-200%" width="500%" height="500%">
+          <filter id="flash-f" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="12" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="pulse-f" x="-200%" y="-200%" width="500%" height="500%">
             <feGaussianBlur stdDeviation="10" result="blur" />
+            <feFlood floodColor="#BE1869" floodOpacity="0.5" result="color" />
+            <feComposite in="color" in2="blur" operator="in" result="glow" />
             <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="blur" />
+              <feMergeNode in="glow" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
-
-          {/* Connector glow */}
-          <filter id="conn-glow" x="-200%" y="-200%" width="500%" height="500%">
-            <feGaussianBlur stdDeviation="4" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-
-          {/* Radial gradient for ball */}
-          <radialGradient id="ball-fill">
-            <stop offset="0%" stopColor="#FFF4C2" />
-            <stop offset="50%" stopColor="#F7BE1A" />
+          <radialGradient id="ball-grad-f">
+            <stop offset="0%" stopColor="#FFF8DC" />
+            <stop offset="40%" stopColor="#F7BE1A" />
             <stop offset="100%" stopColor="#D4960E" />
-          </radialGradient>
-
-          {/* Pulse animation for broken gap */}
-          <radialGradient id="pulse-grad">
-            <stop offset="0%" stopColor="#BE1869" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#BE1869" stopOpacity="0" />
           </radialGradient>
         </defs>
 
-        {/* ═══ Track background (subtle fill) ═══ */}
-        {segments.map((d, i) => {
-          const isHidden = i === BROKEN_SEG && !seg2Visible && phase === "gap";
-          return (
-            <path
-              key={`bg-${i}`}
-              d={d}
-              fill="none"
-              stroke="rgba(255,255,255,0.03)"
-              strokeWidth={24}
-              strokeLinecap="round"
-              opacity={isHidden ? 0.3 : 1}
-            />
-          );
-        })}
+        {/* Gap pulse glow */}
+        {gapPulse && phase === "gap" && (
+          <circle
+            cx={gapCenter.x}
+            cy={gapCenter.y}
+            r={25}
+            fill="none"
+            stroke="#BE1869"
+            strokeWidth={2}
+            opacity={0.6}
+            filter="url(#pulse-f)"
+          >
+            <animate attributeName="r" values="18;30;18" dur="1.5s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="1.5s" repeatCount="indefinite" />
+          </circle>
+        )}
 
-        {/* ═══ Track segments ═══ */}
-        {segments.map((d, i) => {
-          const isbroken = i === BROKEN_SEG;
-          const hidden = isbroken && !seg2Visible;
-
-          if (hidden && phase === "gap") {
-            // Show dashed outline for gap
-            return (
-              <g key={`seg-${i}`}>
-                <path
-                  d={d}
-                  fill="none"
-                  stroke="#BE1869"
-                  strokeWidth={3}
-                  strokeLinecap="round"
-                  strokeDasharray="6 8"
-                  opacity={0.4}
-                >
-                  <animate
-                    attributeName="opacity"
-                    values="0.2;0.6;0.2"
-                    dur="1.5s"
-                    repeatCount="indefinite"
-                  />
-                </path>
-              </g>
-            );
-          }
-
-          return (
-            <g key={`seg-${i}`}>
-              {/* Glow layer */}
-              <path
-                d={d}
-                fill="none"
-                stroke={COLORS[i]}
-                strokeWidth={20}
-                strokeLinecap="round"
-                opacity={0.15}
-                filter={`url(#seg-glow-${i})`}
-                style={isbroken ? {
-                  transform: `scale(${seg2Scale})`,
-                  transformOrigin: "250px 210px",
-                  transition: "transform 0.3s ease-out",
-                } : undefined}
-              />
-              {/* Main track stroke */}
-              <path
-                d={d}
-                fill="none"
-                stroke={COLORS[i]}
-                strokeWidth={20}
-                strokeLinecap="round"
-                opacity={0.85}
-                style={isbroken ? {
-                  transform: `scale(${seg2Scale})`,
-                  transformOrigin: "250px 210px",
-                  transition: "transform 0.3s ease-out",
-                } : undefined}
-              />
-              {/* White inner line (depth) */}
-              <path
-                d={d}
-                fill="none"
-                stroke="rgba(255,255,255,0.15)"
-                strokeWidth={2}
-                strokeLinecap="round"
-                style={isbroken ? {
-                  transform: `scale(${seg2Scale})`,
-                  transformOrigin: "250px 210px",
-                  transition: "transform 0.3s ease-out",
-                } : undefined}
-              />
-            </g>
-          );
-        })}
-
-        {/* ═══ Connectors ═══ */}
-        {CONNECTORS.map((c, i) => {
-          const isFlashing = flash && (i === 0 || i === 1);
-          return (
-            <g key={`conn-${i}`}>
-              <circle
-                cx={c.x}
-                cy={c.y}
-                r={5}
-                fill={isFlashing ? "#1CA398" : "white"}
-                filter={isFlashing ? "url(#white-flash)" : "url(#conn-glow)"}
-                opacity={isFlashing ? 1 : 0.9}
-              />
-            </g>
-          );
-        })}
-
-        {/* ═══ Flash effect on connection ═══ */}
-        {flash && (
+        {/* Connection flash */}
+        {flashConnect && (
           <>
-            <circle cx={CONNECTORS[0].x} cy={CONNECTORS[0].y} r={20} fill="white" opacity={0.4} filter="url(#white-flash)" />
-            <circle cx={CONNECTORS[1].x} cy={CONNECTORS[1].y} r={20} fill="white" opacity={0.4} filter="url(#white-flash)" />
+            <circle cx={gapCenter.x} cy={gapCenter.y} r={30} fill="white" opacity={0.5} filter="url(#flash-f)" />
+            <circle cx={gapCenter.x} cy={gapCenter.y} r={12} fill="#1CA398" opacity={0.8} filter="url(#flash-f)" />
           </>
         )}
 
-        {/* ═══ Finish circle (meta) ═══ */}
-        <circle
-          cx={190}
-          cy={390}
-          r={showEnd ? 18 : 14}
-          fill="none"
-          stroke="#1CA398"
-          strokeWidth={3}
-          opacity={showEnd ? 1 : 0.5}
-          filter={showEnd ? "url(#conn-glow)" : undefined}
-          style={{ transition: "all 0.4s ease" }}
-        />
-        <circle
-          cx={190}
-          cy={390}
-          r={6}
-          fill="#1CA398"
-          opacity={showEnd ? 0.9 : 0.3}
-          style={{ transition: "all 0.4s ease" }}
-        />
+        {/* Ball trail */}
+        {trailPoints.map((pt, i) => (
+          <circle
+            key={i}
+            cx={pt.x}
+            cy={pt.y}
+            r={2 + pt.o * 3}
+            fill="#F7BE1A"
+            opacity={pt.o * 0.45}
+          />
+        ))}
 
-        {/* ═══ Hidden path for measurement ═══ */}
-        <path
-          ref={pathRef}
-          d={FULL_PATH}
-          fill="none"
-          stroke="none"
-        />
-
-        {/* ═══ Ball trail ═══ */}
-        {phase === "complete" && trail.map((pt, i) => {
-          const opacity = (i / trail.length) * 0.5;
-          const r = 2 + (i / trail.length) * 4;
-          return (
-            <circle
-              key={i}
-              cx={pt.x}
-              cy={pt.y}
-              r={r}
-              fill="#F7BE1A"
-              opacity={opacity}
-            />
-          );
-        })}
-
-        {/* ═══ Ball ═══ */}
+        {/* Ball */}
         <circle
           cx={ballPos.x}
           cy={ballPos.y}
-          r={7}
-          fill="url(#ball-fill)"
-          filter="url(#ball-glow)"
-          style={{ transition: "cx 0.03s linear, cy 0.03s linear" }}
+          r={8}
+          fill="url(#ball-grad-f)"
+          filter="url(#ball-glow-f)"
         />
+        {/* Ball highlight */}
+        <circle
+          cx={ballPos.x - 2}
+          cy={ballPos.y - 2}
+          r={3}
+          fill="rgba(255,255,255,0.7)"
+        />
+      </svg>
 
-        {/* ═══ "Lead perdido" label ═══ */}
+      {/* Floating labels */}
+      <AnimatePresence>
         {showLost && (
-          <g opacity={1}>
-            <rect
-              x={lostPos.x + 16}
-              y={lostPos.y - 14}
-              width={90}
-              height={22}
-              rx={11}
-              fill="rgba(190,24,105,0.15)"
-              stroke="#BE1869"
-              strokeWidth={0.5}
-            />
-            <text
-              x={lostPos.x + 61}
-              y={lostPos.y + 1}
-              textAnchor="middle"
-              fill="#BE1869"
-              fontSize="10"
-              fontFamily="Lexend, sans-serif"
-              fontWeight="500"
+          <motion.div
+            key="lost"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.3 }}
+            className="absolute pointer-events-none"
+            style={{
+              left: ballPos.x * scale + 20,
+              top: ballPos.y * scale - 10,
+            }}
+          >
+            <span
+              className="inline-block px-3 py-1 rounded-full text-[10px] font-medium"
+              style={{
+                background: "rgba(190,24,105,0.15)",
+                color: "#BE1869",
+                border: "1px solid rgba(190,24,105,0.3)",
+                fontFamily: "Lexend, sans-serif",
+              }}
             >
               Lead perdido
-            </text>
-          </g>
+            </span>
+          </motion.div>
         )}
+      </AnimatePresence>
 
-        {/* ═══ "Revenue ✓" label ═══ */}
+      <AnimatePresence>
         {showEnd && (
-          <g>
-            <rect
-              x={endPos.x - 48}
-              y={endPos.y + 24}
-              width={96}
-              height={24}
-              rx={12}
-              fill="rgba(28,163,152,0.15)"
-              stroke="#1CA398"
-              strokeWidth={0.5}
-            />
-            <text
-              x={endPos.x}
-              y={endPos.y + 40}
-              textAnchor="middle"
-              fill="#1CA398"
-              fontSize="11"
-              fontFamily="Lexend, sans-serif"
-              fontWeight="600"
+          <motion.div
+            key="end"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35, type: "spring", stiffness: 300 }}
+            className="absolute pointer-events-none"
+            style={{
+              left: BALL_PATH[BALL_PATH.length - 1].x * scale - 30,
+              top: BALL_PATH[BALL_PATH.length - 1].y * scale + 14,
+            }}
+          >
+            <span
+              className="inline-block px-3 py-1 rounded-full text-[11px] font-semibold"
+              style={{
+                background: "rgba(28,163,152,0.15)",
+                color: "#1CA398",
+                border: "1px solid rgba(28,163,152,0.3)",
+                fontFamily: "Lexend, sans-serif",
+              }}
             >
               Revenue ✓
-            </text>
-          </g>
+            </span>
+          </motion.div>
         )}
-      </svg>
+      </AnimatePresence>
     </div>
   );
 };
