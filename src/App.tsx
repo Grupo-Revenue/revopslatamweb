@@ -15,8 +15,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Future admin routes */}
+          {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
