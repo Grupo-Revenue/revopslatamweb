@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Save, RotateCcw, Plus, Trash2, ArrowRight } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { Save, RotateCcw, Plus, Trash2, ArrowRight, X } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { CTAStyleProperties } from "@/hooks/useCTAStyles";
 import { ctaStyleToCSS } from "@/hooks/useCTAStyles";
@@ -25,6 +26,207 @@ const FONT_WEIGHTS = [
   { label: "Bold", value: "700" },
   { label: "Extra Bold", value: "800" },
 ];
+
+const ANGLE_PRESETS = [
+  { label: "→", value: 90 },
+  { label: "↘", value: 135 },
+  { label: "↓", value: 180 },
+  { label: "↙", value: 225 },
+  { label: "←", value: 270 },
+  { label: "↖", value: 315 },
+  { label: "↑", value: 0 },
+  { label: "↗", value: 45 },
+];
+
+type ColorStop = { color: string; position: number };
+
+function parseGradient(value: string): { angle: number; stops: ColorStop[] } {
+  if (!value) return { angle: 135, stops: [{ color: "#BE1869", position: 0 }, { color: "#6224BE", position: 100 }] };
+  const match = value.match(/linear-gradient\(\s*(\d+)deg\s*,\s*(.+)\)/);
+  if (!match) return { angle: 135, stops: [{ color: "#BE1869", position: 0 }, { color: "#6224BE", position: 100 }] };
+  const angle = parseInt(match[1]);
+  const stopsStr = match[2];
+  const stops: ColorStop[] = [];
+  const regex = /(#[0-9a-fA-F]{3,8}|rgba?\([^)]+\))\s*(\d+)?%?/g;
+  let m;
+  while ((m = regex.exec(stopsStr)) !== null) {
+    stops.push({ color: m[1], position: m[2] ? parseInt(m[2]) : (stops.length === 0 ? 0 : 100) });
+  }
+  if (stops.length < 2) return { angle, stops: [{ color: "#BE1869", position: 0 }, { color: "#6224BE", position: 100 }] };
+  return { angle, stops };
+}
+
+function buildGradient(angle: number, stops: ColorStop[]): string {
+  const s = stops.map((st) => `${st.color} ${st.position}%`).join(", ");
+  return `linear-gradient(${angle}deg, ${s})`;
+}
+
+function GradientVisualEditor({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [enabled, setEnabled] = useState(!!value);
+  const parsed = parseGradient(value);
+  const barRef = useRef<HTMLDivElement>(null);
+  const [dragging, setDragging] = useState<number | null>(null);
+
+  const update = (newAngle: number, newStops: ColorStop[]) => {
+    onChange(buildGradient(newAngle, newStops));
+  };
+
+  const updateStop = (index: number, field: keyof ColorStop, val: string | number) => {
+    const current = parseGradient(value);
+    const newStops = current.stops.map((s, i) => (i === index ? { ...s, [field]: val } : s));
+    update(current.angle, newStops);
+  };
+
+  const addStop = () => {
+    const current = parseGradient(value);
+    const mid = Math.round((current.stops[0].position + current.stops[current.stops.length - 1].position) / 2);
+    const newStops = [...current.stops, { color: "#FFFFFF", position: mid }].sort((a, b) => a.position - b.position);
+    update(current.angle, newStops);
+  };
+
+  const removeStop = (index: number) => {
+    const current = parseGradient(value);
+    if (current.stops.length <= 2) return;
+    update(current.angle, current.stops.filter((_, i) => i !== index));
+  };
+
+  useEffect(() => {
+    if (dragging === null) return;
+    const handleMove = (e: MouseEvent) => {
+      if (!barRef.current) return;
+      const rect = barRef.current.getBoundingClientRect();
+      const pos = Math.max(0, Math.min(100, Math.round(((e.clientX - rect.left) / rect.width) * 100)));
+      updateStop(dragging, "position", pos);
+    };
+    const handleUp = () => setDragging(null);
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("mouseup", handleUp);
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mouseup", handleUp);
+    };
+  }, [dragging, value]);
+
+  if (!enabled) {
+    return (
+      <div>
+        <button
+          onClick={() => { setEnabled(true); onChange(buildGradient(135, [{ color: "#BE1869", position: 0 }, { color: "#6224BE", position: 100 }])); }}
+          className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+        >
+          + Agregar gradiente
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <Label className="text-zinc-500 text-[10px] uppercase">Gradiente (reemplaza color fondo)</Label>
+        <button
+          onClick={() => { setEnabled(false); onChange(""); }}
+          className="text-xs text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1"
+        >
+          <X className="h-3 w-3" /> Quitar
+        </button>
+      </div>
+
+      {/* Preview bar with draggable stops */}
+      <div className="relative">
+        <div
+          ref={barRef}
+          className="h-12 rounded-lg border border-zinc-700 cursor-crosshair"
+          style={{ background: value }}
+          onDoubleClick={addStop}
+        />
+        {parsed.stops.map((stop, i) => (
+          <div
+            key={i}
+            className="absolute top-0 h-12 flex items-end justify-center"
+            style={{ left: `${stop.position}%`, transform: "translateX(-50%)" }}
+          >
+            <div
+              onMouseDown={(e) => { e.preventDefault(); setDragging(i); }}
+              className="w-4 h-4 rounded-full border-2 border-white shadow-md cursor-grab active:cursor-grabbing -mb-2 z-10"
+              style={{ backgroundColor: stop.color }}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Angle selector */}
+      <div className="flex items-center gap-3">
+        <Label className="text-zinc-500 text-[10px] uppercase shrink-0">Ángulo</Label>
+        <div className="flex gap-1">
+          {ANGLE_PRESETS.map((p) => (
+            <button
+              key={p.value}
+              onClick={() => update(p.value, parsed.stops)}
+              className={`w-7 h-7 rounded text-xs flex items-center justify-center transition-colors ${
+                parsed.angle === p.value
+                  ? "bg-emerald-600/30 text-emerald-400 border border-emerald-600/50"
+                  : "bg-zinc-800 text-zinc-400 border border-zinc-700 hover:text-white"
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+        <Slider
+          value={[parsed.angle]}
+          min={0}
+          max={360}
+          step={1}
+          onValueChange={([v]) => update(v, parsed.stops)}
+          className="flex-1"
+        />
+        <span className="text-white text-xs font-mono w-8 text-right">{parsed.angle}°</span>
+      </div>
+
+      {/* Color stops */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label className="text-zinc-500 text-[10px] uppercase">Colores</Label>
+          <button onClick={addStop} className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors">
+            + Color
+          </button>
+        </div>
+        {parsed.stops.map((stop, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <input
+              type="color"
+              value={stop.color}
+              onChange={(e) => updateStop(i, "color", e.target.value)}
+              className="w-7 h-7 rounded border border-zinc-700 cursor-pointer bg-transparent flex-shrink-0"
+            />
+            <Input
+              value={stop.color}
+              onChange={(e) => updateStop(i, "color", e.target.value)}
+              className="bg-zinc-800 border-zinc-700 text-white text-xs h-7 flex-1"
+            />
+            <div className="flex items-center gap-1 shrink-0">
+              <Input
+                type="number"
+                min={0}
+                max={100}
+                value={stop.position}
+                onChange={(e) => updateStop(i, "position", parseInt(e.target.value) || 0)}
+                className="bg-zinc-800 border-zinc-700 text-white text-xs h-7 w-14"
+              />
+              <span className="text-zinc-500 text-xs">%</span>
+            </div>
+            {parsed.stops.length > 2 && (
+              <button onClick={() => removeStop(i)} className="text-zinc-600 hover:text-red-400 transition-colors p-0.5">
+                <X className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CTAStylesManager() {
   const [rows, setRows] = useState<CTARow[]>([]);
@@ -280,16 +482,11 @@ export default function CTAStylesManager() {
               </div>
             </div>
 
-            {/* Gradient */}
-            <div>
-              <Label className="text-zinc-500 text-[10px] uppercase">Gradiente (reemplaza color fondo)</Label>
-              <Input
-                value={row.styles.gradient || ""}
-                onChange={(e) => updateStyle(row.id, "gradient", e.target.value)}
-                className="bg-zinc-800 border-zinc-700 text-white text-xs mt-1"
-                placeholder="linear-gradient(135deg, #BE1869 0%, #6224BE 100%)"
-              />
-            </div>
+            {/* Gradient Visual Editor */}
+            <GradientVisualEditor
+              value={row.styles.gradient || ""}
+              onChange={(v) => updateStyle(row.id, "gradient", v)}
+            />
 
             {/* Sizing */}
             <div className="grid grid-cols-4 gap-3">
