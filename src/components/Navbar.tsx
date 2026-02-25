@@ -12,6 +12,7 @@ const solucionesItems = [
   { label: "Para el Equipo Comercial", to: "/para-directores-comerciales" },
   { label: "Para Marketing", to: "/para-directores-y-gerentes-de-marketing" },
   { label: "Para Operaciones", to: "#" },
+  { label: "Para Customer Success", to: "/para-customer-success-y-servicio-al-cliente" },
 ];
 
 const serviciosGroups = [
