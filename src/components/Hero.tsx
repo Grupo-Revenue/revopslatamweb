@@ -52,8 +52,8 @@ const Hero = ({ section }: { section?: HomeSection }) => {
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: 200, right: -150, background: "radial-gradient(circle, rgba(98,36,190,0.20) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: 0, left: "40%", background: "radial-gradient(circle, rgba(7,121,215,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
 
-      <div className="relative z-10 w-full max-w-[1100px] xl:max-w-[1300px] 2xl:max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center gap-12 xl:gap-16">
-        <div className="relative z-10 max-w-[600px] xl:max-w-[680px] 2xl:max-w-[720px]">
+      <div className="relative z-10 w-full max-w-[960px] xl:max-w-[1100px] 2xl:max-w-[1200px] mx-auto flex flex-col lg:flex-row items-center gap-10 xl:gap-14">
+        <div className="relative z-10 max-w-[520px] xl:max-w-[580px] 2xl:max-w-[640px]">
           <motion.div {...fadeUp(0)}>
             <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider">
               {pill}
@@ -70,7 +70,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             )}
           </motion.h1>
 
-          <motion.p {...fadeUp(0.4)} className="mt-6 leading-relaxed max-w-[520px] xl:max-w-[580px]" style={{ color: "rgba(255,255,255,0.7)", fontSize: "clamp(1rem, 0.8rem + 0.5vw, 1.25rem)" }}>
+          <motion.p {...fadeUp(0.4)} className="mt-6 leading-relaxed max-w-[460px] xl:max-w-[520px]" style={{ color: "rgba(255,255,255,0.7)", fontSize: "clamp(0.95rem, 0.8rem + 0.4vw, 1.125rem)" }}>
             {body}
           </motion.p>
 
@@ -97,7 +97,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-            className="hidden lg:block flex-1 max-w-[460px] xl:max-w-[520px]"
+            className="hidden lg:block flex-1 max-w-[380px] xl:max-w-[440px]"
           >
             <img
               src={sideImage}
