@@ -34,7 +34,7 @@ const AboutTeaser = ({ section }: { section?: HomeSection }) => {
   const paragraphs = bodyText.split("\n\n");
 
   return (
-    <section className="relative py-24 px-6" style={{ background: "#0D0D1A", ...getBgStyle() }}>
+    <section className="relative py-16 sm:py-24 px-4 sm:px-6" style={{ background: "#0D0D1A", ...getBgStyle() }}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
@@ -54,7 +54,7 @@ const AboutTeaser = ({ section }: { section?: HomeSection }) => {
           </motion.button>
         </div>
 
-        <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-8" style={{ background: (meta.card_bg as string) || "#13132A", border: "1px solid rgba(255,255,255,0.06)" }}>
+        <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-5 sm:p-8" style={{ background: (meta.card_bg as string) || "#13132A", border: "1px solid rgba(255,255,255,0.06)" }}>
           {values.map((v, i) => {
             const Icon = iconMap[v.icon] || Stethoscope;
             return (

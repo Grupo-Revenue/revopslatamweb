@@ -32,7 +32,7 @@ const PulsoComercial = ({ section }: { section?: HomeSection }) => {
   const cta = section?.cta_text ?? "Tomar el Pulso Comercial";
 
   return (
-    <section className="relative py-24 px-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)" }}>
+    <section className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)" }}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-20 -left-20 w-[300px] h-[300px] rounded-full" style={{ background: "rgba(255,255,255,0.05)", filter: "blur(80px)" }} />
@@ -81,7 +81,7 @@ const PulsoComercial = ({ section }: { section?: HomeSection }) => {
             </DynamicCTA>
           ) : (
             <button
-              className="px-12 py-[18px] rounded-full text-[18px] font-bold transition-all duration-300 hover:scale-[1.03]"
+              className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-[18px] rounded-full text-base sm:text-[18px] font-bold transition-all duration-300 hover:scale-[1.03]"
               style={{ background: "white", color: "hsl(337 74% 44%)", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}
               onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}
             >

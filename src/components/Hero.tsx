@@ -35,7 +35,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const sideImage = section?.image_url;
 
   return (
-    <section className="relative gradient-hero overflow-hidden pt-[140px] pb-16 px-6" style={getBgStyle()}>
+    <section className="relative gradient-hero overflow-hidden pt-[100px] sm:pt-[120px] lg:pt-[140px] pb-12 sm:pb-16 px-4 sm:px-6" style={getBgStyle()}>
       {bgImage && (
         <div
           className="absolute inset-0 z-0 bg-cover bg-center"
@@ -69,11 +69,11 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             )}
           </motion.h1>
 
-          <motion.p {...fadeUp(0.4)} className="mt-6 text-lg leading-relaxed max-w-[520px]" style={{ color: "rgba(255,255,255,0.7)", ...getStyle("body") }}>
+          <motion.p {...fadeUp(0.4)} className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed max-w-[520px]" style={{ color: "rgba(255,255,255,0.7)", ...getStyle("body") }}>
             {body}
           </motion.p>
 
-          <motion.div {...fadeUp(0.6)} className="mt-8 flex flex-col gap-4 w-fit">
+          <motion.div {...fadeUp(0.6)} className="mt-6 sm:mt-8 flex flex-col gap-3 sm:gap-4 w-full sm:w-fit">
             {(meta.cta_style_key as string) ? (
               <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
                 {cta}

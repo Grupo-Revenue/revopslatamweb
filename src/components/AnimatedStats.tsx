@@ -30,7 +30,7 @@ const Counter = ({ target, suffix = "", prefix = "", color, label, duration = 2 
 
   return (
     <div ref={ref} className="text-center px-6 md:px-10">
-      <span className="block text-[48px] md:text-[56px] font-bold leading-none" style={{ color }}>
+      <span className="block text-[32px] sm:text-[48px] md:text-[56px] font-bold leading-none" style={{ color }}>
         {prefix}{display.toLocaleString()}{suffix}
       </span>
       <span className="block mt-3 text-[14px] leading-snug max-w-[180px] mx-auto" style={{ color: "rgba(255,255,255,0.55)" }}>
@@ -55,7 +55,7 @@ const AnimatedStats = ({ section }: { section?: HomeSection }) => {
   const title = section?.title ?? "Números que hablan por sí solos";
 
   return (
-    <section className="relative py-20 px-6 overflow-hidden" style={{ background: "#0D0D1A", ...getBgStyle() }}>
+    <section className="relative py-14 sm:py-20 px-4 sm:px-6 overflow-hidden" style={{ background: "#0D0D1A", ...getBgStyle() }}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 500, height: 500, top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle, rgba(98,36,190,0.08) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <motion.div
