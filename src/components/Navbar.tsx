@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
-import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
+import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
 
 /* ─── Nav data ─── */
 const solucionesItems = [
@@ -38,8 +38,9 @@ const serviciosGroups = [
   },
 ];
 
-// Flat list for mobile
-const serviciosItemsFlat = serviciosGroups.flatMap((g) => g.items.map((item) => ({ label: item, to: "#" })));
+const serviciosItemsFlat = serviciosGroups.flatMap((g) =>
+  g.items.map((item) => ({ label: item, to: "#" }))
+);
 
 /* ─── Simple Dropdown ─── */
 const NavDropdown = ({
@@ -68,7 +69,10 @@ const NavDropdown = ({
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200"
+        className="flex items-center gap-1 text-sm font-medium transition-colors duration-200"
+        style={{ color: "#1a1a2e" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
       >
         {label}
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -80,14 +84,27 @@ const NavDropdown = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 min-w-[260px] bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-4"
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 min-w-[260px] rounded-xl shadow-2xl p-4"
+            style={{
+              background: "#ffffff",
+              border: "1.5px solid rgba(0,0,0,0.08)",
+            }}
           >
             {items.map((item) => (
               <Link
                 key={item.label}
                 to={item.to}
                 onClick={() => setOpen(false)}
-                className="block px-4 py-3 rounded-lg text-sm text-nav-link hover:bg-[rgba(190,24,105,0.1)] hover:text-pink transition-colors duration-150"
+                className="block px-4 py-3 rounded-lg text-sm transition-colors duration-150"
+                style={{ color: "#1a1a2e" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "rgba(124,58,237,0.06)";
+                  e.currentTarget.style.color = "#7c3aed";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = "#1a1a2e";
+                }}
               >
                 {item.label}
               </Link>
@@ -120,7 +137,10 @@ const ServiciosDropdown = () => {
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200"
+        className="flex items-center gap-1 text-sm font-medium transition-colors duration-200"
+        style={{ color: "#1a1a2e" }}
+        onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
       >
         Servicios
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -132,13 +152,17 @@ const ServiciosDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-5"
-            style={{ width: 480 }}
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 rounded-xl shadow-2xl p-5"
+            style={{
+              width: 480,
+              background: "#ffffff",
+              border: "1.5px solid rgba(0,0,0,0.08)",
+            }}
           >
             {serviciosGroups.map((group, gi) => (
               <div key={group.label}>
                 {gi > 0 && (
-                  <div className="my-2 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
+                  <div className="my-2 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
                 )}
                 <p
                   className="px-4 pt-2 pb-1 select-none"
@@ -156,15 +180,15 @@ const ServiciosDropdown = () => {
                     key={item}
                     to="#"
                     onClick={() => setOpen(false)}
-                    className="block rounded-lg text-[14px] text-nav-link transition-colors duration-150"
-                    style={{ padding: "10px 16px" }}
+                    className="block rounded-lg text-[14px] transition-colors duration-150"
+                    style={{ padding: "10px 16px", color: "#1a1a2e" }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = `${group.color}14`;
                       e.currentTarget.style.color = group.color;
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.color = "";
+                      e.currentTarget.style.color = "#1a1a2e";
                     }}
                   >
                     {item}
@@ -191,60 +215,134 @@ const Navbar = () => {
 
   return (
     <>
+      {/* ── Desktop: Two-piece floating navbar ── */}
       <nav
-        className={`fixed top-0 left-0 w-full z-50 border-b border-[rgba(255,255,255,0.06)] transition-all duration-300 ${
-          scrolled
-            ? "h-16 bg-dark-bg"
-            : "h-[72px] bg-[rgba(13,13,26,0.85)] backdrop-blur-lg"
-        }`}
+        className="fixed top-0 left-0 w-full z-50 pointer-events-none"
+        style={{ padding: "16px 0" }}
       >
-        <div className="container max-w-7xl mx-auto h-full flex items-center justify-between px-6">
-          <Link to="/" className="shrink-0">
-            <img src={LogoWhiteColor} alt="Revops LATAM" className="h-8 w-auto" />
+        <div className="container max-w-7xl mx-auto px-6 flex items-center pointer-events-auto"
+          style={{ gap: 12 }}
+        >
+          {/* Piece 1: Logo Box */}
+          <Link
+            to="/"
+            className="shrink-0 hidden lg:flex items-center justify-center"
+            style={{
+              background: "#ffffff",
+              borderRadius: 14,
+              padding: "10px 18px",
+              boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
+            }}
+          >
+            <img src={LogoWhiteColor} alt="Revops LATAM" className="h-7 w-auto" />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
-            <NavDropdown label="Soluciones" items={solucionesItems} />
-            <ServiciosDropdown />
-            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
-              Recursos
-            </Link>
-            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
-              Nosotros
-            </Link>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-5">
-            <Link to="#" className="flex items-center gap-2 text-sm font-semibold text-yellow">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow" />
-              </span>
-              Pulso Comercial
-            </Link>
-            <Button size="sm" className="text-sm">Agenda una llamada</Button>
-          </div>
-
-          <button
-            onClick={() => setMobileOpen((o) => !o)}
-            className="lg:hidden relative z-50 text-primary-foreground"
-            aria-label="Toggle menu"
+          {/* Piece 2: Navigation Pill */}
+          <div
+            className="hidden lg:flex items-center flex-1"
+            style={{
+              background: "#ffffff",
+              borderRadius: 50,
+              border: "1.5px solid rgba(0,0,0,0.08)",
+              boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
+              padding: "6px 6px 6px 20px",
+              gap: 8,
+            }}
           >
-            <AnimatePresence mode="wait" initial={false}>
-              {mobileOpen ? (
-                <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <X size={24} />
-                </motion.div>
-              ) : (
-                <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
-                  <Menu size={24} />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </button>
+            <div className="flex items-center" style={{ gap: 24 }}>
+              <NavDropdown label="Soluciones" items={solucionesItems} />
+              <ServiciosDropdown />
+              <Link
+                to="#"
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "#1a1a2e" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
+              >
+                Recursos
+              </Link>
+              <Link
+                to="#"
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "#1a1a2e" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
+              >
+                Nosotros
+              </Link>
+            </div>
+
+            <div className="ml-auto flex items-center" style={{ gap: 16 }}>
+              {/* Pulso Comercial */}
+              <Link
+                to="#"
+                className="flex items-center text-sm transition-colors duration-200"
+                style={{ color: "#7c3aed", fontWeight: 600, gap: 6 }}
+              >
+                <span
+                  className="inline-block rounded-full"
+                  style={{
+                    width: 8,
+                    height: 8,
+                    background: "#7c3aed",
+                    flexShrink: 0,
+                  }}
+                />
+                Pulso Comercial
+                <ArrowUpRight size={14} style={{ flexShrink: 0 }} />
+              </Link>
+
+              {/* CTA Button */}
+              <button
+                className="text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] hover:shadow-lg"
+                style={{
+                  background: "linear-gradient(135deg, #d946a8, #7c3aed)",
+                  borderRadius: 50,
+                  padding: "10px 22px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Agendar Reunión
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile: single white bar */}
+          <div
+            className="lg:hidden flex items-center justify-between w-full"
+            style={{
+              background: "#ffffff",
+              borderRadius: 14,
+              padding: "10px 16px",
+              boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
+            }}
+          >
+            <Link to="/" className="shrink-0">
+              <img src={LogoWhiteColor} alt="Revops LATAM" className="h-7 w-auto" />
+            </Link>
+            <button
+              onClick={() => setMobileOpen((o) => !o)}
+              className="relative z-50"
+              style={{ color: "#1a1a2e" }}
+              aria-label="Toggle menu"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {mobileOpen ? (
+                  <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <X size={24} />
+                  </motion.div>
+                ) : (
+                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                    <Menu size={24} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
         </div>
       </nav>
 
+      {/* ── Mobile fullscreen menu ── */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -252,26 +350,51 @@ const Navbar = () => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 bg-dark-bg flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
+            className="fixed inset-0 z-40 flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
+            style={{ background: "#ffffff" }}
           >
             <MobileSection title="Soluciones" items={solucionesItems} onClose={() => setMobileOpen(false)} />
             <MobileSection title="Servicios" items={serviciosItemsFlat} onClose={() => setMobileOpen(false)} />
-            <Link to="#" onClick={() => setMobileOpen(false)} className="py-4 text-lg font-semibold text-primary-foreground border-b border-[rgba(255,255,255,0.06)]">
+            <Link
+              to="#"
+              onClick={() => setMobileOpen(false)}
+              className="py-4 text-lg font-semibold"
+              style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+            >
               Recursos
             </Link>
-            <Link to="#" onClick={() => setMobileOpen(false)} className="py-4 text-lg font-semibold text-primary-foreground border-b border-[rgba(255,255,255,0.06)]">
+            <Link
+              to="#"
+              onClick={() => setMobileOpen(false)}
+              className="py-4 text-lg font-semibold"
+              style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+            >
               Nosotros
             </Link>
 
             <div className="mt-auto pt-8 flex flex-col gap-4">
-              <Link to="#" className="flex items-center justify-center gap-2 text-base font-semibold text-yellow">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow" />
-                </span>
+              <Link
+                to="#"
+                className="flex items-center justify-center text-base font-semibold"
+                style={{ color: "#7c3aed", gap: 6 }}
+              >
+                <span
+                  className="inline-block rounded-full"
+                  style={{ width: 8, height: 8, background: "#7c3aed" }}
+                />
                 Pulso Comercial
+                <ArrowUpRight size={16} />
               </Link>
-              <Button className="w-full">Agenda una llamada</Button>
+              <button
+                className="w-full text-base font-semibold text-white"
+                style={{
+                  background: "linear-gradient(135deg, #d946a8, #7c3aed)",
+                  borderRadius: 50,
+                  padding: "14px 24px",
+                }}
+              >
+                Agendar Reunión
+              </button>
             </div>
           </motion.div>
         )}
@@ -293,10 +416,11 @@ const MobileSection = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-[rgba(255,255,255,0.06)]">
+    <div style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between py-4 text-lg font-semibold text-primary-foreground"
+        className="w-full flex items-center justify-between py-4 text-lg font-semibold"
+        style={{ color: "#1a1a2e" }}
       >
         {title}
         <ChevronDown size={18} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -312,7 +436,15 @@ const MobileSection = ({
           >
             <div className="pb-4 pl-4 space-y-1">
               {items.map((item) => (
-                <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-nav-link hover:text-pink transition-colors">
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  onClick={onClose}
+                  className="block py-2 text-sm transition-colors"
+                  style={{ color: "#555" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+                >
                   {item.label}
                 </Link>
               ))}
