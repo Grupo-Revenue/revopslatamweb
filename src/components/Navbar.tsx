@@ -228,8 +228,8 @@ const Navbar = () => {
         className="fixed top-0 left-0 w-full z-50 pointer-events-none"
         style={{ padding: "16px 0" }}
       >
-        <div className="mx-auto px-6 flex items-center pointer-events-auto"
-          style={{ gap: 12, maxWidth: 1100 }}
+        <div className="mx-auto px-6 flex items-center pointer-events-auto max-w-[1100px] xl:max-w-[1300px] 2xl:max-w-[1400px]"
+          style={{ gap: 12 }}
         >
           {/* Piece 1: Logo Box */}
           {/* Piece 1: Logo Box with gradient border */}
