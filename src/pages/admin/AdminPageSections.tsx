@@ -617,6 +617,39 @@ export default function AdminPageSections() {
                     />
                   </div>
 
+                  {/* Row 6b: Card background color */}
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Palette className="h-3 w-3 text-zinc-500" />
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Color de card (si aplica)</Label>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="color"
+                        value={(meta.card_bg as string) || "#13132A"}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, card_bg: e.target.value })}
+                        className="w-10 h-10 rounded-lg cursor-pointer border border-zinc-700 bg-transparent"
+                      />
+                      <Input
+                        value={(meta.card_bg as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, card_bg: e.target.value || undefined })}
+                        className="bg-zinc-800 border-zinc-700 text-white font-mono text-sm max-w-[140px]"
+                        placeholder="#13132A"
+                      />
+                      {(meta.card_bg as string) && (
+                        <button
+                          onClick={() => {
+                            const { card_bg, ...rest } = meta;
+                            updateSectionLocal(section.id, "metadata", rest);
+                          }}
+                          className="text-xs text-zinc-500 hover:text-red-400"
+                        >
+                          Resetear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                   {/* Row 7: Visibility + Delete */}
                   <div className="flex items-center justify-between pt-2 border-t border-zinc-800">
                     <div className="flex items-center gap-4">
