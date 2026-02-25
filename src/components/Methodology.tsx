@@ -148,7 +148,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
   const selectedState = trackStates.find((s) => s.id === selected);
 
   const eyebrow = section?.subtitle ?? "Nuestra metodología";
-  const headline = section?.title ?? "¿Tu crecimiento depende de personas\no de un sistema?";
+  const headline = section?.title ?? "El revenue no se improvisa.\nSe diseña, pieza a pieza.";
   const headlineParts = headline.split("\n");
 
   const handleSelect = (id: TrackStateId) => {
