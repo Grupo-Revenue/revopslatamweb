@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ParaCeos from "./pages/ParaCeos";
 import ParaDirectoresComerciales from "./pages/ParaDirectoresComerciales";
+import ParaMarketingDirectors from "./pages/ParaMarketingDirectors";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import CustomCursor from "./components/CustomCursor";
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/para-ceos-y-gerentes-generales" element={<ParaCeos />} />
           <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
+          <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
           {/* Future admin routes */}
           {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
           <Route path="*" element={<NotFound />} />
