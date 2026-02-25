@@ -52,7 +52,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
         </svg>
       </div>
 
-      <div className="relative pt-24 pb-24 px-6" style={{ background: "#F5F5F8", ...getBgStyle() }}>
+      <div className="relative pt-16 sm:pt-24 pb-16 sm:pb-24 px-4 sm:px-6" style={{ background: "#F5F5F8", ...getBgStyle() }}>
         {hasBg && <div style={bgLayerStyle} />}
         <div className="relative z-10 max-w-[1200px] mx-auto">
           <motion.p {...fadeUp(0)} className="text-center text-[13px] font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869", ...getStyle("subtitle") }}>
@@ -119,12 +119,12 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
 
           <motion.div {...fadeUp(0.6)} className="mt-14 text-center">
             <p className="text-[20px] font-semibold mb-6" style={{ color: "#1A1A2E" }}>{question}</p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-3">
               {trackStates.map((s) => {
                 const isActive = selected === s.id;
                 const lColor = (s as any).labelColor || s.accent;
                 return (
-                  <button key={s.id} onClick={() => setSelected(isActive ? null : s.id)} className="px-6 py-2.5 rounded-full text-[14px] font-semibold transition-all duration-300" style={{ background: isActive ? s.accent : "transparent", color: isActive ? "white" : lColor, border: `2px solid ${s.accent}` }}>
+                  <button key={s.id} onClick={() => setSelected(isActive ? null : s.id)} className="w-full sm:w-auto px-5 sm:px-6 py-2.5 rounded-full text-[13px] sm:text-[14px] font-semibold transition-all duration-300" style={{ background: isActive ? s.accent : "transparent", color: isActive ? "white" : lColor, border: `2px solid ${s.accent}` }}>
                     {s.label.charAt(0) + s.label.slice(1).toLowerCase()}
                   </button>
                 );
@@ -144,10 +144,10 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
             </AnimatePresence>
           </motion.div>
 
-          <motion.div {...fadeUp(0.7)} className="mt-16 mx-auto max-w-[800px] rounded-[20px] p-12 text-center" style={{ background: "#1A1A2E", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <p className="text-[24px] font-semibold leading-snug" style={{ color: "white" }}>{closingTitle}</p>
-            <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>{closingText}</p>
-            <button className="mt-6 inline-flex items-center gap-2 text-[16px] font-medium transition-opacity hover:opacity-80" style={{ color: "#1CA398" }}>
+          <motion.div {...fadeUp(0.7)} className="mt-12 sm:mt-16 mx-auto max-w-[800px] rounded-[20px] p-6 sm:p-12 text-center" style={{ background: "#1A1A2E", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <p className="text-[20px] sm:text-[24px] font-semibold leading-snug" style={{ color: "white" }}>{closingTitle}</p>
+            <p className="mt-3 sm:mt-4 text-[15px] sm:text-[17px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>{closingText}</p>
+            <button className="mt-5 sm:mt-6 inline-flex items-center gap-2 text-[15px] sm:text-[16px] font-medium transition-opacity hover:opacity-80" style={{ color: "#1CA398" }}>
               {closingCta}
               <ArrowRight size={18} />
             </button>

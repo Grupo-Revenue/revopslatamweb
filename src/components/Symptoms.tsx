@@ -37,13 +37,13 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
   return (
     <motion.div
       {...fadeUp(delay)}
-      className="group rounded-2xl p-8 transition-all duration-300"
+      className="group rounded-2xl transition-all duration-300"
       style={{
         background: "#FFFFFF",
         border: "1px solid #E5E7EB",
         borderLeft: `4px solid ${s.accent}`,
         borderRadius: "16px",
-        padding: "32px",
+        padding: "clamp(20px, 4vw, 32px)",
         boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
       }}
       whileHover={{ y: -4, boxShadow: `0 12px 40px ${hexToRgba(s.accent, 0.15)}` }}
@@ -52,7 +52,7 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
         <Icon size={20} style={{ color: s.accent }} />
       </div>
       <h4 className="mb-3" style={{ fontSize: "18px", fontWeight: 700, color: "#1A1A2E", lineHeight: 1.3 }}>{s.title}</h4>
-      <p style={{ fontSize: "15px", color: "#6B7280", lineHeight: 1.6 }}>{s.text}</p>
+      <p style={{ fontSize: "14px", color: "#6B7280", lineHeight: 1.6 }}>{s.text}</p>
     </motion.div>
   );
 };
@@ -70,7 +70,7 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
   const sectionBg = getBgStyle();
 
   return (
-    <section className="relative py-24 px-6" style={{ background: "#FFFFFF", ...sectionBg }}>
+    <section className="relative py-16 sm:py-24 px-4 sm:px-6" style={{ background: "#FFFFFF", ...sectionBg }}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[1200px] mx-auto">
         <motion.p {...fadeUp(0)} className="text-center font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869", fontSize: "13px", ...getStyle("subtitle") }}>
@@ -85,13 +85,13 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
             <SymptomCard key={i} s={s} delay={0.15 + i * 0.1} />
           ))}
         </div>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[calc(66.666%+0.75rem)] mx-auto">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[calc(66.666%+0.75rem)] mx-auto">
           {cards.slice(3).map((s, i) => (
             <SymptomCard key={i + 3} s={s} delay={0.45 + i * 0.1} />
           ))}
         </div>
 
-        <motion.div {...fadeUp(0.7)} className="mt-14 mx-auto max-w-[720px] text-center" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)", borderRadius: "16px", padding: "32px 48px", boxShadow: "0 8px 32px rgba(190,24,105,0.3)" }}>
+        <motion.div {...fadeUp(0.7)} className="mt-10 sm:mt-14 mx-auto max-w-[720px] text-center" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)", borderRadius: "16px", padding: "clamp(20px, 4vw, 32px) clamp(20px, 5vw, 48px)", boxShadow: "0 8px 32px rgba(190,24,105,0.3)" }}>
           <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "18px", lineHeight: 1.6, ...getStyle("body") }}>{closingText}</p>
           <p className="mt-3" style={{ color: "#FFFFFF", fontSize: "22px", fontWeight: 700, lineHeight: 1.3 }}>{closingBold}</p>
         </motion.div>

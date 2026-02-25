@@ -24,7 +24,7 @@ const FinalCTA = ({ section }: { section?: HomeSection }) => {
   const footer = (meta.footer as string) ?? "5 minutos · Gratuito · Resultado inmediato";
 
   return (
-    <section className="relative py-24 px-6 overflow-hidden" style={{ background: "#0D0D1A", ...getBgStyle() }}>
+    <section className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden" style={{ background: "#0D0D1A", ...getBgStyle() }}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: -80, left: -150, background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: -50, right: -100, background: "radial-gradient(circle, rgba(98,36,190,0.15) 0%, transparent 70%)", filter: "blur(120px)" }} />
@@ -38,7 +38,7 @@ const FinalCTA = ({ section }: { section?: HomeSection }) => {
         </motion.p>
 
         <motion.div {...fadeUp(0.25)} className="mt-10 flex flex-col items-center gap-4">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
             {(meta.cta_style_key as string) ? (
               <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
                 {cta}

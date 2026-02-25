@@ -44,7 +44,7 @@ const ClientLogos = ({ section }: { section?: HomeSection }) => {
   const items = hasLogos ? repeat(clientsData!) : repeat(clientNames);
 
   return (
-    <section className="relative py-5 overflow-hidden" style={{ background: "#FFFFFF" }}>
+    <section className="relative py-3 sm:py-5 overflow-hidden" style={{ background: "#FFFFFF" }}>
       <div className="relative overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to right, #FFFFFF, transparent)" }} />
         <div className="absolute right-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to left, #FFFFFF, transparent)" }} />

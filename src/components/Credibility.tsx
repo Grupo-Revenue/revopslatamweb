@@ -25,7 +25,7 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
   const body = section?.body ?? "No llegamos a RevOps por tendencia. Llegamos porque vimos el mismo patrón repetirse empresa tras empresa: crecimiento sin estructura, tecnología sin proceso, equipos sin dirección común. Desde entonces, construimos una metodología que pone el diagnóstico antes que la implementación.";
 
   return (
-    <section className="relative py-20 px-6" style={{ background: "#F5F5F8", ...getBgStyle() }}>
+    <section className="relative py-14 sm:py-20 px-4 sm:px-6" style={{ background: "#F5F5F8", ...getBgStyle() }}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[1000px] mx-auto text-center">
         <motion.h2 {...fadeUp(0)} className="text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "#1A1A2E", ...getStyle("title") }}>
@@ -38,7 +38,7 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
           {metrics.map((m, i) => (
             <div key={m.value} className="flex items-center">
               <div className="text-center px-8 md:px-12">
-                <span className="block text-[48px] font-bold leading-none" style={{ color: m.color }}>{m.value}</span>
+                <span className="block text-[36px] sm:text-[48px] font-bold leading-none" style={{ color: m.color }}>{m.value}</span>
                 <span className="block mt-2 text-[14px]" style={{ color: "#6B7280" }}>{m.desc}</span>
               </div>
               {i < metrics.length - 1 && (
