@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -16,26 +17,24 @@ const defaults = {
   body: "Cuando el crecimiento llega más rápido que los procesos, el caos no es señal de fracaso. Es señal de que necesitas una pista mejor diseñada.",
   cta: "Descubre dónde se pierde tu revenue",
   cta2: "Agenda una conversación",
-  trust: "14 años de experiencia · HubSpot Partner · LATAM",
 };
 
 const Hero = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const { getStyle, getBgStyle } = useSectionStyles(section);
   const title = section?.title ?? `${defaults.headline1}\n${defaults.headline2}`;
   const titleParts = title.split("\n");
   const pill = (section?.subtitle ?? defaults.pill) as string;
   const body = (section?.body ?? defaults.body) as string;
   const cta = (section?.cta_text ?? defaults.cta) as string;
   const cta2 = (meta.cta2_text as string) ?? defaults.cta2;
-  const trust = (meta.trust_line as string) ?? defaults.trust;
   const bgImage = section?.background_image_url;
-  const bgOverlay = meta.bg_overlay === true; // disabled by default, set to true in metadata to enable
+  const bgOverlay = meta.bg_overlay === true;
   const bgOpacity = typeof meta.bg_opacity === "number" ? meta.bg_opacity : 0.25;
   const sideImage = section?.image_url;
 
   return (
-    <section className="relative gradient-hero overflow-hidden pt-[140px] pb-16 px-6">
-      {/* Background image overlay */}
+    <section className="relative gradient-hero overflow-hidden pt-[140px] pb-16 px-6" style={getBgStyle()}>
       {bgImage && (
         <div
           className="absolute inset-0 z-0 bg-cover bg-center"
@@ -54,12 +53,12 @@ const Hero = ({ section }: { section?: HomeSection }) => {
       <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12">
         <div className="relative z-10 max-w-[600px]">
           <motion.div {...fadeUp(0)}>
-            <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider">
+            <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider" style={getStyle("subtitle")}>
               {pill}
             </span>
           </motion.div>
 
-          <motion.h1 {...fadeUp(0.2)} className="mt-7 text-hero font-bold leading-[1.1] tracking-tight">
+          <motion.h1 {...fadeUp(0.2)} className="mt-7 text-hero font-bold leading-[1.1] tracking-tight" style={getStyle("title")}>
             <span className="text-primary-foreground">{titleParts[0]}</span>
             {titleParts[1] && (
               <>
@@ -69,7 +68,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             )}
           </motion.h1>
 
-          <motion.p {...fadeUp(0.4)} className="mt-6 text-lg leading-relaxed max-w-[520px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+          <motion.p {...fadeUp(0.4)} className="mt-6 text-lg leading-relaxed max-w-[520px]" style={{ color: "rgba(255,255,255,0.7)", ...getStyle("body") }}>
             {body}
           </motion.p>
 
@@ -84,7 +83,6 @@ const Hero = ({ section }: { section?: HomeSection }) => {
           </motion.div>
         </div>
 
-        {/* Side image */}
         {sideImage && (
           <motion.div
             initial={{ opacity: 0, x: 40 }}
@@ -95,7 +93,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             <img
               src={sideImage}
               alt={section?.title ?? "Hero"}
-            className="w-full h-auto"
+              className="w-full h-auto"
             />
           </motion.div>
         )}

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Gauge, Zap, Compass } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -19,6 +20,7 @@ const defaultBenefits = [
 
 const PulsoComercial = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const { getStyle } = useSectionStyles(section);
   const benefits = (meta.benefits as typeof defaultBenefits) ?? defaultBenefits;
   const footer = (meta.footer as string) ?? "Es gratuito · Toma 5 minutos · Resultado inmediato";
   const pill = section?.subtitle ?? "Diagnóstico gratuito";
@@ -35,16 +37,16 @@ const PulsoComercial = ({ section }: { section?: HomeSection }) => {
 
       <div className="relative z-10 max-w-[800px] mx-auto text-center">
         <motion.div {...fadeUp(0)}>
-          <span className="inline-block rounded-full uppercase" style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.5)", color: "#FFFFFF", padding: "6px 16px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em" }}>
+          <span className="inline-block rounded-full uppercase" style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.5)", color: "#FFFFFF", padding: "6px 16px", fontSize: "12px", fontWeight: 600, letterSpacing: "0.1em", ...getStyle("subtitle") }}>
             {pill}
           </span>
         </motion.div>
 
-        <motion.h2 {...fadeUp(0.1)} className="mt-6 text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "white" }}>
+        <motion.h2 {...fadeUp(0.1)} className="mt-6 text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "white", ...getStyle("title") }}>
           {title}
         </motion.h2>
 
-        <motion.p {...fadeUp(0.2)} className="mt-5 text-[18px] leading-relaxed max-w-[580px] mx-auto" style={{ color: "rgba(255,255,255,0.85)" }}>
+        <motion.p {...fadeUp(0.2)} className="mt-5 text-[18px] leading-relaxed max-w-[580px] mx-auto" style={{ color: "rgba(255,255,255,0.85)", ...getStyle("body") }}>
           {body}
         </motion.p>
 

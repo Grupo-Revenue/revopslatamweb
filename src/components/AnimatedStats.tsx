@@ -1,6 +1,7 @@
 import { motion, useInView, animate } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
 
 interface CounterProps {
   target: number;
@@ -47,11 +48,12 @@ const defaultStats = [
 
 const AnimatedStats = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const { getStyle, getBgStyle } = useSectionStyles(section);
   const stats = (meta.stats as CounterProps[]) ?? defaultStats;
   const title = section?.title ?? "Números que hablan por sí solos";
 
   return (
-    <section className="py-20 px-6 relative overflow-hidden" style={{ background: "#0D0D1A" }}>
+    <section className="py-20 px-6 relative overflow-hidden" style={{ background: "#0D0D1A", ...getBgStyle() }}>
       <div className="absolute rounded-full pointer-events-none" style={{ width: 500, height: 500, top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle, rgba(98,36,190,0.08) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <motion.div
         initial={{ opacity: 0, y: 24 }}
@@ -60,7 +62,7 @@ const AnimatedStats = ({ section }: { section?: HomeSection }) => {
         transition={{ duration: 0.5 }}
         className="relative z-10 max-w-[1000px] mx-auto"
       >
-        <h2 className="text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight text-primary-foreground mb-14">
+        <h2 className="text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight text-primary-foreground mb-14" style={getStyle("title")}>
           {title}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">

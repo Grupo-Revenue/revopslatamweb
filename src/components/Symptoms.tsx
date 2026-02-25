@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { TrendingUp, MessageSquare, Monitor, BarChart3, UserRound } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -62,19 +63,22 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
 
 const Symptoms = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const { getStyle, getBgStyle } = useSectionStyles(section);
   const cards = (meta.cards as SymptomData[]) ?? defaultSymptoms;
   const eyebrow = section?.subtitle ?? "¿Te suena familiar?";
   const headline = section?.title ?? "Si diriges una empresa que ya creció, probablemente reconoces esto.";
   const closingText = (meta.closing_text as string) ?? "Si reconociste al menos dos de estas situaciones, no tienes un problema de talento ni de herramientas.";
   const closingBold = (meta.closing_bold as string) ?? "Tienes una pista mal armada.";
 
+  const sectionBg = getBgStyle();
+
   return (
-    <section className="relative py-24 px-6" style={{ background: "#FFFFFF" }}>
+    <section className="relative py-24 px-6" style={{ background: "#FFFFFF", ...sectionBg }}>
       <div className="max-w-[1200px] mx-auto">
-        <motion.p {...fadeUp(0)} className="text-center font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869", fontSize: "13px" }}>
+        <motion.p {...fadeUp(0)} className="text-center font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869", fontSize: "13px", ...getStyle("subtitle") }}>
           {eyebrow}
         </motion.p>
-        <motion.h2 {...fadeUp(0.1)} className="mt-4 text-center text-[28px] md:text-[40px] leading-[1.2] tracking-tight max-w-[680px] mx-auto" style={{ color: "#1A1A2E", fontWeight: 700 }}>
+        <motion.h2 {...fadeUp(0.1)} className="mt-4 text-center text-[28px] md:text-[40px] leading-[1.2] tracking-tight max-w-[680px] mx-auto" style={{ color: "#1A1A2E", fontWeight: 700, ...getStyle("title") }}>
           {headline}
         </motion.h2>
 
@@ -90,7 +94,7 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
         </div>
 
         <motion.div {...fadeUp(0.7)} className="mt-14 mx-auto max-w-[720px] text-center" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)", borderRadius: "16px", padding: "32px 48px", boxShadow: "0 8px 32px rgba(190,24,105,0.3)" }}>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "18px", lineHeight: 1.6 }}>{closingText}</p>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "18px", lineHeight: 1.6, ...getStyle("body") }}>{closingText}</p>
           <p className="mt-3" style={{ color: "#FFFFFF", fontSize: "22px", fontWeight: 700, lineHeight: 1.3 }}>{closingBold}</p>
         </motion.div>
       </div>
