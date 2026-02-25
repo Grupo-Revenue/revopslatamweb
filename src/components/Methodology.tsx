@@ -12,101 +12,38 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-/* ── Track illustrations — continuous line-art style ── */
+/* ── Track illustrations (SVG inline) ── */
 const TrackBroken = () => (
-  <svg viewBox="0 0 200 120" className="w-full h-auto transition-all duration-500" fill="none">
-    <defs>
-      <filter id="glow-broken">
-        <feGaussianBlur stdDeviation="3" result="blur" />
-        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
-    {/* Person pushing broken pieces */}
-    <g stroke="hsl(337 74% 44%)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="track-illustration-lines">
-      {/* Figure pushing */}
-      <path d="M30,95 L30,70 Q30,60 35,55 L40,50 M30,75 L20,85 M30,75 L40,85 M30,70 L15,80 M30,70 L45,75" />
-      <circle cx="30" cy="45" r="7" />
-      {/* Broken track pieces scattered */}
-      <rect x="60" y="70" width="25" height="18" rx="3" transform="rotate(-12 72 79)" />
-      <rect x="95" y="55" width="22" height="18" rx="3" transform="rotate(8 106 64)" />
-      <rect x="130" y="75" width="20" height="18" rx="3" transform="rotate(-5 140 84)" />
-      <rect x="155" y="50" width="18" height="15" rx="3" transform="rotate(15 164 57)" />
-      {/* Disconnection marks */}
-      <path d="M88,78 L92,72" strokeDasharray="2 2" opacity="0.5" />
-      <path d="M120,68 L127,74" strokeDasharray="2 2" opacity="0.5" />
-      <path d="M152,82 L155,70" strokeDasharray="2 2" opacity="0.5" />
-      {/* Sparks / alert */}
-      <path d="M75,55 L78,48 L73,52 L76,45" strokeWidth="1.2" />
-      <path d="M140,45 L143,38 L138,42 L141,35" strokeWidth="1.2" />
-    </g>
+  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
+    <rect x="2" y="16" width="22" height="8" rx="3" fill="hsl(337 74% 44% / 0.25)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" />
+    <rect x="32" y="12" width="18" height="8" rx="3" fill="hsl(337 74% 44% / 0.15)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" transform="rotate(8 41 16)" />
+    <rect x="58" y="20" width="20" height="8" rx="3" fill="hsl(337 74% 44% / 0.15)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" transform="rotate(-5 68 24)" />
+    <rect x="86" y="14" width="22" height="8" rx="3" fill="hsl(337 74% 44% / 0.1)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" />
+    <circle cx="10" cy="12" r="4" fill="hsl(337 74% 44%)" opacity="0.8" />
   </svg>
 );
 
 const TrackIncomplete = () => (
-  <svg viewBox="0 0 200 120" className="w-full h-auto transition-all duration-500" fill="none">
-    <defs>
-      <filter id="glow-incomplete">
-        <feGaussianBlur stdDeviation="3" result="blur" />
-        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
-    <g stroke="hsl(42 93% 54%)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="track-illustration-lines">
-      {/* Person on ladder building */}
-      <path d="M45,95 L45,55 M45,55 L50,45 M45,75 L35,85 M45,75 L55,85" />
-      <circle cx="50" cy="38" r="7" />
-      {/* Ladder */}
-      <path d="M35,95 L42,50 M50,95 L55,50 M38,80 L52,80 M39,70 L53,70 M41,60 L54,60" />
-      {/* Arm reaching up with wrench */}
-      <path d="M50,45 L65,35 L68,30 M66,28 L70,32 L66,36" />
-      {/* Track pieces — some connected, gaps visible */}
-      <rect x="75" y="80" width="28" height="16" rx="4" />
-      <rect x="107" y="80" width="25" height="16" rx="4" />
-      {/* Gap */}
-      <path d="M135,88 L145,88" strokeDasharray="3 3" opacity="0.4" />
-      <rect x="148" y="80" width="22" height="16" rx="4" />
-      {/* Block being placed (in air) */}
-      <rect x="75" y="30" width="24" height="18" rx="4" strokeDasharray="4 2" />
-      <path d="M87,48 L87,55" strokeDasharray="2 2" opacity="0.5" />
-      {/* Arrow up on block */}
-      <path d="M87,42 L87,35 M83,39 L87,35 L91,39" strokeWidth="1.5" />
-    </g>
+  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
+    <rect x="2" y="16" width="28" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
+    <rect x="34" y="16" width="20" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
+    {/* Gap */}
+    <line x1="58" y1="20" x2="66" y2="20" stroke="hsl(42 93% 54% / 0.3)" strokeWidth="1.5" strokeDasharray="2 2" />
+    <rect x="70" y="16" width="24" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
+    <rect x="98" y="16" width="18" height="8" rx="3" fill="hsl(42 93% 54% / 0.1)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" strokeDasharray="3 2" />
+    <circle cx="48" cy="14" r="4" fill="hsl(42 93% 54%)" opacity="0.8" />
   </svg>
 );
 
 const TrackComplete = () => (
-  <svg viewBox="0 0 200 120" className="w-full h-auto transition-all duration-500" fill="none">
-    <defs>
-      <filter id="glow-complete">
-        <feGaussianBlur stdDeviation="3" result="blur" />
-        <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-      </filter>
-    </defs>
-    <g stroke="hsl(175 73% 37%)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="track-illustration-lines">
-      {/* Person standing confidently */}
-      <path d="M35,95 L35,65 M35,75 L25,85 M35,75 L45,85 M35,65 L25,75 M35,65 L45,70" />
-      <circle cx="35" cy="55" r="7" />
-      {/* Gear / system icon */}
-      <circle cx="55" cy="40" r="8" />
-      <circle cx="55" cy="40" r="4" />
-      <path d="M55,30 L55,27 M55,50 L55,53 M45,40 L42,40 M65,40 L68,40 M48,33 L46,31 M62,47 L64,49 M48,47 L46,49 M62,33 L64,31" strokeWidth="1.5" />
-      {/* Complete flowing track */}
-      <rect x="70" y="78" width="28" height="16" rx="4" />
-      <rect x="100" y="78" width="28" height="16" rx="4" />
-      <rect x="130" y="78" width="28" height="16" rx="4" />
-      <rect x="160" y="78" width="28" height="16" rx="4" />
-      {/* Flowing ball on track */}
-      <circle cx="180" cy="75" r="5" fill="hsl(175 73% 37% / 0.3)" />
-      <circle cx="180" cy="75" r="3" fill="hsl(175 73% 37% / 0.6)" />
-      {/* Growth arrows / rockets */}
-      <path d="M85,70 L85,55 M80,60 L85,55 L90,60" strokeWidth="1.5" />
-      <path d="M115,65 L115,45 M110,50 L115,45 L120,50" strokeWidth="1.5" />
-      <path d="M145,60 L145,35 M140,40 L145,35 L150,40" strokeWidth="1.5" />
-      {/* Modular blocks tree */}
-      <rect x="160" y="30" width="14" height="12" rx="2" />
-      <rect x="168" y="18" width="14" height="12" rx="2" />
-      <rect x="176" y="35" width="12" height="10" rx="2" />
-      <path d="M167,36 L160,42 M175,24 L168,30 M182,40 L176,45" strokeWidth="1" opacity="0.5" />
-    </g>
+  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
+    <rect x="2" y="16" width="26" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    <rect x="30" y="16" width="24" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    <rect x="56" y="16" width="24" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    <rect x="82" y="16" width="26" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    {/* Flowing ball */}
+    <circle cx="105" cy="14" r="4" fill="hsl(175 73% 37%)" />
+    <circle cx="105" cy="14" r="7" fill="hsl(175 73% 37% / 0.2)" />
   </svg>
 );
 
@@ -347,29 +284,9 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
                     </div>
                   </div>
 
-                  {/* Mini illustration with hover glow */}
-                  <div
-                    className="mb-3 px-3 py-3 rounded-xl transition-all duration-500"
-                    style={{
-                      opacity: isDeemphasized ? 0.4 : 0.75,
-                      background: isSelected ? `${s.color}08` : "transparent",
-                      filter: isSelected ? `drop-shadow(0 0 12px ${s.color}30)` : "none",
-                    }}
-                  >
-                    <div
-                      className="transition-all duration-500 group-hover:scale-105"
-                      style={{
-                        filter: `drop-shadow(0 0 0px ${s.color}00)`,
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.filter = `drop-shadow(0 0 8px ${s.color}50)`;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.filter = `drop-shadow(0 0 0px ${s.color}00)`;
-                      }}
-                    >
-                      <Illust />
-                    </div>
+                  {/* Mini illustration */}
+                  <div className="mb-3 opacity-60 group-hover:opacity-80 transition-opacity px-2">
+                    <Illust />
                   </div>
 
                   <p className="text-[14px] sm:text-[15px] leading-snug font-medium" style={{ color: "hsl(var(--foreground))" }}>
