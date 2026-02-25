@@ -10,6 +10,7 @@ export type CTAStyleProperties = {
   borderRadius?: string;
   fontSize?: string;
   fontWeight?: string;
+  textAlign?: string;
   paddingX?: string;
   paddingY?: string;
   shadow?: string;
@@ -98,5 +99,6 @@ export function ctaStyleToCSS(s: CTAStyleProperties): React.CSSProperties {
     css.padding = `${s.paddingY || "12px"} ${s.paddingX || "24px"}`;
   }
   if (s.shadow) css.boxShadow = s.shadow;
+  if (s.textAlign) css.textAlign = s.textAlign as React.CSSProperties["textAlign"];
   return css;
 }

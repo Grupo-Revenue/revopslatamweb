@@ -36,7 +36,7 @@ export default function DynamicCTA({ styleKey, children, onClick, className = ""
     <button
       onClick={onClick}
       className={`inline-flex items-center gap-2 font-semibold transition-all duration-300 cursor-pointer ${className}`}
-      style={css}
+      style={{ ...css, justifyContent: styles.textAlign === "center" ? "center" : styles.textAlign === "right" ? "flex-end" : undefined }}
       onMouseEnter={(e) => {
         if (hoverScale) e.currentTarget.style.transform = `scale(${hoverScale})`;
         if (styles.hoverBgColor) e.currentTarget.style.backgroundColor = styles.hoverBgColor;
