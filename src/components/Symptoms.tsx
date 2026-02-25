@@ -48,6 +48,13 @@ const defaultSymptoms = [
   },
 ];
 
+const hexToRgba = (hex: string, alpha: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+};
+
 interface SymptomData { icon: string; accent: string; title: string; text: string; }
 
 const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
@@ -57,28 +64,30 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
       {...fadeUp(delay)}
       className="group relative"
       style={{
-        background: "rgba(255,255,255,0.03)",
+        background: "#FFFFFF",
         borderLeft: `3px solid ${s.accent}`,
-        borderRadius: "4px",
+        borderRadius: "6px",
         padding: "clamp(24px, 4vw, 36px)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
       }}
       whileHover={{
-        background: "rgba(255,255,255,0.06)",
+        boxShadow: `0 8px 30px ${hexToRgba(s.accent, 0.1)}`,
+        y: -2,
         transition: { duration: 0.3 },
       }}
     >
       <div
-        className="w-8 h-8 rounded flex items-center justify-center mb-5"
-        style={{ background: `${s.accent}18` }}
+        className="w-9 h-9 rounded flex items-center justify-center mb-5"
+        style={{ background: hexToRgba(s.accent, 0.08) }}
       >
-        <Icon size={16} style={{ color: s.accent }} strokeWidth={2.5} />
+        <Icon size={17} style={{ color: s.accent }} strokeWidth={2.5} />
       </div>
       <h4
         className="mb-3"
         style={{
           fontSize: "17px",
           fontWeight: 700,
-          color: "#F1F1F1",
+          color: "#1A1A2E",
           lineHeight: 1.35,
           letterSpacing: "-0.01em",
         }}
@@ -88,7 +97,7 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
       <p
         style={{
           fontSize: "14px",
-          color: "rgba(255,255,255,0.5)",
+          color: "#6B7280",
           lineHeight: 1.7,
           whiteSpace: "pre-line",
         }}
@@ -116,7 +125,7 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
   return (
     <section
       className="relative py-20 sm:py-28 px-4 sm:px-6"
-      style={{ background: "#0A0A0F", ...sectionBg }}
+      style={{ background: "#F5F5F8", ...sectionBg }}
     >
       {hasBg && <div style={bgLayerStyle} />}
 
@@ -141,12 +150,12 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
           {...fadeUp(0.08)}
           className="mt-5 text-center mx-auto"
           style={{
-            color: "#F1F1F1",
-            fontSize: "clamp(32px, 5vw, 52px)",
+            color: "#1A1A2E",
+            fontSize: "clamp(30px, 5vw, 48px)",
             fontWeight: 800,
             lineHeight: 1.1,
             letterSpacing: "-0.03em",
-            maxWidth: "700px",
+            maxWidth: "600px",
             whiteSpace: "pre-line",
             ...getStyle("title"),
           }}
@@ -159,10 +168,10 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
           {...fadeUp(0.14)}
           className="mt-5 text-center mx-auto"
           style={{
-            color: "rgba(255,255,255,0.45)",
+            color: "#6B7280",
             fontSize: "17px",
             lineHeight: 1.5,
-            maxWidth: "560px",
+            maxWidth: "520px",
             fontWeight: 400,
           }}
         >
@@ -186,15 +195,14 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
           {...fadeUp(0.55)}
           className="mt-16 sm:mt-20 mx-auto max-w-[680px] text-center"
           style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            borderRadius: "6px",
+            background: "#1A1A2E",
+            borderRadius: "8px",
             padding: "clamp(28px, 5vw, 44px) clamp(24px, 5vw, 56px)",
           }}
         >
           <p
             style={{
-              color: "rgba(255,255,255,0.55)",
+              color: "rgba(255,255,255,0.6)",
               fontSize: "16px",
               lineHeight: 1.7,
               whiteSpace: "pre-line",
@@ -206,7 +214,7 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
           <p
             className="mt-4"
             style={{
-              color: "#F1F1F1",
+              color: "#FFFFFF",
               fontSize: "clamp(22px, 3vw, 28px)",
               fontWeight: 800,
               lineHeight: 1.2,
@@ -219,7 +227,7 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
             <p
               className="mt-3"
               style={{
-                color: "rgba(255,255,255,0.35)",
+                color: "rgba(255,255,255,0.4)",
                 fontSize: "13px",
                 fontWeight: 400,
               }}
