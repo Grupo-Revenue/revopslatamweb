@@ -9,7 +9,7 @@ import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 /* ─── Nav data ─── */
 const solucionesItems = [
   { label: "Para el CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
-  { label: "Para el Equipo Comercial", to: "#" },
+  { label: "Para el Equipo Comercial", to: "/para-directores-comerciales" },
   { label: "Para Marketing", to: "#" },
   { label: "Para Operaciones", to: "#" },
 ];
