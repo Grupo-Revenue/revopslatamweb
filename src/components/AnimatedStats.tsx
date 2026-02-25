@@ -1,0 +1,74 @@
+import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+
+interface CounterProps {
+  target: number;
+  suffix?: string;
+  prefix?: string;
+  color: string;
+  label: string;
+  duration?: number;
+}
+
+const Counter = ({ target, suffix = "", prefix = "", color, label, duration = 2 }: CounterProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [display, setDisplay] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const controls = animate(0, target, {
+      duration,
+      ease: "easeOut",
+      onUpdate: (v) => setDisplay(Math.floor(v)),
+    });
+    return () => controls.stop();
+  }, [isInView, target, duration]);
+
+  return (
+    <div ref={ref} className="text-center px-6 md:px-10">
+      <span className="block text-[48px] md:text-[56px] font-bold leading-none" style={{ color }}>
+        {prefix}{display.toLocaleString()}{suffix}
+      </span>
+      <span className="block mt-3 text-[14px] leading-snug max-w-[180px] mx-auto" style={{ color: "rgba(255,255,255,0.55)" }}>
+        {label}
+      </span>
+    </div>
+  );
+};
+
+const stats = [
+  { target: 50, suffix: "+", color: "#BE1869", label: "Implementaciones HubSpot exitosas" },
+  { target: 2, prefix: "$", suffix: "M+", color: "#6224BE", label: "En revenue generado para clientes" },
+  { target: 10000, suffix: "+", color: "#1CA398", label: "Horas ahorradas en procesos manuales" },
+  { target: 200, suffix: "+", color: "#0779D7", label: "Empresas transformadas en LATAM" },
+];
+
+const AnimatedStats = () => {
+  return (
+    <section className="py-20 px-6 relative overflow-hidden" style={{ background: "#0D0D1A" }}>
+      {/* Subtle orb */}
+      <div className="absolute rounded-full pointer-events-none" style={{ width: 500, height: 500, top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle, rgba(98,36,190,0.08) 0%, transparent 70%)", filter: "blur(120px)" }} />
+
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 max-w-[1000px] mx-auto"
+      >
+        <h2 className="text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight text-primary-foreground mb-14">
+          Números que hablan por sí solos
+        </h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+          {stats.map((s) => (
+            <Counter key={s.label} {...s} />
+          ))}
+        </div>
+      </motion.div>
+    </section>
+  );
+};
+
+export default AnimatedStats;
