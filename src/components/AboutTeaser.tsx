@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Stethoscope, TrendingUp, Heart, BookOpen } from "lucide-react";
-import { useSection, getElementStyle, getBackgroundStyle } from "@/hooks/usePageContent";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -18,23 +16,16 @@ const values = [
 ];
 
 const AboutTeaser = () => {
-  const { title, body, metadata } = useSection("about-teaser");
-  const isMobile = useIsMobile();
-  const titleStyle = getElementStyle(metadata, "title", isMobile);
-  const bgStyle = getBackgroundStyle(metadata);
-
-  const headline = title ?? "Construimos crecimiento real, sano y sostenible.";
-
   return (
-    <section className="py-24 px-6" style={{ background: "#0D0D1A", ...bgStyle }}>
+    <section className="py-24 px-6" style={{ background: "#0D0D1A" }}>
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Text column */}
         <div>
           <motion.p {...fadeUp(0)} className="text-[13px] font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869" }}>
             Nuestra esencia
           </motion.p>
-          <motion.h2 {...fadeUp(0.1)} className="mt-4 text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "white", ...titleStyle }}>
-            {headline}
+          <motion.h2 {...fadeUp(0.1)} className="mt-4 text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "white" }}>
+            Construimos crecimiento real, sano y sostenible.
           </motion.h2>
           <div className="mt-6 space-y-4 text-[17px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
             <motion.p {...fadeUp(0.2)}>

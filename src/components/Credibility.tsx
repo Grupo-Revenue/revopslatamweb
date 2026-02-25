@@ -1,6 +1,4 @@
 import { motion } from "framer-motion";
-import { useSection, getElementStyle, getBackgroundStyle } from "@/hooks/usePageContent";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -16,23 +14,15 @@ const metrics = [
 ];
 
 const Credibility = () => {
-  const { title, body, metadata } = useSection("credibility");
-  const isMobile = useIsMobile();
-  const titleStyle = getElementStyle(metadata, "title", isMobile);
-  const bgStyle = getBackgroundStyle(metadata);
-
-  const headline = title ?? "14 años. Una convicción.";
-  const bodyText = body ?? "No llegamos a RevOps por tendencia. Llegamos porque vimos el mismo patrón repetirse empresa tras empresa: crecimiento sin estructura, tecnología sin proceso, equipos sin dirección común. Desde entonces, construimos una metodología que pone el diagnóstico antes que la implementación.";
-
   return (
-    <section className="py-20 px-6" style={{ background: "#F5F5F8", ...bgStyle }}>
+    <section className="py-20 px-6" style={{ background: "#F5F5F8" }}>
       <div className="max-w-[1000px] mx-auto text-center">
-        <motion.h2 {...fadeUp(0)} className="text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "#1A1A2E", ...titleStyle }}>
-          {headline}
+        <motion.h2 {...fadeUp(0)} className="text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "#1A1A2E" }}>
+          14 años. Una convicción.
         </motion.h2>
 
         <motion.p {...fadeUp(0.1)} className="mt-6 text-[18px] leading-relaxed max-w-[600px] mx-auto" style={{ color: "#6B7280" }}>
-          {bodyText}
+          No llegamos a RevOps por tendencia. Llegamos porque vimos el mismo patrón repetirse empresa tras empresa: crecimiento sin estructura, tecnología sin proceso, equipos sin dirección común. Desde entonces, construimos una metodología que pone el diagnóstico antes que la implementación.
         </motion.p>
 
         {/* Metrics */}
