@@ -84,18 +84,39 @@ const Hero = ({ section }: { section?: HomeSection }) => {
         </div>
 
         {sideImage && (
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-            className="hidden lg:block flex-1 max-w-[460px]"
-          >
-            <img
+          <div className="hidden lg:block flex-1 max-w-[460px] relative">
+            {/* Glow halo post-reveal */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 2 }}
+              className="absolute -inset-4 rounded-2xl pointer-events-none"
+              style={{
+                background: "radial-gradient(ellipse at center, rgba(190,24,105,0.15) 0%, rgba(98,36,190,0.1) 40%, transparent 70%)",
+                filter: "blur(20px)",
+              }}
+            />
+            {/* Image with clip-path reveal */}
+            <motion.img
               src={sideImage}
               alt={section?.title ?? "Hero"}
-              className="w-full h-auto"
+              className="w-full h-auto relative z-10"
+              initial={{ clipPath: "inset(100% 0 0 0)" }}
+              animate={{ clipPath: "inset(0% 0 0 0)" }}
+              transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
             />
-          </motion.div>
+            {/* Scan line */}
+            <motion.div
+              className="absolute left-0 right-0 h-[3px] z-20 pointer-events-none"
+              style={{
+                background: "linear-gradient(90deg, transparent 0%, rgba(190,24,105,0.7) 20%, rgba(98,36,190,0.8) 50%, rgba(7,121,215,0.7) 80%, transparent 100%)",
+                boxShadow: "0 0 15px 4px rgba(190,24,105,0.4), 0 0 30px 8px rgba(98,36,190,0.3)",
+              }}
+              initial={{ top: "0%", opacity: 1 }}
+              animate={{ top: "100%", opacity: [1, 1, 0] }}
+              transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }}
+            />
+          </div>
         )}
       </div>
     </section>
