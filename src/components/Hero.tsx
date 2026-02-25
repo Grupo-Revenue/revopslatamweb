@@ -73,19 +73,15 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             {body}
           </motion.p>
 
-          <motion.div {...fadeUp(0.6)} className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="gap-2" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+          <motion.div {...fadeUp(0.6)} className="mt-8 flex flex-col sm:flex-col gap-4 max-w-[320px]">
+            <Button size="lg" className="gap-2 w-full" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
               {cta}
               <ArrowRight size={18} />
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent" onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
+            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent w-full" onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
               {cta2}
             </Button>
           </motion.div>
-
-          <motion.p {...fadeUp(0.9)} className="mt-8 text-[13px]" style={{ color: "rgba(255,255,255,0.4)" }}>
-            {trust}
-          </motion.p>
         </div>
 
         {/* Side image */}
