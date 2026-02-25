@@ -4,9 +4,9 @@ import { ArrowRight } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
-import pistaRota from "@/assets/pista-rota.png";
-import pistaIncompleta from "@/assets/pista-incompleta.png";
-import pistaArmada from "@/assets/pista-armada.png";
+const pistaRota = "/images/pista-rota.png";
+const pistaIncompleta = "/images/pista-incompleta.png";
+const pistaArmada = "/images/pista-armada.png";
 
 /* ── Stage data ── */
 interface TrackStage {
