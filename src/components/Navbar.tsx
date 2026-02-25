@@ -11,7 +11,7 @@ const solucionesItems = [
   { label: "Para el CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
   { label: "Para el Equipo Comercial", to: "/para-directores-comerciales" },
   { label: "Para Marketing", to: "/para-directores-y-gerentes-de-marketing" },
-  { label: "Para Operaciones", to: "#" },
+  { label: "Para Operaciones", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
   { label: "Para Customer Success", to: "/para-customer-success-y-servicio-al-cliente" },
 ];
 
