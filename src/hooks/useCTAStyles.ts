@@ -14,6 +14,9 @@ export type CTAStyleProperties = {
   paddingY?: string;
   shadow?: string;
   hoverScale?: string;
+  hoverBgColor?: string;
+  hoverTextColor?: string;
+  hoverBorderColor?: string;
   hasIcon?: boolean;
   iconName?: string;
 };

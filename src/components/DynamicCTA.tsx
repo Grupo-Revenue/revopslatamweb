@@ -39,9 +39,15 @@ export default function DynamicCTA({ styleKey, children, onClick, className = ""
       style={css}
       onMouseEnter={(e) => {
         if (hoverScale) e.currentTarget.style.transform = `scale(${hoverScale})`;
+        if (styles.hoverBgColor) e.currentTarget.style.backgroundColor = styles.hoverBgColor;
+        if (styles.hoverTextColor) e.currentTarget.style.color = styles.hoverTextColor;
+        if (styles.hoverBorderColor) e.currentTarget.style.borderColor = styles.hoverBorderColor;
       }}
       onMouseLeave={(e) => {
         if (hoverScale) e.currentTarget.style.transform = "scale(1)";
+        if (styles.hoverBgColor) e.currentTarget.style.backgroundColor = styles.bgColor || "";
+        if (styles.hoverTextColor) e.currentTarget.style.color = styles.textColor || "";
+        if (styles.hoverBorderColor) e.currentTarget.style.borderColor = styles.borderColor || "";
       }}
     >
       {children}

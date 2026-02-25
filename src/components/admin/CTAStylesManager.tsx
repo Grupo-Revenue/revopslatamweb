@@ -365,6 +365,61 @@ export default function CTAStylesManager() {
               </div>
             </div>
 
+            {/* Hover colors */}
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <Label className="text-zinc-500 text-[10px] uppercase">Hover fondo</Label>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <input
+                    type="color"
+                    value={row.styles.hoverBgColor || "#000000"}
+                    onChange={(e) => updateStyle(row.id, "hoverBgColor", e.target.value)}
+                    className="w-7 h-7 rounded border border-zinc-700 cursor-pointer bg-transparent flex-shrink-0"
+                  />
+                  <Input
+                    value={row.styles.hoverBgColor || ""}
+                    onChange={(e) => updateStyle(row.id, "hoverBgColor", e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white text-xs h-7"
+                    placeholder="ninguno"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label className="text-zinc-500 text-[10px] uppercase">Hover texto</Label>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <input
+                    type="color"
+                    value={row.styles.hoverTextColor || "#FFFFFF"}
+                    onChange={(e) => updateStyle(row.id, "hoverTextColor", e.target.value)}
+                    className="w-7 h-7 rounded border border-zinc-700 cursor-pointer bg-transparent flex-shrink-0"
+                  />
+                  <Input
+                    value={row.styles.hoverTextColor || ""}
+                    onChange={(e) => updateStyle(row.id, "hoverTextColor", e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white text-xs h-7"
+                    placeholder="ninguno"
+                  />
+                </div>
+              </div>
+              <div>
+                <Label className="text-zinc-500 text-[10px] uppercase">Hover borde</Label>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <input
+                    type="color"
+                    value={row.styles.hoverBorderColor || "#000000"}
+                    onChange={(e) => updateStyle(row.id, "hoverBorderColor", e.target.value)}
+                    className="w-7 h-7 rounded border border-zinc-700 cursor-pointer bg-transparent flex-shrink-0"
+                  />
+                  <Input
+                    value={row.styles.hoverBorderColor || ""}
+                    onChange={(e) => updateStyle(row.id, "hoverBorderColor", e.target.value)}
+                    className="bg-zinc-800 border-zinc-700 text-white text-xs h-7"
+                    placeholder="ninguno"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Icon toggle */}
             <div className="flex items-center gap-3">
               <Switch
