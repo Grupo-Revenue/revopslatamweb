@@ -36,7 +36,7 @@ const TrackComplete = () => (
 );
 
 /* ── Data ── */
-type TrackStateId = "broken" | "incomplete" | "complete";
+type TrackStateId = string;
 
 interface TrackState {
   id: TrackStateId;
@@ -153,6 +153,24 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
     approach: string; ctaText: string; popular?: boolean;
   }> | undefined;
 
+  // Helper: hex to HSL string
+  const hexToHsl = (hex: string): string => {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0, s = 0;
+    const l = (max + min) / 2;
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
+      else if (max === g) h = ((b - r) / d + 2) / 6;
+      else h = ((r - g) / d + 4) / 6;
+    }
+    return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+  };
+
   // Merge metadata track states into the hardcoded trackStates (overriding matching ids, keeping illustrations/styles)
   const resolvedTracks: TrackState[] = metaTracks
     ? metaTracks.map((mt) => {
@@ -161,14 +179,15 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
         const illustMap: Record<string, () => JSX.Element> = {
           broken: TrackBroken, incomplete: TrackIncomplete, complete: TrackComplete,
         };
+        const hsl = hexToHsl(mt.color);
         return {
           ...mt,
-          colorHsl: base?.colorHsl ?? "0 0% 50%",
-          bgSubtle: base?.bgSubtle ?? `${mt.color}0A`,
-          borderSubtle: base?.borderSubtle ?? `${mt.color}30`,
+          colorHsl: base?.colorHsl ?? hsl,
+          bgSubtle: base?.bgSubtle ?? `hsl(${hsl} / 0.04)`,
+          borderSubtle: base?.borderSubtle ?? `hsl(${hsl} / 0.15)`,
           icon: iconMap[mt.icon] ?? AlertTriangle,
           illustration: illustMap[mt.id] ?? base?.illustration ?? TrackBroken,
-          ctaStyle: base?.ctaStyle ?? "",
+          ctaStyle: base?.ctaStyle ?? `bg-[${mt.color}] text-white font-bold`,
         } as TrackState;
       })
     : trackStates;
@@ -436,6 +455,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
                   >
                     <button
                       className={`inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-[15px] sm:text-[16px] font-bold transition-all duration-300 hover:scale-[1.03] ${selectedState.ctaStyle}`}
+                      style={{ backgroundColor: selectedState.color, color: "white" }}
                     >
                       {selectedState.ctaText}
                       <ArrowRight size={18} />
