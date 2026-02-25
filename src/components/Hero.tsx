@@ -34,7 +34,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const sideImage = section?.image_url;
 
   return (
-    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-20 px-6">
+    <section className="relative gradient-hero overflow-hidden pt-[140px] pb-16 px-6">
       {/* Background image overlay */}
       {bgImage && (
         <div
