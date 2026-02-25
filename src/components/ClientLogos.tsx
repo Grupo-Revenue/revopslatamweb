@@ -10,8 +10,8 @@ type ClientData = { name: string; logo_url: string };
 
 const LogoPlaceholder = ({ name }: { name: string }) => (
   <div
-    className="flex-shrink-0 flex items-center justify-center px-6 py-3 mx-3"
-    style={{ minWidth: 140, height: 48 }}
+    className="flex-shrink-0 flex items-center justify-center px-5"
+    style={{ height: 48 }}
   >
     <span className="text-[13px] font-medium tracking-wide whitespace-nowrap" style={{ color: "rgba(0,0,0,0.3)" }}>
       {name}
@@ -21,7 +21,7 @@ const LogoPlaceholder = ({ name }: { name: string }) => (
 
 const LogoImage = ({ client }: { client: ClientData }) => (
   <div
-    className="flex-shrink-0 flex items-center justify-center px-3"
+    className="flex-shrink-0 flex items-center justify-center px-6"
     style={{ height: 64 }}
   >
     <img
@@ -39,18 +39,19 @@ const ClientLogos = ({ section }: { section?: HomeSection }) => {
 
   const hasLogos = clientsData && clientsData.length > 0 && clientsData.some((c) => c.logo_url);
 
-  const doubledData = hasLogos ? [...clientsData!, ...clientsData!] : [];
-  const doubledNames = !hasLogos ? [...clientNames, ...clientNames] : [];
+  // Repeat enough times to ensure seamless loop
+  const repeat = (arr: any[]) => [...arr, ...arr, ...arr, ...arr];
+  const items = hasLogos ? repeat(clientsData!) : repeat(clientNames);
 
   return (
     <section className="relative py-5 overflow-hidden" style={{ background: "#FFFFFF" }}>
       <div className="relative overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to right, #FFFFFF, transparent)" }} />
         <div className="absolute right-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to left, #FFFFFF, transparent)" }} />
-        <div className="flex animate-marquee w-max">
+        <div className="marquee-track">
           {hasLogos
-            ? doubledData.map((client, i) => <LogoImage key={`${client.name}-${i}`} client={client} />)
-            : doubledNames.map((name, i) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
+            ? items.map((client: ClientData, i: number) => <LogoImage key={`${client.name}-${i}`} client={client} />)
+            : items.map((name: string, i: number) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
           }
         </div>
       </div>
