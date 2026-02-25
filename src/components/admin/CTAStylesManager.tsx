@@ -489,7 +489,7 @@ export default function CTAStylesManager() {
             />
 
             {/* Sizing */}
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-5 gap-3">
               <div>
                 <Label className="text-zinc-500 text-[10px] uppercase">Tamaño fuente</Label>
                 <Input
@@ -509,6 +509,18 @@ export default function CTAStylesManager() {
                   {FONT_WEIGHTS.map((w) => (
                     <option key={w.value} value={w.value}>{w.label}</option>
                   ))}
+                </select>
+              </div>
+              <div>
+                <Label className="text-zinc-500 text-[10px] uppercase">Alineación</Label>
+                <select
+                  value={row.styles.textAlign || "center"}
+                  onChange={(e) => updateStyle(row.id, "textAlign", e.target.value)}
+                  className="w-full mt-1 bg-zinc-800 border border-zinc-700 text-white rounded px-2 py-1 text-xs h-7"
+                >
+                  <option value="left">Izquierda</option>
+                  <option value="center">Centrado</option>
+                  <option value="right">Derecha</option>
                 </select>
               </div>
               <div>
