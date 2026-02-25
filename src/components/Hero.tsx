@@ -141,12 +141,12 @@ const Hero = ({ section, logosSection }: { section?: HomeSection; logosSection?:
         )}
       </div>
 
-      {/* Client logos marquee — pinned to bottom of hero */}
+      {/* Client logos — pinned to bottom of hero */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.1 }}
-        className="relative z-10 w-full mt-auto pb-8 pt-6"
+        className="relative z-10 mt-auto pb-8 pt-6 container max-w-[1100px] mx-auto"
       >
         <p
           className="text-center text-[10px] font-semibold tracking-[0.25em] uppercase mb-4"
@@ -154,15 +154,11 @@ const Hero = ({ section, logosSection }: { section?: HomeSection; logosSection?:
         >
           {logosTitle}
         </p>
-        <div className="relative overflow-hidden">
-          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, var(--hero-edge, rgba(13,13,26,0.9)), transparent)" }} />
-          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, var(--hero-edge, rgba(13,13,26,0.9)), transparent)" }} />
-          <div className="flex animate-marquee">
-            {hasLogos
-              ? doubledData.map((client, i) => <LogoImage key={`${client.name}-${i}`} client={client} />)
-              : doubledNames.map((name, i) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
-            }
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          {hasLogos
+            ? clientsData!.map((client, i) => <LogoImage key={`${client.name}-${i}`} client={client} />)
+            : clientNames.map((name, i) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
+          }
         </div>
       </motion.div>
     </section>
