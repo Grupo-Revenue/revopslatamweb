@@ -19,34 +19,7 @@ const defaults = {
   trust: "14 años de experiencia · HubSpot Partner · LATAM",
 };
 
-type ClientData = { name: string; logo_url: string };
-
-const defaultClients = [
-  "Empresa Alpha", "TechCorp", "Innova Group", "Soluciones Pro",
-  "DataFlow", "CloudBase", "Nexus Digital", "Vertex Labs",
-  "Onda Media", "Pulse Commerce",
-];
-
-const LogoPlaceholder = ({ name }: { name: string }) => (
-  <div className="flex-shrink-0 flex items-center justify-center px-6 mx-3" style={{ minWidth: 120, height: 40 }}>
-    <span className="text-[12px] font-medium tracking-wide whitespace-nowrap" style={{ color: "rgba(255,255,255,0.25)" }}>
-      {name}
-    </span>
-  </div>
-);
-
-const LogoImage = ({ client }: { client: ClientData }) => (
-  <div className="flex-shrink-0 flex items-center justify-center mx-3" style={{ minWidth: 120, height: 60 }}>
-    <img
-      src={client.logo_url}
-      alt={client.name}
-      className="h-14 max-w-[180px] object-contain rounded-lg"
-      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-    />
-  </div>
-);
-
-const Hero = ({ section, logosSection }: { section?: HomeSection; logosSection?: HomeSection }) => {
+const Hero = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const title = section?.title ?? `${defaults.headline1}\n${defaults.headline2}`;
   const titleParts = title.split("\n");
@@ -56,21 +29,12 @@ const Hero = ({ section, logosSection }: { section?: HomeSection; logosSection?:
   const cta2 = (meta.cta2_text as string) ?? defaults.cta2;
   const trust = (meta.trust_line as string) ?? defaults.trust;
   const bgImage = section?.background_image_url;
-  const bgOverlay = meta.bg_overlay === true;
+  const bgOverlay = meta.bg_overlay === true; // disabled by default, set to true in metadata to enable
   const bgOpacity = typeof meta.bg_opacity === "number" ? meta.bg_opacity : 0.25;
   const sideImage = section?.image_url;
 
-  // Client logos data
-  const logosMeta = (logosSection?.metadata ?? {}) as Record<string, unknown>;
-  const clientsData = logosMeta.clients_data as ClientData[] | undefined;
-  const clientNames = (logosMeta.clients as string[]) ?? defaultClients;
-  const hasLogos = clientsData && clientsData.length > 0 && clientsData.some((c) => c.logo_url);
-  const doubledData = hasLogos ? [...clientsData!, ...clientsData!] : [];
-  const doubledNames = !hasLogos ? [...clientNames, ...clientNames] : [];
-  const logosTitle = logosSection?.title ?? "Empresas que confían en nosotros";
-
   return (
-    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-0 px-6 flex flex-col">
+    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-20 px-6">
       {/* Background image overlay */}
       {bgImage && (
         <div
@@ -87,7 +51,7 @@ const Hero = ({ section, logosSection }: { section?: HomeSection; logosSection?:
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: 200, right: -150, background: "radial-gradient(circle, rgba(98,36,190,0.20) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: 0, left: "40%", background: "radial-gradient(circle, rgba(7,121,215,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
 
-      <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 flex-1">
+      <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12">
         <div className="relative z-10 max-w-[600px]">
           <motion.div {...fadeUp(0)}>
             <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider">
@@ -135,32 +99,11 @@ const Hero = ({ section, logosSection }: { section?: HomeSection; logosSection?:
             <img
               src={sideImage}
               alt={section?.title ?? "Hero"}
-              className="w-full h-auto"
+            className="w-full h-auto"
             />
           </motion.div>
         )}
       </div>
-
-      {/* Client logos — pinned to bottom of hero */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 1.1 }}
-        className="relative z-10 mt-auto pb-8 pt-6 container max-w-[1100px] mx-auto"
-      >
-        <p
-          className="text-center text-[10px] font-semibold tracking-[0.25em] uppercase mb-4"
-          style={{ color: "rgba(255,255,255,0.2)" }}
-        >
-          {logosTitle}
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-4">
-          {hasLogos
-            ? clientsData!.map((client, i) => <LogoImage key={`${client.name}-${i}`} client={client} />)
-            : clientNames.map((name, i) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
-          }
-        </div>
-      </motion.div>
     </section>
   );
 };

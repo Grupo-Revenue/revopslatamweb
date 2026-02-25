@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import ClientLogos from "@/components/ClientLogos";
 import Symptoms from "@/components/Symptoms";
 import Methodology from "@/components/Methodology";
 import PulsoComercial from "@/components/PulsoComercial";
@@ -16,7 +17,8 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <Hero section={getSection("hero")} logosSection={getSection("client-logos")} />
+      <Hero section={getSection("hero")} />
+      <ClientLogos section={getSection("client-logos")} />
       <Symptoms section={getSection("symptoms")} />
       <Methodology section={getSection("methodology")} />
       <PulsoComercial section={getSection("pulso-comercial")} />
