@@ -54,7 +54,7 @@ const AboutTeaser = ({ section }: { section?: HomeSection }) => {
           </motion.button>
         </div>
 
-        <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-8" style={{ background: "#13132A", border: "1px solid rgba(255,255,255,0.06)" }}>
+        <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-8" style={{ background: (meta.card_bg as string) || "#13132A", border: "1px solid rgba(255,255,255,0.06)" }}>
           {values.map((v, i) => {
             const Icon = iconMap[v.icon] || Stethoscope;
             return (
