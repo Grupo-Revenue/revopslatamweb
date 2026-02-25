@@ -30,7 +30,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const trust = (meta.trust_line as string) ?? defaults.trust;
 
   return (
-    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[120px] pb-20 px-6">
+    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-20 px-6">
       {/* Orbs */}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 500, height: 500, top: -100, left: -200, background: "radial-gradient(circle, rgba(190,24,105,0.15) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: 200, right: -150, background: "radial-gradient(circle, rgba(98,36,190,0.20) 0%, transparent 70%)", filter: "blur(120px)" }} />

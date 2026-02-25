@@ -5,7 +5,6 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
 import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
-import LogoNegroColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
 
 /* ─── Nav data ─── */
 const solucionesItems = [
@@ -39,6 +38,7 @@ const serviciosGroups = [
   },
 ];
 
+// Flat list for mobile
 const serviciosItemsFlat = serviciosGroups.flatMap((g) => g.items.map((item) => ({ label: item, to: "#" })));
 
 /* ─── Simple Dropdown ─── */
@@ -68,7 +68,7 @@ const NavDropdown = ({
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200"
+        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200"
       >
         {label}
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -87,7 +87,7 @@ const NavDropdown = ({
                 key={item.label}
                 to={item.to}
                 onClick={() => setOpen(false)}
-                className="block px-4 py-3 rounded-lg text-sm text-[rgba(255,255,255,0.7)] hover:bg-[rgba(190,24,105,0.1)] hover:text-pink transition-colors duration-150"
+                className="block px-4 py-3 rounded-lg text-sm text-nav-link hover:bg-[rgba(190,24,105,0.1)] hover:text-pink transition-colors duration-150"
               >
                 {item.label}
               </Link>
@@ -120,7 +120,7 @@ const ServiciosDropdown = () => {
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200"
+        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200"
       >
         Servicios
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -156,7 +156,7 @@ const ServiciosDropdown = () => {
                     key={item}
                     to="#"
                     onClick={() => setOpen(false)}
-                    className="block rounded-lg text-[14px] text-[rgba(255,255,255,0.7)] transition-colors duration-150"
+                    className="block rounded-lg text-[14px] text-nav-link transition-colors duration-150"
                     style={{ padding: "10px 16px" }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = `${group.color}14`;
@@ -191,27 +191,30 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full z-50 py-4 px-6 pointer-events-none">
-        <div className="container max-w-7xl mx-auto flex items-center justify-between gap-3 pointer-events-auto">
-          {/* Logo container */}
-          <Link to="/" className="shrink-0 bg-background rounded-2xl px-5 py-2.5 shadow-lg">
-            <img src={LogoNegroColor} alt="Revops LATAM" className="h-7 w-auto" />
+      <nav
+        className={`fixed top-0 left-0 w-full z-50 border-b border-[rgba(255,255,255,0.06)] transition-all duration-300 ${
+          scrolled
+            ? "h-16 bg-dark-bg"
+            : "h-[72px] bg-[rgba(13,13,26,0.85)] backdrop-blur-lg"
+        }`}
+      >
+        <div className="container max-w-7xl mx-auto h-full flex items-center justify-between px-6">
+          <Link to="/" className="shrink-0">
+            <img src={LogoWhiteColor} alt="Revops LATAM" className="h-8 w-auto" />
           </Link>
 
-          {/* Nav links container */}
-          <div className="hidden lg:flex items-center gap-7 bg-background rounded-full px-8 py-3 shadow-lg">
+          <div className="hidden lg:flex items-center gap-8">
             <NavDropdown label="Soluciones" items={solucionesItems} />
             <ServiciosDropdown />
-            <Link to="#" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200">
+            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
               Recursos
             </Link>
-            <Link to="#" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200">
+            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
               Nosotros
             </Link>
           </div>
 
-          {/* CTA container */}
-          <div className="hidden lg:flex items-center gap-4 bg-background rounded-full px-5 py-2.5 shadow-lg">
+          <div className="hidden lg:flex items-center gap-5">
             <Link to="#" className="flex items-center gap-2 text-sm font-semibold text-yellow">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow opacity-75" />
@@ -219,13 +222,12 @@ const Navbar = () => {
               </span>
               Pulso Comercial
             </Link>
-            <Button size="sm" className="text-sm uppercase tracking-wide">Agendar Reunión</Button>
+            <Button size="sm" className="text-sm">Agenda una llamada</Button>
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            className="lg:hidden relative z-50 bg-background rounded-xl p-2.5 shadow-lg text-foreground pointer-events-auto"
+            className="lg:hidden relative z-50 text-primary-foreground"
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -243,7 +245,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -270,7 +271,7 @@ const Navbar = () => {
                 </span>
                 Pulso Comercial
               </Link>
-              <Button className="w-full">Agendar Reunión</Button>
+              <Button className="w-full">Agenda una llamada</Button>
             </div>
           </motion.div>
         )}
@@ -311,7 +312,7 @@ const MobileSection = ({
           >
             <div className="pb-4 pl-4 space-y-1">
               {items.map((item) => (
-                <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-[rgba(255,255,255,0.7)] hover:text-pink transition-colors">
+                <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-nav-link hover:text-pink transition-colors">
                   {item.label}
                 </Link>
               ))}
