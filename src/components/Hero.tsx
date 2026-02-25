@@ -102,8 +102,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             <img
               src={sideImage}
               alt={section?.title ?? "Hero"}
-              className="w-full h-auto rounded-2xl"
-              style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}
+              className="w-full h-auto"
             />
           </motion.div>
         )}
