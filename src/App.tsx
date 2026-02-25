@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import ParaCeos from "./pages/ParaCeos";
 import ParaDirectoresComerciales from "./pages/ParaDirectoresComerciales";
@@ -12,31 +13,47 @@ import ParaOperaciones from "./pages/ParaOperaciones";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import CustomCursor from "./components/CustomCursor";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminPages from "./pages/admin/AdminPages";
+import AdminStyles from "./pages/admin/AdminStyles";
+import AdminMedia from "./pages/admin/AdminMedia";
+import AdminSetup from "./pages/admin/AdminSetup";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <LoadingScreen />
-      <CustomCursor />
-      <BrowserRouter>
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Index />} />
-          <Route path="/para-ceos-y-gerentes-generales" element={<ParaCeos />} />
-          <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
-          <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
-          <Route path="/para-customer-success-y-servicio-al-cliente" element={<ParaCustomerSuccess />} />
-          <Route path="/para-los-que-operan-el-negocio-sin-el-titulo" element={<ParaOperaciones />} />
-          {/* Future admin routes */}
-          {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <LoadingScreen />
+        <CustomCursor />
+        <BrowserRouter>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Index />} />
+            <Route path="/para-ceos-y-gerentes-generales" element={<ParaCeos />} />
+            <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
+            <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
+            <Route path="/para-customer-success-y-servicio-al-cliente" element={<ParaCustomerSuccess />} />
+            <Route path="/para-los-que-operan-el-negocio-sin-el-titulo" element={<ParaOperaciones />} />
+            {/* Admin routes */}
+            <Route path="/admin/setup" element={<AdminSetup />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="pages" element={<AdminPages />} />
+              <Route path="styles" element={<AdminStyles />} />
+              <Route path="media" element={<AdminMedia />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
