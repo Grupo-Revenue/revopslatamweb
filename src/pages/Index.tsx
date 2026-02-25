@@ -4,7 +4,7 @@ import ClientLogos from "@/components/ClientLogos";
 import Symptoms from "@/components/Symptoms";
 import Methodology from "@/components/Methodology";
 import PulsoComercial from "@/components/PulsoComercial";
-import AnimatedStats from "@/components/AnimatedStats";
+import Testimonials from "@/components/Testimonials";
 import Credibility from "@/components/Credibility";
 import AboutTeaser from "@/components/AboutTeaser";
 import FinalCTA from "@/components/FinalCTA";
@@ -22,7 +22,7 @@ const Index = () => {
       <Symptoms section={getSection("symptoms")} />
       <Methodology section={getSection("methodology")} />
       <PulsoComercial section={getSection("pulso-comercial")} />
-      <AnimatedStats section={getSection("animated-stats")} />
+      <Testimonials section={getSection("testimonials")} />
       <Credibility section={getSection("credibility")} />
       <AboutTeaser section={getSection("about-teaser")} />
       <FinalCTA section={getSection("final-cta")} />
