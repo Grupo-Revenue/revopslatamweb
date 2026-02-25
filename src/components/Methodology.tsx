@@ -380,7 +380,9 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
                 <div
                   className="mt-6 rounded-3xl p-6 sm:p-10 md:p-12"
                   style={{
-                    background: `linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(240 33% 12%) 100%)`,
+                    background: (meta.card_bg as string)
+                      ? (meta.card_bg as string)
+                      : `linear-gradient(135deg, hsl(${selectedState.colorHsl} / 0.08) 0%, hsl(240 33% 8%) 30%, hsl(240 33% 12%) 100%)`,
                     border: `1px solid ${selectedState.color}30`,
                   }}
                 >
