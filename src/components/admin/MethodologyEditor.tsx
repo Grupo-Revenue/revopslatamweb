@@ -108,13 +108,28 @@ interface MethodologyEditorProps {
 }
 
 export default function MethodologyEditor({ metadata, onChange }: MethodologyEditorProps) {
-  const rawTracks = Array.isArray(metadata.track_states) ? metadata.track_states : [];
-  const tracksData = rawTracks.length > 0 ? rawTracks : defaultTrackStates;
-  const tracks: TrackStateData[] = tracksData.map((t: any) => ({
+  const rawTracks = Array.isArray(metadata.track_states) ? metadata.track_states as TrackStateData[] : [];
+  
+  // Merge saved tracks with defaults: use saved values but fill empty fields from defaults
+  const mergedTracks: TrackStateData[] = defaultTrackStates.map((def) => {
+    const saved = rawTracks.find((t: any) => t.id === def.id);
+    if (!saved) return def;
+    return {
+      ...def,
+      ...Object.fromEntries(
+        Object.entries(saved).filter(([_, v]) => v !== undefined && v !== null && v !== "")
+      ),
+      signals: Array.isArray(saved.signals) && saved.signals.length > 0 ? saved.signals : def.signals,
+      consequences: Array.isArray(saved.consequences) && saved.consequences.length > 0 ? saved.consequences : def.consequences,
+    };
+  });
+  // Add any extra tracks from metadata that aren't in defaults
+  const extraTracks = rawTracks.filter((t: any) => !defaultTrackStates.some((d) => d.id === t.id)).map((t: any) => ({
     ...t,
     signals: Array.isArray(t.signals) ? t.signals : [],
     consequences: Array.isArray(t.consequences) ? t.consequences : [],
   }));
+  const tracks = [...mergedTracks, ...extraTracks];
 
   const [expandedTrack, setExpandedTrack] = useState<string | null>(null);
 
