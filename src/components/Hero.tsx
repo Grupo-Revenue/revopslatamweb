@@ -28,15 +28,28 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const cta = (section?.cta_text ?? defaults.cta) as string;
   const cta2 = (meta.cta2_text as string) ?? defaults.cta2;
   const trust = (meta.trust_line as string) ?? defaults.trust;
+  const bgImage = section?.background_image_url;
+  const sideImage = section?.image_url;
 
   return (
     <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-20 px-6">
+      {/* Background image overlay */}
+      {bgImage && (
+        <div
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${bgImage})`,
+            opacity: 0.25,
+          }}
+        />
+      )}
+
       {/* Orbs */}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 500, height: 500, top: -100, left: -200, background: "radial-gradient(circle, rgba(190,24,105,0.15) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: 200, right: -150, background: "radial-gradient(circle, rgba(98,36,190,0.20) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: 0, left: "40%", background: "radial-gradient(circle, rgba(7,121,215,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
 
-      <div className="relative z-10 container max-w-[1100px] mx-auto">
+      <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12">
         <div className="relative z-10 max-w-[600px]">
           <motion.div {...fadeUp(0)}>
             <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider">
@@ -72,6 +85,23 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             {trust}
           </motion.p>
         </div>
+
+        {/* Side image */}
+        {sideImage && (
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+            className="hidden lg:block flex-1 max-w-[460px]"
+          >
+            <img
+              src={sideImage}
+              alt={section?.title ?? "Hero"}
+              className="w-full h-auto rounded-2xl"
+              style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}
+            />
+          </motion.div>
+        )}
       </div>
     </section>
   );
