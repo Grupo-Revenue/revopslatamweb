@@ -1,0 +1,1 @@
+UPDATE page_sections SET title = E'El revenue no se improvisa.\nSe diseña, pieza a pieza.' WHERE id = '42339de4-72a3-47b7-a34f-eefe1b427e48';
