@@ -5,6 +5,7 @@ import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
 import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
+import { useScrollDirection } from "@/hooks/use-scroll-direction";
 
 /* ─── Nav data ─── */
 const solucionesItems = [
@@ -206,6 +207,7 @@ const ServiciosDropdown = () => {
 /* ─── Main Navbar ─── */
 const Navbar = () => {
   const scrolled = useScrolled(50);
+  const hidden = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -216,12 +218,18 @@ const Navbar = () => {
   return (
     <>
       {/* ── Desktop: Two-piece floating navbar ── */}
-      <nav
+      <motion.nav
+        initial={{ y: 0, opacity: 1 }}
+        animate={{
+          y: hidden && !mobileOpen ? -100 : 0,
+          opacity: hidden && !mobileOpen ? 0 : 1,
+        }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
         className="fixed top-0 left-0 w-full z-50 pointer-events-none"
         style={{ padding: "16px 0" }}
       >
-        <div className="container max-w-7xl mx-auto px-6 flex items-center pointer-events-auto"
-          style={{ gap: 12 }}
+        <div className="mx-auto px-6 flex items-center pointer-events-auto"
+          style={{ gap: 12, maxWidth: 1100 }}
         >
           {/* Piece 1: Logo Box */}
           {/* Piece 1: Logo Box with gradient border */}
@@ -358,7 +366,7 @@ const Navbar = () => {
             </button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* ── Mobile fullscreen menu ── */}
       <AnimatePresence>
