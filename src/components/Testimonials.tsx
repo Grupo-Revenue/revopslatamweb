@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Play, ChevronRight } from "lucide-react";
+import { Play } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -21,7 +21,7 @@ interface TestimonialVideo {
 }
 
 const getYouTubeThumbnail = (id: string) =>
-  `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 
 const defaultTestimonials: TestimonialVideo[] = [
   {
@@ -58,6 +58,8 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
 
   if (!videos.length) return null;
 
+  const sideVideos = videos.filter((_, i) => i !== activeIndex);
+
   return (
     <section
       className="relative py-16 sm:py-24 px-4 sm:px-6 overflow-hidden"
@@ -65,18 +67,17 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
     >
       {hasBg && <div style={bgLayerStyle} />}
 
-      {/* Subtle glow */}
+      {/* Ambient glow */}
       <div
         className="absolute pointer-events-none"
         style={{
-          width: 600,
-          height: 600,
-          top: "30%",
-          left: "50%",
+          width: 700,
+          height: 700,
+          top: "20%",
+          left: "30%",
           transform: "translate(-50%,-50%)",
-          background:
-            "radial-gradient(circle, hsl(var(--pink) / 0.06) 0%, transparent 70%)",
-          filter: "blur(100px)",
+          background: "radial-gradient(circle, hsl(var(--pink) / 0.05) 0%, transparent 70%)",
+          filter: "blur(120px)",
         }}
       />
 
@@ -97,100 +98,97 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
           {headline}
         </motion.h2>
 
-        {/* Video layout: featured + sidebar */}
+        {/* Video layout */}
         <motion.div
           {...fadeUp(0.15)}
-          className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4 lg:gap-5"
+          className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-4"
+          style={{ minHeight: 0 }}
         >
           {/* Featured video */}
-          <div className="relative rounded-2xl overflow-hidden bg-black/40" style={{ border: "1px solid hsl(0 0% 100% / 0.08)" }}>
-            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                src={`https://www.youtube.com/embed/${featured.youtube_id}?rel=0&modestbranding=1`}
-                title={featured.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full"
-              />
-            </div>
-            <div className="p-5">
-              <p
-                className="text-[17px] sm:text-lg font-semibold leading-snug"
-                style={{ color: "hsl(0 0% 100% / 0.9)" }}
+          <div className="relative rounded-2xl overflow-hidden flex flex-col" style={{ background: "hsl(0 0% 100% / 0.03)", border: "1px solid hsl(0 0% 100% / 0.08)" }}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={featured.youtube_id + activeIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="relative w-full flex-1"
+                style={{ paddingBottom: "56.25%" }}
               >
+                <iframe
+                  src={`https://www.youtube.com/embed/${featured.youtube_id}?rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&color=white&playsinline=1`}
+                  title={featured.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                  style={{ border: "none" }}
+                />
+              </motion.div>
+            </AnimatePresence>
+            {/* Info bar */}
+            <div className="px-5 py-4" style={{ borderTop: "1px solid hsl(0 0% 100% / 0.06)" }}>
+              <p className="text-[16px] sm:text-[17px] font-semibold leading-snug" style={{ color: "hsl(0 0% 100% / 0.9)" }}>
                 {featured.title}
               </p>
-              <p
-                className="mt-1.5 text-[13px] sm:text-sm"
-                style={{ color: "hsl(0 0% 100% / 0.45)" }}
-              >
-                {featured.client}
-                {featured.role && ` · ${featured.role}`}
+              <p className="mt-1 text-[13px]" style={{ color: "hsl(0 0% 100% / 0.4)" }}>
+                {featured.client}{featured.role && ` · ${featured.role}`}
               </p>
             </div>
           </div>
 
-          {/* Sidebar: other videos */}
-          <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible lg:overflow-y-auto pb-2 lg:pb-0 lg:max-h-[480px] scrollbar-thin">
-            {videos.map((v, i) => {
-              const isActive = i === activeIndex;
+          {/* Sidebar — fills same height as featured */}
+          <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible lg:overflow-y-auto pb-2 lg:pb-0">
+            {sideVideos.map((v, sideIdx) => {
+              const originalIndex = videos.findIndex((vid) => vid === v);
               const thumb = v.thumbnail || getYouTubeThumbnail(v.youtube_id);
               return (
-                <button
-                  key={i}
-                  onClick={() => setActiveIndex(i)}
-                  className="flex-shrink-0 w-[240px] lg:w-full flex gap-3 rounded-xl p-2.5 text-left transition-all duration-300"
+                <motion.button
+                  key={originalIndex}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveIndex(originalIndex)}
+                  className="flex-shrink-0 w-[260px] lg:w-full rounded-xl overflow-hidden text-left transition-all duration-300 group"
                   style={{
-                    background: isActive
-                      ? "hsl(0 0% 100% / 0.06)"
-                      : "transparent",
-                    border: `1px solid ${isActive ? "hsl(var(--pink) / 0.3)" : "hsl(0 0% 100% / 0.06)"}`,
+                    flex: "1 1 0",
+                    background: "hsl(0 0% 100% / 0.03)",
+                    border: "1px solid hsl(0 0% 100% / 0.06)",
                   }}
                 >
                   {/* Thumbnail */}
-                  <div className="relative w-[90px] h-[56px] rounded-lg overflow-hidden flex-shrink-0 bg-black/30">
+                  <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
                     <img
                       src={thumb}
                       alt={v.title}
-                      className="w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    {!isActive && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                        <Play
-                          size={18}
-                          className="text-white/80"
-                          fill="currentColor"
-                        />
-                      </div>
-                    )}
-                    {isActive && (
+                    {/* Play overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 transition-colors duration-300 group-hover:bg-black/20">
                       <div
-                        className="absolute bottom-0 left-0 right-0 h-[2px]"
-                        style={{ background: "hsl(var(--pink))" }}
-                      />
-                    )}
+                        className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+                        style={{
+                          background: "hsl(var(--pink) / 0.85)",
+                          boxShadow: "0 4px 20px hsl(var(--pink) / 0.3)",
+                        }}
+                      >
+                        <Play size={16} className="text-white ml-0.5" fill="currentColor" />
+                      </div>
+                    </div>
                   </div>
 
                   {/* Info */}
-                  <div className="flex-1 min-w-0">
+                  <div className="px-3.5 py-3">
                     <p
-                      className="text-[13px] font-medium leading-snug line-clamp-2"
-                      style={{
-                        color: isActive
-                          ? "hsl(0 0% 100% / 0.9)"
-                          : "hsl(0 0% 100% / 0.6)",
-                      }}
+                      className="text-[13px] font-medium leading-snug line-clamp-2 transition-colors duration-300"
+                      style={{ color: "hsl(0 0% 100% / 0.7)" }}
                     >
                       {v.title}
                     </p>
-                    <p
-                      className="mt-1 text-[11px] truncate"
-                      style={{ color: "hsl(0 0% 100% / 0.35)" }}
-                    >
+                    <p className="mt-1 text-[11px]" style={{ color: "hsl(0 0% 100% / 0.3)" }}>
                       {v.client}
                     </p>
                   </div>
-                </button>
+                </motion.button>
               );
             })}
           </div>
