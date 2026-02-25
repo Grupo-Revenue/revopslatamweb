@@ -29,6 +29,8 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const cta2 = (meta.cta2_text as string) ?? defaults.cta2;
   const trust = (meta.trust_line as string) ?? defaults.trust;
   const bgImage = section?.background_image_url;
+  const bgOverlay = meta.bg_overlay !== false; // default true, set to false in metadata to disable
+  const bgOpacity = typeof meta.bg_opacity === "number" ? meta.bg_opacity : 0.25;
   const sideImage = section?.image_url;
 
   return (
@@ -39,7 +41,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
           className="absolute inset-0 z-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${bgImage})`,
-            opacity: 0.25,
+            opacity: bgOverlay ? bgOpacity : 1,
           }}
         />
       )}
