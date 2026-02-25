@@ -41,7 +41,7 @@ const LogoImage = ({ client }: { client: ClientData }) => (
       src={client.logo_url}
       alt={client.name}
       className="h-10 max-w-[160px] object-contain"
-      style={{ filter: "brightness(0) invert(1)", opacity: 0.7 }}
+      style={{ opacity: 0.8 }}
       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
     />
   </div>
