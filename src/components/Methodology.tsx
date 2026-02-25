@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, X, Zap, CheckCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import type { HomeSection } from "@/hooks/useHomeSections";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -80,7 +81,17 @@ const trackStates = [
   },
 ];
 
-const Methodology = () => {
+const Methodology = ({ section }: { section?: HomeSection }) => {
+  const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const eyebrow = section?.subtitle ?? "Nuestra metodología";
+  const headline = section?.title ?? "El revenue no se improvisa.\nSe diseña, pieza a pieza.";
+  const headlineParts = headline.split("\n");
+  const bodyText = section?.body ?? "Piensa en una pista modular, de esas que se arman pieza a pieza para que una bolita llegue al final sin caerse. Eso es exactamente un sistema de revenue.\n\nCada pieza es un proceso, un acuerdo, una automatización, un dato, un rol. La bolita es tu lead, moviéndose desde el primer contacto hasta el cliente que renueva y refiere. La meta es que llegue al final, siempre, de manera predecible.";
+  const bodyParagraphs = bodyText.split("\n\n");
+  const closingTitle = (meta.closing_title as string) ?? "En Revops LATAM llevamos 14 años armando pistas.";
+  const closingText = (meta.closing_text as string) ?? "Sabemos leer cómo fluye la tuya hoy, dónde se pierde, y qué hay que construir para que llegue al final.";
+  const closingCta = (meta.closing_cta as string) ?? "Conoce nuestra metodología completa";
+  const question = (meta.question as string) ?? "¿En qué estado está tu pista hoy?";
   const [selected, setSelected] = useState<string | null>(null);
   const selectedState = trackStates.find((s) => s.id === selected);
 
@@ -101,7 +112,7 @@ const Methodology = () => {
             className="text-center text-[13px] font-semibold tracking-[0.15em] uppercase"
             style={{ color: "#BE1869" }}
           >
-            Nuestra metodología
+            {eyebrow}
           </motion.p>
 
           {/* Headline */}
@@ -110,9 +121,13 @@ const Methodology = () => {
             className="mt-4 text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight max-w-[650px] mx-auto"
             style={{ color: "#1A1A2E" }}
           >
-            El revenue no se improvisa.
-            <br />
-            <span className="text-gradient-brand">Se diseña, pieza a pieza.</span>
+            {headlineParts[0]}
+            {headlineParts[1] && (
+              <>
+                <br />
+                <span className="text-gradient-brand">{headlineParts[1]}</span>
+              </>
+            )}
           </motion.h2>
 
           {/* Intro paragraphs */}
@@ -121,12 +136,9 @@ const Methodology = () => {
             className="mt-8 mx-auto max-w-[620px] text-center text-[18px] leading-relaxed space-y-4"
             style={{ color: "#6B7280" }}
           >
-            <p>
-              Piensa en una pista modular, de esas que se arman pieza a pieza para que una bolita llegue al final sin caerse. Eso es exactamente un sistema de revenue.
-            </p>
-            <p>
-              Cada pieza es un proceso, un acuerdo, una automatización, un dato, un rol. La bolita es tu lead, moviéndose desde el primer contacto hasta el cliente que renueva y refiere. La meta es que llegue al final, siempre, de manera predecible.
-            </p>
+            {bodyParagraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </motion.div>
 
           {/* Gradient separator */}
@@ -214,7 +226,7 @@ const Methodology = () => {
           {/* Interactive question */}
           <motion.div {...fadeUp(0.6)} className="mt-14 text-center">
             <p className="text-[20px] font-semibold mb-6" style={{ color: "#1A1A2E" }}>
-              ¿En qué estado está tu pista hoy?
+              {question}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
               {trackStates.map((s) => {
@@ -269,16 +281,16 @@ const Methodology = () => {
             }}
           >
             <p className="text-[24px] font-semibold leading-snug" style={{ color: "white" }}>
-              En Revops LATAM llevamos 14 años armando pistas.
+              {closingTitle}
             </p>
             <p className="mt-4 text-[17px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
-              Sabemos leer cómo fluye la tuya hoy, dónde se pierde, y qué hay que construir para que llegue al final.
+              {closingText}
             </p>
             <button
               className="mt-6 inline-flex items-center gap-2 text-[16px] font-medium transition-opacity hover:opacity-80"
               style={{ color: "#1CA398" }}
             >
-              Conoce nuestra metodología completa
+              {closingCta}
               <ArrowRight size={18} />
             </button>
           </motion.div>

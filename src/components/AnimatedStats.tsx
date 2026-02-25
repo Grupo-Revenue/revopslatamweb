@@ -1,5 +1,6 @@
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useInView, animate } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import type { HomeSection } from "@/hooks/useHomeSections";
 
 interface CounterProps {
   target: number;
@@ -37,19 +38,21 @@ const Counter = ({ target, suffix = "", prefix = "", color, label, duration = 2 
   );
 };
 
-const stats = [
+const defaultStats = [
   { target: 50, suffix: "+", color: "#BE1869", label: "Implementaciones HubSpot exitosas" },
   { target: 2, prefix: "$", suffix: "M+", color: "#6224BE", label: "En revenue generado para clientes" },
   { target: 10000, suffix: "+", color: "#1CA398", label: "Horas ahorradas en procesos manuales" },
   { target: 200, suffix: "+", color: "#0779D7", label: "Empresas transformadas en LATAM" },
 ];
 
-const AnimatedStats = () => {
+const AnimatedStats = ({ section }: { section?: HomeSection }) => {
+  const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const stats = (meta.stats as CounterProps[]) ?? defaultStats;
+  const title = section?.title ?? "Números que hablan por sí solos";
+
   return (
     <section className="py-20 px-6 relative overflow-hidden" style={{ background: "#0D0D1A" }}>
-      {/* Subtle orb */}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 500, height: 500, top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle, rgba(98,36,190,0.08) 0%, transparent 70%)", filter: "blur(120px)" }} />
-
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -58,9 +61,8 @@ const AnimatedStats = () => {
         className="relative z-10 max-w-[1000px] mx-auto"
       >
         <h2 className="text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight text-primary-foreground mb-14">
-          Números que hablan por sí solos
+          {title}
         </h2>
-
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
           {stats.map((s) => (
             <Counter key={s.label} {...s} />

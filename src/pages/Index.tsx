@@ -9,20 +9,23 @@ import Credibility from "@/components/Credibility";
 import AboutTeaser from "@/components/AboutTeaser";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
+import { useHomeSections } from "@/hooks/useHomeSections";
 
 const Index = () => {
+  const { getSection, getMeta, loading } = useHomeSections();
+
   return (
     <div className="min-h-screen">
       <Navbar />
-      <Hero />
-      <ClientLogos />
-      <Symptoms />
-      <Methodology />
-      <PulsoComercial />
-      <AnimatedStats />
-      <Credibility />
-      <AboutTeaser />
-      <FinalCTA />
+      <Hero section={getSection("hero")} />
+      <ClientLogos section={getSection("client-logos")} />
+      <Symptoms section={getSection("symptoms")} />
+      <Methodology section={getSection("methodology")} />
+      <PulsoComercial section={getSection("pulso-comercial")} />
+      <AnimatedStats section={getSection("animated-stats")} />
+      <Credibility section={getSection("credibility")} />
+      <AboutTeaser section={getSection("about-teaser")} />
+      <FinalCTA section={getSection("final-cta")} />
       <Footer />
     </div>
   );
