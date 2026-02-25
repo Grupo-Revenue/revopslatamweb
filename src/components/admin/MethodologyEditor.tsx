@@ -108,9 +108,9 @@ interface MethodologyEditorProps {
 }
 
 export default function MethodologyEditor({ metadata, onChange }: MethodologyEditorProps) {
-  const rawTracks = (metadata.track_states as TrackStateData[]) ?? defaultTrackStates;
-  // Ensure every track has arrays for signals/consequences
-  const tracks: TrackStateData[] = rawTracks.map((t) => ({
+  const rawTracks = Array.isArray(metadata.track_states) ? metadata.track_states : [];
+  const tracksData = rawTracks.length > 0 ? rawTracks : defaultTrackStates;
+  const tracks: TrackStateData[] = tracksData.map((t: any) => ({
     ...t,
     signals: Array.isArray(t.signals) ? t.signals : [],
     consequences: Array.isArray(t.consequences) ? t.consequences : [],
