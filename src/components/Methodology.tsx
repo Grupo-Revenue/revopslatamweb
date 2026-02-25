@@ -220,8 +220,9 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
       ? [headline.split(". ")[0] + ".", headline.split(". ").slice(1).join(". ")]
       : [headline];
 
-  const selectorQuestion = (meta.selector_question as string) ?? "Identifica el estado de tu sistema comercial";
-  const introText = (meta.intro_text as string) ?? "Tu motor de ingresos es como una pista modular. Cada pieza —proceso, dato, acuerdo, automatización— determina si tu lead llega al final o se pierde en el camino.";
+  // Read from both old and new metadata keys for backward compatibility
+  const selectorQuestion = (meta.selector_question as string) || (meta.question as string) || "Identifica el estado de tu sistema comercial";
+  const introText = (meta.intro_text as string) || "Tu motor de ingresos es como una pista modular. Cada pieza —proceso, dato, acuerdo, automatización— determina si tu lead llega al final o se pierde en el camino.";
 
   const handleSelect = (id: TrackStateId) => {
     setSelected(selected === id ? null : id);
