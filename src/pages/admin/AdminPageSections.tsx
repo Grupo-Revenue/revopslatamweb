@@ -17,6 +17,7 @@ import {
   BackgroundStyleControls,
 } from "@/components/admin/SectionStyleEditor";
 import { useCTAStyles } from "@/hooks/useCTAStyles";
+import MethodologyEditor from "@/components/admin/MethodologyEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -601,6 +602,14 @@ export default function AdminPageSections() {
                     <ClientLogosEditor
                       metadata={meta}
                       sectionId={section.id}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Methodology Editor */}
+                  {section.section_key === "methodology" && (
+                    <MethodologyEditor
+                      metadata={meta}
                       onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                     />
                   )}
