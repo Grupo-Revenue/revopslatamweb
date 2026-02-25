@@ -8,6 +8,7 @@ import ParaCeos from "./pages/ParaCeos";
 import ParaDirectoresComerciales from "./pages/ParaDirectoresComerciales";
 import ParaMarketingDirectors from "./pages/ParaMarketingDirectors";
 import ParaCustomerSuccess from "./pages/ParaCustomerSuccess";
+import ParaOperaciones from "./pages/ParaOperaciones";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import CustomCursor from "./components/CustomCursor";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
           <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
           <Route path="/para-customer-success-y-servicio-al-cliente" element={<ParaCustomerSuccess />} />
+          <Route path="/para-los-que-operan-el-negocio-sin-el-titulo" element={<ParaOperaciones />} />
           {/* Future admin routes */}
           {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
           <Route path="*" element={<NotFound />} />
