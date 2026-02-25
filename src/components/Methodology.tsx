@@ -423,28 +423,6 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
             )}
           </AnimatePresence>
 
-          {/* ── Bottom closing block ── */}
-          {!selected && (
-            <motion.div
-              {...fadeUp(0.5)}
-              className="mt-12 sm:mt-16 mx-auto max-w-[700px] rounded-[20px] p-6 sm:p-10 text-center"
-              style={{
-                background: "hsl(var(--dark-bg))",
-                border: "1px solid hsl(0 0% 100% / 0.06)",
-              }}
-            >
-              <p className="text-[18px] sm:text-[22px] font-semibold leading-snug" style={{ color: "white" }}>
-                En RevOps LATAM llevamos 14 años armando pistas.
-              </p>
-              <p className="mt-3 text-[14px] sm:text-[16px] leading-relaxed" style={{ color: "hsl(0 0% 100% / 0.6)" }}>
-                Sabemos leer cómo fluye la tuya hoy, dónde se pierde, y qué hay que construir para que llegue al final.
-              </p>
-              <button className="mt-5 inline-flex items-center gap-2 text-[15px] font-medium transition-opacity hover:opacity-80" style={{ color: "hsl(var(--teal))" }}>
-                Conoce nuestra metodología completa
-                <ArrowRight size={18} />
-              </button>
-            </motion.div>
-          )}
         </div>
       </div>
     </section>
