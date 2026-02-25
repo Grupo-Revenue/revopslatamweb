@@ -14,69 +14,36 @@ const fadeUp = (delay: number) => ({
 
 /* ── Track illustrations (SVG inline) ── */
 const TrackBroken = () => (
-  <svg viewBox="0 0 140 50" className="w-full h-auto" fill="none">
-    {/* Sketchy broken track segments — hand-drawn feel */}
-    <path d="M4 26 C6 24, 10 23, 14 25 C18 27, 22 28, 26 26" stroke="hsl(337 74% 44% / 0.6)" strokeWidth="2.2" strokeLinecap="round" fill="none" />
-    <path d="M4 26 C6 28, 10 30, 14 29 C18 28, 22 27, 26 28" stroke="hsl(337 74% 44% / 0.3)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-    {/* Detached piece tilted */}
-    <path d="M36 22 C38 19, 42 18, 48 20 C52 22, 54 21, 56 23" stroke="hsl(337 74% 44% / 0.45)" strokeWidth="2" strokeLinecap="round" strokeDasharray="4 3" fill="none" transform="rotate(6 46 21)" />
-    {/* Fallen piece */}
-    <path d="M66 30 C70 33, 74 34, 80 31 C84 28, 86 30, 88 32" stroke="hsl(337 74% 44% / 0.35)" strokeWidth="2" strokeLinecap="round" strokeDasharray="3 4" fill="none" transform="rotate(-8 77 31)" />
-    {/* Disconnected fragment */}
-    <path d="M100 24 C104 22, 110 23, 116 25 C120 27, 124 26, 128 24" stroke="hsl(337 74% 44% / 0.2)" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="2 5" fill="none" />
-    {/* Stuck ball with sketch ring */}
-    <circle cx="12" cy="18" r="4.5" fill="hsl(337 74% 44% / 0.8)" />
-    <path d="M7 18 C7 14, 12 12, 16 14 C20 16, 19 22, 14 23 C9 24, 6 21, 7 18Z" stroke="hsl(337 74% 44% / 0.3)" strokeWidth="1" fill="none" />
-    {/* Small X marks for breakage */}
-    <path d="M30 24 L34 28 M34 24 L30 28" stroke="hsl(337 74% 44% / 0.4)" strokeWidth="1.2" strokeLinecap="round" />
-    <path d="M92 26 L96 30 M96 26 L92 30" stroke="hsl(337 74% 44% / 0.3)" strokeWidth="1" strokeLinecap="round" />
+  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
+    <rect x="2" y="16" width="22" height="8" rx="3" fill="hsl(337 74% 44% / 0.25)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" />
+    <rect x="32" y="12" width="18" height="8" rx="3" fill="hsl(337 74% 44% / 0.15)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" transform="rotate(8 41 16)" />
+    <rect x="58" y="20" width="20" height="8" rx="3" fill="hsl(337 74% 44% / 0.15)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" transform="rotate(-5 68 24)" />
+    <rect x="86" y="14" width="22" height="8" rx="3" fill="hsl(337 74% 44% / 0.1)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" />
+    <circle cx="10" cy="12" r="4" fill="hsl(337 74% 44%)" opacity="0.8" />
   </svg>
 );
 
 const TrackIncomplete = () => (
-  <svg viewBox="0 0 140 50" className="w-full h-auto" fill="none">
-    {/* Solid first segment */}
-    <path d="M4 26 C8 24, 14 23, 20 25 C26 27, 30 26, 34 25" stroke="hsl(42 93% 54% / 0.7)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M4 28 C8 30, 14 31, 20 29 C26 27, 30 28, 34 29" stroke="hsl(42 93% 54% / 0.3)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-    {/* Second segment solid */}
-    <path d="M38 25 C42 23, 48 24, 52 26 C56 28, 58 26, 60 25" stroke="hsl(42 93% 54% / 0.7)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M38 29 C42 31, 48 30, 52 28 C56 26, 58 28, 60 29" stroke="hsl(42 93% 54% / 0.3)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-    {/* Gap — sketchy dotted bridge */}
-    <path d="M63 26 C66 25, 69 27, 72 26 C75 25, 78 27, 81 26" stroke="hsl(42 93% 54% / 0.25)" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 4" fill="none" />
-    {/* ? mark in the gap */}
-    <text x="72" y="20" fontSize="8" fill="hsl(42 93% 54% / 0.5)" fontFamily="Georgia, serif" fontStyle="italic" textAnchor="middle">?</text>
-    {/* Third segment */}
-    <path d="M84 25 C88 23, 94 24, 100 26 C106 28, 110 26, 114 25" stroke="hsl(42 93% 54% / 0.6)" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-    <path d="M84 29 C88 31, 94 30, 100 28 C106 26, 110 28, 114 29" stroke="hsl(42 93% 54% / 0.25)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-    {/* Fading end */}
-    <path d="M118 26 C122 24, 126 25, 130 26" stroke="hsl(42 93% 54% / 0.2)" strokeWidth="1.8" strokeLinecap="round" strokeDasharray="3 3" fill="none" />
-    {/* Ball in transit */}
-    <circle cx="50" cy="20" r="4" fill="hsl(42 93% 54% / 0.8)" />
-    <path d="M46 20 C46 16, 50 14, 54 17 C56 19, 55 24, 51 24 C47 24, 45 22, 46 20Z" stroke="hsl(42 93% 54% / 0.3)" strokeWidth="0.8" fill="none" />
+  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
+    <rect x="2" y="16" width="28" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
+    <rect x="34" y="16" width="20" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
+    {/* Gap */}
+    <line x1="58" y1="20" x2="66" y2="20" stroke="hsl(42 93% 54% / 0.3)" strokeWidth="1.5" strokeDasharray="2 2" />
+    <rect x="70" y="16" width="24" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
+    <rect x="98" y="16" width="18" height="8" rx="3" fill="hsl(42 93% 54% / 0.1)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" strokeDasharray="3 2" />
+    <circle cx="48" cy="14" r="4" fill="hsl(42 93% 54%)" opacity="0.8" />
   </svg>
 );
 
 const TrackComplete = () => (
-  <svg viewBox="0 0 140 50" className="w-full h-auto" fill="none">
-    {/* Full flowing track — continuous hand-drawn path */}
-    <path d="M4 26 C10 23, 18 24, 26 26 C34 28, 42 24, 50 25 C58 26, 66 28, 74 26 C82 24, 90 25, 98 27 C106 29, 114 25, 122 26 C128 27, 132 26, 136 25" stroke="hsl(175 73% 37% / 0.7)" strokeWidth="2.8" strokeLinecap="round" fill="none" />
-    {/* Bottom edge of track */}
-    <path d="M4 30 C10 33, 18 32, 26 30 C34 28, 42 32, 50 31 C58 30, 66 28, 74 30 C82 32, 90 31, 98 29 C106 27, 114 31, 122 30 C128 29, 132 30, 136 31" stroke="hsl(175 73% 37% / 0.3)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-    {/* Subtle sleepers / cross-ties */}
-    <line x1="20" y1="24" x2="20" y2="32" stroke="hsl(175 73% 37% / 0.15)" strokeWidth="1" strokeLinecap="round" />
-    <line x1="40" y1="25" x2="40" y2="31" stroke="hsl(175 73% 37% / 0.15)" strokeWidth="1" strokeLinecap="round" />
-    <line x1="60" y1="26" x2="60" y2="30" stroke="hsl(175 73% 37% / 0.15)" strokeWidth="1" strokeLinecap="round" />
-    <line x1="80" y1="25" x2="80" y2="31" stroke="hsl(175 73% 37% / 0.15)" strokeWidth="1" strokeLinecap="round" />
-    <line x1="100" y1="27" x2="100" y2="30" stroke="hsl(175 73% 37% / 0.15)" strokeWidth="1" strokeLinecap="round" />
-    <line x1="120" y1="26" x2="120" y2="31" stroke="hsl(175 73% 37% / 0.15)" strokeWidth="1" strokeLinecap="round" />
-    {/* Ball flowing smoothly with motion trail */}
-    <ellipse cx="126" cy="22" rx="6" ry="3" fill="hsl(175 73% 37% / 0.1)" />
-    <circle cx="128" cy="20" r="4.5" fill="hsl(175 73% 37%)" />
-    <path d="M123 20 C123 16, 128 14, 133 17 C136 19, 134 25, 129 25 C124 25, 122 23, 123 20Z" stroke="hsl(175 73% 37% / 0.25)" strokeWidth="0.8" fill="none" />
-    {/* Speed lines */}
-    <path d="M114 20 L118 20" stroke="hsl(175 73% 37% / 0.3)" strokeWidth="1" strokeLinecap="round" />
-    <path d="M110 22 L116 21" stroke="hsl(175 73% 37% / 0.2)" strokeWidth="0.8" strokeLinecap="round" />
-    <path d="M112 18 L117 19" stroke="hsl(175 73% 37% / 0.2)" strokeWidth="0.8" strokeLinecap="round" />
+  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
+    <rect x="2" y="16" width="26" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    <rect x="30" y="16" width="24" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    <rect x="56" y="16" width="24" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    <rect x="82" y="16" width="26" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
+    {/* Flowing ball */}
+    <circle cx="105" cy="14" r="4" fill="hsl(175 73% 37%)" />
+    <circle cx="105" cy="14" r="7" fill="hsl(175 73% 37% / 0.2)" />
   </svg>
 );
 
