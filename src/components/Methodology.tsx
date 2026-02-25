@@ -12,38 +12,104 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-/* ── Track illustrations (SVG inline) ── */
+/* ── Track illustrations (SVG inline – premium modular style) ── */
+
+const ModularPiece = ({
+  x, y, w, h, color, opacity = 1, broken = false, offsetY = 0, rotate = 0,
+}: {
+  x: number; y: number; w: number; h: number; color: string;
+  opacity?: number; broken?: boolean; offsetY?: number; rotate?: number;
+}) => {
+  const id = `p-${x}-${y}`;
+  const depth = 5;
+  return (
+    <g transform={`translate(${x}, ${y + offsetY}) rotate(${rotate} ${w / 2} ${h / 2})`} opacity={opacity}>
+      {/* Shadow */}
+      <rect x={2} y={h + 1} width={w} height={3} rx={2} fill="hsl(240 10% 10% / 0.10)" />
+      {/* Side face (depth) */}
+      <path
+        d={`M${w},0 L${w + depth},${depth} L${w + depth},${h + depth} L${w},${h} Z`}
+        fill={`${color}`}
+        opacity={0.35}
+      />
+      {/* Bottom face */}
+      <path
+        d={`M0,${h} L${depth},${h + depth} L${w + depth},${h + depth} L${w},${h} Z`}
+        fill={`${color}`}
+        opacity={0.22}
+      />
+      {/* Top face */}
+      <rect width={w} height={h} rx={3} fill={`url(#grad-${id})`} stroke={color} strokeWidth={0.8} />
+      {/* Connector notch */}
+      {!broken && (
+        <>
+          <rect x={w - 1.5} y={h * 0.3} width={3} height={h * 0.4} rx={1.5} fill={color} opacity={0.4} />
+          <rect x={-1.5} y={h * 0.3} width={3} height={h * 0.4} rx={1.5} fill={color} opacity={0.25} />
+        </>
+      )}
+      {/* Surface highlight */}
+      <rect x={2} y={1.5} width={w - 4} height={h * 0.35} rx={2} fill="white" opacity={0.18} />
+      <defs>
+        <linearGradient id={`grad-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity={0.35} />
+          <stop offset="100%" stopColor={color} stopOpacity={0.15} />
+        </linearGradient>
+      </defs>
+    </g>
+  );
+};
+
+const Sphere = ({ cx, cy, color, r = 5 }: { cx: number; cy: number; color: string; r?: number }) => {
+  const id = `sph-${cx}-${cy}`;
+  return (
+    <g>
+      {/* Shadow */}
+      <ellipse cx={cx} cy={cy + r + 2} rx={r * 0.7} ry={1.5} fill="hsl(240 10% 10% / 0.12)" />
+      <circle cx={cx} cy={cy} r={r} fill={`url(#${id})`} />
+      {/* Specular highlight */}
+      <circle cx={cx - r * 0.25} cy={cy - r * 0.3} r={r * 0.3} fill="white" opacity={0.4} />
+      <defs>
+        <radialGradient id={id} cx="35%" cy="35%">
+          <stop offset="0%" stopColor={color} stopOpacity={0.95} />
+          <stop offset="100%" stopColor={color} stopOpacity={0.55} />
+        </radialGradient>
+      </defs>
+    </g>
+  );
+};
+
 const TrackBroken = () => (
-  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
-    <rect x="2" y="16" width="22" height="8" rx="3" fill="hsl(337 74% 44% / 0.25)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" />
-    <rect x="32" y="12" width="18" height="8" rx="3" fill="hsl(337 74% 44% / 0.15)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" transform="rotate(8 41 16)" />
-    <rect x="58" y="20" width="20" height="8" rx="3" fill="hsl(337 74% 44% / 0.15)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" transform="rotate(-5 68 24)" />
-    <rect x="86" y="14" width="22" height="8" rx="3" fill="hsl(337 74% 44% / 0.1)" stroke="hsl(337 74% 44%)" strokeWidth="1.5" strokeDasharray="3 2" />
-    <circle cx="10" cy="12" r="4" fill="hsl(337 74% 44%)" opacity="0.8" />
+  <svg viewBox="0 0 200 55" className="w-full h-auto" fill="none">
+    <ModularPiece x={5} y={12} w={32} h={14} color="hsl(337 74% 44%)" />
+    <ModularPiece x={50} y={8} w={28} h={14} color="hsl(337 74% 44%)" opacity={0.6} broken rotate={10} offsetY={2} />
+    <ModularPiece x={95} y={18} w={26} h={14} color="hsl(337 74% 44%)" opacity={0.45} broken rotate={-7} offsetY={-2} />
+    <ModularPiece x={140} y={14} w={34} h={14} color="hsl(337 74% 44%)" opacity={0.3} broken />
+    <Sphere cx={20} cy={10} color="hsl(337 74% 44%)" r={4.5} />
   </svg>
 );
 
 const TrackIncomplete = () => (
-  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
-    <rect x="2" y="16" width="28" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
-    <rect x="34" y="16" width="20" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
-    {/* Gap */}
-    <line x1="58" y1="20" x2="66" y2="20" stroke="hsl(42 93% 54% / 0.3)" strokeWidth="1.5" strokeDasharray="2 2" />
-    <rect x="70" y="16" width="24" height="8" rx="3" fill="hsl(42 93% 54% / 0.25)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" />
-    <rect x="98" y="16" width="18" height="8" rx="3" fill="hsl(42 93% 54% / 0.1)" stroke="hsl(42 93% 54%)" strokeWidth="1.5" strokeDasharray="3 2" />
-    <circle cx="48" cy="14" r="4" fill="hsl(42 93% 54%)" opacity="0.8" />
+  <svg viewBox="0 0 200 55" className="w-full h-auto" fill="none">
+    <ModularPiece x={5} y={14} w={38} h={14} color="hsl(42 93% 46%)" />
+    <ModularPiece x={47} y={14} w={30} h={14} color="hsl(42 93% 46%)" />
+    {/* Gap indicator */}
+    <g opacity={0.3}>
+      <line x1={82} y1={21} x2={98} y2={21} stroke="hsl(42 93% 46%)" strokeWidth={1.2} strokeDasharray="3 3" />
+    </g>
+    <ModularPiece x={102} y={14} w={34} h={14} color="hsl(42 93% 46%)" />
+    <ModularPiece x={144} y={14} w={30} h={14} color="hsl(42 93% 46%)" opacity={0.35} broken />
+    <Sphere cx={65} cy={12} color="hsl(42 93% 46%)" r={4.5} />
   </svg>
 );
 
 const TrackComplete = () => (
-  <svg viewBox="0 0 120 40" className="w-full h-auto" fill="none">
-    <rect x="2" y="16" width="26" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
-    <rect x="30" y="16" width="24" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
-    <rect x="56" y="16" width="24" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
-    <rect x="82" y="16" width="26" height="8" rx="3" fill="hsl(175 73% 37% / 0.3)" stroke="hsl(175 73% 37%)" strokeWidth="1.5" />
-    {/* Flowing ball */}
-    <circle cx="105" cy="14" r="4" fill="hsl(175 73% 37%)" />
-    <circle cx="105" cy="14" r="7" fill="hsl(175 73% 37% / 0.2)" />
+  <svg viewBox="0 0 200 55" className="w-full h-auto" fill="none">
+    <ModularPiece x={5} y={14} w={36} h={14} color="hsl(175 73% 37%)" />
+    <ModularPiece x={43} y={14} w={32} h={14} color="hsl(175 73% 37%)" />
+    <ModularPiece x={77} y={14} w={34} h={14} color="hsl(175 73% 37%)" />
+    <ModularPiece x={113} y={14} w={32} h={14} color="hsl(175 73% 37%)" />
+    <ModularPiece x={147} y={14} w={36} h={14} color="hsl(175 73% 37%)" />
+    <Sphere cx={175} cy={12} color="hsl(175 73% 37%)" r={5} />
   </svg>
 );
 
