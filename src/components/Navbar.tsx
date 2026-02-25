@@ -8,10 +8,10 @@ import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 /* ─── Nav data ─── */
 const solucionesItems = [
-  "Para el CEO / Gerente General",
-  "Para el Equipo Comercial",
-  "Para Marketing",
-  "Para Operaciones",
+  { label: "Para el CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
+  { label: "Para el Equipo Comercial", to: "#" },
+  { label: "Para Marketing", to: "#" },
+  { label: "Para Operaciones", to: "#" },
 ];
 
 const serviciosGroups = [
@@ -38,7 +38,7 @@ const serviciosGroups = [
 ];
 
 // Flat list for mobile
-const serviciosItemsFlat = serviciosGroups.flatMap((g) => g.items);
+const serviciosItemsFlat = serviciosGroups.flatMap((g) => g.items.map((item) => ({ label: item, to: "#" })));
 
 /* ─── Simple Dropdown ─── */
 const NavDropdown = ({
@@ -46,7 +46,7 @@ const NavDropdown = ({
   items,
 }: {
   label: string;
-  items: string[];
+  items: { label: string; to: string }[];
 }) => {
   const [open, setOpen] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>();
@@ -83,12 +83,12 @@ const NavDropdown = ({
           >
             {items.map((item) => (
               <Link
-                key={item}
-                to="#"
+                key={item.label}
+                to={item.to}
                 onClick={() => setOpen(false)}
                 className="block px-4 py-3 rounded-lg text-sm text-nav-link hover:bg-[rgba(190,24,105,0.1)] hover:text-pink transition-colors duration-150"
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </motion.div>
@@ -286,7 +286,7 @@ const MobileSection = ({
   onClose,
 }: {
   title: string;
-  items: string[];
+  items: { label: string; to: string }[];
   onClose: () => void;
 }) => {
   const [open, setOpen] = useState(false);
@@ -311,8 +311,8 @@ const MobileSection = ({
           >
             <div className="pb-4 pl-4 space-y-1">
               {items.map((item) => (
-                <Link key={item} to="#" onClick={onClose} className="block py-2 text-sm text-nav-link hover:text-pink transition-colors">
-                  {item}
+                <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-nav-link hover:text-pink transition-colors">
+                  {item.label}
                 </Link>
               ))}
             </div>
