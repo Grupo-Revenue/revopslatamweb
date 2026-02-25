@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSection, getElementStyle, getBackgroundStyle } from "@/hooks/usePageContent";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -9,8 +11,25 @@ const fadeUp = (delay: number) => ({
 });
 
 const Hero = () => {
+  const { title, subtitle, ctaText, ctaUrl, metadata } = useSection("hero");
+  const isMobile = useIsMobile();
+
+  // Defaults
+  const headline = title ?? "Tu empresa creció.\nTu motor de ingresos, no.";
+  const subtext = subtitle ?? "Cuando el crecimiento llega más rápido que los procesos, el caos no es señal de fracaso. Es señal de que necesitas una pista mejor diseñada.";
+  const cta = ctaText ?? "Descubre dónde se pierde tu revenue";
+  const ctaLink = ctaUrl ?? "#";
+
+  const titleStyle = getElementStyle(metadata, "title", isMobile);
+  const subtitleStyle = getElementStyle(metadata, "subtitle", isMobile);
+  const ctaStyle = getElementStyle(metadata, "cta", isMobile);
+  const bgStyle = getBackgroundStyle(metadata);
+
+  // Split headline by newline for two-tone rendering
+  const headlineParts = headline.split("\n");
+
   return (
-    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-20 px-6">
+    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-20 px-6" style={bgStyle}>
       {/* Orbs */}
       <div
         className="absolute rounded-full pointer-events-none"
@@ -51,21 +70,26 @@ const Hero = () => {
           <motion.h1
             {...fadeUp(0.2)}
             className="mt-7 text-hero font-bold leading-[1.1] tracking-tight"
+            style={titleStyle}
           >
-            <span className="text-primary-foreground">Tu empresa creció.</span>
-            <br />
-            <span className="text-gradient-brand">Tu motor de ingresos, no.</span>
+            {headlineParts.length > 1 ? (
+              <>
+                <span className="text-primary-foreground">{headlineParts[0]}</span>
+                <br />
+                <span className="text-gradient-brand">{headlineParts[1]}</span>
+              </>
+            ) : (
+              <span className="text-primary-foreground">{headline}</span>
+            )}
           </motion.h1>
 
           {/* Subtext */}
           <motion.p
             {...fadeUp(0.4)}
             className="mt-6 text-lg leading-relaxed max-w-[520px]"
-            style={{ color: "rgba(255,255,255,0.7)" }}
+            style={{ color: "rgba(255,255,255,0.7)", ...subtitleStyle }}
           >
-            Cuando el crecimiento llega más rápido que los procesos, el caos no
-            es señal de fracaso. Es señal de que necesitas una pista mejor
-            diseñada.
+            {subtext}
           </motion.p>
 
           {/* CTAs */}
@@ -73,9 +97,18 @@ const Hero = () => {
             {...fadeUp(0.6)}
             className="mt-8 flex flex-col sm:flex-row gap-4"
           >
-            <Button size="lg" className="gap-2">
-              Descubre dónde se pierde tu revenue
-              <ArrowRight size={18} />
+            <Button size="lg" className="gap-2" style={ctaStyle} asChild={!!ctaLink && ctaLink !== "#"}>
+              {ctaLink && ctaLink !== "#" ? (
+                <a href={ctaLink} target="_blank" rel="noopener noreferrer">
+                  {cta}
+                  <ArrowRight size={18} />
+                </a>
+              ) : (
+                <>
+                  {cta}
+                  <ArrowRight size={18} />
+                </>
+              )}
             </Button>
             <Button
               size="lg"

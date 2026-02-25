@@ -2,6 +2,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, X, Zap, CheckCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSection, getElementStyle, getBackgroundStyle } from "@/hooks/usePageContent";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Button } from "@/components/ui/button";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -83,6 +86,11 @@ const trackStates = [
 const Methodology = () => {
   const [selected, setSelected] = useState<string | null>(null);
   const selectedState = trackStates.find((s) => s.id === selected);
+  const { title, subtitle, metadata } = useSection("methodology");
+  const isMobile = useIsMobile();
+  const titleStyle = getElementStyle(metadata, "title", isMobile);
+  const bgStyle = getBackgroundStyle(metadata);
+  const selectedState = trackStates.find((s) => s.id === selected);
 
   return (
     <section className="relative">
@@ -93,7 +101,7 @@ const Methodology = () => {
         </svg>
       </div>
 
-      <div className="pt-24 pb-24 px-6" style={{ background: "#F5F5F8" }}>
+      <div className="pt-24 pb-24 px-6" style={{ background: "#F5F5F8", ...bgStyle }}>
         <div className="max-w-[1200px] mx-auto">
           {/* Eyebrow */}
           <motion.p

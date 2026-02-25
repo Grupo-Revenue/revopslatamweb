@@ -9,22 +9,25 @@ import Credibility from "@/components/Credibility";
 import AboutTeaser from "@/components/AboutTeaser";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
+import { PageContentProvider } from "@/hooks/usePageContent";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <ClientLogos />
-      <Symptoms />
-      <Methodology />
-      <PulsoComercial />
-      <AnimatedStats />
-      <Credibility />
-      <AboutTeaser />
-      <FinalCTA />
-      <Footer />
-    </div>
+    <PageContentProvider slug="/">
+      <div className="min-h-screen">
+        <Navbar />
+        <Hero />
+        <ClientLogos />
+        <Symptoms />
+        <Methodology />
+        <PulsoComercial />
+        <AnimatedStats />
+        <Credibility />
+        <AboutTeaser />
+        <FinalCTA />
+        <Footer />
+      </div>
+    </PageContentProvider>
   );
 };
 
