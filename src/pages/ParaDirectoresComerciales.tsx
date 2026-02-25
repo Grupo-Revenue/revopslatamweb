@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Search, Settings, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -44,6 +46,7 @@ const soluciones = [
 const ParaDirectoresComerciales = () => {
   return (
     <div className="min-h-screen bg-dark-bg text-primary-foreground">
+      <Navbar />
 
       {/* ── SECCIÓN 1: HERO ── */}
       <section className="relative pt-32 pb-24 px-6 gradient-hero overflow-hidden">
@@ -195,6 +198,8 @@ const ParaDirectoresComerciales = () => {
           </motion.div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };
