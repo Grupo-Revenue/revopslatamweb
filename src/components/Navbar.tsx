@@ -248,10 +248,10 @@ const Navbar = () => {
               style={{
                 background: "#ffffff",
                 borderRadius: 12.5,
-                padding: "6px 18px",
+                padding: "10px 18px",
               }}
             >
-              <img src={LogoWhiteColor} alt="Revops LATAM" className="h-8 w-auto" />
+              <img src={LogoWhiteColor} alt="Revops LATAM" className="h-7 w-auto" />
             </div>
           </Link>
 
