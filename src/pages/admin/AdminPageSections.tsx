@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, Plus, Save, Trash2, GripVertical, ChevronDown, ChevronUp, Image } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Plus, Save, Trash2, GripVertical, ChevronDown, ChevronUp, Image, FileText, Paintbrush } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 import { toast } from "@/hooks/use-toast";
+import SectionStyleEditor from "@/components/admin/SectionStyleEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -31,7 +33,6 @@ export default function AdminPageSections() {
       ]);
       setPage(pageRes.data);
       setSections(sectionsRes.data ?? []);
-      // Expand first section by default
       if (sectionsRes.data && sectionsRes.data.length > 0) {
         setExpandedSections(new Set([sectionsRes.data[0].id]));
       }
@@ -49,7 +50,7 @@ export default function AdminPageSections() {
     });
   };
 
-  const updateSectionLocal = (id: string, field: keyof PageSection, value: string | boolean | number) => {
+  const updateSectionLocal = (id: string, field: keyof PageSection, value: unknown) => {
     setSections((prev) =>
       prev.map((s) => (s.id === id ? { ...s, [field]: value } : s))
     );
@@ -69,6 +70,7 @@ export default function AdminPageSections() {
         background_image_url: section.background_image_url,
         is_visible: section.is_visible,
         sort_order: section.sort_order,
+        metadata: section.metadata,
       })
       .eq("id", section.id);
 
@@ -85,11 +87,7 @@ export default function AdminPageSections() {
     const key = newSectionKey.trim().toLowerCase().replace(/\s+/g, "-");
     const { data, error } = await supabase
       .from("page_sections")
-      .insert({
-        page_id: pageId,
-        section_key: key,
-        sort_order: sections.length,
-      })
+      .insert({ page_id: pageId, section_key: key, sort_order: sections.length })
       .select()
       .single();
 
@@ -162,104 +160,134 @@ export default function AdminPageSections() {
                 )}
               </button>
 
-              {/* Section Form */}
+              {/* Section Editor with Tabs */}
               {isExpanded && (
                 <div className="px-4 pb-4 border-t border-zinc-800 pt-4">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    {/* Left: Text fields */}
-                    <div className="space-y-3">
-                      <div>
-                        <Label className="text-zinc-400 text-xs uppercase tracking-wider">Título</Label>
-                        <Input
-                          value={section.title ?? ""}
-                          onChange={(e) => updateSectionLocal(section.id, "title", e.target.value)}
-                          className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                          placeholder="Título de la sección"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-zinc-400 text-xs uppercase tracking-wider">Subtítulo</Label>
-                        <Input
-                          value={section.subtitle ?? ""}
-                          onChange={(e) => updateSectionLocal(section.id, "subtitle", e.target.value)}
-                          className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                          placeholder="Subtítulo"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-zinc-400 text-xs uppercase tracking-wider">Contenido</Label>
-                        <Textarea
-                          value={section.body ?? ""}
-                          onChange={(e) => updateSectionLocal(section.id, "body", e.target.value)}
-                          className="bg-zinc-800 border-zinc-700 text-white mt-1 min-h-[100px]"
-                          placeholder="Texto del cuerpo de la sección"
-                        />
-                      </div>
-                    </div>
+                  <Tabs defaultValue="content" className="w-full">
+                    <TabsList className="bg-zinc-800 border border-zinc-700 mb-4 w-full">
+                      <TabsTrigger
+                        value="content"
+                        className="flex-1 data-[state=active]:bg-zinc-700 data-[state=active]:text-white text-zinc-400 gap-1.5"
+                      >
+                        <FileText className="h-3.5 w-3.5" /> Contenido
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="styles"
+                        className="flex-1 data-[state=active]:bg-zinc-700 data-[state=active]:text-white text-zinc-400 gap-1.5"
+                      >
+                        <Paintbrush className="h-3.5 w-3.5" /> Estilos
+                      </TabsTrigger>
+                    </TabsList>
 
-                    {/* Right: CTA + Images */}
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <Label className="text-zinc-400 text-xs uppercase tracking-wider">Texto CTA</Label>
-                          <Input
-                            value={section.cta_text ?? ""}
-                            onChange={(e) => updateSectionLocal(section.id, "cta_text", e.target.value)}
-                            className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                            placeholder="Ej: Agendar llamada"
-                          />
+                    {/* Content Tab */}
+                    <TabsContent value="content">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {/* Left: Text fields */}
+                        <div className="space-y-3">
+                          <div>
+                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">Título</Label>
+                            <Input
+                              value={section.title ?? ""}
+                              onChange={(e) => updateSectionLocal(section.id, "title", e.target.value)}
+                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
+                              placeholder="Título de la sección"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">Subtítulo</Label>
+                            <Input
+                              value={section.subtitle ?? ""}
+                              onChange={(e) => updateSectionLocal(section.id, "subtitle", e.target.value)}
+                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
+                              placeholder="Subtítulo"
+                            />
+                          </div>
+                          <div>
+                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">Contenido</Label>
+                            <Textarea
+                              value={section.body ?? ""}
+                              onChange={(e) => updateSectionLocal(section.id, "body", e.target.value)}
+                              className="bg-zinc-800 border-zinc-700 text-white mt-1 min-h-[100px]"
+                              placeholder="Texto del cuerpo de la sección"
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <Label className="text-zinc-400 text-xs uppercase tracking-wider">URL CTA</Label>
-                          <Input
-                            value={section.cta_url ?? ""}
-                            onChange={(e) => updateSectionLocal(section.id, "cta_url", e.target.value)}
-                            className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                            placeholder="https://..."
-                          />
+
+                        {/* Right: CTA + Images */}
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <Label className="text-zinc-400 text-xs uppercase tracking-wider">Texto CTA</Label>
+                              <Input
+                                value={section.cta_text ?? ""}
+                                onChange={(e) => updateSectionLocal(section.id, "cta_text", e.target.value)}
+                                className="bg-zinc-800 border-zinc-700 text-white mt-1"
+                                placeholder="Ej: Agendar llamada"
+                              />
+                            </div>
+                            <div>
+                              <Label className="text-zinc-400 text-xs uppercase tracking-wider">URL CTA</Label>
+                              <Input
+                                value={section.cta_url ?? ""}
+                                onChange={(e) => updateSectionLocal(section.id, "cta_url", e.target.value)}
+                                className="bg-zinc-800 border-zinc-700 text-white mt-1"
+                                placeholder="https://..."
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">
+                              <Image className="h-3 w-3 inline mr-1" /> URL Imagen
+                            </Label>
+                            <Input
+                              value={section.image_url ?? ""}
+                              onChange={(e) => updateSectionLocal(section.id, "image_url", e.target.value)}
+                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
+                              placeholder="URL de la imagen principal"
+                            />
+                            {section.image_url && (
+                              <img
+                                src={section.image_url}
+                                alt="Preview"
+                                className="mt-2 rounded-lg max-h-32 object-cover border border-zinc-700"
+                              />
+                            )}
+                          </div>
+
+                          <div>
+                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">
+                              <Image className="h-3 w-3 inline mr-1" /> URL Fondo
+                            </Label>
+                            <Input
+                              value={section.background_image_url ?? ""}
+                              onChange={(e) => updateSectionLocal(section.id, "background_image_url", e.target.value)}
+                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
+                              placeholder="URL de la imagen de fondo"
+                            />
+                          </div>
+
+                          <div className="flex items-center justify-between pt-2">
+                            <Label className="text-zinc-400 text-sm">Visible</Label>
+                            <Switch
+                              checked={section.is_visible}
+                              onCheckedChange={(v) => updateSectionLocal(section.id, "is_visible", v)}
+                            />
+                          </div>
                         </div>
                       </div>
+                    </TabsContent>
 
-                      <div>
-                        <Label className="text-zinc-400 text-xs uppercase tracking-wider">
-                          <Image className="h-3 w-3 inline mr-1" /> URL Imagen
-                        </Label>
-                        <Input
-                          value={section.image_url ?? ""}
-                          onChange={(e) => updateSectionLocal(section.id, "image_url", e.target.value)}
-                          className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                          placeholder="URL de la imagen principal"
-                        />
-                        {section.image_url && (
-                          <img
-                            src={section.image_url}
-                            alt="Preview"
-                            className="mt-2 rounded-lg max-h-32 object-cover border border-zinc-700"
-                          />
-                        )}
-                      </div>
-
-                      <div>
-                        <Label className="text-zinc-400 text-xs uppercase tracking-wider">
-                          <Image className="h-3 w-3 inline mr-1" /> URL Fondo
-                        </Label>
-                        <Input
-                          value={section.background_image_url ?? ""}
-                          onChange={(e) => updateSectionLocal(section.id, "background_image_url", e.target.value)}
-                          className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                          placeholder="URL de la imagen de fondo"
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between pt-2">
-                        <Label className="text-zinc-400 text-sm">Visible</Label>
-                        <Switch
-                          checked={section.is_visible}
-                          onCheckedChange={(v) => updateSectionLocal(section.id, "is_visible", v)}
-                        />
-                      </div>
-                    </div>
-                  </div>
+                    {/* Styles Tab */}
+                    <TabsContent value="styles">
+                      <SectionStyleEditor
+                        metadata={(section.metadata as Record<string, unknown>) ?? {}}
+                        onChange={(newMetadata) =>
+                          updateSectionLocal(section.id, "metadata", newMetadata)
+                        }
+                      />
+                    </TabsContent>
+                  </Tabs>
 
                   {/* Actions */}
                   <div className="flex items-center justify-between mt-4 pt-3 border-t border-zinc-800">
