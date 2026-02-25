@@ -5,56 +5,56 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
 import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
+import LogoNegroColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
 
 /* ─── Nav data ─── */
 const solucionesItems = [
-{ label: "Para el CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
-{ label: "Para Directores Comerciales y Head of Sales", to: "/para-directores-comerciales" },
-{ label: "Para Directores y Gerentes de Marketing", to: "/para-directores-y-gerentes-de-marketing" },
-{ label: "Para los que operan el negocio sin el título", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
-{ label: "Para Customer Success y Servicio al Cliente", to: "/para-customer-success-y-servicio-al-cliente" }];
-
+  { label: "Para el CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
+  { label: "Para Directores Comerciales y Head of Sales", to: "/para-directores-comerciales" },
+  { label: "Para Directores y Gerentes de Marketing", to: "/para-directores-y-gerentes-de-marketing" },
+  { label: "Para los que operan el negocio sin el título", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
+  { label: "Para Customer Success y Servicio al Cliente", to: "/para-customer-success-y-servicio-al-cliente" },
+];
 
 const serviciosGroups = [
-{
-  label: "DISEÑA TU PISTA",
-  color: "#BE1869",
-  items: ["Diagnóstico del Motor de Ingresos"]
-},
-{
-  label: "CONSTRUYE TU PISTA",
-  color: "#6224BE",
-  items: ["Implementación HubSpot CRM", "Marketing Ops", "Integraciones y Desarrollo"]
-},
-{
-  label: "OPERA TU PISTA",
-  color: "#1CA398",
-  items: ["RevOps as a Service", "Soporte HubSpot"]
-},
-{
-  label: "POTENCIA CON IA",
-  color: "#0779D7",
-  items: ["IA para tu Motor de Ingresos"]
-}];
+  {
+    label: "DISEÑA TU PISTA",
+    color: "#BE1869",
+    items: ["Diagnóstico del Motor de Ingresos"],
+  },
+  {
+    label: "CONSTRUYE TU PISTA",
+    color: "#6224BE",
+    items: ["Implementación HubSpot CRM", "Marketing Ops", "Integraciones y Desarrollo"],
+  },
+  {
+    label: "OPERA TU PISTA",
+    color: "#1CA398",
+    items: ["RevOps as a Service", "Soporte HubSpot"],
+  },
+  {
+    label: "POTENCIA CON IA",
+    color: "#0779D7",
+    items: ["IA para tu Motor de Ingresos"],
+  },
+];
 
-
-// Flat list for mobile
 const serviciosItemsFlat = serviciosGroups.flatMap((g) => g.items.map((item) => ({ label: item, to: "#" })));
 
 /* ─── Simple Dropdown ─── */
 const NavDropdown = ({
   label,
-  items
-
-
-
-}: {label: string;items: {label: string;to: string;}[];}) => {
+  items,
+}: {
+  label: string;
+  items: { label: string; to: string }[];
+}) => {
   const [open, setOpen] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>();
   const ref = useRef<HTMLDivElement>(null);
 
-  const enter = () => {clearTimeout(timeout.current);setOpen(true);};
-  const leave = () => {timeout.current = setTimeout(() => setOpen(false), 150);};
+  const enter = () => { clearTimeout(timeout.current); setOpen(true); };
+  const leave = () => { timeout.current = setTimeout(() => setOpen(false), 150); };
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -68,35 +68,35 @@ const NavDropdown = ({
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
-
+        className="flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200"
+      >
         {label}
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence>
-        {open &&
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 min-w-[260px] bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-4">
-
-            {items.map((item) =>
-          <Link
-            key={item.label}
-            to={item.to}
-            onClick={() => setOpen(false)}
-            className="block px-4 py-3 rounded-lg text-sm text-nav-link hover:bg-[rgba(190,24,105,0.1)] hover:text-pink transition-colors duration-150">
-
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 min-w-[260px] bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-4"
+          >
+            {items.map((item) => (
+              <Link
+                key={item.label}
+                to={item.to}
+                onClick={() => setOpen(false)}
+                className="block px-4 py-3 rounded-lg text-sm text-[rgba(255,255,255,0.7)] hover:bg-[rgba(190,24,105,0.1)] hover:text-pink transition-colors duration-150"
+              >
                 {item.label}
               </Link>
-          )}
+            ))}
           </motion.div>
-        }
+        )}
       </AnimatePresence>
-    </div>);
-
+    </div>
+  );
 };
 
 /* ─── Servicios Grouped Dropdown ─── */
@@ -105,8 +105,8 @@ const ServiciosDropdown = () => {
   const timeout = useRef<ReturnType<typeof setTimeout>>();
   const ref = useRef<HTMLDivElement>(null);
 
-  const enter = () => {clearTimeout(timeout.current);setOpen(true);};
-  const leave = () => {timeout.current = setTimeout(() => setOpen(false), 150);};
+  const enter = () => { clearTimeout(timeout.current); setOpen(true); };
+  const leave = () => { timeout.current = setTimeout(() => setOpen(false), 150); };
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -120,63 +120,63 @@ const ServiciosDropdown = () => {
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
-
+        className="flex items-center gap-1 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200"
+      >
         Servicios
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence>
-        {open &&
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-5"
-          style={{ width: 480 }}>
-
-            {serviciosGroups.map((group, gi) =>
-          <div key={group.label}>
-                {gi > 0 &&
-            <div className="my-2 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
-            }
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-5"
+            style={{ width: 480 }}
+          >
+            {serviciosGroups.map((group, gi) => (
+              <div key={group.label}>
+                {gi > 0 && (
+                  <div className="my-2 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
+                )}
                 <p
-              className="px-4 pt-2 pb-1 select-none"
-              style={{
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: "0.12em",
-                color: group.color
-              }}>
-
+                  className="px-4 pt-2 pb-1 select-none"
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    letterSpacing: "0.12em",
+                    color: group.color,
+                  }}
+                >
                   {group.label}
                 </p>
-                {group.items.map((item) =>
-            <Link
-              key={item}
-              to="#"
-              onClick={() => setOpen(false)}
-              className="block rounded-lg text-[14px] text-nav-link transition-colors duration-150"
-              style={{ padding: "10px 16px" }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = `${group.color}14`;
-                e.currentTarget.style.color = group.color;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "transparent";
-                e.currentTarget.style.color = "";
-              }}>
-
+                {group.items.map((item) => (
+                  <Link
+                    key={item}
+                    to="#"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg text-[14px] text-[rgba(255,255,255,0.7)] transition-colors duration-150"
+                    style={{ padding: "10px 16px" }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = `${group.color}14`;
+                      e.currentTarget.style.color = group.color;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.color = "";
+                    }}
+                  >
                     {item}
                   </Link>
-            )}
+                ))}
               </div>
-          )}
+            ))}
           </motion.div>
-        }
+        )}
       </AnimatePresence>
-    </div>);
-
+    </div>
+  );
 };
 
 /* ─── Main Navbar ─── */
@@ -186,35 +186,32 @@ const Navbar = () => {
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {document.body.style.overflow = "";};
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
   return (
     <>
-      <nav
-        className={`fixed top-0 left-0 w-full z-50 border-b border-[rgba(255,255,255,0.06)] transition-all duration-300 ${
-        scrolled ?
-        "h-16 bg-dark-bg" :
-        "h-[72px] bg-[rgba(13,13,26,0.85)] backdrop-blur-lg"}`
-        }>
-
-        <div className="container max-w-7xl mx-auto h-full flex items-center justify-between px-6">
-          <Link to="/" className="shrink-0 rounded-xl">
-            <img src={LogoWhiteColor} alt="Revops LATAM" className="h-8 w-auto" />
+      <nav className="fixed top-0 left-0 w-full z-50 py-4 px-6 pointer-events-none">
+        <div className="container max-w-7xl mx-auto flex items-center justify-between gap-3 pointer-events-auto">
+          {/* Logo container */}
+          <Link to="/" className="shrink-0 bg-background rounded-2xl px-5 py-2.5 shadow-lg">
+            <img src={LogoNegroColor} alt="Revops LATAM" className="h-7 w-auto" />
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Nav links container */}
+          <div className="hidden lg:flex items-center gap-7 bg-background rounded-full px-8 py-3 shadow-lg">
             <NavDropdown label="Soluciones" items={solucionesItems} />
             <ServiciosDropdown />
-            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
+            <Link to="#" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200">
               Recursos
             </Link>
-            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
+            <Link to="#" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-200">
               Nosotros
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center gap-5">
+          {/* CTA container */}
+          <div className="hidden lg:flex items-center gap-4 bg-background rounded-full px-5 py-2.5 shadow-lg">
             <Link to="#" className="flex items-center gap-2 text-sm font-semibold text-yellow">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow opacity-75" />
@@ -222,38 +219,40 @@ const Navbar = () => {
               </span>
               Pulso Comercial
             </Link>
-            <Button size="sm" className="text-sm">Agenda una llamada</Button>
+            <Button size="sm" className="text-sm uppercase tracking-wide">Agendar Reunión</Button>
           </div>
 
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            className="lg:hidden relative z-50 text-primary-foreground"
-            aria-label="Toggle menu">
-
+            className="lg:hidden relative z-50 bg-background rounded-xl p-2.5 shadow-lg text-foreground pointer-events-auto"
+            aria-label="Toggle menu"
+          >
             <AnimatePresence mode="wait" initial={false}>
-              {mobileOpen ?
-              <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+              {mobileOpen ? (
+                <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
                   <X size={24} />
-                </motion.div> :
-
-              <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                </motion.div>
+              ) : (
+                <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
                   <Menu size={24} />
                 </motion.div>
-              }
+              )}
             </AnimatePresence>
           </button>
         </div>
       </nav>
 
+      {/* Mobile menu */}
       <AnimatePresence>
-        {mobileOpen &&
-        <motion.div
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
-          className="fixed inset-0 z-40 bg-dark-bg flex flex-col pt-24 px-8 pb-10 overflow-y-auto">
-
+        {mobileOpen && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 z-40 bg-dark-bg flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
+          >
             <MobileSection title="Soluciones" items={solucionesItems} onClose={() => setMobileOpen(false)} />
             <MobileSection title="Servicios" items={serviciosItemsFlat} onClose={() => setMobileOpen(false)} />
             <Link to="#" onClick={() => setMobileOpen(false)} className="py-4 text-lg font-semibold text-primary-foreground border-b border-[rgba(255,255,255,0.06)]">
@@ -271,57 +270,57 @@ const Navbar = () => {
                 </span>
                 Pulso Comercial
               </Link>
-              <Button className="w-full">Agenda una llamada</Button>
+              <Button className="w-full">Agendar Reunión</Button>
             </div>
           </motion.div>
-        }
+        )}
       </AnimatePresence>
-    </>);
-
+    </>
+  );
 };
 
 /* ─── Mobile accordion section ─── */
 const MobileSection = ({
   title,
   items,
-  onClose
-
-
-
-
-}: {title: string;items: {label: string;to: string;}[];onClose: () => void;}) => {
+  onClose,
+}: {
+  title: string;
+  items: { label: string; to: string }[];
+  onClose: () => void;
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="border-b border-[rgba(255,255,255,0.06)]">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between py-4 text-lg font-semibold text-primary-foreground">
-
+        className="w-full flex items-center justify-between py-4 text-lg font-semibold text-primary-foreground"
+      >
         {title}
         <ChevronDown size={18} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence>
-        {open &&
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="overflow-hidden">
-
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
             <div className="pb-4 pl-4 space-y-1">
-              {items.map((item) =>
-            <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-nav-link hover:text-pink transition-colors">
+              {items.map((item) => (
+                <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-[rgba(255,255,255,0.7)] hover:text-pink transition-colors">
                   {item.label}
                 </Link>
-            )}
+              ))}
             </div>
           </motion.div>
-        }
+        )}
       </AnimatePresence>
-    </div>);
-
+    </div>
+  );
 };
 
 export default Navbar;
