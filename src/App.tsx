@@ -12,6 +12,7 @@ import ParaCustomerSuccess from "./pages/ParaCustomerSuccess";
 import ParaOperaciones from "./pages/ParaOperaciones";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
+import DynamicStylesLoader from "./components/DynamicStylesLoader";
 import CustomCursor from "./components/CustomCursor";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -31,6 +32,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <LoadingScreen />
+        <DynamicStylesLoader />
         <CustomCursor />
         <BrowserRouter>
           <Routes>
