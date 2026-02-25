@@ -5,7 +5,7 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 24 },
+  initial: { opacity: 0, y: 20 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-50px" },
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
@@ -16,19 +16,37 @@ const iconMap: Record<string, typeof TrendingUp> = {
 };
 
 const defaultSymptoms = [
-  { icon: "TrendingUp", accent: "#BE1869", title: "Crecimos, pero el caos creció más.", text: "Más clientes, más vendedores, más herramientas. Y sin embargo, cada mes es más difícil predecir, controlar y escalar." },
-  { icon: "MessageSquare", accent: "#6224BE", title: "Marketing y ventas no se hablan.", text: "Cada equipo tiene sus métricas, su versión de la realidad y su lista de culpables. Mientras tanto, los leads se enfrían." },
-  { icon: "Monitor", accent: "#0779D7", title: "Tienes HubSpot pero no lo usas bien.", text: "Pagaste la licencia, alguien lo configuró, y hoy es básicamente un Excel con login. El potencial está ahí. El uso, no." },
-  { icon: "BarChart3", accent: "#F7BE1A", title: "No puedes predecir el cierre de mes.", text: "Tu forecast es más una intuición que una proyección. El directorio pregunta. Tú adivinas. Eso no escala." },
-  { icon: "UserRound", accent: "#1CA398", title: "Contrataste un Gerente Comercial y sigue el caos.", text: "Buena persona, buen perfil. Pero sin procesos claros ni datos confiables, hasta el mejor Gerente Comercial opera a ciegas." },
+  {
+    icon: "TrendingUp",
+    accent: "#BE1869",
+    title: "El crecimiento expuso el desorden.",
+    text: "Más clientes. Más equipo. Más herramientas.\nPero ningún sistema que lo sostenga.",
+  },
+  {
+    icon: "MessageSquare",
+    accent: "#6224BE",
+    title: "Cada equipo defiende su versión de la realidad.",
+    text: "Marketing mide una cosa.\nVentas culpa a otra.\nEl revenue se enfría.",
+  },
+  {
+    icon: "Monitor",
+    accent: "#0779D7",
+    title: "Pagaste la herramienta. No diseñaste el sistema.",
+    text: "HubSpot no está mal.\nTu arquitectura sí.",
+  },
+  {
+    icon: "BarChart3",
+    accent: "#F7BE1A",
+    title: "No puedes proyectar con certeza.",
+    text: "El directorio pregunta.\nTú estimas.\n\nEso no escala.",
+  },
+  {
+    icon: "UserRound",
+    accent: "#1CA398",
+    title: "Ni el mejor líder puede arreglar un sistema roto.",
+    text: "Sin procesos claros ni datos confiables,\ntodo depende de esfuerzo individual.",
+  },
 ];
-
-const hexToRgba = (hex: string, alpha: number) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
-};
 
 interface SymptomData { icon: string; accent: string; title: string; text: string; }
 
@@ -37,22 +55,46 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
   return (
     <motion.div
       {...fadeUp(delay)}
-      className="group rounded-2xl transition-all duration-300"
+      className="group relative"
       style={{
-        background: "#FFFFFF",
-        border: "1px solid #E5E7EB",
-        borderLeft: `4px solid ${s.accent}`,
-        borderRadius: "16px",
-        padding: "clamp(20px, 4vw, 32px)",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+        background: "rgba(255,255,255,0.03)",
+        borderLeft: `3px solid ${s.accent}`,
+        borderRadius: "4px",
+        padding: "clamp(24px, 4vw, 36px)",
       }}
-      whileHover={{ y: -4, boxShadow: `0 12px 40px ${hexToRgba(s.accent, 0.15)}` }}
+      whileHover={{
+        background: "rgba(255,255,255,0.06)",
+        transition: { duration: 0.3 },
+      }}
     >
-      <div className="w-10 h-10 rounded-full flex items-center justify-center mb-5" style={{ background: hexToRgba(s.accent, 0.12) }}>
-        <Icon size={20} style={{ color: s.accent }} />
+      <div
+        className="w-8 h-8 rounded flex items-center justify-center mb-5"
+        style={{ background: `${s.accent}18` }}
+      >
+        <Icon size={16} style={{ color: s.accent }} strokeWidth={2.5} />
       </div>
-      <h4 className="mb-3" style={{ fontSize: "18px", fontWeight: 700, color: "#1A1A2E", lineHeight: 1.3 }}>{s.title}</h4>
-      <p style={{ fontSize: "14px", color: "#6B7280", lineHeight: 1.6 }}>{s.text}</p>
+      <h4
+        className="mb-3"
+        style={{
+          fontSize: "17px",
+          fontWeight: 700,
+          color: "#F1F1F1",
+          lineHeight: 1.35,
+          letterSpacing: "-0.01em",
+        }}
+      >
+        {s.title}
+      </h4>
+      <p
+        style={{
+          fontSize: "14px",
+          color: "rgba(255,255,255,0.5)",
+          lineHeight: 1.7,
+          whiteSpace: "pre-line",
+        }}
+      >
+        {s.text}
+      </p>
     </motion.div>
   );
 };
@@ -62,38 +104,129 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const cards = (meta.cards as SymptomData[]) ?? defaultSymptoms;
-  const eyebrow = section?.subtitle ?? "¿Te suena familiar?";
-  const headline = section?.title ?? "Si diriges una empresa que ya creció, probablemente reconoces esto.";
-  const closingText = (meta.closing_text as string) ?? "Si reconociste al menos dos de estas situaciones, no tienes un problema de talento ni de herramientas.";
-  const closingBold = (meta.closing_bold as string) ?? "Tienes una pista mal armada.";
+  const eyebrow = section?.subtitle ?? "Señales que no puedes seguir ignorando";
+  const headline = section?.title ?? "Tu empresa creció.\nTu sistema no.";
+  const subheadline = (meta.subheadline as string) ?? "Y ahora el desorden está empezando a costarte margen, foco y previsibilidad.";
+  const closingText = (meta.closing_text as string) ?? "Si reconoces dos o más de estos puntos,\nno tienes un problema de talento.";
+  const closingBold = (meta.closing_bold as string) ?? "Tienes un problema de sistema.";
+  const closingSmall = (meta.closing_small as string) ?? "Y los sistemas mal diseñados no escalan.";
 
   const sectionBg = getBgStyle();
 
   return (
-    <section className="relative py-16 sm:py-24 px-4 sm:px-6" style={{ background: "#FFFFFF", ...sectionBg }}>
+    <section
+      className="relative py-20 sm:py-28 px-4 sm:px-6"
+      style={{ background: "#0A0A0F", ...sectionBg }}
+    >
       {hasBg && <div style={bgLayerStyle} />}
-      <div className="relative z-10 max-w-[1200px] mx-auto">
-        <motion.p {...fadeUp(0)} className="text-center font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869", fontSize: "13px", ...getStyle("subtitle") }}>
+
+      <div className="relative z-10 max-w-[1100px] mx-auto">
+        {/* Eyebrow */}
+        <motion.p
+          {...fadeUp(0)}
+          className="text-center uppercase tracking-[0.2em]"
+          style={{
+            color: "#BE1869",
+            fontSize: "12px",
+            fontWeight: 600,
+            letterSpacing: "0.2em",
+            ...getStyle("subtitle"),
+          }}
+        >
           {eyebrow}
         </motion.p>
-        <motion.h2 {...fadeUp(0.1)} className="mt-4 text-center text-[28px] md:text-[40px] leading-[1.2] tracking-tight max-w-[900px] mx-auto" style={{ color: "#1A1A2E", fontWeight: 700, ...getStyle("title") }}>
+
+        {/* Headline */}
+        <motion.h2
+          {...fadeUp(0.08)}
+          className="mt-5 text-center mx-auto"
+          style={{
+            color: "#F1F1F1",
+            fontSize: "clamp(32px, 5vw, 52px)",
+            fontWeight: 800,
+            lineHeight: 1.1,
+            letterSpacing: "-0.03em",
+            maxWidth: "700px",
+            whiteSpace: "pre-line",
+            ...getStyle("title"),
+          }}
+        >
           {headline}
         </motion.h2>
 
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Subheadline */}
+        <motion.p
+          {...fadeUp(0.14)}
+          className="mt-5 text-center mx-auto"
+          style={{
+            color: "rgba(255,255,255,0.45)",
+            fontSize: "17px",
+            lineHeight: 1.5,
+            maxWidth: "560px",
+            fontWeight: 400,
+          }}
+        >
+          {subheadline}
+        </motion.p>
+
+        {/* Cards grid */}
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {cards.slice(0, 3).map((s, i) => (
-            <SymptomCard key={i} s={s} delay={0.15 + i * 0.1} />
+            <SymptomCard key={i} s={s} delay={0.15 + i * 0.08} />
           ))}
         </div>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[calc(66.666%+0.75rem)] mx-auto">
+        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5 md:max-w-[calc(66.666%+0.625rem)] mx-auto">
           {cards.slice(3).map((s, i) => (
-            <SymptomCard key={i + 3} s={s} delay={0.45 + i * 0.1} />
+            <SymptomCard key={i + 3} s={s} delay={0.39 + i * 0.08} />
           ))}
         </div>
 
-        <motion.div {...fadeUp(0.7)} className="mt-10 sm:mt-14 mx-auto max-w-[720px] text-center" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)", borderRadius: "16px", padding: "clamp(20px, 4vw, 32px) clamp(20px, 5vw, 48px)", boxShadow: "0 8px 32px rgba(190,24,105,0.3)" }}>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "18px", lineHeight: 1.6, ...getStyle("body") }}>{closingText}</p>
-          <p className="mt-3" style={{ color: "#FFFFFF", fontSize: "22px", fontWeight: 700, lineHeight: 1.3 }}>{closingBold}</p>
+        {/* Closing diagnostic block */}
+        <motion.div
+          {...fadeUp(0.55)}
+          className="mt-16 sm:mt-20 mx-auto max-w-[680px] text-center"
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: "6px",
+            padding: "clamp(28px, 5vw, 44px) clamp(24px, 5vw, 56px)",
+          }}
+        >
+          <p
+            style={{
+              color: "rgba(255,255,255,0.55)",
+              fontSize: "16px",
+              lineHeight: 1.7,
+              whiteSpace: "pre-line",
+              ...getStyle("body"),
+            }}
+          >
+            {closingText}
+          </p>
+          <p
+            className="mt-4"
+            style={{
+              color: "#F1F1F1",
+              fontSize: "clamp(22px, 3vw, 28px)",
+              fontWeight: 800,
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {closingBold}
+          </p>
+          {closingSmall && (
+            <p
+              className="mt-3"
+              style={{
+                color: "rgba(255,255,255,0.35)",
+                fontSize: "13px",
+                fontWeight: 400,
+              }}
+            >
+              {closingSmall}
+            </p>
+          )}
         </motion.div>
       </div>
     </section>
