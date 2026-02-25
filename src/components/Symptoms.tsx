@@ -37,22 +37,35 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
   return (
     <motion.div
       {...fadeUp(delay)}
-      className="group rounded-2xl transition-all duration-300"
+      className="group relative text-left rounded-2xl p-5 sm:p-6 transition-all duration-500 cursor-default"
       style={{
-        background: "#FFFFFF",
-        border: "1px solid #E5E7EB",
-        borderLeft: `4px solid ${s.accent}`,
-        borderRadius: "16px",
-        padding: "clamp(20px, 4vw, 32px)",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.06)",
+        background: "white",
+        border: "1.5px solid hsl(220 13% 91%)",
+        borderTop: `4px solid ${s.accent}`,
       }}
-      whileHover={{ y: -4, boxShadow: `0 12px 40px ${hexToRgba(s.accent, 0.15)}` }}
+      whileHover={{ scale: 1.02, boxShadow: `0 12px 40px ${hexToRgba(s.accent, 0.12)}` }}
+      transition={{ duration: 0.3 }}
     >
-      <div className="w-10 h-10 rounded-full flex items-center justify-center mb-5" style={{ background: hexToRgba(s.accent, 0.12) }}>
-        <Icon size={20} style={{ color: s.accent }} />
+      <div className="flex items-center gap-2.5 mb-4">
+        <span
+          className="flex items-center justify-center w-9 h-9 rounded-xl transition-colors"
+          style={{ background: `${s.accent}15` }}
+        >
+          <Icon size={20} style={{ color: s.accent }} />
+        </span>
+        <span
+          className="block text-[13px] sm:text-[14px] font-bold tracking-wide uppercase"
+          style={{ color: s.accent }}
+        >
+          {s.title.split(".")[0]}
+        </span>
       </div>
-      <h4 className="mb-3" style={{ fontSize: "18px", fontWeight: 700, color: "#1A1A2E", lineHeight: 1.3 }}>{s.title}</h4>
-      <p style={{ fontSize: "14px", color: "#6B7280", lineHeight: 1.6 }}>{s.text}</p>
+      <p className="text-[14px] sm:text-[15px] leading-snug font-medium mb-2" style={{ color: "hsl(var(--foreground))" }}>
+        {s.title}
+      </p>
+      <p className="text-[13px] sm:text-[14px] leading-relaxed" style={{ color: "hsl(var(--muted-foreground))" }}>
+        {s.text}
+      </p>
     </motion.div>
   );
 };
