@@ -12,7 +12,7 @@ const navItems = [
 ];
 
 export default function AdminLayout() {
-  const { user, isAdmin, loading, signOut } = useAuth();
+  const { user, hasAccess, loading, signOut } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -24,7 +24,7 @@ export default function AdminLayout() {
   }
 
   if (!user) return <Navigate to="/admin/login" replace />;
-  if (!isAdmin) {
+  if (!hasAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0a] text-white">
         <div className="text-center">
