@@ -154,7 +154,8 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
   }> | undefined;
 
   // Helper: hex to HSL string
-  const hexToHsl = (hex: string): string => {
+  const hexToHsl = (hex: string | undefined): string => {
+    if (!hex || hex.length < 7) return "0 0% 50%";
     const r = parseInt(hex.slice(1, 3), 16) / 255;
     const g = parseInt(hex.slice(3, 5), 16) / 255;
     const b = parseInt(hex.slice(5, 7), 16) / 255;
@@ -182,6 +183,8 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
         const hsl = hexToHsl(mt.color);
         return {
           ...mt,
+          signals: Array.isArray(mt.signals) ? mt.signals : [],
+          consequences: Array.isArray(mt.consequences) ? mt.consequences : [],
           colorHsl: base?.colorHsl ?? hsl,
           bgSubtle: base?.bgSubtle ?? `hsl(${hsl} / 0.04)`,
           borderSubtle: base?.borderSubtle ?? `hsl(${hsl} / 0.15)`,
