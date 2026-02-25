@@ -52,15 +52,15 @@ const Hero = ({ section }: { section?: HomeSection }) => {
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: 200, right: -150, background: "radial-gradient(circle, rgba(98,36,190,0.20) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: 0, left: "40%", background: "radial-gradient(circle, rgba(7,121,215,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
 
-      <div className="relative z-10 w-full max-w-[1100px] xl:max-w-[1300px] mx-auto flex flex-col lg:flex-row items-center gap-12 xl:gap-16">
-        <div className="relative z-10 max-w-[600px] xl:max-w-[680px]">
+      <div className="relative z-10 w-full max-w-[1100px] xl:max-w-[1300px] 2xl:max-w-[1400px] mx-auto flex flex-col lg:flex-row items-center gap-12 xl:gap-16">
+        <div className="relative z-10 max-w-[600px] xl:max-w-[680px] 2xl:max-w-[720px]">
           <motion.div {...fadeUp(0)}>
-            <span className="inline-block px-4 py-1.5 xl:px-5 xl:py-2 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] xl:text-[14px] font-medium tracking-wider">
+            <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider">
               {pill}
             </span>
           </motion.div>
 
-          <motion.h1 {...fadeUp(0.2)} className="mt-7 xl:mt-9 text-hero font-bold leading-[1.1] tracking-tight">
+          <motion.h1 {...fadeUp(0.2)} className="mt-7 text-hero font-bold leading-[1.1] tracking-tight">
             <span className="text-primary-foreground">{titleParts[0]}</span>
             {titleParts[1] && (
               <>
@@ -70,11 +70,11 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             )}
           </motion.h1>
 
-          <motion.p {...fadeUp(0.4)} className="mt-6 xl:mt-8 text-lg xl:text-xl leading-relaxed max-w-[520px] xl:max-w-[580px]" style={{ color: "rgba(255,255,255,0.7)" }}>
+          <motion.p {...fadeUp(0.4)} className="mt-6 leading-relaxed max-w-[520px] xl:max-w-[580px]" style={{ color: "rgba(255,255,255,0.7)", fontSize: "clamp(1rem, 0.8rem + 0.5vw, 1.25rem)" }}>
             {body}
           </motion.p>
 
-          <motion.div {...fadeUp(0.6)} className="mt-8 xl:mt-10 flex flex-col sm:flex-row gap-4">
+          <motion.div {...fadeUp(0.6)} className="mt-8 flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="gap-2" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
               {cta}
               <ArrowRight size={18} />
@@ -86,7 +86,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             </Button>
           </motion.div>
 
-          <motion.p {...fadeUp(0.9)} className="mt-8 xl:mt-10 text-[13px] xl:text-[14px]" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <motion.p {...fadeUp(0.9)} className="mt-8 text-[13px]" style={{ color: "rgba(255,255,255,0.4)" }}>
             {trust}
           </motion.p>
         </div>
