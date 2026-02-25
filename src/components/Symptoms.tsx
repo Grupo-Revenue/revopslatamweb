@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, MessageSquare, Monitor, BarChart3, UserRound } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
@@ -16,32 +17,40 @@ const iconMap: Record<string, typeof TrendingUp> = {
 };
 
 const defaultSymptoms = [
-  { icon: "TrendingUp", title: "Crecimos, pero el caos creció más.", text: "Más clientes, más herramientas, y cada mes es más difícil predecir y escalar." },
-  { icon: "MessageSquare", title: "Marketing y ventas no se hablan.", text: "Cada equipo tiene su versión de la realidad. Los leads se enfrían." },
-  { icon: "Monitor", title: "Tienes HubSpot pero no lo usas bien.", text: "Pagaste la licencia y hoy es un Excel con login. El potencial está ahí." },
-  { icon: "BarChart3", title: "No puedes predecir el cierre de mes.", text: "Tu forecast es intuición, no proyección. Eso no escala." },
-  { icon: "UserRound", title: "Contrataste un Gerente Comercial y sigue el caos.", text: "Sin procesos ni datos confiables, hasta el mejor opera a ciegas." },
+  { icon: "TrendingUp", accent: "#BE1869", title: "Crecimos, pero el caos creció más.", text: "Más clientes, más herramientas, y cada mes es más difícil predecir y escalar." },
+  { icon: "MessageSquare", accent: "#6224BE", title: "Marketing y ventas no se hablan.", text: "Cada equipo tiene su versión de la realidad. Los leads se enfrían." },
+  { icon: "Monitor", accent: "#0779D7", title: "Tienes HubSpot pero no lo usas bien.", text: "Pagaste la licencia y hoy es un Excel con login. El potencial está ahí." },
+  { icon: "BarChart3", accent: "#F7BE1A", title: "No puedes predecir el cierre de mes.", text: "Tu forecast es intuición, no proyección. Eso no escala." },
+  { icon: "UserRound", accent: "#1CA398", title: "Contrataste un Gerente Comercial y sigue el caos.", text: "Sin procesos ni datos confiables, hasta el mejor opera a ciegas." },
 ];
 
 interface SymptomData { icon: string; title: string; text: string; accent?: string; }
 
 const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
   const Icon = iconMap[s.icon] || TrendingUp;
+  const accent = s.accent || "#BE1869";
+  const [hovered, setHovered] = useState(false);
   return (
     <motion.div
       {...fadeUp(delay)}
-      className="text-left rounded-2xl p-7 sm:p-8 transition-shadow duration-300 hover:shadow-md"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="text-left rounded-2xl p-7 sm:p-8 transition-all duration-300"
       style={{
-        background: "hsl(var(--card))",
-        border: "1px solid hsl(var(--border))",
+        background: "transparent",
+        border: "1px solid #22262A",
       }}
     >
       <div className="flex items-center gap-3 mb-5">
         <span
-          className="flex items-center justify-center w-9 h-9 rounded-lg"
-          style={{ background: "hsl(var(--muted))" }}
+          className="flex items-center justify-center w-9 h-9 rounded-lg transition-colors duration-300"
+          style={{ background: hovered ? `${accent}15` : "hsl(var(--muted))" }}
         >
-          <Icon size={18} className="text-muted-foreground" />
+          <Icon
+            size={18}
+            className="transition-colors duration-300"
+            style={{ color: hovered ? accent : "hsl(var(--muted-foreground))" }}
+          />
         </span>
         <h3
           className="text-[15px] sm:text-base font-semibold leading-tight"
