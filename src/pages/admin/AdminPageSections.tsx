@@ -505,42 +505,6 @@ export default function AdminPageSections() {
                     </div>
                   </div>
 
-                  {/* Row 4b: Second CTA (hero only) */}
-                  {section.section_key === "hero" && (
-                    <div className="flex items-start gap-2">
-                      <div className="grid grid-cols-2 gap-2 flex-1">
-                        <div>
-                          <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto CTA 2</Label>
-                          <Input
-                            value={(meta.cta2_text as string) ?? ""}
-                            onChange={(e) =>
-                              updateSectionLocal(section.id, "metadata", {
-                                ...meta,
-                                cta2_text: e.target.value,
-                              })
-                            }
-                            className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
-                            placeholder="Ej: Agenda una conversación"
-                          />
-                        </div>
-                        <div>
-                          <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">URL CTA 2</Label>
-                          <Input
-                            value={(meta.cta2_url as string) ?? ""}
-                            onChange={(e) =>
-                              updateSectionLocal(section.id, "metadata", {
-                                ...meta,
-                                cta2_url: e.target.value,
-                              })
-                            }
-                            className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
-                            placeholder="https://..."
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
                   {/* Row 5: Images side by side */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                     <ImageField

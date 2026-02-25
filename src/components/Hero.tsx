@@ -27,23 +27,14 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const body = (section?.body ?? defaults.body) as string;
   const cta = (section?.cta_text ?? defaults.cta) as string;
   const cta2 = (meta.cta2_text as string) ?? defaults.cta2;
-  const cta2Url = (meta.cta2_url as string) ?? "";
   const trust = (meta.trust_line as string) ?? defaults.trust;
   const bgImage = section?.background_image_url;
-  const bgOverlay = meta.bg_overlay === true;
+  const bgOverlay = meta.bg_overlay === true; // disabled by default, set to true in metadata to enable
   const bgOpacity = typeof meta.bg_opacity === "number" ? meta.bg_opacity : 0.25;
   const sideImage = section?.image_url;
 
   return (
-    <section
-      className="relative min-h-screen gradient-hero overflow-visible flex items-center"
-      style={{
-        paddingTop: 40,
-        paddingBottom: 60,
-        paddingLeft: "clamp(24px, 5vw, 80px)",
-        paddingRight: "clamp(24px, 3vw, 40px)",
-      }}
-    >
+    <section className="relative min-h-screen gradient-hero overflow-hidden pt-[140px] pb-20 px-6">
       {/* Background image overlay */}
       {bgImage && (
         <div
@@ -60,16 +51,15 @@ const Hero = ({ section }: { section?: HomeSection }) => {
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: 200, right: -150, background: "radial-gradient(circle, rgba(98,36,190,0.20) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: 0, left: "40%", background: "radial-gradient(circle, rgba(7,121,215,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
 
-      <div className="relative z-10 w-full mx-auto flex flex-col lg:flex-row items-center gap-10">
-        {/* Left column — 52% */}
-        <div className="relative z-10 w-full lg:w-[52%] flex flex-col justify-center">
-          <motion.div {...fadeUp(0)} style={{ marginBottom: 20 }}>
+      <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12">
+        <div className="relative z-10 max-w-[600px]">
+          <motion.div {...fadeUp(0)}>
             <span className="inline-block px-4 py-1.5 rounded-full border border-[rgba(190,24,105,0.4)] bg-[rgba(190,24,105,0.1)] text-pink text-[13px] font-medium tracking-wider">
               {pill}
             </span>
           </motion.div>
 
-          <motion.h1 {...fadeUp(0.2)} className="text-hero font-bold leading-[1.1] tracking-tight" style={{ marginBottom: 24 }}>
+          <motion.h1 {...fadeUp(0.2)} className="mt-7 text-hero font-bold leading-[1.1] tracking-tight">
             <span className="text-primary-foreground">{titleParts[0]}</span>
             {titleParts[1] && (
               <>
@@ -79,41 +69,38 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             )}
           </motion.h1>
 
-          <motion.p {...fadeUp(0.4)} className="leading-relaxed max-w-[520px]" style={{ color: "rgba(255,255,255,0.7)", fontSize: "clamp(0.95rem, 0.8rem + 0.4vw, 1.125rem)", marginBottom: 36 }}>
+          <motion.p {...fadeUp(0.4)} className="mt-6 text-lg leading-relaxed max-w-[520px]" style={{ color: "rgba(255,255,255,0.7)" }}>
             {body}
           </motion.p>
 
-          <motion.div {...fadeUp(0.6)} className="flex flex-col sm:flex-row items-stretch sm:items-center" style={{ gap: 16, marginBottom: 24 }}>
+          <motion.div {...fadeUp(0.6)} className="mt-8 flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="gap-2" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
               {cta}
               <ArrowRight size={18} />
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent"
-              onClick={() => cta2Url && window.open(cta2Url, "_blank")}
-            >
+            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
               {cta2}
             </Button>
           </motion.div>
 
-          <motion.p {...fadeUp(0.9)} className="text-[13px]" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <motion.p {...fadeUp(0.9)} className="mt-8 text-[13px]" style={{ color: "rgba(255,255,255,0.4)" }}>
             {trust}
           </motion.p>
         </div>
 
-        {/* Right column — 48% */}
+        {/* Side image */}
         {sideImage && (
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-            className="hidden lg:flex w-full lg:w-[48%] items-center justify-center self-center"
-            style={{ overflow: "visible" }}
+            className="hidden lg:block flex-1 max-w-[460px]"
           >
             <img
               src={sideImage}
               alt={section?.title ?? "Hero"}
-              className="w-full h-auto"
-              style={{ transform: "scale(1.1)", transformOrigin: "center center" }}
+              className="w-full h-auto rounded-2xl"
+              style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}
             />
           </motion.div>
         )}
