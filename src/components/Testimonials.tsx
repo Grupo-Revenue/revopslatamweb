@@ -42,6 +42,12 @@ const defaultTestimonials: TestimonialVideo[] = [
     client: "Ana García",
     role: "Directora de Operaciones, ScaleMX",
   },
+  {
+    youtube_id: "dQw4w9WgXcQ",
+    title: "Automatización que generó resultados reales",
+    client: "Pedro Martínez",
+    role: "COO, GrowthLab",
+  },
 ];
 
 const Testimonials = ({ section }: { section?: HomeSection }) => {
@@ -55,10 +61,11 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const featured = videos[activeIndex] ?? videos[0];
+  const [playing, setPlaying] = useState(false);
 
   if (!videos.length) return null;
 
-  const sideVideos = videos.filter((_, i) => i !== activeIndex);
+  const sideVideos = videos.filter((_, i) => i !== activeIndex).slice(0, 3);
 
   return (
     <section
@@ -67,14 +74,10 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
     >
       {hasBg && <div style={bgLayerStyle} />}
 
-      {/* Ambient glow */}
       <div
         className="absolute pointer-events-none"
         style={{
-          width: 700,
-          height: 700,
-          top: "20%",
-          left: "30%",
+          width: 700, height: 700, top: "20%", left: "30%",
           transform: "translate(-50%,-50%)",
           background: "radial-gradient(circle, hsl(var(--pink) / 0.05) 0%, transparent 70%)",
           filter: "blur(120px)",
@@ -82,7 +85,6 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
       />
 
       <div className="relative z-10 max-w-[1100px] mx-auto">
-        {/* Header */}
         <motion.p
           {...fadeUp(0)}
           className="text-center text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
@@ -98,36 +100,66 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
           {headline}
         </motion.h2>
 
-        {/* Video layout */}
         <motion.div
           {...fadeUp(0.15)}
-          className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-4"
-          style={{ minHeight: 0 }}
+          className="mt-12 grid grid-cols-1 lg:grid-cols-[1fr_240px] gap-4"
         >
-          {/* Featured video */}
-          <div className="relative rounded-2xl overflow-hidden flex flex-col" style={{ background: "hsl(0 0% 100% / 0.03)", border: "1px solid hsl(0 0% 100% / 0.08)" }}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={featured.youtube_id + activeIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="relative w-full flex-1"
-                style={{ paddingBottom: "56.25%" }}
-              >
-                <iframe
-                  src={`https://www.youtube.com/embed/${featured.youtube_id}?rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&color=white&playsinline=1`}
-                  title={featured.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                  style={{ border: "none" }}
-                />
-              </motion.div>
-            </AnimatePresence>
+          {/* Featured video — click thumbnail to load iframe */}
+          <div
+            className="relative rounded-2xl overflow-hidden"
+            style={{ background: "#000", border: "1px solid hsl(0 0% 100% / 0.08)" }}
+          >
+            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+              <AnimatePresence mode="wait">
+                {playing ? (
+                  <motion.iframe
+                    key={"iframe-" + activeIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    src={`https://www.youtube-nocookie.com/embed/${featured.youtube_id}?autoplay=1&rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&color=white&playsinline=1&fs=1`}
+                    title={featured.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                    style={{ border: "none" }}
+                  />
+                ) : (
+                  <motion.div
+                    key={"thumb-" + activeIndex}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="absolute inset-0 cursor-pointer group"
+                    onClick={() => setPlaying(true)}
+                  >
+                    <img
+                      src={featured.thumbnail || getYouTubeThumbnail(featured.youtube_id)}
+                      alt={featured.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/25 transition-colors duration-300 group-hover:bg-black/15" />
+                    {/* Play button */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div
+                        className="w-16 h-16 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                        style={{
+                          background: "hsl(var(--pink) / 0.9)",
+                          boxShadow: "0 6px 30px hsl(var(--pink) / 0.4)",
+                        }}
+                      >
+                        <Play size={24} className="text-white ml-1" fill="currentColor" />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* Info bar */}
-            <div className="px-5 py-4" style={{ borderTop: "1px solid hsl(0 0% 100% / 0.06)" }}>
+            <div className="px-5 py-4" style={{ background: "hsl(0 0% 100% / 0.03)", borderTop: "1px solid hsl(0 0% 100% / 0.06)" }}>
               <p className="text-[16px] sm:text-[17px] font-semibold leading-snug" style={{ color: "hsl(0 0% 100% / 0.9)" }}>
                 {featured.title}
               </p>
@@ -137,54 +169,50 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
             </div>
           </div>
 
-          {/* Sidebar — fills same height as featured */}
-          <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible lg:overflow-y-auto pb-2 lg:pb-0">
-            {sideVideos.map((v, sideIdx) => {
-              const originalIndex = videos.findIndex((vid) => vid === v);
+          {/* Sidebar — exactly 3 cards filling the height */}
+          <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
+            {sideVideos.map((v) => {
+              const originalIndex = videos.indexOf(v);
               const thumb = v.thumbnail || getYouTubeThumbnail(v.youtube_id);
               return (
                 <motion.button
                   key={originalIndex}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveIndex(originalIndex)}
-                  className="flex-shrink-0 w-[260px] lg:w-full rounded-xl overflow-hidden text-left transition-all duration-300 group"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => { setActiveIndex(originalIndex); setPlaying(false); }}
+                  className="flex-shrink-0 w-[200px] lg:w-full lg:flex-1 rounded-xl overflow-hidden text-left transition-all duration-300 group"
                   style={{
-                    flex: "1 1 0",
                     background: "hsl(0 0% 100% / 0.03)",
                     border: "1px solid hsl(0 0% 100% / 0.06)",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
                 >
-                  {/* Thumbnail */}
-                  <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+                  <div className="relative w-full overflow-hidden flex-1 min-h-0">
                     <img
                       src={thumb}
                       alt={v.title}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    {/* Play overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 transition-colors duration-300 group-hover:bg-black/20">
+                    <div className="absolute inset-0 bg-black/35 transition-colors duration-300 group-hover:bg-black/15" />
+                    <div className="absolute inset-0 flex items-center justify-center">
                       <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+                        className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                         style={{
-                          background: "hsl(var(--pink) / 0.85)",
-                          boxShadow: "0 4px 20px hsl(var(--pink) / 0.3)",
+                          background: "hsl(0 0% 100% / 0.15)",
+                          backdropFilter: "blur(8px)",
+                          border: "1px solid hsl(0 0% 100% / 0.2)",
                         }}
                       >
-                        <Play size={16} className="text-white ml-0.5" fill="currentColor" />
+                        <Play size={14} className="text-white ml-0.5" fill="currentColor" />
                       </div>
                     </div>
                   </div>
-
-                  {/* Info */}
-                  <div className="px-3.5 py-3">
-                    <p
-                      className="text-[13px] font-medium leading-snug line-clamp-2 transition-colors duration-300"
-                      style={{ color: "hsl(0 0% 100% / 0.7)" }}
-                    >
+                  <div className="px-3 py-2.5">
+                    <p className="text-[12px] font-medium leading-snug line-clamp-1" style={{ color: "hsl(0 0% 100% / 0.7)" }}>
                       {v.title}
                     </p>
-                    <p className="mt-1 text-[11px]" style={{ color: "hsl(0 0% 100% / 0.3)" }}>
+                    <p className="mt-0.5 text-[10px]" style={{ color: "hsl(0 0% 100% / 0.3)" }}>
                       {v.client}
                     </p>
                   </div>
