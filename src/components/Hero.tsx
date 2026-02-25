@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import DynamicCTA from "@/components/DynamicCTA";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 
@@ -73,13 +74,25 @@ const Hero = ({ section }: { section?: HomeSection }) => {
           </motion.p>
 
           <motion.div {...fadeUp(0.6)} className="mt-8 flex flex-col gap-4 w-fit">
-            <Button size="lg" className="gap-2 whitespace-nowrap" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
-              {cta}
-              <ArrowRight size={18} />
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
-              {cta2}
-            </Button>
+            {(meta.cta_style_key as string) ? (
+              <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+                {cta}
+              </DynamicCTA>
+            ) : (
+              <Button size="lg" className="gap-2 whitespace-nowrap" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+                {cta}
+                <ArrowRight size={18} />
+              </Button>
+            )}
+            {(meta.cta2_style_key as string) ? (
+              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
+                {cta2}
+              </DynamicCTA>
+            ) : (
+              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
+                {cta2}
+              </Button>
+            )}
           </motion.div>
         </div>
 

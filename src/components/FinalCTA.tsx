@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import DynamicCTA from "@/components/DynamicCTA";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -38,13 +39,25 @@ const FinalCTA = ({ section }: { section?: HomeSection }) => {
 
         <motion.div {...fadeUp(0.25)} className="mt-10 flex flex-col items-center gap-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="gap-2" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
-              {cta}
-              <ArrowRight size={18} />
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
-              {cta2}
-            </Button>
+            {(meta.cta_style_key as string) ? (
+              <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+                {cta}
+              </DynamicCTA>
+            ) : (
+              <Button size="lg" className="gap-2" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+                {cta}
+                <ArrowRight size={18} />
+              </Button>
+            )}
+            {(meta.cta2_style_key as string) ? (
+              <DynamicCTA styleKey={meta.cta2_style_key as string}>
+                {cta2}
+              </DynamicCTA>
+            ) : (
+              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
+                {cta2}
+              </Button>
+            )}
           </div>
           <p className="text-[13px]" style={{ color: "rgba(255,255,255,0.5)" }}>
             {footer}

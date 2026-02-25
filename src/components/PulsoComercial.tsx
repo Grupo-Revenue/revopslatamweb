@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Gauge, Zap, Compass } from "lucide-react";
+import DynamicCTA from "@/components/DynamicCTA";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -74,13 +75,19 @@ const PulsoComercial = ({ section }: { section?: HomeSection }) => {
         </motion.div>
 
         <motion.div {...fadeUp(0.4)} className="mt-10">
-          <button
-            className="px-12 py-[18px] rounded-full text-[18px] font-bold transition-all duration-300 hover:scale-[1.03]"
-            style={{ background: "white", color: "hsl(337 74% 44%)", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}
-            onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}
-          >
-            {cta}
-          </button>
+          {(meta.cta_style_key as string) ? (
+            <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+              {cta}
+            </DynamicCTA>
+          ) : (
+            <button
+              className="px-12 py-[18px] rounded-full text-[18px] font-bold transition-all duration-300 hover:scale-[1.03]"
+              style={{ background: "white", color: "hsl(337 74% 44%)", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}
+              onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}
+            >
+              {cta}
+            </button>
+          )}
         </motion.div>
 
         <motion.p {...fadeUp(0.5)} className="mt-5 text-[13px]" style={{ color: "rgba(255,255,255,0.6)" }}>

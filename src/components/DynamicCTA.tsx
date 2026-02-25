@@ -1,0 +1,51 @@
+import { ArrowRight } from "lucide-react";
+import { useCTAStyles, ctaStyleToCSS } from "@/hooks/useCTAStyles";
+
+type Props = {
+  styleKey?: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+  className?: string;
+};
+
+/**
+ * Renders a button using a CTA style from the DB.
+ * Falls back to a default styled button if no styleKey or not found.
+ */
+export default function DynamicCTA({ styleKey, children, onClick, className = "" }: Props) {
+  const { getStyleByKey } = useCTAStyles();
+  const ctaStyle = getStyleByKey(styleKey);
+  const styles = ctaStyle?.styles;
+
+  if (!styles) {
+    // Fallback: render as a basic styled button
+    return (
+      <button
+        onClick={onClick}
+        className={`inline-flex items-center gap-2 font-semibold transition-all duration-300 ${className}`}
+      >
+        {children}
+      </button>
+    );
+  }
+
+  const css = ctaStyleToCSS(styles);
+  const hoverScale = styles.hoverScale ? parseFloat(styles.hoverScale) : undefined;
+
+  return (
+    <button
+      onClick={onClick}
+      className={`inline-flex items-center gap-2 font-semibold transition-all duration-300 cursor-pointer ${className}`}
+      style={css}
+      onMouseEnter={(e) => {
+        if (hoverScale) e.currentTarget.style.transform = `scale(${hoverScale})`;
+      }}
+      onMouseLeave={(e) => {
+        if (hoverScale) e.currentTarget.style.transform = "scale(1)";
+      }}
+    >
+      {children}
+      {styles.hasIcon && <ArrowRight size={18} />}
+    </button>
+  );
+}
