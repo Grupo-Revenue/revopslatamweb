@@ -21,13 +21,13 @@ const LogoPlaceholder = ({ name }: { name: string }) => (
 
 const LogoImage = ({ client }: { client: ClientData }) => (
   <div
-    className="flex-shrink-0 flex items-center justify-center mx-2"
-    style={{ minWidth: 180, height: 64 }}
+    className="flex-shrink-0 flex items-center justify-center px-3"
+    style={{ height: 64 }}
   >
     <img
       src={client.logo_url}
       alt={client.name}
-      className="h-14 max-w-[180px] object-contain"
+      className="h-16 max-w-[200px] object-contain"
     />
   </div>
 );
