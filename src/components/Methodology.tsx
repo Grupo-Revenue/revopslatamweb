@@ -149,7 +149,12 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
 
   const eyebrow = section?.subtitle ?? "Nuestra metodología";
   const headline = section?.title ?? "El revenue no se improvisa.\nSe diseña, pieza a pieza.";
-  const headlineParts = headline.split("\n");
+  // Split on literal \n or on ". " to separate first line from gradient line
+  const headlineParts = headline.includes("\n")
+    ? headline.split("\n")
+    : headline.includes(". ")
+      ? [headline.split(". ")[0] + ".", headline.split(". ").slice(1).join(". ")]
+      : [headline];
 
   const handleSelect = (id: TrackStateId) => {
     setSelected(selected === id ? null : id);
