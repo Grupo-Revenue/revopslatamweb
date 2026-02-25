@@ -335,7 +335,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
                   </div>
 
                   <p className="text-[14px] sm:text-[15px] leading-snug font-medium" style={{ color: "hsl(var(--foreground))" }}>
-                    {s.headline.split(".")[0]}.
+                    {(s.headline ?? "").split(".")[0]}.
                   </p>
 
                   <div
