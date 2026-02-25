@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSection, getElementStyle, getBackgroundStyle } from "@/hooks/usePageContent";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -10,25 +12,46 @@ const fadeUp = (delay: number) => ({
 });
 
 const FinalCTA = () => {
+  const { title, subtitle, ctaText, ctaUrl, metadata } = useSection("final-cta");
+  const isMobile = useIsMobile();
+
+  const headline = title ?? "¿Listo para armar tu pista?";
+  const sub = subtitle ?? "El primer paso es entender cómo fluye tu revenue hoy.";
+  const cta = ctaText ?? "Agenda una conversación";
+  const ctaLink = ctaUrl ?? "#";
+
+  const titleStyle = getElementStyle(metadata, "title", isMobile);
+  const subtitleStyle = getElementStyle(metadata, "subtitle", isMobile);
+  const bgStyle = getBackgroundStyle(metadata);
+
   return (
-    <section className="relative py-24 px-6 overflow-hidden" style={{ background: "#0D0D1A" }}>
+    <section className="relative py-24 px-6 overflow-hidden" style={{ background: "#0D0D1A", ...bgStyle }}>
       {/* Orbs */}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: -80, left: -150, background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: -50, right: -100, background: "radial-gradient(circle, rgba(98,36,190,0.15) 0%, transparent 70%)", filter: "blur(120px)" }} />
 
       <div className="relative z-10 max-w-[700px] mx-auto text-center">
-        <motion.h2 {...fadeUp(0)} className="text-[32px] md:text-[48px] font-bold leading-[1.1] tracking-tight" style={{ color: "white" }}>
-          ¿Listo para armar tu pista?
+        <motion.h2 {...fadeUp(0)} className="text-[32px] md:text-[48px] font-bold leading-[1.1] tracking-tight" style={{ color: "white", ...titleStyle }}>
+          {headline}
         </motion.h2>
-        <motion.p {...fadeUp(0.1)} className="mt-5 text-[20px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
-          El primer paso es entender cómo fluye tu revenue hoy.
+        <motion.p {...fadeUp(0.1)} className="mt-5 text-[20px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)", ...subtitleStyle }}>
+          {sub}
         </motion.p>
 
         <motion.div {...fadeUp(0.25)} className="mt-10 flex flex-col items-center gap-4">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="gap-2">
-              Agenda una conversación
-              <ArrowRight size={18} />
+            <Button size="lg" className="gap-2" asChild={!!ctaLink && ctaLink !== "#"}>
+              {ctaLink && ctaLink !== "#" ? (
+                <a href={ctaLink} target="_blank" rel="noopener noreferrer">
+                  {cta}
+                  <ArrowRight size={18} />
+                </a>
+              ) : (
+                <>
+                  {cta}
+                  <ArrowRight size={18} />
+                </>
+              )}
             </Button>
             <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
               Haz el Pulso Comercial primero

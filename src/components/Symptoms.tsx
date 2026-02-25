@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { TrendingUp, MessageSquare, Monitor, BarChart3, UserRound } from "lucide-react";
+import { useSection, getElementStyle, getBackgroundStyle } from "@/hooks/usePageContent";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -8,7 +10,7 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-const symptoms = [
+const defaultSymptoms = [
   {
     icon: TrendingUp,
     accent: "#BE1869",
@@ -48,7 +50,7 @@ const hexToRgba = (hex: string, alpha: number) => {
   return `rgba(${r},${g},${b},${alpha})`;
 };
 
-const SymptomCard = ({ s, i, delay }: { s: typeof symptoms[0]; i: number; delay: number }) => {
+const SymptomCard = ({ s, i, delay }: { s: typeof defaultSymptoms[0]; i: number; delay: number }) => {
   const Icon = s.icon;
   return (
     <motion.div
@@ -88,8 +90,15 @@ const SymptomCard = ({ s, i, delay }: { s: typeof symptoms[0]; i: number; delay:
 };
 
 const Symptoms = () => {
+  const { title, metadata } = useSection("symptoms");
+  const isMobile = useIsMobile();
+
+  const headline = title ?? "Si diriges una empresa que ya creció, probablemente reconoces esto.";
+  const titleStyle = getElementStyle(metadata, "title", isMobile);
+  const bgStyle = getBackgroundStyle(metadata);
+
   return (
-    <section className="relative py-24 px-6" style={{ background: "#FFFFFF" }}>
+    <section className="relative py-24 px-6" style={{ background: "#FFFFFF", ...bgStyle }}>
       <div className="max-w-[1200px] mx-auto">
         {/* Eyebrow */}
         <motion.p
@@ -104,26 +113,26 @@ const Symptoms = () => {
         <motion.h2
           {...fadeUp(0.1)}
           className="mt-4 text-center text-[28px] md:text-[40px] leading-[1.2] tracking-tight max-w-[680px] mx-auto"
-          style={{ color: "#1A1A2E", fontWeight: 700 }}
+          style={{ color: "#1A1A2E", fontWeight: 700, ...titleStyle }}
         >
-          Si diriges una empresa que ya creció, probablemente reconoces esto.
+          {headline}
         </motion.h2>
 
         {/* Cards: 3 top */}
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {symptoms.slice(0, 3).map((s, i) => (
+          {defaultSymptoms.slice(0, 3).map((s, i) => (
             <SymptomCard key={i} s={s} i={i} delay={0.15 + i * 0.1} />
           ))}
         </div>
 
         {/* Cards: 2 bottom centered */}
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[calc(66.666%+0.75rem)] mx-auto">
-          {symptoms.slice(3).map((s, i) => (
+          {defaultSymptoms.slice(3).map((s, i) => (
             <SymptomCard key={i + 3} s={s} i={i + 3} delay={0.45 + i * 0.1} />
           ))}
         </div>
 
-        {/* Closing box — gradient brand */}
+        {/* Closing box */}
         <motion.div
           {...fadeUp(0.7)}
           className="mt-14 mx-auto max-w-[720px] text-center"
