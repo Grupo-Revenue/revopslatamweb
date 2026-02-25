@@ -17,6 +17,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPages from "./pages/admin/AdminPages";
+import AdminPageSections from "./pages/admin/AdminPageSections";
 import AdminStyles from "./pages/admin/AdminStyles";
 import AdminMedia from "./pages/admin/AdminMedia";
 import AdminSetup from "./pages/admin/AdminSetup";
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="pages" element={<AdminPages />} />
+              <Route path="pages/:pageId" element={<AdminPageSections />} />
               <Route path="styles" element={<AdminStyles />} />
               <Route path="media" element={<AdminMedia />} />
             </Route>
