@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Stethoscope, TrendingUp, Heart, BookOpen } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -24,6 +25,7 @@ const defaultValues = [
 const AboutTeaser = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const values = (meta.values as typeof defaultValues) ?? defaultValues;
   const eyebrow = section?.subtitle ?? "Nuestra esencia";
   const title = section?.title ?? "Construimos crecimiento real, sano y sostenible.";
@@ -32,8 +34,9 @@ const AboutTeaser = ({ section }: { section?: HomeSection }) => {
   const paragraphs = bodyText.split("\n\n");
 
   return (
-    <section className="py-24 px-6" style={{ background: "#0D0D1A", ...getBgStyle() }}>
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <section className="relative py-24 px-6" style={{ background: "#0D0D1A", ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10 max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
           <motion.p {...fadeUp(0)} className="text-[13px] font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869", ...getStyle("subtitle") }}>
             {eyebrow}

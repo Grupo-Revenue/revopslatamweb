@@ -545,6 +545,29 @@ export default function AdminPageSections() {
                     />
                   </div>
 
+                  {/* Background options row */}
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={meta.parallax === true}
+                        onCheckedChange={(v) => updateSectionLocal(section.id, "metadata", { ...meta, parallax: v })}
+                      />
+                      <span className="text-zinc-400 text-xs">Parallax</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Label className="text-zinc-500 text-[10px] uppercase">Opacidad fondo</Label>
+                      <Input
+                        type="number"
+                        min={0}
+                        max={1}
+                        step={0.1}
+                        value={typeof meta.bg_opacity === "number" ? meta.bg_opacity : 1}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, bg_opacity: parseFloat(e.target.value) || 1 })}
+                        className="bg-zinc-800 border-zinc-700 text-white text-xs h-7 w-16 px-2"
+                      />
+                    </div>
+                  </div>
+
                   {/* Client Logos Editor (only for client-logos section) */}
                   {section.section_key === "client-logos" && (
                     <ClientLogosEditor

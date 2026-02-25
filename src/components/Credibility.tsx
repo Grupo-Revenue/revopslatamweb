@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -18,13 +19,15 @@ const defaultMetrics = [
 const Credibility = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const metrics = (meta.metrics as typeof defaultMetrics) ?? defaultMetrics;
   const title = section?.title ?? "14 años. Una convicción.";
   const body = section?.body ?? "No llegamos a RevOps por tendencia. Llegamos porque vimos el mismo patrón repetirse empresa tras empresa: crecimiento sin estructura, tecnología sin proceso, equipos sin dirección común. Desde entonces, construimos una metodología que pone el diagnóstico antes que la implementación.";
 
   return (
-    <section className="py-20 px-6" style={{ background: "#F5F5F8", ...getBgStyle() }}>
-      <div className="max-w-[1000px] mx-auto text-center">
+    <section className="relative py-20 px-6" style={{ background: "#F5F5F8", ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10 max-w-[1000px] mx-auto text-center">
         <motion.h2 {...fadeUp(0)} className="text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight" style={{ color: "#1A1A2E", ...getStyle("title") }}>
           {title}
         </motion.h2>
