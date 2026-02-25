@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import type { HomeSection } from "@/hooks/useHomeSections";
 
 const defaultClients = [
@@ -11,14 +10,10 @@ type ClientData = { name: string; logo_url: string };
 
 const LogoPlaceholder = ({ name }: { name: string }) => (
   <div
-    className="flex-shrink-0 flex items-center justify-center rounded-lg px-8 py-4 mx-4"
-    style={{
-      minWidth: 160, height: 56,
-      background: "rgba(255,255,255,0.06)",
-      border: "1px solid rgba(255,255,255,0.08)",
-    }}
+    className="flex-shrink-0 flex items-center justify-center px-6 py-3 mx-3"
+    style={{ minWidth: 140, height: 48 }}
   >
-    <span className="text-[14px] font-semibold tracking-wide whitespace-nowrap" style={{ color: "rgba(255,255,255,0.35)" }}>
+    <span className="text-[13px] font-medium tracking-wide whitespace-nowrap" style={{ color: "rgba(0,0,0,0.3)" }}>
       {name}
     </span>
   </div>
@@ -26,13 +21,13 @@ const LogoPlaceholder = ({ name }: { name: string }) => (
 
 const LogoImage = ({ client }: { client: ClientData }) => (
   <div
-    className="flex-shrink-0 flex items-center justify-center mx-8"
-    style={{ minWidth: 160, height: 56 }}
+    className="flex-shrink-0 flex items-center justify-center mx-4"
+    style={{ minWidth: 120, height: 48 }}
   >
     <img
       src={client.logo_url}
       alt={client.name}
-      className="h-12 max-w-[160px] object-contain"
+      className="h-10 max-w-[120px] object-contain"
     />
   </div>
 );
@@ -41,20 +36,18 @@ const ClientLogos = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const clientsData = meta.clients_data as ClientData[] | undefined;
   const clientNames = (meta.clients as string[]) ?? defaultClients;
-  const title = section?.title ?? "Empresas que confían en nosotros";
 
   const hasLogos = clientsData && clientsData.length > 0 && clientsData.some((c) => c.logo_url);
 
-  // Double items for seamless marquee
   const doubledData = hasLogos ? [...clientsData!, ...clientsData!] : [];
   const doubledNames = !hasLogos ? [...clientNames, ...clientNames] : [];
 
   return (
-    <section className="relative py-6 overflow-hidden" style={{ background: "#0D0D1A" }}>
-      <div className="max-w-[960px] mx-auto relative">
-        <div className="absolute left-0 top-0 bottom-0 w-24 z-10" style={{ background: "linear-gradient(to right, #0D0D1A, transparent)" }} />
-        <div className="absolute right-0 top-0 bottom-0 w-24 z-10" style={{ background: "linear-gradient(to left, #0D0D1A, transparent)" }} />
-        <div className="flex animate-marquee">
+    <section className="relative py-5 overflow-hidden" style={{ background: "#FFFFFF" }}>
+      <div className="relative overflow-hidden">
+        <div className="absolute left-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to right, #FFFFFF, transparent)" }} />
+        <div className="absolute right-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to left, #FFFFFF, transparent)" }} />
+        <div className="flex animate-marquee w-max">
           {hasLogos
             ? doubledData.map((client, i) => <LogoImage key={`${client.name}-${i}`} client={client} />)
             : doubledNames.map((name, i) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
