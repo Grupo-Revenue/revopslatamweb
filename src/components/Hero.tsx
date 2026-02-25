@@ -29,7 +29,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const cta2 = (meta.cta2_text as string) ?? defaults.cta2;
   const trust = (meta.trust_line as string) ?? defaults.trust;
   const bgImage = section?.background_image_url;
-  const bgOverlay = meta.bg_overlay !== false; // default true, set to false in metadata to disable
+  const bgOverlay = meta.bg_overlay === true; // disabled by default, set to true in metadata to enable
   const bgOpacity = typeof meta.bg_opacity === "number" ? meta.bg_opacity : 0.25;
   const sideImage = section?.image_url;
 
