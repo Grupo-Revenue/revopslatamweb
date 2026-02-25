@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import ParaCeos from "./pages/ParaCeos";
 import ParaDirectoresComerciales from "./pages/ParaDirectoresComerciales";
 import ParaMarketingDirectors from "./pages/ParaMarketingDirectors";
+import ParaCustomerSuccess from "./pages/ParaCustomerSuccess";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import CustomCursor from "./components/CustomCursor";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/para-ceos-y-gerentes-generales" element={<ParaCeos />} />
           <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
           <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
+          <Route path="/para-customer-success-y-servicio-al-cliente" element={<ParaCustomerSuccess />} />
           {/* Future admin routes */}
           {/* <Route path="/admin/*" element={<AdminLayout />} /> */}
           <Route path="*" element={<NotFound />} />
