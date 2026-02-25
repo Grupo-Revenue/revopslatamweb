@@ -115,6 +115,142 @@ function ImageField({
   );
 }
 
+function ClientLogosEditor({
+  metadata,
+  sectionId,
+  onChange,
+}: {
+  metadata: Record<string, unknown>;
+  sectionId: string;
+  onChange: (m: Record<string, unknown>) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  // clients stored as array of { name, logo_url }
+  const clients = ((metadata.clients_data as Array<{ name: string; logo_url: string }>) ?? []);
+
+  const updateClients = (updated: Array<{ name: string; logo_url: string }>) => {
+    // Also keep the flat "clients" array for backward compat
+    onChange({
+      ...metadata,
+      clients_data: updated,
+      clients: updated.map((c) => c.name),
+    });
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    setUploading(true);
+
+    const newClients = [...clients];
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop();
+      const path = `sections/${sectionId}/logos/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+      const { error } = await supabase.storage.from("media").upload(path, file, {
+        cacheControl: "3600",
+        upsert: true,
+      });
+      if (error) {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+        continue;
+      }
+      const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
+      const name = file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
+      newClients.push({ name, logo_url: urlData.publicUrl });
+    }
+    updateClients(newClients);
+    setUploading(false);
+    if (inputRef.current) inputRef.current.value = "";
+    toast({ title: "Logos subidos" });
+  };
+
+  const removeClient = (index: number) => {
+    updateClients(clients.filter((_, i) => i !== index));
+  };
+
+  const updateClientName = (index: number, name: string) => {
+    const updated = [...clients];
+    updated[index] = { ...updated[index], name };
+    updateClients(updated);
+  };
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Logos de Clientes</Label>
+        <button
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+        >
+          <Upload className="h-3 w-3" />
+          {uploading ? "Subiendo..." : "Subir logos"}
+        </button>
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={handleUpload}
+      />
+
+      {clients.length === 0 && (
+        <div
+          onClick={() => inputRef.current?.click()}
+          className="border border-dashed border-zinc-700 rounded-lg p-6 text-center cursor-pointer hover:border-zinc-500 transition-colors"
+        >
+          <Upload className="h-6 w-6 mx-auto text-zinc-600 mb-2" />
+          <p className="text-zinc-500 text-xs">Arrastra o haz clic para subir logos de clientes</p>
+          <p className="text-zinc-600 text-[10px] mt-1">PNG, SVG o JPG recomendados</p>
+        </div>
+      )}
+
+      {clients.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+          {clients.map((client, i) => (
+            <div
+              key={i}
+              className="relative group bg-zinc-800 border border-zinc-700 rounded-lg p-2 flex flex-col items-center gap-1.5"
+            >
+              <button
+                onClick={() => removeClient(i)}
+                className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+              >
+                <X className="h-3 w-3" />
+              </button>
+              <img
+                src={client.logo_url}
+                alt={client.name}
+                className="h-10 w-full object-contain"
+              />
+              <Input
+                value={client.name}
+                onChange={(e) => updateClientName(i, e.target.value)}
+                className="bg-zinc-900 border-zinc-700 text-white text-[10px] h-6 px-1.5 text-center"
+                placeholder="Nombre"
+              />
+            </div>
+          ))}
+          {/* Add more button */}
+          <button
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+            className="border border-dashed border-zinc-700 rounded-lg p-2 flex flex-col items-center justify-center text-zinc-500 hover:text-zinc-300 hover:border-zinc-500 transition-colors min-h-[72px]"
+          >
+            <Plus className="h-5 w-5" />
+            <span className="text-[10px] mt-0.5">Agregar</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 export default function AdminPageSections() {
   const { pageId } = useParams<{ pageId: string }>();
   const [page, setPage] = useState<SitePage | null>(null);
@@ -384,6 +520,15 @@ export default function AdminPageSections() {
                       sectionId={section.id}
                     />
                   </div>
+
+                  {/* Client Logos Editor (only for client-logos section) */}
+                  {section.section_key === "client-logos" && (
+                    <ClientLogosEditor
+                      metadata={meta}
+                      sectionId={section.id}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
 
                   {/* Row 6: Background color/gradient */}
                   <div>
