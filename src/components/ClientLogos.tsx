@@ -21,7 +21,7 @@ const LogoPlaceholder = ({ name }: { name: string }) => (
 
 const LogoImage = ({ client }: { client: ClientData }) => (
   <div
-    className="flex-shrink-0 flex items-center justify-center mx-6"
+    className="flex-shrink-0 flex items-center justify-center mx-2"
     style={{ minWidth: 180, height: 64 }}
   >
     <img
