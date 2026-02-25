@@ -78,7 +78,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
               {cta}
               <ArrowRight size={18} />
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
+            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent" onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
               {cta2}
             </Button>
           </motion.div>
@@ -99,8 +99,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             <img
               src={sideImage}
               alt={section?.title ?? "Hero"}
-              className="w-full h-auto rounded-2xl"
-              style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}
+            className="w-full h-auto"
             />
           </motion.div>
         )}

@@ -478,16 +478,16 @@ export default function AdminPageSections() {
                   <div className="flex items-start gap-2">
                     <div className="grid grid-cols-2 gap-2 flex-1">
                       <div>
-                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto CTA</Label>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto CTA 1</Label>
                         <Input
                           value={section.cta_text ?? ""}
                           onChange={(e) => updateSectionLocal(section.id, "cta_text", e.target.value)}
                           className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
-                          placeholder="Ej: Agendar llamada"
+                          placeholder="Ej: Descubre dónde se pierde tu revenue"
                         />
                       </div>
                       <div>
-                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">URL CTA</Label>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">URL CTA 1</Label>
                         <Input
                           value={section.cta_url ?? ""}
                           onChange={(e) => updateSectionLocal(section.id, "cta_url", e.target.value)}
@@ -502,6 +502,30 @@ export default function AdminPageSections() {
                         metadata={meta}
                         onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                       />
+                    </div>
+                  </div>
+
+                  {/* Row 4b: CTA 2 row */}
+                  <div className="flex items-start gap-2">
+                    <div className="grid grid-cols-2 gap-2 flex-1">
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto CTA 2</Label>
+                        <Input
+                          value={(meta.cta2_text as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, cta2_text: e.target.value })}
+                          className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                          placeholder="Ej: Agenda una conversación"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">URL CTA 2</Label>
+                        <Input
+                          value={(meta.cta2_url as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, cta2_url: e.target.value })}
+                          className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                          placeholder="https://..."
+                        />
+                      </div>
                     </div>
                   </div>
 
