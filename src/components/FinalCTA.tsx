@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -14,6 +15,7 @@ const fadeUp = (delay: number) => ({
 const FinalCTA = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const title = section?.title ?? "¿Listo para armar tu pista?";
   const subtitle = section?.subtitle ?? "El primer paso es entender cómo fluye tu revenue hoy.";
   const cta = section?.cta_text ?? "Agenda una conversación";
@@ -22,6 +24,7 @@ const FinalCTA = ({ section }: { section?: HomeSection }) => {
 
   return (
     <section className="relative py-24 px-6 overflow-hidden" style={{ background: "#0D0D1A", ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
       <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: -80, left: -150, background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
       <div className="absolute rounded-full pointer-events-none" style={{ width: 350, height: 350, bottom: -50, right: -100, background: "radial-gradient(circle, rgba(98,36,190,0.15) 0%, transparent 70%)", filter: "blur(120px)" }} />
 

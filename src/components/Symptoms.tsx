@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { TrendingUp, MessageSquare, Monitor, BarChart3, UserRound } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -29,12 +30,7 @@ const hexToRgba = (hex: string, alpha: number) => {
   return `rgba(${r},${g},${b},${alpha})`;
 };
 
-interface SymptomData {
-  icon: string;
-  accent: string;
-  title: string;
-  text: string;
-}
+interface SymptomData { icon: string; accent: string; title: string; text: string; }
 
 const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
   const Icon = iconMap[s.icon] || TrendingUp;
@@ -64,6 +60,7 @@ const SymptomCard = ({ s, delay }: { s: SymptomData; delay: number }) => {
 const Symptoms = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const cards = (meta.cards as SymptomData[]) ?? defaultSymptoms;
   const eyebrow = section?.subtitle ?? "¿Te suena familiar?";
   const headline = section?.title ?? "Si diriges una empresa que ya creció, probablemente reconoces esto.";
@@ -74,11 +71,12 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
 
   return (
     <section className="relative py-24 px-6" style={{ background: "#FFFFFF", ...sectionBg }}>
-      <div className="max-w-[1200px] mx-auto">
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10 max-w-[1200px] mx-auto">
         <motion.p {...fadeUp(0)} className="text-center font-semibold tracking-[0.15em] uppercase" style={{ color: "#BE1869", fontSize: "13px", ...getStyle("subtitle") }}>
           {eyebrow}
         </motion.p>
-        <motion.h2 {...fadeUp(0.1)} className="mt-4 text-center text-[28px] md:text-[40px] leading-[1.2] tracking-tight max-w-[680px] mx-auto" style={{ color: "#1A1A2E", fontWeight: 700, ...getStyle("title") }}>
+        <motion.h2 {...fadeUp(0.1)} className="mt-4 text-center text-[28px] md:text-[40px] leading-[1.2] tracking-tight max-w-[900px] mx-auto" style={{ color: "#1A1A2E", fontWeight: 700, ...getStyle("title") }}>
           {headline}
         </motion.h2>
 

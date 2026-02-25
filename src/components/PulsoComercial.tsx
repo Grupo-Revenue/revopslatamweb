@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Gauge, Zap, Compass } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -21,6 +22,7 @@ const defaultBenefits = [
 const PulsoComercial = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const benefits = (meta.benefits as typeof defaultBenefits) ?? defaultBenefits;
   const footer = (meta.footer as string) ?? "Es gratuito · Toma 5 minutos · Resultado inmediato";
   const pill = section?.subtitle ?? "Diagnóstico gratuito";
@@ -30,6 +32,7 @@ const PulsoComercial = ({ section }: { section?: HomeSection }) => {
 
   return (
     <section className="relative py-24 px-6 overflow-hidden" style={{ background: "linear-gradient(135deg, #BE1869 0%, #6224BE 100%)" }}>
+      {hasBg && <div style={bgLayerStyle} />}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-20 -left-20 w-[300px] h-[300px] rounded-full" style={{ background: "rgba(255,255,255,0.05)", filter: "blur(80px)" }} />
         <div className="absolute -bottom-20 -right-20 w-[250px] h-[250px] rounded-full" style={{ background: "rgba(255,255,255,0.08)", filter: "blur(80px)" }} />
