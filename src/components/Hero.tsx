@@ -36,12 +36,11 @@ const LogoPlaceholder = ({ name }: { name: string }) => (
 );
 
 const LogoImage = ({ client }: { client: ClientData }) => (
-  <div className="flex-shrink-0 flex items-center justify-center mx-8" style={{ minWidth: 140, height: 50 }}>
+  <div className="flex-shrink-0 flex items-center justify-center mx-3" style={{ minWidth: 120, height: 60 }}>
     <img
       src={client.logo_url}
       alt={client.name}
-      className="h-10 max-w-[160px] object-contain"
-      style={{ opacity: 0.8 }}
+      className="h-14 max-w-[180px] object-contain rounded-lg"
       onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
     />
   </div>
