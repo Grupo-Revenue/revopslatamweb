@@ -1,6 +1,6 @@
 import { Navigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { LayoutDashboard, FileText, Palette, Image, LogOut, Loader2 } from "lucide-react";
+import { LayoutDashboard, FileText, Palette, Image, Users, LogOut, Loader2 } from "lucide-react";
 import logoSrc from "@/assets/Isotipo_blanco.svg";
 
 const navItems = [
@@ -8,6 +8,7 @@ const navItems = [
   { to: "/admin/pages", icon: FileText, label: "Páginas" },
   { to: "/admin/styles", icon: Palette, label: "Estilos" },
   { to: "/admin/media", icon: Image, label: "Media" },
+  { to: "/admin/users", icon: Users, label: "Usuarios" },
 ];
 
 export default function AdminLayout() {

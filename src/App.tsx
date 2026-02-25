@@ -21,6 +21,7 @@ import AdminPages from "./pages/admin/AdminPages";
 import AdminPageSections from "./pages/admin/AdminPageSections";
 import AdminStyles from "./pages/admin/AdminStyles";
 import AdminMedia from "./pages/admin/AdminMedia";
+import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSetup from "./pages/admin/AdminSetup";
 
 const queryClient = new QueryClient();
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="pages/:pageId" element={<AdminPageSections />} />
               <Route path="styles" element={<AdminStyles />} />
               <Route path="media" element={<AdminMedia />} />
+              <Route path="users" element={<AdminUsers />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
