@@ -172,28 +172,43 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
     return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
   };
 
-  // Merge metadata track states into the hardcoded trackStates (overriding matching ids, keeping illustrations/styles)
-  const resolvedTracks: TrackState[] = metaTracks
-    ? metaTracks.map((mt) => {
-        const base = trackStates.find((ts) => ts.id === mt.id);
-        const iconMap: Record<string, typeof AlertTriangle> = { AlertTriangle, Zap, Rocket };
-        const illustMap: Record<string, () => JSX.Element> = {
-          broken: TrackBroken, incomplete: TrackIncomplete, complete: TrackComplete,
-        };
+  // Merge metadata track states with hardcoded defaults (fill empty fields from defaults)
+  const resolvedTracks: TrackState[] = (() => {
+    if (!metaTracks || !Array.isArray(metaTracks)) return trackStates;
+
+    const iconMap: Record<string, typeof AlertTriangle> = { AlertTriangle, Zap, Rocket };
+    const illustMap: Record<string, () => JSX.Element> = {
+      broken: TrackBroken, incomplete: TrackIncomplete, complete: TrackComplete,
+    };
+
+    return trackStates.map((base) => {
+      const mt = metaTracks.find((t) => t.id === base.id);
+      if (!mt) return base;
+
+      // Merge: use metadata value only if it's non-empty, otherwise keep default
+      const merged = { ...base };
+      if (mt.label) merged.label = mt.label;
+      if (mt.tagline) merged.tagline = mt.tagline;
+      if (mt.headline) merged.headline = mt.headline;
+      if (mt.validation) merged.validation = mt.validation;
+      if (mt.approach) merged.approach = mt.approach;
+      if (mt.ctaText) merged.ctaText = mt.ctaText;
+      if (mt.popular !== undefined) merged.popular = mt.popular;
+      if (Array.isArray(mt.signals) && mt.signals.length > 0) merged.signals = mt.signals;
+      if (Array.isArray(mt.consequences) && mt.consequences.length > 0) merged.consequences = mt.consequences;
+      if (mt.color) {
+        merged.color = mt.color;
         const hsl = hexToHsl(mt.color);
-        return {
-          ...mt,
-          signals: Array.isArray(mt.signals) ? mt.signals : [],
-          consequences: Array.isArray(mt.consequences) ? mt.consequences : [],
-          colorHsl: base?.colorHsl ?? hsl,
-          bgSubtle: base?.bgSubtle ?? `hsl(${hsl} / 0.04)`,
-          borderSubtle: base?.borderSubtle ?? `hsl(${hsl} / 0.15)`,
-          icon: iconMap[mt.icon] ?? AlertTriangle,
-          illustration: illustMap[mt.id] ?? base?.illustration ?? TrackBroken,
-          ctaStyle: base?.ctaStyle ?? `bg-[${mt.color}] text-white font-bold`,
-        } as TrackState;
-      })
-    : trackStates;
+        merged.colorHsl = hsl;
+        merged.bgSubtle = `hsl(${hsl} / 0.04)`;
+        merged.borderSubtle = `hsl(${hsl} / 0.15)`;
+      }
+      if (mt.icon && iconMap[mt.icon]) merged.icon = iconMap[mt.icon];
+      if (illustMap[mt.id]) merged.illustration = illustMap[mt.id];
+
+      return merged;
+    });
+  })();
 
   const selectedState = resolvedTracks.find((s) => s.id === selected);
 
