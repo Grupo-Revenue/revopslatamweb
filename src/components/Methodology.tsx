@@ -145,16 +145,46 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const [selected, setSelected] = useState<TrackStateId | null>(null);
-  const selectedState = trackStates.find((s) => s.id === selected);
+
+  const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const metaTracks = meta.track_states as Array<{
+    id: string; label: string; tagline: string; color: string; icon: string;
+    headline: string; validation: string; signals: string[]; consequences: string[];
+    approach: string; ctaText: string; popular?: boolean;
+  }> | undefined;
+
+  // Merge metadata track states into the hardcoded trackStates (overriding matching ids, keeping illustrations/styles)
+  const resolvedTracks: TrackState[] = metaTracks
+    ? metaTracks.map((mt) => {
+        const base = trackStates.find((ts) => ts.id === mt.id);
+        const iconMap: Record<string, typeof AlertTriangle> = { AlertTriangle, Zap, Rocket };
+        const illustMap: Record<string, () => JSX.Element> = {
+          broken: TrackBroken, incomplete: TrackIncomplete, complete: TrackComplete,
+        };
+        return {
+          ...mt,
+          colorHsl: base?.colorHsl ?? "0 0% 50%",
+          bgSubtle: base?.bgSubtle ?? `${mt.color}0A`,
+          borderSubtle: base?.borderSubtle ?? `${mt.color}30`,
+          icon: iconMap[mt.icon] ?? AlertTriangle,
+          illustration: illustMap[mt.id] ?? base?.illustration ?? TrackBroken,
+          ctaStyle: base?.ctaStyle ?? "",
+        } as TrackState;
+      })
+    : trackStates;
+
+  const selectedState = resolvedTracks.find((s) => s.id === selected);
 
   const eyebrow = section?.subtitle ?? "Nuestra metodología";
   const headline = section?.title ?? "El revenue no se improvisa.\nSe diseña, pieza a pieza.";
-  // Split on literal \n or on ". " to separate first line from gradient line
   const headlineParts = headline.includes("\n")
     ? headline.split("\n")
     : headline.includes(". ")
       ? [headline.split(". ")[0] + ".", headline.split(". ").slice(1).join(". ")]
       : [headline];
+
+  const selectorQuestion = (meta.selector_question as string) ?? "Identifica el estado de tu sistema comercial";
+  const introText = (meta.intro_text as string) ?? "Tu motor de ingresos es como una pista modular. Cada pieza —proceso, dato, acuerdo, automatización— determina si tu lead llega al final o se pierde en el camino.";
 
   const handleSelect = (id: TrackStateId) => {
     setSelected(selected === id ? null : id);
@@ -203,7 +233,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
             className="mt-4 text-center text-[15px] sm:text-[17px] leading-relaxed max-w-[560px] mx-auto"
             style={{ color: "hsl(var(--muted-foreground))" }}
           >
-            Tu motor de ingresos es como una pista modular. Cada pieza —proceso, dato, acuerdo, automatización— determina si tu lead llega al final o se pierde en el camino.
+            {introText}
           </motion.p>
 
           {/* ── Gradient separator ── */}
@@ -217,12 +247,12 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
             className="text-center text-[18px] sm:text-[22px] font-semibold mb-8"
             style={{ color: "hsl(var(--foreground))" }}
           >
-            Identifica el estado de tu sistema comercial
+            {selectorQuestion}
           </motion.p>
 
           {/* ── Track state cards ── */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
-            {trackStates.map((s, i) => {
+            {resolvedTracks.map((s, i) => {
               const Icon = s.icon;
               const Illust = s.illustration;
               const isSelected = selected === s.id;
