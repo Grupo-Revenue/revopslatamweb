@@ -27,6 +27,7 @@ const Hero = ({ section }: { section?: HomeSection }) => {
   const body = (section?.body ?? defaults.body) as string;
   const cta = (section?.cta_text ?? defaults.cta) as string;
   const cta2 = (meta.cta2_text as string) ?? defaults.cta2;
+  const cta2Url = (meta.cta2_url as string) ?? "";
   const trust = (meta.trust_line as string) ?? defaults.trust;
   const bgImage = section?.background_image_url;
   const bgOverlay = meta.bg_overlay === true; // disabled by default, set to true in metadata to enable
@@ -78,7 +79,9 @@ const Hero = ({ section }: { section?: HomeSection }) => {
               {cta}
               <ArrowRight size={18} />
             </Button>
-            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
+            <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent"
+              onClick={() => cta2Url && window.open(cta2Url, "_blank")}
+            >
               {cta2}
             </Button>
           </motion.div>
