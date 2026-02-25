@@ -20,6 +20,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminPages from "./pages/admin/AdminPages";
 import AdminPageSections from "./pages/admin/AdminPageSections";
 import AdminStyles from "./pages/admin/AdminStyles";
+import AdminCTAStyles from "./pages/admin/AdminCTAStyles";
 import AdminMedia from "./pages/admin/AdminMedia";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSetup from "./pages/admin/AdminSetup";
@@ -52,6 +53,7 @@ const App = () => (
               <Route path="pages" element={<AdminPages />} />
               <Route path="pages/:pageId" element={<AdminPageSections />} />
               <Route path="styles" element={<AdminStyles />} />
+              <Route path="cta-styles" element={<AdminCTAStyles />} />
               <Route path="media" element={<AdminMedia />} />
               <Route path="users" element={<AdminUsers />} />
             </Route>

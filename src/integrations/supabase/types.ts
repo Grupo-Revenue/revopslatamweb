@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      cta_styles: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          sort_order: number
+          style_key: string
+          styles: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label: string
+          sort_order?: number
+          style_key: string
+          styles?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          sort_order?: number
+          style_key?: string
+          styles?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       media_library: {
         Row: {
           alt_text: string | null

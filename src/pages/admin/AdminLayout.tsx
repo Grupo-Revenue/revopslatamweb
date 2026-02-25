@@ -1,12 +1,13 @@
 import { Navigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { LayoutDashboard, FileText, Palette, Image, Users, LogOut, Loader2 } from "lucide-react";
+import { LayoutDashboard, FileText, Palette, Image, Users, LogOut, Loader2, MousePointerClick } from "lucide-react";
 import logoSrc from "@/assets/Isotipo_blanco.svg";
 
 const navItems = [
   { to: "/admin", icon: LayoutDashboard, label: "Dashboard", exact: true },
   { to: "/admin/pages", icon: FileText, label: "Páginas" },
   { to: "/admin/styles", icon: Palette, label: "Estilos" },
+  { to: "/admin/cta-styles", icon: MousePointerClick, label: "CTAs" },
   { to: "/admin/media", icon: Image, label: "Media" },
   { to: "/admin/users", icon: Users, label: "Usuarios" },
 ];

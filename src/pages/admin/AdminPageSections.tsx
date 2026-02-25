@@ -16,6 +16,7 @@ import {
   InlineStylePopover,
   BackgroundStyleControls,
 } from "@/components/admin/SectionStyleEditor";
+import { useCTAStyles } from "@/hooks/useCTAStyles";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -259,6 +260,7 @@ export default function AdminPageSections() {
   const [saving, setSaving] = useState<string | null>(null);
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
   const [newSectionKey, setNewSectionKey] = useState("");
+  const { ctaStyles } = useCTAStyles();
 
   useEffect(() => {
     if (!pageId) return;
@@ -476,7 +478,7 @@ export default function AdminPageSections() {
 
                   {/* Row 4: CTA row */}
                   <div className="flex items-start gap-2">
-                    <div className="grid grid-cols-2 gap-2 flex-1">
+                    <div className="grid grid-cols-3 gap-2 flex-1">
                       <div>
                         <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto CTA 1</Label>
                         <Input
@@ -495,6 +497,19 @@ export default function AdminPageSections() {
                           placeholder="https://..."
                         />
                       </div>
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Estilo CTA 1</Label>
+                        <select
+                          value={(meta.cta_style_key as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, cta_style_key: e.target.value || undefined })}
+                          className="w-full mt-1 bg-zinc-800 border border-zinc-700 text-white rounded px-2 py-2 text-sm"
+                        >
+                          <option value="">— Sin estilo —</option>
+                          {ctaStyles.map((cs) => (
+                            <option key={cs.style_key} value={cs.style_key}>{cs.label}</option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
                     <div className="pt-5">
                       <InlineStylePopover
@@ -507,7 +522,7 @@ export default function AdminPageSections() {
 
                   {/* Row 4b: CTA 2 row */}
                   <div className="flex items-start gap-2">
-                    <div className="grid grid-cols-2 gap-2 flex-1">
+                    <div className="grid grid-cols-3 gap-2 flex-1">
                       <div>
                         <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto CTA 2</Label>
                         <Input
@@ -525,6 +540,19 @@ export default function AdminPageSections() {
                           className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
                           placeholder="https://..."
                         />
+                      </div>
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Estilo CTA 2</Label>
+                        <select
+                          value={(meta.cta2_style_key as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, cta2_style_key: e.target.value || undefined })}
+                          className="w-full mt-1 bg-zinc-800 border border-zinc-700 text-white rounded px-2 py-2 text-sm"
+                        >
+                          <option value="">— Sin estilo —</option>
+                          {ctaStyles.map((cs) => (
+                            <option key={cs.style_key} value={cs.style_key}>{cs.label}</option>
+                          ))}
+                        </select>
                       </div>
                     </div>
                   </div>
