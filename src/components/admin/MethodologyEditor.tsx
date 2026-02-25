@@ -133,8 +133,9 @@ export default function MethodologyEditor({ metadata, onChange }: MethodologyEdi
 
   const [expandedTrack, setExpandedTrack] = useState<string | null>(null);
 
-  const selectorQuestion = (metadata.selector_question as string) ?? "Identifica el estado de tu sistema comercial";
-  const introText = (metadata.intro_text as string) ?? "Tu motor de ingresos es como una pista modular. Cada pieza —proceso, dato, acuerdo, automatización— determina si tu lead llega al final o se pierde en el camino.";
+  // Read from both old and new keys for backward compatibility
+  const selectorQuestion = (metadata.selector_question as string) || (metadata.question as string) || "Identifica el estado de tu sistema comercial";
+  const introText = (metadata.intro_text as string) || "Tu motor de ingresos es como una pista modular. Cada pieza —proceso, dato, acuerdo, automatización— determina si tu lead llega al final o se pierde en el camino.";
 
   const updateTracks = (updated: TrackStateData[]) => {
     onChange({ ...metadata, track_states: updated });
@@ -222,7 +223,11 @@ export default function MethodologyEditor({ metadata, onChange }: MethodologyEdi
         <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Pregunta del selector</Label>
         <Input
           value={selectorQuestion}
-          onChange={(e) => onChange({ ...metadata, selector_question: e.target.value })}
+          onChange={(e) => {
+            // Write to both keys for consistency, remove old key
+            const { question: _old, ...rest } = metadata;
+            onChange({ ...rest, selector_question: e.target.value });
+          }}
           className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
         />
       </div>
