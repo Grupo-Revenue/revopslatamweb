@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ArrowRight, X, Zap, CheckCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -83,6 +84,7 @@ const trackStates = [
 
 const Methodology = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const { getStyle, getBgStyle } = useSectionStyles(section);
   const eyebrow = section?.subtitle ?? "Nuestra metodología";
   const headline = section?.title ?? "El revenue no se improvisa.\nSe diseña, pieza a pieza.";
   const headlineParts = headline.split("\n");
@@ -104,13 +106,13 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
         </svg>
       </div>
 
-      <div className="pt-24 pb-24 px-6" style={{ background: "#F5F5F8" }}>
+      <div className="pt-24 pb-24 px-6" style={{ background: "#F5F5F8", ...getBgStyle() }}>
         <div className="max-w-[1200px] mx-auto">
           {/* Eyebrow */}
           <motion.p
             {...fadeUp(0)}
             className="text-center text-[13px] font-semibold tracking-[0.15em] uppercase"
-            style={{ color: "#BE1869" }}
+            style={{ color: "#BE1869", ...getStyle("subtitle") }}
           >
             {eyebrow}
           </motion.p>
@@ -119,7 +121,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
           <motion.h2
             {...fadeUp(0.1)}
             className="mt-4 text-center text-[28px] md:text-[40px] font-bold leading-[1.2] tracking-tight max-w-[650px] mx-auto"
-            style={{ color: "#1A1A2E" }}
+            style={{ color: "#1A1A2E", ...getStyle("title") }}
           >
             {headlineParts[0]}
             {headlineParts[1] && (
@@ -134,7 +136,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
           <motion.div
             {...fadeUp(0.2)}
             className="mt-8 mx-auto max-w-[620px] text-center text-[18px] leading-relaxed space-y-4"
-            style={{ color: "#6B7280" }}
+            style={{ color: "#6B7280", ...getStyle("body") }}
           >
             {bodyParagraphs.map((p, i) => (
               <p key={i}>{p}</p>
@@ -152,7 +154,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-0 items-stretch">
             {trackStates.map((s, i) => {
               const Icon = s.icon;
-              const lColor = s.labelColor || s.accent;
+              const lColor = (s as any).labelColor || s.accent;
               return (
                 <div key={s.id} className="flex items-stretch">
                   <motion.div
@@ -231,7 +233,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
             <div className="flex flex-wrap items-center justify-center gap-3">
               {trackStates.map((s) => {
                 const isActive = selected === s.id;
-                const lColor = s.labelColor || s.accent;
+                const lColor = (s as any).labelColor || s.accent;
                 return (
                   <button
                     key={s.id}
