@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -6,14 +6,114 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Plus, Save, Trash2, GripVertical, ChevronDown, ChevronUp, Image, FileText, Paintbrush } from "lucide-react";
+import {
+  ArrowLeft, Plus, Save, Trash2, GripVertical,
+  ChevronDown, ChevronUp, Upload, X, Palette,
+} from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 import { toast } from "@/hooks/use-toast";
-import SectionStyleEditor from "@/components/admin/SectionStyleEditor";
+import {
+  InlineStylePopover,
+  BackgroundStyleControls,
+} from "@/components/admin/SectionStyleEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
+
+function ImageField({
+  label,
+  value,
+  onChange,
+  sectionId,
+}: {
+  label: string;
+  value: string;
+  onChange: (url: string) => void;
+  sectionId: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const path = `sections/${sectionId}/${Date.now()}.${ext}`;
+
+    const { error } = await supabase.storage.from("media").upload(path, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+    if (error) {
+      toast({ title: "Error al subir", description: error.message, variant: "destructive" });
+      setUploading(false);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
+    onChange(urlData.publicUrl);
+    setUploading(false);
+    toast({ title: "Imagen subida" });
+  };
+
+  return (
+    <div>
+      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">{label}</Label>
+      <div className="flex items-center gap-2 mt-1">
+        {value ? (
+          <div className="relative group">
+            <img
+              src={value}
+              alt="Preview"
+              className="h-14 w-20 object-cover rounded-md border border-zinc-700"
+            />
+            <button
+              onClick={() => onChange("")}
+              className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+            className="h-14 w-20 rounded-md border border-dashed border-zinc-700 flex flex-col items-center justify-center text-zinc-500 hover:text-zinc-300 hover:border-zinc-500 transition-colors"
+          >
+            <Upload className="h-4 w-4" />
+            <span className="text-[9px] mt-0.5">{uploading ? "Subiendo..." : "Subir"}</span>
+          </button>
+        )}
+        <Input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="URL o sube un archivo"
+          className="bg-zinc-800 border-zinc-700 text-white text-xs h-8 flex-1"
+        />
+        {value && (
+          <button
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+            className="text-zinc-500 hover:text-zinc-300 p-1"
+            title="Cambiar imagen"
+          >
+            <Upload className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFileSelect}
+      />
+    </div>
+  );
+}
 
 export default function AdminPageSections() {
   const { pageId } = useParams<{ pageId: string }>();
@@ -90,7 +190,6 @@ export default function AdminPageSections() {
       .insert({ page_id: pageId, section_key: key, sort_order: sections.length })
       .select()
       .single();
-
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
       return;
@@ -133,179 +232,188 @@ export default function AdminPageSections() {
         </div>
       </div>
 
-      {/* Sections List */}
+      {/* Sections */}
       <div className="space-y-3">
         {sections.map((section) => {
           const isExpanded = expandedSections.has(section.id);
           const isSaving = saving === section.id;
+          const meta = (section.metadata as Record<string, unknown>) ?? {};
+
           return (
             <div
               key={section.id}
               className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden"
             >
               {/* Section Header */}
-              <button
-                onClick={() => toggleExpand(section.id)}
-                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-zinc-800/50 transition-colors"
-              >
-                <GripVertical className="h-4 w-4 text-zinc-600 flex-shrink-0" />
-                <span className="text-white font-medium flex-1 text-left">{section.section_key}</span>
-                {!section.is_visible && (
-                  <span className="text-xs bg-zinc-700 text-zinc-400 px-2 py-0.5 rounded">Oculta</span>
+              <div className="flex items-center">
+                <button
+                  onClick={() => toggleExpand(section.id)}
+                  className="flex-1 flex items-center gap-3 px-4 py-3 hover:bg-zinc-800/50 transition-colors"
+                >
+                  <GripVertical className="h-4 w-4 text-zinc-600 flex-shrink-0" />
+                  <span className="text-white font-medium flex-1 text-left">{section.section_key}</span>
+                  {!section.is_visible && (
+                    <span className="text-xs bg-zinc-700 text-zinc-400 px-2 py-0.5 rounded">Oculta</span>
+                  )}
+                  {isExpanded ? (
+                    <ChevronUp className="h-4 w-4 text-zinc-400" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 text-zinc-400" />
+                  )}
+                </button>
+                {/* Quick save from header */}
+                {isExpanded && (
+                  <Button
+                    onClick={() => saveSection(section)}
+                    disabled={isSaving}
+                    size="sm"
+                    className="bg-emerald-600 hover:bg-emerald-700 mr-3 h-7 text-xs"
+                  >
+                    <Save className="h-3 w-3 mr-1" />
+                    {isSaving ? "..." : "Guardar"}
+                  </Button>
                 )}
-                {isExpanded ? (
-                  <ChevronUp className="h-4 w-4 text-zinc-400" />
-                ) : (
-                  <ChevronDown className="h-4 w-4 text-zinc-400" />
-                )}
-              </button>
+              </div>
 
-              {/* Section Editor with Tabs */}
+              {/* Section Editor — all inline, no tabs */}
               {isExpanded && (
-                <div className="px-4 pb-4 border-t border-zinc-800 pt-4">
-                  <Tabs defaultValue="content" className="w-full">
-                    <TabsList className="bg-zinc-800 border border-zinc-700 mb-4 w-full">
-                      <TabsTrigger
-                        value="content"
-                        className="flex-1 data-[state=active]:bg-zinc-700 data-[state=active]:text-white text-zinc-400 gap-1.5"
-                      >
-                        <FileText className="h-3.5 w-3.5" /> Contenido
-                      </TabsTrigger>
-                      <TabsTrigger
-                        value="styles"
-                        className="flex-1 data-[state=active]:bg-zinc-700 data-[state=active]:text-white text-zinc-400 gap-1.5"
-                      >
-                        <Paintbrush className="h-3.5 w-3.5" /> Estilos
-                      </TabsTrigger>
-                    </TabsList>
-
-                    {/* Content Tab */}
-                    <TabsContent value="content">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        {/* Left: Text fields */}
-                        <div className="space-y-3">
-                          <div>
-                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">Título</Label>
-                            <Input
-                              value={section.title ?? ""}
-                              onChange={(e) => updateSectionLocal(section.id, "title", e.target.value)}
-                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                              placeholder="Título de la sección"
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">Subtítulo</Label>
-                            <Input
-                              value={section.subtitle ?? ""}
-                              onChange={(e) => updateSectionLocal(section.id, "subtitle", e.target.value)}
-                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                              placeholder="Subtítulo"
-                            />
-                          </div>
-                          <div>
-                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">Contenido</Label>
-                            <Textarea
-                              value={section.body ?? ""}
-                              onChange={(e) => updateSectionLocal(section.id, "body", e.target.value)}
-                              className="bg-zinc-800 border-zinc-700 text-white mt-1 min-h-[100px]"
-                              placeholder="Texto del cuerpo de la sección"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Right: CTA + Images */}
-                        <div className="space-y-3">
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <Label className="text-zinc-400 text-xs uppercase tracking-wider">Texto CTA</Label>
-                              <Input
-                                value={section.cta_text ?? ""}
-                                onChange={(e) => updateSectionLocal(section.id, "cta_text", e.target.value)}
-                                className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                                placeholder="Ej: Agendar llamada"
-                              />
-                            </div>
-                            <div>
-                              <Label className="text-zinc-400 text-xs uppercase tracking-wider">URL CTA</Label>
-                              <Input
-                                value={section.cta_url ?? ""}
-                                onChange={(e) => updateSectionLocal(section.id, "cta_url", e.target.value)}
-                                className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                                placeholder="https://..."
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">
-                              <Image className="h-3 w-3 inline mr-1" /> URL Imagen
-                            </Label>
-                            <Input
-                              value={section.image_url ?? ""}
-                              onChange={(e) => updateSectionLocal(section.id, "image_url", e.target.value)}
-                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                              placeholder="URL de la imagen principal"
-                            />
-                            {section.image_url && (
-                              <img
-                                src={section.image_url}
-                                alt="Preview"
-                                className="mt-2 rounded-lg max-h-32 object-cover border border-zinc-700"
-                              />
-                            )}
-                          </div>
-
-                          <div>
-                            <Label className="text-zinc-400 text-xs uppercase tracking-wider">
-                              <Image className="h-3 w-3 inline mr-1" /> URL Fondo
-                            </Label>
-                            <Input
-                              value={section.background_image_url ?? ""}
-                              onChange={(e) => updateSectionLocal(section.id, "background_image_url", e.target.value)}
-                              className="bg-zinc-800 border-zinc-700 text-white mt-1"
-                              placeholder="URL de la imagen de fondo"
-                            />
-                          </div>
-
-                          <div className="flex items-center justify-between pt-2">
-                            <Label className="text-zinc-400 text-sm">Visible</Label>
-                            <Switch
-                              checked={section.is_visible}
-                              onCheckedChange={(v) => updateSectionLocal(section.id, "is_visible", v)}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-
-                    {/* Styles Tab */}
-                    <TabsContent value="styles">
-                      <SectionStyleEditor
-                        metadata={(section.metadata as Record<string, unknown>) ?? {}}
-                        onChange={(newMetadata) =>
-                          updateSectionLocal(section.id, "metadata", newMetadata)
-                        }
+                <div className="px-4 pb-4 border-t border-zinc-800 pt-4 space-y-4">
+                  {/* Row 1: Title with inline style */}
+                  <div className="flex items-start gap-2">
+                    <div className="flex-1">
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Título</Label>
+                      <Input
+                        value={section.title ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "title", e.target.value)}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Título de la sección"
                       />
-                    </TabsContent>
-                  </Tabs>
+                    </div>
+                    <div className="pt-5">
+                      <InlineStylePopover
+                        elementKey="title"
+                        metadata={meta}
+                        onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                      />
+                    </div>
+                  </div>
 
-                  {/* Actions */}
-                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-zinc-800">
-                    <button
-                      onClick={() => deleteSection(section)}
-                      className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-red-400 transition-colors"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" /> Eliminar sección
-                    </button>
-                    <Button
-                      onClick={() => saveSection(section)}
-                      disabled={isSaving}
-                      className="bg-emerald-600 hover:bg-emerald-700"
-                      size="sm"
-                    >
-                      <Save className="h-4 w-4 mr-1.5" />
-                      {isSaving ? "Guardando..." : "Guardar sección"}
-                    </Button>
+                  {/* Row 2: Subtitle with inline style */}
+                  <div className="flex items-start gap-2">
+                    <div className="flex-1">
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Subtítulo</Label>
+                      <Input
+                        value={section.subtitle ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "subtitle", e.target.value)}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Subtítulo"
+                      />
+                    </div>
+                    <div className="pt-5">
+                      <InlineStylePopover
+                        elementKey="subtitle"
+                        metadata={meta}
+                        onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 3: Body with inline style */}
+                  <div className="flex items-start gap-2">
+                    <div className="flex-1">
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Contenido</Label>
+                      <Textarea
+                        value={section.body ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "body", e.target.value)}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 min-h-[80px] text-sm"
+                        placeholder="Texto del cuerpo"
+                      />
+                    </div>
+                    <div className="pt-5">
+                      <InlineStylePopover
+                        elementKey="body"
+                        metadata={meta}
+                        onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 4: CTA row */}
+                  <div className="flex items-start gap-2">
+                    <div className="grid grid-cols-2 gap-2 flex-1">
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto CTA</Label>
+                        <Input
+                          value={section.cta_text ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "cta_text", e.target.value)}
+                          className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                          placeholder="Ej: Agendar llamada"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">URL CTA</Label>
+                        <Input
+                          value={section.cta_url ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "cta_url", e.target.value)}
+                          className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                          placeholder="https://..."
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-5">
+                      <InlineStylePopover
+                        elementKey="cta"
+                        metadata={meta}
+                        onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Row 5: Images side by side */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                    <ImageField
+                      label="Imagen principal"
+                      value={section.image_url ?? ""}
+                      onChange={(url) => updateSectionLocal(section.id, "image_url", url)}
+                      sectionId={section.id}
+                    />
+                    <ImageField
+                      label="Imagen de fondo"
+                      value={section.background_image_url ?? ""}
+                      onChange={(url) => updateSectionLocal(section.id, "background_image_url", url)}
+                      sectionId={section.id}
+                    />
+                  </div>
+
+                  {/* Row 6: Background color/gradient */}
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Palette className="h-3 w-3 text-zinc-500" />
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Fondo de sección</Label>
+                    </div>
+                    <BackgroundStyleControls
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  </div>
+
+                  {/* Row 7: Visibility + Delete */}
+                  <div className="flex items-center justify-between pt-2 border-t border-zinc-800">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <Switch
+                          checked={section.is_visible}
+                          onCheckedChange={(v) => updateSectionLocal(section.id, "is_visible", v)}
+                        />
+                        <span className="text-zinc-400 text-xs">Visible</span>
+                      </div>
+                      <button
+                        onClick={() => deleteSection(section)}
+                        className="flex items-center gap-1 text-xs text-zinc-600 hover:text-red-400 transition-colors"
+                      >
+                        <Trash2 className="h-3 w-3" /> Eliminar
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -324,7 +432,7 @@ export default function AdminPageSections() {
           onKeyDown={(e) => e.key === "Enter" && addSection()}
         />
         <Button onClick={addSection} variant="outline" size="sm" className="border-zinc-700 text-zinc-300">
-          <Plus className="h-4 w-4 mr-1" /> Agregar sección
+          <Plus className="h-4 w-4 mr-1" /> Agregar
         </Button>
       </div>
     </div>
