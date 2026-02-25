@@ -224,31 +224,48 @@ const Navbar = () => {
           style={{ gap: 12 }}
         >
           {/* Piece 1: Logo Box */}
+          {/* Piece 1: Logo Box with gradient border */}
           <Link
             to="/"
-            className="shrink-0 hidden lg:flex items-center justify-center"
+            className="shrink-0 hidden lg:flex"
             style={{
-              background: "#ffffff",
+              background: "linear-gradient(135deg, #BE1869, #6224BE)",
               borderRadius: 14,
-              padding: "10px 18px",
+              padding: "1.5px",
               boxShadow: "0 2px 16px rgba(0,0,0,0.10)",
             }}
           >
-            <img src={LogoWhiteColor} alt="Revops LATAM" className="h-7 w-auto" />
+            <div
+              className="flex items-center justify-center"
+              style={{
+                background: "#ffffff",
+                borderRadius: 12.5,
+                padding: "10px 18px",
+              }}
+            >
+              <img src={LogoWhiteColor} alt="Revops LATAM" className="h-7 w-auto" />
+            </div>
           </Link>
 
-          {/* Piece 2: Navigation Pill */}
+          {/* Piece 2: Navigation Pill with gradient border */}
           <div
             className="hidden lg:flex items-center flex-1"
             style={{
-              background: "#ffffff",
-              borderRadius: 50,
-              border: "1.5px solid rgba(0,0,0,0.08)",
+              background: "linear-gradient(135deg, #BE1869, #6224BE)",
+              borderRadius: 14,
+              padding: "1.5px",
               boxShadow: "0 2px 16px rgba(0,0,0,0.08)",
-              padding: "6px 6px 6px 20px",
-              gap: 8,
             }}
           >
+            <div
+              className="flex items-center w-full"
+              style={{
+                background: "#ffffff",
+                borderRadius: 12.5,
+                padding: "6px 6px 6px 20px",
+                gap: 8,
+              }}
+            >
             <div className="flex items-center" style={{ gap: 24 }}>
               <NavDropdown label="Soluciones" items={solucionesItems} />
               <ServiciosDropdown />
@@ -297,13 +314,14 @@ const Navbar = () => {
                 className="text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] hover:shadow-lg"
                 style={{
                   background: "linear-gradient(135deg, #d946a8, #7c3aed)",
-                  borderRadius: 50,
+                  borderRadius: 10,
                   padding: "10px 22px",
                   whiteSpace: "nowrap",
                 }}
               >
                 Agendar Reunión
               </button>
+            </div>
             </div>
           </div>
 
