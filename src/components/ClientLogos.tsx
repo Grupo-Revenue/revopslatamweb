@@ -26,13 +26,13 @@ const LogoPlaceholder = ({ name }: { name: string }) => (
 
 const LogoImage = ({ client }: { client: ClientData }) => (
   <div
-    className="flex-shrink-0 flex items-center justify-center mx-6"
-    style={{ minWidth: 140, height: 56 }}
+    className="flex-shrink-0 flex items-center justify-center mx-8"
+    style={{ minWidth: 160, height: 56 }}
   >
     <img
       src={client.logo_url}
       alt={client.name}
-      className="h-10 max-w-[140px] object-contain"
+      className="h-12 max-w-[160px] object-contain"
     />
   </div>
 );
@@ -50,19 +50,8 @@ const ClientLogos = ({ section }: { section?: HomeSection }) => {
   const doubledNames = !hasLogos ? [...clientNames, ...clientNames] : [];
 
   return (
-    <section className="relative py-10 overflow-hidden" style={{ background: "#0D0D1A" }}>
-      <motion.p
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="text-center text-[11px] font-semibold tracking-[0.2em] uppercase mb-6"
-        style={{ color: "rgba(255,255,255,0.3)" }}
-      >
-        {title}
-      </motion.p>
-
-      <div className="relative">
+    <section className="relative py-6 overflow-hidden" style={{ background: "#0D0D1A" }}>
+      <div className="max-w-[960px] mx-auto relative">
         <div className="absolute left-0 top-0 bottom-0 w-24 z-10" style={{ background: "linear-gradient(to right, #0D0D1A, transparent)" }} />
         <div className="absolute right-0 top-0 bottom-0 w-24 z-10" style={{ background: "linear-gradient(to left, #0D0D1A, transparent)" }} />
         <div className="flex animate-marquee">
