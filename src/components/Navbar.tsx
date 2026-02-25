@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrolled } from "@/hooks/use-scrolled";
 import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 /* ─── Nav data ─── */
@@ -37,6 +38,7 @@ const serviciosGroups = [
   },
 ];
 
+// Flat list for mobile
 const serviciosItemsFlat = serviciosGroups.flatMap((g) => g.items.map((item) => ({ label: item, to: "#" })));
 
 /* ─── Simple Dropdown ─── */
@@ -66,7 +68,7 @@ const NavDropdown = ({
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-[hsl(240_33%_14%)] hover:text-[hsl(263_70%_44%)] transition-colors duration-200"
+        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200"
       >
         {label}
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -78,14 +80,14 @@ const NavDropdown = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 min-w-[260px] bg-white border border-[hsl(220_13%_91%)] rounded-xl shadow-2xl p-4"
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 min-w-[260px] bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-4"
           >
             {items.map((item) => (
               <Link
                 key={item.label}
                 to={item.to}
                 onClick={() => setOpen(false)}
-                className="block px-4 py-3 rounded-lg text-sm text-[hsl(240_33%_14%)] hover:bg-[hsl(263_70%_44%/0.08)] hover:text-[hsl(263_70%_44%)] transition-colors duration-150"
+                className="block px-4 py-3 rounded-lg text-sm text-nav-link hover:bg-[rgba(190,24,105,0.1)] hover:text-pink transition-colors duration-150"
               >
                 {item.label}
               </Link>
@@ -118,7 +120,7 @@ const ServiciosDropdown = () => {
     <div ref={ref} className="relative" onMouseEnter={enter} onMouseLeave={leave}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1 text-sm font-medium text-[hsl(240_33%_14%)] hover:text-[hsl(263_70%_44%)] transition-colors duration-200"
+        className="flex items-center gap-1 text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200"
       >
         Servicios
         <ChevronDown size={14} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -130,13 +132,13 @@ const ServiciosDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 bg-white border border-[hsl(220_13%_91%)] rounded-xl shadow-2xl p-5"
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 bg-dark-card border border-[rgba(255,255,255,0.1)] rounded-xl shadow-2xl p-5"
             style={{ width: 480 }}
           >
             {serviciosGroups.map((group, gi) => (
               <div key={group.label}>
                 {gi > 0 && (
-                  <div className="my-2 h-px bg-[hsl(220_13%_91%)]" />
+                  <div className="my-2 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
                 )}
                 <p
                   className="px-4 pt-2 pb-1 select-none"
@@ -154,7 +156,7 @@ const ServiciosDropdown = () => {
                     key={item}
                     to="#"
                     onClick={() => setOpen(false)}
-                    className="block rounded-lg text-[14px] text-[hsl(240_33%_14%)] transition-colors duration-150"
+                    className="block rounded-lg text-[14px] text-nav-link transition-colors duration-150"
                     style={{ padding: "10px 16px" }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = `${group.color}14`;
@@ -179,6 +181,7 @@ const ServiciosDropdown = () => {
 
 /* ─── Main Navbar ─── */
 const Navbar = () => {
+  const scrolled = useScrolled(50);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -189,62 +192,42 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className="sticky top-4 z-50 mx-4 md:mx-6"
+        className={`fixed top-0 left-0 w-full z-50 border-b border-[rgba(255,255,255,0.06)] transition-all duration-300 ${
+          scrolled
+            ? "h-16 bg-dark-bg"
+            : "h-[72px] bg-[rgba(13,13,26,0.85)] backdrop-blur-lg"
+        }`}
       >
-        <div
-          className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-16"
-          style={{
-            background: "#ffffff",
-            borderRadius: 50,
-            boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
-          }}
-        >
-          {/* Logo in its own box */}
-          <Link
-            to="/"
-            className="shrink-0"
-            style={{
-              background: "#ffffff",
-              borderRadius: 16,
-              padding: "10px 16px",
-              boxShadow: "0 2px 12px rgba(0,0,0,0.10)",
-            }}
-          >
-            <img src={LogoWhiteColor} alt="Revops LATAM" className="h-7 w-auto" />
+        <div className="container max-w-7xl mx-auto h-full flex items-center justify-between px-6">
+          <Link to="/" className="shrink-0">
+            <img src={LogoWhiteColor} alt="Revops LATAM" className="h-8 w-auto" />
           </Link>
 
-          {/* Desktop links */}
           <div className="hidden lg:flex items-center gap-8">
             <NavDropdown label="Soluciones" items={solucionesItems} />
             <ServiciosDropdown />
-            <Link to="#" className="text-sm font-medium text-[hsl(240_33%_14%)] hover:text-[hsl(263_70%_44%)] transition-colors duration-200">
+            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
               Recursos
             </Link>
-            <Link to="#" className="text-sm font-medium text-[hsl(240_33%_14%)] hover:text-[hsl(263_70%_44%)] transition-colors duration-200">
+            <Link to="#" className="text-sm font-medium text-nav-link hover:text-primary-foreground transition-colors duration-200">
               Nosotros
             </Link>
           </div>
 
-          {/* Desktop right side */}
           <div className="hidden lg:flex items-center gap-5">
-            <Link to="#" className="flex items-center gap-2 text-sm font-semibold text-[hsl(263_70%_44%)]">
-              <span className="inline-block h-2 w-2 rounded-full bg-[hsl(263_70%_44%)]" />
+            <Link to="#" className="flex items-center gap-2 text-sm font-semibold text-yellow">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow" />
+              </span>
               Pulso Comercial
-              <ArrowUpRight size={14} />
             </Link>
-            <Button
-              size="sm"
-              className="text-sm font-bold uppercase tracking-[0.05em] rounded-lg bg-[hsl(263_70%_44%)] hover:bg-[hsl(263_70%_38%)] text-white shadow-none"
-              style={{ background: "hsl(263 70% 44%)" }}
-            >
-              AGENDAR REUNIÓN
-            </Button>
+            <Button size="sm" className="text-sm">Agenda una llamada</Button>
           </div>
 
-          {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            className="lg:hidden relative z-50 text-[hsl(240_33%_14%)]"
+            className="lg:hidden relative z-50 text-primary-foreground"
             aria-label="Toggle menu"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -262,7 +245,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -270,29 +252,26 @@ const Navbar = () => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 bg-white flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
+            className="fixed inset-0 z-40 bg-dark-bg flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
           >
             <MobileSection title="Soluciones" items={solucionesItems} onClose={() => setMobileOpen(false)} />
             <MobileSection title="Servicios" items={serviciosItemsFlat} onClose={() => setMobileOpen(false)} />
-            <Link to="#" onClick={() => setMobileOpen(false)} className="py-4 text-lg font-semibold text-[hsl(240_33%_14%)] border-b border-[hsl(220_13%_91%)]">
+            <Link to="#" onClick={() => setMobileOpen(false)} className="py-4 text-lg font-semibold text-primary-foreground border-b border-[rgba(255,255,255,0.06)]">
               Recursos
             </Link>
-            <Link to="#" onClick={() => setMobileOpen(false)} className="py-4 text-lg font-semibold text-[hsl(240_33%_14%)] border-b border-[hsl(220_13%_91%)]">
+            <Link to="#" onClick={() => setMobileOpen(false)} className="py-4 text-lg font-semibold text-primary-foreground border-b border-[rgba(255,255,255,0.06)]">
               Nosotros
             </Link>
 
             <div className="mt-auto pt-8 flex flex-col gap-4">
-              <Link to="#" className="flex items-center justify-center gap-2 text-base font-semibold text-[hsl(263_70%_44%)]">
-                <span className="inline-block h-2 w-2 rounded-full bg-[hsl(263_70%_44%)]" />
+              <Link to="#" className="flex items-center justify-center gap-2 text-base font-semibold text-yellow">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-yellow" />
+                </span>
                 Pulso Comercial
-                <ArrowUpRight size={14} />
               </Link>
-              <Button
-                className="w-full uppercase tracking-[0.05em] font-bold rounded-lg bg-[hsl(263_70%_44%)] hover:bg-[hsl(263_70%_38%)] text-white shadow-none"
-                style={{ background: "hsl(263 70% 44%)" }}
-              >
-                AGENDAR REUNIÓN
-              </Button>
+              <Button className="w-full">Agenda una llamada</Button>
             </div>
           </motion.div>
         )}
@@ -314,10 +293,10 @@ const MobileSection = ({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-[hsl(220_13%_91%)]">
+    <div className="border-b border-[rgba(255,255,255,0.06)]">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between py-4 text-lg font-semibold text-[hsl(240_33%_14%)]"
+        className="w-full flex items-center justify-between py-4 text-lg font-semibold text-primary-foreground"
       >
         {title}
         <ChevronDown size={18} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
@@ -333,7 +312,7 @@ const MobileSection = ({
           >
             <div className="pb-4 pl-4 space-y-1">
               {items.map((item) => (
-                <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-[hsl(220_9%_46%)] hover:text-[hsl(263_70%_44%)] transition-colors">
+                <Link key={item.label} to={item.to} onClick={onClose} className="block py-2 text-sm text-nav-link hover:text-pink transition-colors">
                   {item.label}
                 </Link>
               ))}
