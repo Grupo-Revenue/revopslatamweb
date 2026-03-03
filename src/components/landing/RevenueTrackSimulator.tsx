@@ -109,6 +109,21 @@ const CHECKPOINTS: { toggleId: string; pathIndex: number }[] = [
   { toggleId: "automation", pathIndex: 15 },
 ];
 
+const FAIL_TOOLTIPS = {
+  fail_marketing: {
+    cause: "Marketing y Ventas no están alineados.",
+    action: "Activa SLA y criterios (MQL/SQL) para que la pelota no se caiga.",
+  },
+  fail_sales: {
+    cause: "Ventas está operando sin un proceso claro.",
+    action: "Activa Pipeline y CRM por proceso para que el flujo no se atasque.",
+  },
+  fail_service: {
+    cause: "El sistema no está automatizado.",
+    action: "Activa automatización conectada para evitar loops y desvíos.",
+  },
+};
+
 // Zone hotspot areas (percentage positions on the image)
 const HOTSPOTS = [
   { label: "Marketing", zone: "marketing" as const, x: 22, y: 68 },
@@ -763,7 +778,7 @@ function TrackVisual({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -6, scale: 0.92 }}
                   transition={{ duration: 0.3 }}
-                  className="absolute z-30 rounded-xl px-4 py-3.5 backdrop-blur-md max-w-[260px]"
+                  className="absolute z-30 rounded-xl px-4 py-3.5 backdrop-blur-md max-w-[280px]"
                   style={{
                     left: `${Math.min(failInfo.pos.x + 4, 65)}%`,
                     top: `${Math.max(failInfo.pos.y - 2, 4)}%`,
@@ -779,15 +794,15 @@ function TrackVisual({
                       Fricción detectada
                     </span>
                   </div>
-                  <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    {failInfo.toggle.failMessage}
+                  <p className="text-[11px] text-primary-foreground/90 font-medium leading-relaxed">
+                    {FAIL_TOOLTIPS[simState as keyof typeof FAIL_TOOLTIPS]?.cause}
                   </p>
-                  <p className="mt-1.5 text-[10px] text-muted-foreground/60 italic">
-                    Activa "{failInfo.toggle.label}" y reintenta.
+                  <p className="mt-1.5 text-[10px] text-muted-foreground/70 italic leading-relaxed">
+                    {FAIL_TOOLTIPS[simState as keyof typeof FAIL_TOOLTIPS]?.action}
                   </p>
                   <button
                     onClick={onRetry}
-                    className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold transition-colors hover:brightness-110"
+                    className="mt-2.5 inline-flex items-center gap-1 text-[11px] font-semibold transition-colors hover:brightness-110"
                     style={{ color: "hsl(var(--pink))" }}
                   >
                     <RotateCcw size={10} /> Reintentar
@@ -804,15 +819,18 @@ function TrackVisual({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="absolute bottom-3 left-3 right-3 rounded-lg px-4 py-2.5 backdrop-blur-sm z-30"
+                  className="absolute bottom-3 left-3 right-3 rounded-lg px-4 py-3 backdrop-blur-sm z-30"
                   style={{
                     background: "hsl(var(--dark-bg) / 0.85)",
                     border: "1px solid hsl(var(--teal) / 0.25)",
                     pointerEvents: "none",
                   }}
                 >
-                  <p className="text-[11px] font-semibold" style={{ color: "hsl(var(--teal))" }}>
-                    ✓ Revenue fluye sin fricción. El sistema funciona.
+                  <p className="text-[11px] font-bold" style={{ color: "hsl(var(--teal))" }}>
+                    ✓ Flujo continuo.
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    Cuando el sistema encaja, el revenue avanza sin fricción.
                   </p>
                 </motion.div>
               )}
