@@ -19,6 +19,8 @@ import {
 import { useCTAStyles } from "@/hooks/useCTAStyles";
 import MethodologyEditor from "@/components/admin/MethodologyEditor";
 import TestimonialsEditor from "@/components/admin/TestimonialsEditor";
+import PainsEditor from "@/components/admin/PainsEditor";
+import SolutionsEditor from "@/components/admin/SolutionsEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -768,6 +770,44 @@ export default function AdminPageSections() {
                       onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                     />
                   )}
+
+                  {/* Pains Editor */}
+                  {section.section_key === "pains" && (
+                    <PainsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Solutions Editor */}
+                  {section.section_key === "solutions" && (
+                    <SolutionsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Gradient text & badge (for hero/text sections) */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto con gradiente</Label>
+                      <Input
+                        value={(meta.gradient_text as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, gradient_text: e.target.value || undefined })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Parte del título que lleva gradiente"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Badge / Etiqueta</Label>
+                      <Input
+                        value={(meta.badge as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, badge: e.target.value || undefined })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Ej: Quiénes somos"
+                      />
+                    </div>
+                  </div>
 
                   {/* Symptoms Closing Block Editor */}
                   {section.section_key === "symptoms" && (
