@@ -1,0 +1,2 @@
+INSERT INTO page_sections (page_id, section_key, sort_order, title, subtitle, is_visible, metadata)
+VALUES ('cbe2e52c-b76f-44b0-bcb8-ee6032674644', 'testimonials', 65, 'Casos de éxito', 'TESTIMONIOS', true, '{"videos": []}');
