@@ -11,56 +11,31 @@ const fadeUp = (delay: number) => ({
 const MasAllaDelRevenue = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const title = section?.title ?? "Más allá del revenue";
+  const p1 = (meta.p1 as string) ?? "Parte de lo que generamos como empresa lo destinamos a apoyar iniciativas que promueven una cosmovisión bíblica y la predicación del Evangelio a lo largo de Latinoamérica.";
+  const p2 = (meta.p2 as string) ?? "Creemos que las empresas pueden ser instrumentos de bien en el mundo — no solo máquinas de generar utilidades. Y que el crecimiento sano de una empresa tiene un efecto real en las personas que trabajan en ella, en las familias que dependen de ella, y en las comunidades que la rodean.";
+  const p3 = (meta.p3 as string) ?? "Ese es el para qué detrás de cada pista que diseñamos.";
+  const closingQuote = (meta.closing_quote as string) ?? "Una empresa crece cuando su pista está bien armada. Y una pista bien armada hace bien al mundo.";
 
-  const p1 =
-    (meta.p1 as string) ??
-    "Parte de lo que generamos como empresa lo destinamos a apoyar iniciativas que promueven una cosmovisión bíblica y la predicación del Evangelio a lo largo de Latinoamérica.";
-  const p2 =
-    (meta.p2 as string) ??
-    "Creemos que las empresas pueden ser instrumentos de bien en el mundo — no solo máquinas de generar utilidades. Y que el crecimiento sano de una empresa tiene un efecto real en las personas que trabajan en ella, en las familias que dependen de ella, y en las comunidades que la rodean.";
-  const p3 =
-    (meta.p3 as string) ?? "Ese es el para qué detrás de cada pista que diseñamos.";
-  const closingQuote =
-    (meta.closing_quote as string) ??
-    "Una empresa crece cuando su pista está bien armada. Y una pista bien armada hace bien al mundo.";
+  // Split closing quote to highlight "hace bien al mundo" in green
+  const highlightPhrase = "hace bien al mundo";
+  const quoteparts = closingQuote.split(highlightPhrase);
 
   return (
     <section
-      className="relative py-24 sm:py-32 px-6 sm:px-10 overflow-hidden"
+      className="relative overflow-hidden"
       style={{
-        background: "linear-gradient(160deg, #0D0D1A 0%, #1A0A2E 40%, #2A1040 70%, #1A0A2E 100%)",
+        background: "linear-gradient(135deg, rgba(20,14,8,1) 0%, rgba(15,18,12,1) 50%, rgba(8,12,10,1) 100%)",
+        borderTop: "1px solid rgba(0,229,160,0.08)",
+        padding: "120px 5%",
+        textAlign: "center",
       }}
     >
-      {/* Warm glows */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 600,
-          height: 600,
-          top: -100,
-          left: -200,
-          background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 65%)",
-          filter: "blur(120px)",
-        }}
-      />
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 500,
-          height: 500,
-          bottom: -100,
-          right: -150,
-          background: "radial-gradient(circle, rgba(98,36,190,0.15) 0%, transparent 65%)",
-          filter: "blur(120px)",
-        }}
-      />
-
-      <div className="relative z-10 max-w-[780px] mx-auto text-center">
+      <div className="relative z-10 max-w-[780px] mx-auto">
         <motion.div {...fadeUp(0)} className="flex items-center justify-center gap-4 mb-8">
           <div className="h-px w-10" style={{ background: "rgba(255,255,255,0.2)" }} />
           <span
-            className="text-[12px] font-semibold tracking-[0.2em] uppercase"
-            style={{ color: "hsl(var(--teal))" }}
+            className="font-semibold tracking-[0.2em] uppercase"
+            style={{ fontSize: "0.75rem", color: "hsl(var(--green))" }}
           >
             Propósito
           </span>
@@ -69,8 +44,13 @@ const MasAllaDelRevenue = ({ section }: { section?: HomeSection }) => {
 
         <motion.h2
           {...fadeUp(0.06)}
-          className="text-[36px] sm:text-[44px] md:text-[52px] font-bold leading-[1.1] tracking-tight"
-          style={{ color: "white" }}
+          style={{
+            fontSize: "clamp(2.25rem, 5vw, 3.25rem)",
+            fontWeight: 800,
+            lineHeight: 1.1,
+            letterSpacing: "-0.03em",
+            color: "#F0F4FF",
+          }}
         >
           {title}
         </motion.h2>
@@ -80,30 +60,39 @@ const MasAllaDelRevenue = ({ section }: { section?: HomeSection }) => {
             <motion.p
               key={i}
               {...fadeUp(0.14 + i * 0.06)}
-              className="text-[17px] sm:text-[19px] leading-[1.8]"
-              style={{ color: "rgba(255,255,255,0.6)" }}
+              style={{ fontSize: "1.1rem", lineHeight: 1.8, color: "rgba(240,244,255,0.6)" }}
             >
               {p}
             </motion.p>
           ))}
         </div>
 
-        {/* Central closing quote — the emotional climax */}
+        {/* Closing quote with green highlight */}
         <motion.div
           {...fadeUp(0.38)}
-          className="mt-16 sm:mt-20 pt-10 border-t"
-          style={{ borderColor: "rgba(255,255,255,0.08)" }}
+          className="mt-16 sm:mt-20 pt-10"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
         >
           <p
-            className="text-[26px] sm:text-[34px] md:text-[40px] font-bold leading-[1.15] tracking-tight"
             style={{
-              background: "linear-gradient(135deg, hsl(var(--teal)), hsl(var(--blue)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              fontSize: "clamp(2rem, 5vw, 4rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.03em",
+              lineHeight: 1.15,
+              maxWidth: 900,
+              margin: "0 auto",
+              color: "#F0F4FF",
             }}
           >
-            {closingQuote}
+            {quoteparts.length > 1 ? (
+              <>
+                {quoteparts[0]}
+                <span style={{ color: "hsl(var(--green))" }}>{highlightPhrase}</span>
+                {quoteparts[1]}
+              </>
+            ) : (
+              closingQuote
+            )}
           </p>
         </motion.div>
       </div>

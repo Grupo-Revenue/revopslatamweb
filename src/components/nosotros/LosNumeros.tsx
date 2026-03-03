@@ -1,73 +1,112 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 24 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.6, delay, ease: "easeOut" as const },
-});
-
 const defaultMetrics = [
-  { value: "+50", label: "empresas diagnosticadas en LATAM" },
-  { value: "$200MM USD", label: "en pipeline analizado" },
-  { value: "7", label: "servicios especializados en Revenue Operations" },
-  { value: "1 convicción", label: "una empresa crece cuando su pista está bien armada" },
+  { value: "+50", numericTarget: 50, prefix: "+", suffix: "", label: "empresas diagnosticadas en LATAM" },
+  { value: "$200MM USD", numericTarget: 200, prefix: "$", suffix: "MM USD", label: "en pipeline analizado" },
+  { value: "7", numericTarget: 7, prefix: "", suffix: "", label: "servicios especializados en Revenue Operations" },
+  { value: "1 convicción", numericTarget: null, prefix: "", suffix: "", label: "una empresa crece cuando su pista está bien armada" },
 ];
+
+function AnimatedNumber({ target, prefix, suffix, duration = 2000 }: { target: number | null; prefix: string; suffix: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  useEffect(() => {
+    if (!isInView || hasAnimated || target === null) return;
+    setHasAnimated(true);
+    let start = 0;
+    const increment = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 16);
+    return () => clearInterval(timer);
+  }, [isInView, hasAnimated, target, duration]);
+
+  if (target === null) {
+    return <span ref={ref}>1 convicción</span>;
+  }
+
+  return <span ref={ref}>{prefix}{count}{suffix}</span>;
+}
 
 const LosNumeros = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const title = section?.title ?? "Lo que hemos construido hasta aquí";
-  const metrics = Array.isArray(meta.metrics)
-    ? (meta.metrics as typeof defaultMetrics)
-    : defaultMetrics;
+  const metrics = Array.isArray(meta.metrics) ? (meta.metrics as typeof defaultMetrics) : defaultMetrics;
 
   return (
     <section
-      className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden"
+      className="relative overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #0D0D1A 0%, #1A0A2E 50%, #0D1A2E 100%)",
+        background: "rgba(0,229,160,0.04)",
+        borderTop: "1px solid rgba(0,229,160,0.1)",
+        borderBottom: "1px solid rgba(0,229,160,0.1)",
+        padding: "80px 5%",
       }}
     >
-      {/* Subtle pink glow */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 500,
-          height: 300,
-          bottom: -50,
-          left: "20%",
-          background: "radial-gradient(ellipse, rgba(190,24,105,0.1) 0%, transparent 70%)",
-          filter: "blur(100px)",
-        }}
-      />
-
       <div className="relative z-10 max-w-[1100px] mx-auto">
         <motion.h2
-          {...fadeUp(0)}
-          className="text-[28px] sm:text-[36px] md:text-[44px] font-bold leading-[1.12] tracking-tight text-center mb-14"
-          style={{ color: "white" }}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14"
+          style={{
+            fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+            fontWeight: 800,
+            letterSpacing: "-0.03em",
+            color: "#F0F4FF",
+          }}
         >
           {title}
         </motion.h2>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
+        <div
+          className="flex flex-wrap justify-center"
+          style={{ gap: 80 }}
+        >
           {metrics.map((m, i) => (
-            <motion.div key={i} {...fadeUp(0.1 + i * 0.08)} className="text-center">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 + i * 0.08 }}
+              className="text-center"
+            >
               <span
-                className="block text-[36px] sm:text-[44px] md:text-[52px] font-bold leading-none tracking-tight"
+                className="block"
                 style={{
-                  background: "var(--gradient-brand)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
+                  fontSize: "clamp(3rem, 6vw, 5rem)",
+                  fontWeight: 800,
+                  color: "hsl(var(--green))",
+                  letterSpacing: "-0.04em",
+                  lineHeight: 1,
                 }}
               >
-                {m.value}
+                <AnimatedNumber
+                  target={m.numericTarget ?? null}
+                  prefix={m.prefix}
+                  suffix={m.suffix}
+                />
               </span>
               <p
-                className="mt-3 text-[14px] sm:text-[15px] leading-[1.5]"
-                style={{ color: "rgba(255,255,255,0.55)" }}
+                style={{
+                  fontSize: "0.85rem",
+                  color: "rgba(240,244,255,0.5)",
+                  marginTop: 8,
+                  maxWidth: 160,
+                }}
               >
                 {m.label}
               </p>
