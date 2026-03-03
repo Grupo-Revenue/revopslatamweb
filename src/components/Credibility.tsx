@@ -136,7 +136,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                 </p>
               </div> :
 
-            <div className="relative h-[420px] overflow-hidden cert-mask">
+            <div className="relative h-[420px] overflow-hidden cert-mask mt-8 mr-6 sm:mr-10 lg:mr-12">
                 <style>{`
                   .cert-mask {
                     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
@@ -160,7 +160,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                     animation-play-state: paused;
                   }
                 `}</style>
-                <div className="flex gap-3 h-full">
+                <div className="flex gap-4 h-full">
                   {/* Column A — scrolls UP */}
                   <div className="flex-1 overflow-hidden">
                     <div className="cert-col-up flex flex-col gap-3">
@@ -189,12 +189,12 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
 function CertCard({ cert }: {cert: CertItem;}) {
   return (
-    <div className="flex items-center justify-center px-1 py-1">
-      <div className="bg-white rounded-xl shadow-md p-4 w-full flex items-center justify-center">
+    <div className="flex items-center justify-center px-1 py-1" style={{ height: 'calc((420px - 16px) / 3)' }}>
+      <div className="bg-white rounded-xl shadow-md p-3 w-full h-full flex items-center justify-center">
         <img
           src={cert.image_url}
           alt={cert.name || "Certificación"}
-          className="w-full h-auto object-contain transition-transform duration-300 hover:scale-105"
+          className="w-full h-full object-contain transition-transform duration-300 hover:scale-105"
           loading="lazy" />
       </div>
     </div>);
