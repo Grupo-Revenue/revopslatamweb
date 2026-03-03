@@ -160,10 +160,10 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                     animation-play-state: paused;
                   }
                 `}</style>
-                <div className="flex gap-4 h-full">
+                <div className="flex gap-3 h-full">
                   {/* Column A — scrolls UP */}
                   <div className="flex-1 overflow-hidden">
-                    <div className="cert-col-up flex flex-col gap-4">
+                    <div className="cert-col-up flex flex-col gap-3">
                       {[...colA, ...colA].map((cert, i) =>
                     <CertCard key={`a-${i}`} cert={cert} />
                     )}
@@ -171,7 +171,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                   </div>
                   {/* Column B — scrolls DOWN */}
                   <div className="flex-1 overflow-hidden">
-                    <div className="cert-col-down flex flex-col gap-4">
+                    <div className="cert-col-down flex flex-col gap-3">
                       {[...colB, ...colB].map((cert, i) =>
                     <CertCard key={`b-${i}`} cert={cert} />
                     )}
@@ -189,12 +189,12 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
 function CertCard({ cert }: {cert: CertItem;}) {
   return (
-    <div className="flex items-center justify-center px-2 py-2">
-      <div className="bg-white rounded-xl shadow-md p-3 inline-flex items-center justify-center">
+    <div className="flex items-center justify-center px-1 py-1">
+      <div className="bg-white rounded-xl shadow-md p-4 w-full flex items-center justify-center">
         <img
           src={cert.image_url}
           alt={cert.name || "Certificación"}
-          className="w-full max-w-[184px] h-auto object-contain transition-transform duration-300 hover:scale-105"
+          className="w-full h-auto object-contain transition-transform duration-300 hover:scale-105"
           loading="lazy" />
       </div>
     </div>);
