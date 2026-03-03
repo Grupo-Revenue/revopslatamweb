@@ -14,7 +14,6 @@ interface TeamMember {
   role: string;
   description: string;
   photo_url?: string;
-  is_founder?: boolean;
 }
 
 const defaultTeam: TeamMember[] = [
@@ -27,109 +26,74 @@ const defaultTeam: TeamMember[] = [
 const ElEquipo = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const title = section?.title ?? "Las personas detrás de la pista";
-  const subtitle = section?.subtitle ?? "No contratamos técnicos. Buscamos personas íntegras, enseñables y apasionadas por hacer bien su trabajo. Porque una pista solo es tan buena como las personas que la diseñan.";
+  const subtitle =
+    section?.subtitle ??
+    "No contratamos técnicos. Buscamos personas íntegras, enseñables y apasionadas por hacer bien su trabajo. Porque una pista solo es tan buena como las personas que la diseñan.";
   const team = Array.isArray(meta.team) ? (meta.team as TeamMember[]) : defaultTeam;
 
   return (
-    <section className="relative" style={{ padding: "100px 5%" }}>
+    <section className="relative py-20 sm:py-28 px-6 sm:px-10" style={{ background: "white" }}>
       <div className="relative z-10 max-w-[1100px] mx-auto">
         <motion.h2
           {...fadeUp(0)}
-          style={{
-            fontSize: "clamp(2rem, 5vw, 3rem)",
-            fontWeight: 800,
-            lineHeight: 1.12,
-            letterSpacing: "-0.03em",
-            color: "#F0F4FF",
-          }}
+          className="text-[32px] sm:text-[40px] md:text-[48px] font-bold leading-[1.12] tracking-tight"
+          style={{ color: "#1A1A2E" }}
         >
           {title}
         </motion.h2>
 
         <motion.p
           {...fadeUp(0.08)}
-          className="max-w-[700px]"
-          style={{ marginTop: 20, fontSize: "1.05rem", lineHeight: 1.7, color: "rgba(240,244,255,0.5)" }}
+          className="mt-5 text-[17px] sm:text-[18px] leading-[1.7] max-w-[700px]"
+          style={{ color: "#6B7280" }}
         >
           {subtitle}
         </motion.p>
 
-        {/* Asymmetric team grid */}
-        <div
-          className="mt-14 grid gap-6"
-          style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          }}
-        >
+        {/* Editorial grid — asymmetric sizing for visual interest */}
+        <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
           {team.map((member, i) => (
-            <motion.div
-              key={i}
-              {...fadeUp(0.12 + i * 0.06)}
-              className="group relative overflow-hidden cursor-pointer"
-              style={{
-                borderRadius: 16,
-                ...(member.is_founder ? { gridColumn: "span 2", maxWidth: 400 } : {}),
-              }}
-            >
+            <motion.div key={i} {...fadeUp(0.12 + i * 0.06)} className="group">
               {/* Photo area */}
               <div
-                className="relative overflow-hidden"
-                style={{
-                  aspectRatio: "4/5",
-                  background: "rgba(15,21,32,1)",
-                  borderRadius: 16,
-                }}
+                className="relative aspect-[3/4] rounded-2xl overflow-hidden mb-5 flex items-center justify-center"
+                style={{ background: "#F3F4F6" }}
               >
                 {member.photo_url ? (
                   <img
                     src={member.photo_url}
                     alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                    style={{ filter: "grayscale(20%)" }}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
-                    onMouseEnter={(e) => (e.currentTarget.style.filter = "grayscale(0%)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.filter = "grayscale(20%)")}
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full gap-3">
-                    <User size={48} style={{ color: "rgba(240,244,255,0.15)" }} />
-                    <span style={{ fontSize: "0.8rem", color: "rgba(240,244,255,0.25)" }}>
+                  <div className="flex flex-col items-center gap-3">
+                    <User size={48} style={{ color: "#D1D5DB" }} />
+                    <span className="text-[13px]" style={{ color: "#9CA3AF" }}>
                       Foto próximamente
                     </span>
                   </div>
                 )}
-
-                {/* Overlay */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 transition-transform duration-300 group-hover:translate-y-0"
-                  style={{
-                    background: "linear-gradient(transparent, rgba(8,12,16,0.95))",
-                    padding: "48px 24px 24px",
-                    transform: "translateY(8px)",
-                  }}
-                >
-                  <p style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: 4, color: "#F0F4FF" }}>
-                    {member.name}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "hsl(var(--green))",
-                      letterSpacing: "0.06em",
-                      textTransform: "uppercase",
-                      marginBottom: 8,
-                    }}
-                  >
-                    {member.role}
-                  </p>
-                  <p
-                    className="opacity-0 translate-y-2 transition-all duration-300 delay-100 group-hover:opacity-100 group-hover:translate-y-0"
-                    style={{ fontSize: "0.85rem", color: "rgba(240,244,255,0.6)", fontStyle: "italic" }}
-                  >
-                    {member.description}
-                  </p>
-                </div>
               </div>
+
+              <h3
+                className="text-[20px] sm:text-[22px] font-bold leading-[1.2]"
+                style={{ color: "#1A1A2E" }}
+              >
+                {member.name}
+              </h3>
+              <p
+                className="mt-1 text-[14px] font-semibold tracking-wide uppercase"
+                style={{ color: "hsl(var(--pink))" }}
+              >
+                {member.role}
+              </p>
+              <p
+                className="mt-2 text-[15px] leading-[1.6]"
+                style={{ color: "#6B7280" }}
+              >
+                {member.description}
+              </p>
             </motion.div>
           ))}
         </div>
