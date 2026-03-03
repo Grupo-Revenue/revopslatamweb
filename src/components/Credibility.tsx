@@ -1,8 +1,11 @@
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { TrendingUp, Cog, Compass } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
+
+const defaultHighlightIcons = [TrendingUp, Cog, Compass];
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -76,6 +79,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                   const lines = body.split("\n").filter(Boolean);
                   const elements: React.ReactNode[] = [];
                   let bulletBuffer: string[] = [];
+                  let plainBuffer: string[] = [];
 
                   const flushBullets = () => {
                     if (bulletBuffer.length > 0) {
@@ -88,15 +92,38 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                     }
                   };
 
+                  const flushPlain = () => {
+                    if (plainBuffer.length > 0) {
+                      elements.push(
+                        <div key={`cards-${elements.length}`} className="my-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                          {plainBuffer.map((text, j) => {
+                            const Icon = defaultHighlightIcons[j % defaultHighlightIcons.length];
+                            return (
+                              <div key={j} className="flex flex-col items-center text-center gap-3 p-4 rounded-xl bg-white/60 backdrop-blur-sm shadow-sm">
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: "rgba(7,121,215,0.1)" }}>
+                                  <Icon className="w-5 h-5" style={{ color: "#0779D7" }} />
+                                </div>
+                                <p className="text-[15px] font-medium leading-snug" style={{ color: "#1A1A2E" }}>{text.trim()}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                      plainBuffer = [];
+                    }
+                  };
+
                   lines.forEach((line) => {
                     if (line.trimStart().startsWith("- ")) {
+                      flushPlain();
                       bulletBuffer.push(line.trimStart().slice(2));
                     } else {
                       flushBullets();
-                      elements.push(<p key={`p-${elements.length}`} className="my-2">{line.trim()}</p>);
+                      plainBuffer.push(line.trim());
                     }
                   });
                   flushBullets();
+                  flushPlain();
                   return elements;
                 })()}
               </motion.div>
