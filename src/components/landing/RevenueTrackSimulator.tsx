@@ -1,431 +1,513 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, X, RotateCcw } from "lucide-react";
+import { ArrowRight, RotateCcw, Play } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import pistaImg from "@/assets/pista-negro.svg";
 
-/* ─── Types ─── */
-type Checkpoint = {
-  id: string;
-  label: string;
-  description: string;
-  fixed: boolean;
+/* ─── Toggle definitions ─── */
+type Toggle = { id: string; label: string; zone: "marketing" | "ventas" | "servicio" };
+
+const TOGGLES: Toggle[] = [
+  { id: "sla", label: "SLA Marketing → Ventas", zone: "marketing" },
+  { id: "pipeline", label: "Pipeline definido", zone: "marketing" },
+  { id: "stages", label: "Etapas con criterios (MQL/SQL)", zone: "ventas" },
+  { id: "automation", label: "Automatización conectada", zone: "ventas" },
+  { id: "crm", label: "CRM configurado por proceso", zone: "servicio" },
+];
+
+/* ─── Ball path keyframes (SVG-relative %) ─── */
+const PATH_POINTS = [
+  { x: 12, y: 85 },  // start
+  { x: 22, y: 68 },  // after sla
+  { x: 38, y: 52 },  // after pipeline
+  { x: 55, y: 38 },  // after stages
+  { x: 72, y: 22 },  // after automation
+  { x: 88, y: 8 },   // finish (crm)
+];
+
+const HOTSPOTS: { label: string; zone: "marketing" | "ventas" | "servicio"; x: number; y: number }[] = [
+  { label: "Marketing", zone: "marketing", x: 18, y: 76 },
+  { label: "Ventas", zone: "ventas", x: 48, y: 44 },
+  { label: "Servicio", zone: "servicio", x: 78, y: 16 },
+];
+
+const ZONE_COLORS: Record<string, string> = {
+  marketing: "var(--pink)",
+  ventas: "var(--purple)",
+  servicio: "var(--teal)",
 };
 
-const DEFAULT_CHECKPOINTS: Checkpoint[] = [
-  {
-    id: "crm",
-    label: "CRM & Datos",
-    description: "Tu CRM tiene datos, pero nadie confía en ellos. Las decisiones se toman con hojas de cálculo paralelas.",
-    fixed: false,
-  },
-  {
-    id: "process",
-    label: "Proceso Comercial",
-    description: "No hay un proceso unificado. Cada vendedor tiene su propio método y no hay visibilidad del pipeline real.",
-    fixed: false,
-  },
-  {
-    id: "alignment",
-    label: "Alineación MKT ↔ Ventas",
-    description: "Marketing genera leads que ventas ignora. No hay SLA, no hay feedback loop, no hay acuerdo sobre qué es un lead calificado.",
-    fixed: false,
-  },
-  {
-    id: "metrics",
-    label: "Métricas & Forecast",
-    description: "El forecast es un ejercicio de ficción. No hay métricas claras por etapa ni visibilidad real de conversión.",
-    fixed: false,
-  },
-];
+/* ─── Failure messages per toggle ─── */
+const FAILURE_MSG: Record<string, string> = {
+  sla: "Sin SLA, los leads se pierden entre equipos.",
+  pipeline: "Sin pipeline, no hay visibilidad de oportunidades.",
+  stages: "Sin criterios claros, todo es un 'lead caliente'.",
+  automation: "Sin automatización, el equipo pierde tiempo en tareas manuales.",
+  crm: "Sin CRM alineado al proceso, los datos mienten.",
+};
 
-/* ─── Ball path positions (percentage along the track for each state) ─── */
-const BALL_POSITIONS = [
-  { x: "8%", y: "82%" },   // Start
-  { x: "30%", y: "62%" },  // After checkpoint 1
-  { x: "52%", y: "42%" },  // After checkpoint 2
-  { x: "72%", y: "25%" },  // After checkpoint 3
-  { x: "90%", y: "10%" },  // After checkpoint 4 (finish!)
-];
-
-/* ─── Component ─── */
 export default function RevenueTrackSimulator({ section }: { section?: HomeSection }) {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
-  const title = section?.title ?? "El problema no es tu equipo.";
-  const subtitle = section?.subtitle ?? "Es el sistema donde opera.";
   const ctaText = section?.cta_text ?? "Diagnosticar mi sistema";
   const ctaUrl = section?.cta_url ?? "#";
 
-  const [checkpoints, setCheckpoints] = useState<Checkpoint[]>(() => {
-    const metaItems = meta.checkpoints as Array<{ id: string; label: string; description: string }> | undefined;
-    if (metaItems?.length) {
-      return metaItems.map((c) => ({ ...c, fixed: false }));
+  const [active, setActive] = useState<Record<string, boolean>>({});
+  const [started, setStarted] = useState(false);
+
+  const activeCount = TOGGLES.filter((t) => active[t.id]).length;
+  const allActive = activeCount === TOGGLES.length;
+
+  // Ball stops at the first inactive toggle
+  const ballStopIndex = useMemo(() => {
+    if (!started) return 0;
+    for (let i = 0; i < TOGGLES.length; i++) {
+      if (!active[TOGGLES[i].id]) return i;
     }
-    return DEFAULT_CHECKPOINTS.map((c) => ({ ...c }));
-  });
+    return TOGGLES.length;
+  }, [active, started]);
 
-  const fixedCount = checkpoints.filter((c) => c.fixed).length;
-  const allFixed = fixedCount === checkpoints.length;
+  const ballPos = PATH_POINTS[ballStopIndex];
 
-  // Ball stops at the first broken checkpoint
-  const ballStopIndex = (() => {
-    for (let i = 0; i < checkpoints.length; i++) {
-      if (!checkpoints[i].fixed) return i;
-    }
-    return checkpoints.length; // all fixed → finish
-  })();
+  // First inactive toggle (for failure message)
+  const firstBroken = started ? TOGGLES.find((t) => !active[t.id]) : null;
 
-  const ballPos = BALL_POSITIONS[ballStopIndex];
-
-  const toggleCheckpoint = useCallback((id: string) => {
-    setCheckpoints((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, fixed: !c.fixed } : c))
-    );
-  }, []);
-
-  const resetAll = useCallback(() => {
-    setCheckpoints((prev) => prev.map((c) => ({ ...c, fixed: false })));
-  }, []);
-
-  // Keyboard support for toggles
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent, id: string) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        toggleCheckpoint(id);
-      }
-    },
-    [toggleCheckpoint]
+  // Zone status
+  const zoneActive = useCallback(
+    (zone: string) => TOGGLES.filter((t) => t.zone === zone).every((t) => active[t.id]),
+    [active]
   );
+
+  const toggle = useCallback((id: string) => {
+    setActive((prev) => ({ ...prev, [id]: !prev[id] }));
+    if (!started) setStarted(true);
+  }, [started]);
+
+  const reset = useCallback(() => {
+    setActive({});
+    setStarted(false);
+  }, []);
+
+  const handleStart = useCallback(() => {
+    setStarted(true);
+  }, []);
 
   return (
     <section
       className="relative py-20 sm:py-28 px-4 sm:px-6 overflow-hidden"
       style={{ background: "hsl(var(--dark-bg))" }}
-      aria-label="Simulador interactivo: el problema es el sistema"
+      aria-label="Simulador: el problema es el sistema"
     >
-      {/* Ambient glow */}
+      {/* Ambient */}
       <div
         className="absolute pointer-events-none"
         style={{
-          width: 500,
-          height: 500,
-          top: -100,
-          right: -200,
-          background: "radial-gradient(circle, hsl(var(--pink) / 0.08) 0%, transparent 70%)",
-          filter: "blur(120px)",
+          width: 600, height: 600, top: -150, left: -200,
+          background: "radial-gradient(circle, hsl(var(--pink) / 0.06) 0%, transparent 70%)",
+          filter: "blur(140px)",
         }}
       />
 
-      <div className="relative z-10 max-w-[1100px] mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-section font-bold leading-[1.12] tracking-tight text-primary-foreground"
-          >
-            {title}
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-3 text-lg sm:text-xl text-muted-foreground max-w-[600px] mx-auto"
-          >
-            {subtitle}
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-4 text-sm text-muted-foreground/70 italic"
-          >
-            Activa cada pieza del sistema y observa cómo fluye el revenue →
-          </motion.p>
+      <div className="relative z-10 max-w-[1140px] mx-auto">
+        {/* ═══ MOBILE: visual first ═══ */}
+        <div className="block lg:hidden mb-10">
+          <TrackVisual
+            ballPos={ballPos}
+            started={started}
+            allActive={allActive}
+            firstBroken={firstBroken}
+            zoneActive={zoneActive}
+          />
         </div>
 
-        {/* Main grid: Track visual + Controls */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          {/* LEFT: Track visualization */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="relative aspect-[3/4] sm:aspect-square lg:aspect-[3/4] max-w-[480px] mx-auto w-full"
-          >
-            {/* Track image */}
-            <img
-              src={pistaImg}
-              alt="Pista de revenue — metáfora visual del sistema comercial"
-              className="w-full h-full object-contain opacity-60"
-              loading="lazy"
-            />
-
-            {/* Ball */}
-            <motion.div
-              className="absolute z-20 will-change-transform"
-              animate={{
-                left: ballPos.x,
-                top: ballPos.y,
-                scale: allFixed ? [1, 1.3, 1] : 1,
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+          {/* ═══ LEFT: Content ═══ */}
+          <div className="flex flex-col">
+            {/* Eyebrow */}
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-block self-start px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-[0.15em] mb-5"
+              style={{
+                border: "1px solid hsl(var(--pink) / 0.3)",
+                color: "hsl(var(--pink))",
               }}
-              transition={{
-                type: "spring",
-                stiffness: 80,
-                damping: 18,
-                duration: 0.8,
-              }}
-              style={{ marginLeft: -16, marginTop: -16 }}
             >
-              <div
-                className="w-8 h-8 rounded-full shadow-lg"
+              14 Años Construyendo Revenue
+            </motion.span>
+
+            {/* H2 */}
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.05 }}
+              className="text-[26px] sm:text-[32px] md:text-[38px] font-bold leading-[1.1] tracking-tight text-primary-foreground"
+            >
+              El problema no es tu equipo.{" "}
+              <span className="text-gradient-brand">Es el sistema donde operan.</span>
+            </motion.h2>
+
+            {/* Subtext */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.12 }}
+              className="mt-4 text-base sm:text-lg text-muted-foreground"
+            >
+              Haz correr el revenue por tu pista.
+            </motion.p>
+
+            {/* Start button */}
+            {!started && (
+              <motion.button
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                onClick={handleStart}
+                className="mt-6 self-start inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-transform duration-200 hover:scale-105 focus-visible:ring-2 focus-visible:ring-primary outline-none"
                 style={{
-                  background: allFixed
-                    ? "hsl(var(--teal))"
-                    : `hsl(var(--pink))`,
-                  boxShadow: allFixed
-                    ? "0 0 24px hsl(var(--teal) / 0.5)"
-                    : "0 0 20px hsl(var(--pink) / 0.4)",
-                }}
-              />
-              {/* Pulse ring when blocked */}
-              {!allFixed && (
-                <motion.div
-                  className="absolute inset-0 rounded-full"
-                  style={{
-                    border: "2px solid hsl(var(--pink) / 0.4)",
-                  }}
-                  animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                />
-              )}
-            </motion.div>
-
-            {/* Checkpoint markers on track */}
-            {checkpoints.map((cp, i) => {
-              const pos = BALL_POSITIONS[i];
-              const isFixed = cp.fixed;
-              return (
-                <motion.div
-                  key={cp.id}
-                  className="absolute z-10"
-                  style={{
-                    left: pos.x,
-                    top: pos.y,
-                    marginLeft: -12,
-                    marginTop: -12,
-                  }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                >
-                  <div
-                    className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-colors duration-300"
-                    style={{
-                      background: isFixed
-                        ? "hsl(var(--teal) / 0.2)"
-                        : "hsl(var(--pink) / 0.15)",
-                      border: `2px solid ${isFixed ? "hsl(var(--teal))" : "hsl(var(--pink) / 0.5)"}`,
-                      color: isFixed
-                        ? "hsl(var(--teal))"
-                        : "hsl(var(--pink))",
-                    }}
-                  >
-                    {isFixed ? <Check size={12} /> : <X size={10} />}
-                  </div>
-                </motion.div>
-              );
-            })}
-
-            {/* Progress label */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
-              <div className="flex gap-1">
-                {checkpoints.map((cp, i) => (
-                  <div
-                    key={i}
-                    className="w-2 h-2 rounded-full transition-colors duration-300"
-                    style={{
-                      background: cp.fixed
-                        ? "hsl(var(--teal))"
-                        : "hsl(var(--muted-foreground) / 0.3)",
-                    }}
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-muted-foreground">
-                {fixedCount}/{checkpoints.length}
-              </span>
-            </div>
-          </motion.div>
-
-          {/* RIGHT: Controls */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Piezas del sistema
-              </span>
-              {fixedCount > 0 && (
-                <button
-                  onClick={resetAll}
-                  className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary-foreground transition-colors"
-                  aria-label="Reiniciar simulador"
-                >
-                  <RotateCcw size={12} />
-                  Reiniciar
-                </button>
-              )}
-            </div>
-
-            {checkpoints.map((cp, i) => (
-              <motion.div
-                key={cp.id}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + i * 0.08 }}
-                role="switch"
-                aria-checked={cp.fixed}
-                tabIndex={0}
-                onKeyDown={(e) => handleKeyDown(e, cp.id)}
-                onClick={() => toggleCheckpoint(cp.id)}
-                className="group relative rounded-xl p-5 cursor-pointer transition-all duration-300 select-none outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                style={{
-                  background: cp.fixed
-                    ? "hsl(var(--teal) / 0.06)"
-                    : "hsl(var(--dark-card))",
-                  border: `1px solid ${
-                    cp.fixed
-                      ? "hsl(var(--teal) / 0.25)"
-                      : "hsl(var(--pink) / 0.1)"
-                  }`,
+                  background: "hsl(var(--pink))",
+                  color: "hsl(var(--primary-foreground))",
                 }}
               >
-                <div className="flex items-start gap-4">
-                  {/* Toggle indicator */}
-                  <div
-                    className="mt-0.5 w-10 h-6 rounded-full flex items-center px-0.5 transition-colors duration-300 shrink-0"
-                    style={{
-                      background: cp.fixed
-                        ? "hsl(var(--teal))"
-                        : "hsl(var(--muted-foreground) / 0.2)",
-                    }}
-                  >
-                    <motion.div
-                      className="w-5 h-5 rounded-full bg-primary-foreground shadow-sm"
-                      animate={{ x: cp.fixed ? 16 : 0 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    />
+                <Play size={16} />
+                Iniciar flujo
+              </motion.button>
+            )}
+
+            {/* Toggles — show after start */}
+            <AnimatePresence>
+              {started && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.35 }}
+                  className="mt-6 space-y-2.5"
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                      Piezas del sistema
+                    </span>
+                    {activeCount > 0 && (
+                      <button
+                        onClick={reset}
+                        className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-primary-foreground transition-colors"
+                        aria-label="Reiniciar"
+                      >
+                        <RotateCcw size={11} /> Reset
+                      </button>
+                    )}
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h4
-                        className="text-sm sm:text-base font-semibold transition-colors duration-300"
+                  {TOGGLES.map((t, i) => {
+                    const on = !!active[t.id];
+                    const color = ZONE_COLORS[t.zone];
+                    return (
+                      <motion.div
+                        key={t.id}
+                        initial={{ opacity: 0, x: -12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.06 }}
+                        role="switch"
+                        aria-checked={on}
+                        aria-label={t.label}
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            toggle(t.id);
+                          }
+                        }}
+                        onClick={() => toggle(t.id)}
+                        className="group flex items-center gap-3 rounded-lg px-4 py-3 cursor-pointer transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-primary select-none"
                         style={{
-                          color: cp.fixed
-                            ? "hsl(var(--teal))"
-                            : "hsl(var(--primary-foreground))",
+                          background: on
+                            ? `hsl(${color} / 0.07)`
+                            : "hsl(var(--dark-card))",
+                          border: `1px solid ${on ? `hsl(${color} / 0.25)` : "hsl(var(--muted-foreground) / 0.08)"}`,
                         }}
                       >
-                        {cp.label}
-                      </h4>
-                      {cp.fixed && (
-                        <motion.span
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                        {/* Mini toggle */}
+                        <div
+                          className="w-9 h-[22px] rounded-full flex items-center px-[2px] shrink-0 transition-colors duration-200"
                           style={{
-                            background: "hsl(var(--teal) / 0.15)",
-                            color: "hsl(var(--teal))",
+                            background: on
+                              ? `hsl(${color})`
+                              : "hsl(var(--muted-foreground) / 0.18)",
                           }}
                         >
-                          Activo
-                        </motion.span>
-                      )}
-                    </div>
-                    <p className="mt-1 text-xs sm:text-sm leading-relaxed text-muted-foreground">
-                      {cp.description}
-                    </p>
-                  </div>
-                </div>
+                          <motion.div
+                            className="w-[18px] h-[18px] rounded-full shadow-sm"
+                            style={{ background: "hsl(var(--primary-foreground))" }}
+                            animate={{ x: on ? 14 : 0 }}
+                            transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                          />
+                        </div>
 
-                {/* Accent bar */}
-                <span
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-full transition-colors duration-300"
-                  style={{
-                    background: cp.fixed ? "hsl(var(--teal))" : "hsl(var(--pink) / 0.4)",
-                  }}
-                />
-              </motion.div>
-            ))}
+                        <span
+                          className="text-[13px] sm:text-sm font-medium transition-colors duration-200"
+                          style={{
+                            color: on
+                              ? `hsl(${color})`
+                              : "hsl(var(--muted-foreground))",
+                          }}
+                        >
+                          {t.label}
+                        </span>
+                      </motion.div>
+                    );
+                  })}
 
-            {/* Status message */}
-            <AnimatePresence mode="wait">
-              {allFixed ? (
+                  {/* Microcopy */}
+                  <p className="text-[11px] text-muted-foreground/60 italic pt-1 pl-1">
+                    Activa piezas para eliminar fricción.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ── CTA final (all ON) ── */}
+            <AnimatePresence>
+              {allActive && started && (
                 <motion.div
-                  key="success"
-                  initial={{ opacity: 0, y: 12 }}
+                  key="cta-success"
+                  initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  className="rounded-xl p-6 text-center mt-6"
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, delay: 0.15 }}
+                  className="mt-8 rounded-xl p-5 sm:p-6"
                   style={{
-                    background: "hsl(var(--teal) / 0.08)",
+                    background: "hsl(var(--teal) / 0.07)",
                     border: "1px solid hsl(var(--teal) / 0.2)",
                   }}
                 >
-                  <p className="text-base sm:text-lg font-semibold" style={{ color: "hsl(var(--teal))" }}>
-                    Revenue fluye. El sistema funciona.
+                  <p className="text-sm sm:text-base font-semibold" style={{ color: "hsl(var(--teal))" }}>
+                    ✓ Listo: el sistema está alineado.
                   </p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Esto es lo que pasa cuando las piezas encajan. ¿Listo para diagnosticar tu sistema real?
+                  <p className="mt-1.5 text-xs sm:text-sm text-muted-foreground">
+                    Esto es lo que pasa cuando las piezas encajan. ¿Quieres saber cómo está tu sistema real?
                   </p>
                   <motion.a
                     href={ctaUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="inline-flex items-center gap-2 mt-5 px-6 py-3 rounded-full font-semibold text-sm transition-transform duration-200 hover:scale-105"
+                    transition={{ delay: 0.35 }}
+                    className="inline-flex items-center gap-2 mt-4 px-5 py-2.5 rounded-full font-semibold text-sm transition-transform duration-200 hover:scale-105"
                     style={{
                       background: "hsl(var(--pink))",
                       color: "hsl(var(--primary-foreground))",
                     }}
                   >
                     {ctaText}
-                    <ArrowRight size={16} />
+                    <ArrowRight size={15} />
                   </motion.a>
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="blocked"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="rounded-xl p-4 text-center mt-6"
-                  style={{
-                    background: "hsl(var(--pink) / 0.05)",
-                    border: "1px solid hsl(var(--pink) / 0.1)",
-                  }}
-                >
-                  <p className="text-sm text-muted-foreground">
-                    <span style={{ color: "hsl(var(--pink))" }} className="font-semibold">
-                      Revenue bloqueado.
-                    </span>{" "}
-                    Activa las {checkpoints.length - fixedCount} pieza{checkpoints.length - fixedCount !== 1 ? "s" : ""} restante{checkpoints.length - fixedCount !== 1 ? "s" : ""} para desbloquearlo.
-                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+
+          {/* ═══ RIGHT: Track visual (desktop only) ═══ */}
+          <div className="hidden lg:block">
+            <TrackVisual
+              ballPos={ballPos}
+              started={started}
+              allActive={allActive}
+              firstBroken={firstBroken}
+              zoneActive={zoneActive}
+            />
+          </div>
         </div>
       </div>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════
+   Track Visual Sub-component
+   ═══════════════════════════════════════════ */
+type TrackVisualProps = {
+  ballPos: { x: number; y: number };
+  started: boolean;
+  allActive: boolean;
+  firstBroken: Toggle | null;
+  zoneActive: (zone: string) => boolean;
+};
+
+function TrackVisual({ ballPos, started, allActive, firstBroken, zoneActive }: TrackVisualProps) {
+  return (
+    <div
+      className="relative w-full rounded-2xl overflow-hidden"
+      style={{
+        background: "hsl(var(--dark-card))",
+        border: "1px solid hsl(var(--muted-foreground) / 0.06)",
+      }}
+    >
+      <div className="relative aspect-[4/5] sm:aspect-[3/4] p-4 sm:p-6">
+        {/* Track image */}
+        <img
+          src={pistaImg}
+          alt="Pista de revenue"
+          className="w-full h-full object-contain transition-opacity duration-500"
+          style={{ opacity: started ? 0.7 : 0.35 }}
+          loading="lazy"
+        />
+
+        {/* Hotspot labels */}
+        {HOTSPOTS.map((hp) => {
+          const isActive = zoneActive(hp.zone);
+          const color = ZONE_COLORS[hp.zone];
+          return (
+            <div
+              key={hp.zone}
+              className="absolute flex items-center gap-1.5 transition-opacity duration-300"
+              style={{
+                left: `${hp.x}%`,
+                top: `${hp.y}%`,
+                opacity: started ? 1 : 0.3,
+              }}
+            >
+              <div
+                className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{
+                  background: isActive ? `hsl(${color})` : "hsl(var(--muted-foreground) / 0.3)",
+                  boxShadow: isActive ? `0 0 8px hsl(${color} / 0.5)` : "none",
+                }}
+              />
+              <span
+                className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider transition-colors duration-300"
+                style={{
+                  color: isActive ? `hsl(${color})` : "hsl(var(--muted-foreground) / 0.4)",
+                }}
+              >
+                {hp.label}
+              </span>
+            </div>
+          );
+        })}
+
+        {/* Ball */}
+        {started && (
+          <motion.div
+            className="absolute z-20 will-change-transform"
+            animate={{
+              left: `${ballPos.x}%`,
+              top: `${ballPos.y}%`,
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 70,
+              damping: 16,
+              mass: 1.2,
+            }}
+            style={{ marginLeft: -14, marginTop: -14 }}
+          >
+            {/* Glow */}
+            <div
+              className="absolute inset-[-8px] rounded-full transition-all duration-500"
+              style={{
+                background: allActive
+                  ? "hsl(var(--teal) / 0.15)"
+                  : "hsl(var(--pink) / 0.12)",
+                filter: "blur(10px)",
+              }}
+            />
+
+            {/* Core ball */}
+            <motion.div
+              className="relative w-7 h-7 rounded-full"
+              animate={
+                allActive
+                  ? { scale: [1, 1.2, 1] }
+                  : firstBroken
+                  ? { x: [0, -2, 2, -1, 0] } // shake when blocked
+                  : {}
+              }
+              transition={
+                allActive
+                  ? { duration: 0.6, repeat: 2 }
+                  : { duration: 0.4, repeat: Infinity, repeatDelay: 2 }
+              }
+              style={{
+                background: allActive
+                  ? "hsl(var(--teal))"
+                  : "hsl(var(--pink))",
+                boxShadow: allActive
+                  ? "0 0 20px hsl(var(--teal) / 0.6), 0 0 40px hsl(var(--teal) / 0.2)"
+                  : "0 0 16px hsl(var(--pink) / 0.5)",
+              }}
+            />
+
+            {/* Pulse ring when blocked */}
+            {!allActive && (
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ border: "2px solid hsl(var(--pink) / 0.3)" }}
+                animate={{ scale: [1, 2], opacity: [0.5, 0] }}
+                transition={{ duration: 1.6, repeat: Infinity }}
+              />
+            )}
+          </motion.div>
+        )}
+
+        {/* Failure message overlay */}
+        <AnimatePresence>
+          {firstBroken && started && (
+            <motion.div
+              key="fail"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              className="absolute bottom-4 left-4 right-4 rounded-lg px-4 py-3 backdrop-blur-sm"
+              style={{
+                background: "hsl(var(--dark-bg) / 0.85)",
+                border: "1px solid hsl(var(--pink) / 0.15)",
+              }}
+            >
+              <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
+                <span style={{ color: "hsl(var(--pink))" }} className="font-semibold">
+                  ⚠ Bloqueo:{" "}
+                </span>
+                {FAILURE_MSG[firstBroken.id]}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Success overlay */}
+        <AnimatePresence>
+          {allActive && started && (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute bottom-4 left-4 right-4 rounded-lg px-4 py-3 backdrop-blur-sm"
+              style={{
+                background: "hsl(var(--dark-bg) / 0.85)",
+                border: "1px solid hsl(var(--teal) / 0.2)",
+              }}
+            >
+              <p className="text-[11px] sm:text-xs font-medium" style={{ color: "hsl(var(--teal))" }}>
+                ✓ Revenue fluye sin fricción.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Idle state */}
+        {!started && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-xs text-muted-foreground/40 font-medium tracking-wide uppercase">
+              Presiona "Iniciar flujo" para comenzar
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
