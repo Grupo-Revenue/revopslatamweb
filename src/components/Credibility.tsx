@@ -39,7 +39,7 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
 
   return (
     <section
-      className="relative py-20 sm:py-28 px-4 sm:px-6 overflow-hidden"
+      className="relative px-4 sm:px-6 overflow-hidden"
       style={{ background: "#F5F5F8", ...getBgStyle() }}
     >
       {hasBg && <div style={bgLayerStyle} />}
