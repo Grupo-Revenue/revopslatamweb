@@ -46,6 +46,34 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
   certs.forEach((c, i) => (i % 2 === 0 ? colA : colB).push(c));
 
   const speed = Math.max(certs.length * 3, 14);
+  const textColumnRef = useRef<HTMLDivElement | null>(null);
+  const [desktopCarouselHeight, setDesktopCarouselHeight] = useState(480);
+
+  useEffect(() => {
+    const element = textColumnRef.current;
+    if (!element || typeof window === "undefined") return;
+
+    const topOffset = 16; // mt-4
+    const updateHeight = () => {
+      const isDesktop = window.innerWidth >= 1024;
+      if (!isDesktop) {
+        setDesktopCarouselHeight(480);
+        return;
+      }
+
+      setDesktopCarouselHeight(Math.max(element.offsetHeight - topOffset, 420));
+    };
+
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(element);
+    window.addEventListener("resize", updateHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, [body, bodyAsList, certs.length, eyebrow, title]);
 
   return (
     <section
@@ -57,7 +85,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
       <div className="relative z-10 w-full">
         <div className="flex flex-col lg:flex-row items-stretch">
           {/* Left — Text (50%) aligned to main container */}
-          <div className="lg:w-1/2 lg:sticky lg:top-32 py-10 lg:py-16 px-6 sm:px-10 lg:pr-12 lg:pl-[calc((100vw-1100px)/2)] xl:pl-[calc((100vw-1100px)/2)]">
+          <div ref={textColumnRef} className="lg:w-1/2 lg:sticky lg:top-32 py-10 lg:py-16 px-6 sm:px-10 lg:pr-12 lg:pl-[calc((100vw-1100px)/2)] xl:pl-[calc((100vw-1100px)/2)]">
             <motion.p
               {...fadeUp(0)}
               className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
@@ -136,7 +164,10 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                 </p>
               </div> :
 
-            <div className="relative h-[480px] overflow-hidden cert-mask mt-4 mr-6 sm:mr-10 lg:mr-12">
+            <div
+              className="relative h-[480px] lg:h-[var(--credibility-height)] overflow-hidden cert-mask mt-4 mr-6 sm:mr-10 lg:mr-12"
+              style={{ "--credibility-height": `${desktopCarouselHeight}px` } as React.CSSProperties}
+            >
                 <style>{`
                   .cert-mask {
                     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 4%, black 100%);
@@ -189,7 +220,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
 function CertCard({ cert }: {cert: CertItem;}) {
   return (
-    <div className="flex items-center justify-center px-1 py-1" style={{ height: 'calc((480px - 16px) / 3)' }}>
+    <div className="flex items-center justify-center px-1 py-1 h-[calc((480px-16px)/3)] lg:h-[calc((var(--credibility-height)-16px)/3)]">
       <div className="bg-white rounded-xl shadow-md p-3 w-full h-full flex items-center justify-center">
         <img
           src={cert.image_url}
