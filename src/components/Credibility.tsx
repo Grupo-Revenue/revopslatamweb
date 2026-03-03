@@ -153,7 +153,7 @@ function CertCard({ cert }: {cert: CertItem;}) {
         <img
           src={cert.image_url}
           alt={cert.name || "Certificación"}
-          className="w-full max-w-[140px] h-auto object-contain transition-transform duration-300 hover:scale-105"
+          className="w-full max-w-[160px] h-auto object-contain transition-transform duration-300 hover:scale-105"
           loading="lazy" />
       </div>
     </div>);
