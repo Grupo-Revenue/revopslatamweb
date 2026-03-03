@@ -606,6 +606,15 @@ export default function AdminPageSections() {
                     </div>
                   </div>
 
+                  {/* Body as bullet list toggle */}
+                  <div className="flex items-center gap-3">
+                    <Switch
+                      checked={!!(meta.body_as_list)}
+                      onCheckedChange={(v) => updateSectionLocal(section.id, "metadata", { ...meta, body_as_list: v })}
+                    />
+                    <Label className="text-zinc-400 text-xs">Mostrar contenido como viñetas (separar por líneas)</Label>
+                  </div>
+
                   {/* Row 4: CTA row */}
                   <div className="flex items-start gap-2">
                     <div className="grid grid-cols-3 gap-2 flex-1">
