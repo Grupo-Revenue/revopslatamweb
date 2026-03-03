@@ -15,6 +15,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DynamicCTA from "@/components/DynamicCTA";
+import RevenueTrackSimulator from "@/components/landing/RevenueTrackSimulator";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -470,7 +471,7 @@ export default function DynamicLandingPage({ slug }: { slug: string }) {
     <div className="min-h-screen bg-dark-bg text-primary-foreground">
       <Navbar />
       <HeroSection section={getSection("hero")} />
-      <TextBlockSection section={getSection("challenge")} defaultBg="hsl(240 33% 6%)" />
+      <RevenueTrackSimulator section={getSection("challenge")} />
       <PainsSection section={getSection("pains")} />
       <TextBlockSection section={getSection("bridge")} defaultBg="hsl(240 33% 6%)" />
       <SolutionsSection section={getSection("solutions")} />
