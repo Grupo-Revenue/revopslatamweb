@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { ArrowRight, RotateCcw, Play, AlertTriangle, CheckCircle2 } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
-import pistaImg from "@/assets/pista-negro.svg";
+import TrackSVG from "@/components/landing/TrackSVG";
 
 /* ═══════════════════════════════════════════════════════════
    STATE MACHINE
@@ -73,37 +73,37 @@ const TOGGLES: Toggle[] = [
 */
 type PathPoint = { x: number; y: number };
 
-// Percentage coordinates relative to the image container
+// Percentage coordinates mapped to TrackSVG viewBox (800×1100)
 const TRACK_PATH: PathPoint[] = [
-  // START — bottom circular area
-  { x: 46, y: 92 },
-  { x: 43, y: 86 },
-  { x: 38, y: 78 },
-  // MARKETING ZONE — lower ramps (checkpoint after index 4)
-  { x: 30, y: 72 },
-  { x: 28, y: 65 },
-  { x: 42, y: 58 },   // CP1: sla — index 5
-  { x: 55, y: 54 },
-  { x: 58, y: 48 },
-  { x: 45, y: 42 },   // CP2: stages — index 8
-  // VENTAS ZONE — middle zig-zag (checkpoint after index 11)
-  { x: 35, y: 38 },
-  { x: 55, y: 32 },
-  { x: 65, y: 28 },   // CP3: pipeline — index 11
-  { x: 75, y: 24 },
-  { x: 80, y: 20 },   // CP4: crm — index 13
-  // SERVICIO ZONE — gear mechanism at top
-  { x: 85, y: 15 },
-  { x: 88, y: 10 },   // CP5: automation — index 15
+  // START
+  { x: 15, y: 84.5 },   // start flag area
+  { x: 24, y: 76 },     // ascending steps
+  { x: 36, y: 70 },     // ramp 1 start
+  // MARKETING ZONE
+  { x: 49, y: 64.5 },   // mid ramp 1
+  { x: 50, y: 64 },     // CP1: sla — index 4
+  { x: 62, y: 58.5 },   // ramp 1 end
+  { x: 75, y: 53 },     // ramp 2 start
+  { x: 52, y: 42 },     // CP2: stages — index 7
+  // VENTAS ZONE
+  { x: 40, y: 47 },     // ramp 3 start
+  { x: 28, y: 53 },     // mid ramp 3
+  { x: 41, y: 46 },     // ramp 3 turn
+  { x: 55, y: 41 },     // CP3: pipeline — index 11
+  { x: 67, y: 35.5 },   // ramp 4
+  { x: 79, y: 31 },     // CP4: crm — index 13
+  // SERVICIO ZONE
+  { x: 82, y: 25.5 },   // approach gear
+  { x: 85, y: 22 },     // CP5: automation — index 15
   // FINISH
-  { x: 82, y: 6 },
-  { x: 75, y: 4 },
+  { x: 88, y: 18 },     // past gear
+  { x: 92.5, y: 13.5 }, // goal
 ];
 
 // Checkpoint definitions: which path index corresponds to each toggle
 const CHECKPOINTS: { toggleId: string; pathIndex: number }[] = [
-  { toggleId: "sla", pathIndex: 5 },
-  { toggleId: "stages", pathIndex: 8 },
+  { toggleId: "sla", pathIndex: 4 },
+  { toggleId: "stages", pathIndex: 7 },
   { toggleId: "pipeline", pathIndex: 11 },
   { toggleId: "crm", pathIndex: 13 },
   { toggleId: "automation", pathIndex: 15 },
@@ -124,12 +124,6 @@ const FAIL_TOOLTIPS = {
   },
 };
 
-// Zone hotspot areas (percentage positions on the image)
-const HOTSPOTS = [
-  { label: "Marketing", zone: "marketing" as const, x: 22, y: 68 },
-  { label: "Ventas", zone: "ventas" as const, x: 42, y: 34 },
-  { label: "Servicio", zone: "servicio" as const, x: 90, y: 12 },
-];
 
 const ZONE_COLORS: Record<string, string> = {
   marketing: "var(--pink)",
@@ -643,78 +637,20 @@ function TrackVisual({
         {showConfetti && <Confetti />}
 
         <div className="relative p-3 sm:p-5">
-          {/* Base track image */}
-          <img
-            src={pistaImg}
-            alt="Pista de revenue — sistema comercial"
-            className="w-full h-auto transition-opacity duration-700 select-none"
-            style={{ opacity: isIdle ? 0.3 : 0.7 }}
-            loading="lazy"
-            draggable={false}
+          {/* Inline SVG Track */}
+          <TrackSVG
+            opacity={isIdle ? 0.35 : 0.85}
+            activeZones={{
+              marketing: zoneActive("marketing"),
+              sales: zoneActive("ventas"),
+              service: zoneActive("servicio"),
+            }}
+            glowZone={glowZone}
+            className="w-full h-auto select-none"
           />
 
-          {/* ─── Overlay layer for ball, hotspots, tooltips ─── */}
+          {/* ─── Overlay layer for ball and tooltips ─── */}
           <div className="absolute inset-0 m-3 sm:m-5" style={{ pointerEvents: "none" }}>
-            {/* Zone glow effects */}
-            {HOTSPOTS.map((hp) => {
-              const color = ZONE_COLORS[hp.zone];
-              const isGlowing = glowZone === hp.zone;
-              return (
-                <AnimatePresence key={`glow-${hp.zone}`}>
-                  {isGlowing && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 0.2, scale: 1.3 }}
-                      exit={{ opacity: 0, scale: 0.7 }}
-                      transition={{ duration: 0.8 }}
-                      className="absolute pointer-events-none rounded-full"
-                      style={{
-                        left: `${hp.x - 10}%`,
-                        top: `${hp.y - 6}%`,
-                        width: "20%",
-                        height: "12%",
-                        background: `radial-gradient(circle, hsl(${color} / 0.4) 0%, transparent 70%)`,
-                        filter: "blur(24px)",
-                      }}
-                    />
-                  )}
-                </AnimatePresence>
-              );
-            })}
-
-            {/* Hotspot labels */}
-            {HOTSPOTS.map((hp) => {
-              const active = zoneActive(hp.zone);
-              const color = ZONE_COLORS[hp.zone];
-              return (
-                <div
-                  key={hp.zone}
-                  className="absolute flex items-center gap-1.5 transition-all duration-500 pointer-events-none"
-                  style={{
-                    left: `${hp.x}%`,
-                    top: `${hp.y}%`,
-                    opacity: isIdle ? 0.2 : 1,
-                  }}
-                >
-                  <div
-                    className="w-2.5 h-2.5 rounded-full transition-all duration-400"
-                    style={{
-                      background: active ? `hsl(${color})` : "hsl(var(--muted-foreground) / 0.2)",
-                      boxShadow: active ? `0 0 10px hsl(${color} / 0.5)` : "none",
-                    }}
-                  />
-                  <span
-                    className="text-[9px] sm:text-[11px] font-bold uppercase tracking-wider transition-colors duration-400"
-                    style={{
-                      color: active ? `hsl(${color})` : "hsl(var(--muted-foreground) / 0.3)",
-                      textShadow: active ? `0 0 8px hsl(${color} / 0.3)` : "none",
-                    }}
-                  >
-                    {hp.label}
-                  </span>
-                </div>
-              );
-            })}
 
             {/* ─── BALL ─── */}
             {!isIdle && (
