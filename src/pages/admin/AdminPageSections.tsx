@@ -614,6 +614,91 @@ export default function AdminPageSections() {
                     />
                   )}
 
+                  {/* Symptoms Closing Block Editor */}
+                  {section.section_key === "symptoms" && (
+                    <div className="space-y-3 p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
+                      <Label className="text-zinc-400 text-xs font-semibold uppercase tracking-wider">Bloque de cierre</Label>
+                      
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-zinc-500 text-[10px] uppercase">Línea 1</Label>
+                          <Input
+                            value={(meta.closing_line1 as string) ?? ""}
+                            onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, closing_line1: e.target.value || undefined })}
+                            className="bg-zinc-800 border-zinc-700 text-white text-xs mt-0.5"
+                            placeholder="No es un problema de talento."
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-zinc-500 text-[10px] uppercase">Línea 2 (bold)</Label>
+                          <Input
+                            value={(meta.closing_line2 as string) ?? ""}
+                            onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, closing_line2: e.target.value || undefined })}
+                            className="bg-zinc-800 border-zinc-700 text-white text-xs mt-0.5"
+                            placeholder="Es un problema de sistema."
+                          />
+                        </div>
+                      </div>
+
+                      <ImageField
+                        label="Imagen de fondo del bloque"
+                        value={(meta.closing_bg_image as string) ?? ""}
+                        onChange={(url) => updateSectionLocal(section.id, "metadata", { ...meta, closing_bg_image: url || undefined })}
+                        sectionId={section.id}
+                      />
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <Label className="text-zinc-500 text-[10px] uppercase">Color de fondo</Label>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <input
+                              type="color"
+                              value={(meta.closing_bg_color as string) || "#0D0D1A"}
+                              onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, closing_bg_color: e.target.value })}
+                              className="w-6 h-6 rounded border border-zinc-700 cursor-pointer bg-transparent flex-shrink-0"
+                            />
+                            <Input
+                              value={(meta.closing_bg_color as string) ?? ""}
+                              onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, closing_bg_color: e.target.value || undefined })}
+                              placeholder="#0D0D1A"
+                              className="bg-zinc-800 border-zinc-700 text-white text-xs h-7 px-2"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <Label className="text-zinc-500 text-[10px] uppercase">Opacidad imagen</Label>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <Input
+                              type="number"
+                              min={0}
+                              max={1}
+                              step={0.05}
+                              value={typeof meta.closing_bg_opacity === "number" ? meta.closing_bg_opacity : 1}
+                              onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, closing_bg_opacity: parseFloat(e.target.value) || 1 })}
+                              className="bg-zinc-800 border-zinc-700 text-white text-xs h-7 w-20 px-2"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase">Gradiente de fondo</Label>
+                        <Input
+                          value={(meta.closing_gradient as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, closing_gradient: e.target.value || undefined })}
+                          placeholder="linear-gradient(135deg, #0D0D1A 0%, #1a1a3e 50%, #0D0D1A 100%)"
+                          className="bg-zinc-800 border-zinc-700 text-white text-xs mt-0.5"
+                        />
+                        {(meta.closing_gradient as string) && (
+                          <div
+                            className="mt-1.5 h-6 rounded border border-zinc-700"
+                            style={{ background: meta.closing_gradient as string }}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Row 6: Background color/gradient */}
                   <div>
                     <div className="flex items-center gap-1.5 mb-1.5">

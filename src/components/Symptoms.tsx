@@ -99,21 +99,45 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
         </div>
 
         {/* Bloque final — diagnóstico sobrio */}
-        <motion.div
-          {...fadeUp(0.6)}
-          className="mt-16 sm:mt-20 mx-auto max-w-[680px] text-center rounded-2xl"
-          style={{
-            background: "hsl(var(--dark-bg))",
-            padding: "clamp(32px, 5vw, 48px) clamp(24px, 5vw, 56px)",
-          }}
-        >
-          <p className="text-[17px] sm:text-lg leading-relaxed" style={{ color: "hsl(0 0% 100% / 0.6)" }}>
-            No es un problema de talento.
-          </p>
-          <p className="mt-1 text-[20px] sm:text-[22px] font-bold leading-snug" style={{ color: "hsl(0 0% 100% / 0.95)" }}>
-            Es un problema de sistema.
-          </p>
-        </motion.div>
+        {(() => {
+          const closingBgImage = meta.closing_bg_image as string | undefined;
+          const closingGradient = meta.closing_gradient as string | undefined;
+          const closingBgColor = meta.closing_bg_color as string | undefined;
+          const closingLine1 = (meta.closing_line1 as string) || "No es un problema de talento.";
+          const closingLine2 = (meta.closing_line2 as string) || "Es un problema de sistema.";
+          const closingOpacity = typeof meta.closing_bg_opacity === "number" ? meta.closing_bg_opacity : 1;
+
+          return (
+            <motion.div
+              {...fadeUp(0.6)}
+              className="relative mt-16 sm:mt-20 mx-auto max-w-[680px] text-center rounded-2xl overflow-hidden"
+              style={{
+                background: closingGradient || closingBgColor || "hsl(var(--dark-bg))",
+                padding: "clamp(32px, 5vw, 48px) clamp(24px, 5vw, 56px)",
+              }}
+            >
+              {closingBgImage && (
+                <div
+                  className="absolute inset-0 z-0"
+                  style={{
+                    backgroundImage: `url(${closingBgImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    opacity: closingOpacity,
+                  }}
+                />
+              )}
+              <div className="relative z-10">
+                <p className="text-[17px] sm:text-lg leading-relaxed" style={{ color: "hsl(0 0% 100% / 0.6)" }}>
+                  {closingLine1}
+                </p>
+                <p className="mt-1 text-[20px] sm:text-[22px] font-bold leading-snug" style={{ color: "hsl(0 0% 100% / 0.95)" }}>
+                  {closingLine2}
+                </p>
+              </div>
+            </motion.div>
+          );
+        })()}
       </div>
     </section>
   );
