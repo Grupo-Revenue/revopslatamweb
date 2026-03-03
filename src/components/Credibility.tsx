@@ -54,10 +54,10 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
       
       {hasBg && <div style={bgLayerStyle} />}
 
-      <div className="relative z-10 w-full px-6 sm:px-10 lg:px-16 xl:px-24">
-        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
-          {/* Left — Text (2/3) */}
-          <div className="flex-1 lg:basis-2/3 lg:sticky lg:top-32 py-10 lg:py-16">
+      <div className="relative z-10 w-full">
+        <div className="flex flex-col lg:flex-row items-stretch">
+          {/* Left — Text (50%) boxed */}
+          <div className="lg:w-1/2 lg:sticky lg:top-32 py-10 lg:py-16 px-6 sm:px-10 lg:pl-16 xl:pl-24 lg:pr-12">
             <motion.p
               {...fadeUp(0)}
               className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
@@ -127,8 +127,8 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
             )}
           </div>
 
-          {/* Right — Dual-column marquee (1/3) */}
-          <div className="lg:basis-1/3 flex-shrink-0 w-full relative">
+          {/* Right — Dual-column marquee (50%) full-width */}
+          <div className="lg:w-1/2 flex-shrink-0 w-full relative">
             {certs.length === 0 ?
             <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
                 <p className="text-sm" style={{ color: "#9CA3AF" }}>
