@@ -30,19 +30,12 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
     "Nuestro equipo de consultores especializados, contamos con certificaciones oficiales de HubSpot que validan experiencia y conocimiento.";
   const certs = (meta.certifications as CertItem[]) ?? defaultCerts;
 
-  // Vertical infinite marquee
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const [animReady, setAnimReady] = useState(false);
+  // Split certs into two columns
+  const colA: CertItem[] = [];
+  const colB: CertItem[] = [];
+  certs.forEach((c, i) => (i % 2 === 0 ? colA : colB).push(c));
 
-  useEffect(() => {
-    if (certs.length > 0) setAnimReady(true);
-  }, [certs.length]);
-
-  // Build 2-column grid rows for the marquee
-  const rows: CertItem[][] = [];
-  for (let i = 0; i < certs.length; i += 2) {
-    rows.push(certs.slice(i, i + 2));
-  }
+  const speed = Math.max(certs.length * 3, 14);
 
   return (
     <section
@@ -76,7 +69,7 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
           </motion.p>
         </div>
 
-        {/* Right — Certification Carousel (vertical marquee) */}
+        {/* Right — Dual-column marquee (opposite directions) */}
         <div className="flex-1 w-full lg:max-w-[560px] relative">
           {certs.length === 0 ? (
             <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
@@ -85,58 +78,47 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
               </p>
             </div>
           ) : (
-            <div className="relative h-[420px] overflow-hidden mask-vertical">
+            <div className="relative h-[420px] overflow-hidden cert-mask">
               <style>{`
-                .mask-vertical {
-                  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-                  mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+                .cert-mask {
+                  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                  mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
                 }
-                @keyframes scroll-up {
+                @keyframes cert-scroll-up {
                   0% { transform: translateY(0); }
                   100% { transform: translateY(-50%); }
                 }
-                .marquee-vertical {
-                  animation: scroll-up ${Math.max(rows.length * 4, 16)}s linear infinite;
+                @keyframes cert-scroll-down {
+                  0% { transform: translateY(-50%); }
+                  100% { transform: translateY(0); }
                 }
-                .marquee-vertical:hover {
+                .cert-col-up {
+                  animation: cert-scroll-up ${speed}s linear infinite;
+                }
+                .cert-col-down {
+                  animation: cert-scroll-down ${speed}s linear infinite;
+                }
+                .cert-col-up:hover, .cert-col-down:hover {
                   animation-play-state: paused;
                 }
               `}</style>
-              <div
-                ref={marqueeRef}
-                className={`flex flex-col gap-4 ${animReady ? "marquee-vertical" : ""}`}
-              >
-                {/* Duplicate for seamless loop */}
-                {[...rows, ...rows].map((row, ri) => (
-                  <div key={ri} className="grid grid-cols-2 gap-4">
-                    {row.map((cert, ci) => (
-                      <div
-                        key={`${ri}-${ci}`}
-                        className="group rounded-2xl p-5 flex flex-col items-center justify-center text-center transition-shadow duration-300 hover:shadow-lg"
-                        style={{
-                          background: "white",
-                          border: "1px solid #E5E7EB",
-                          minHeight: "140px",
-                        }}
-                      >
-                        <img
-                          src={cert.image_url}
-                          alt={cert.name}
-                          className="max-h-[80px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                          loading="lazy"
-                        />
-                        {cert.name && (
-                          <span
-                            className="mt-2.5 text-[11px] sm:text-xs font-medium leading-tight"
-                            style={{ color: "#6B7280" }}
-                          >
-                            {cert.name}
-                          </span>
-                        )}
-                      </div>
+              <div className="flex gap-4 h-full">
+                {/* Column A — scrolls UP */}
+                <div className="flex-1 overflow-hidden">
+                  <div className="cert-col-up flex flex-col gap-4">
+                    {[...colA, ...colA].map((cert, i) => (
+                      <CertCard key={`a-${i}`} cert={cert} />
                     ))}
                   </div>
-                ))}
+                </div>
+                {/* Column B — scrolls DOWN */}
+                <div className="flex-1 overflow-hidden">
+                  <div className="cert-col-down flex flex-col gap-4">
+                    {[...colB, ...colB].map((cert, i) => (
+                      <CertCard key={`b-${i}`} cert={cert} />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -145,5 +127,25 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
     </section>
   );
 };
+
+function CertCard({ cert }: { cert: CertItem }) {
+  return (
+    <div
+      className="group rounded-2xl p-5 flex items-center justify-center transition-shadow duration-300 hover:shadow-lg"
+      style={{
+        background: "white",
+        border: "1px solid #E5E7EB",
+        minHeight: "140px",
+      }}
+    >
+      <img
+        src={cert.image_url}
+        alt={cert.name || "Certificación"}
+        className="max-h-[80px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
+    </div>
+  );
+}
 
 export default Credibility;
