@@ -41,9 +41,16 @@ export default function TestimonialsEditor({
     updateVideos(videos.filter((_, i) => i !== index));
   };
 
+  const sanitizeYouTubeId = (raw: string): string => {
+    const urlMatch = raw.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+    if (urlMatch) return urlMatch[1];
+    return raw.replace(/[&?].*$/, '').trim();
+  };
+
   const updateVideo = (index: number, field: keyof TestimonialVideo, value: string) => {
     const updated = [...videos];
-    updated[index] = { ...updated[index], [field]: value };
+    const cleanValue = field === "youtube_id" ? sanitizeYouTubeId(value) : value;
+    updated[index] = { ...updated[index], [field]: cleanValue };
     updateVideos(updated);
   };
 
