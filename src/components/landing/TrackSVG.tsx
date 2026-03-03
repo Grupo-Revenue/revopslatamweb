@@ -217,9 +217,47 @@ function TrackSVGRaw({ opacity = 0.7, activeZones, glowZone, className }: Props)
       </g>
 
       {/* ──── MOTION PATH (hidden, for ball animation reference) ──── */}
+      {/*
+        Checkpoints (by pathLength fraction):
+        p_marketing_end  ≈ 0.35  (end of marketing zone)
+        p_sales_end      ≈ 0.70  (end of sales zone)
+        p_service_end    ≈ 0.93  (end of service zone, before goal)
+      */}
       <path
         id="ball_path"
-        d="M120,930 L190,835 L290,770 L390,710 L500,645 L600,585 L420,460 L310,520 L220,580 L330,510 L440,450 L540,390 L630,340 L660,280 L680,240 L720,170 L740,150"
+        pathLength={1000}
+        d={[
+          // ── START: flag platform ──
+          "M 120,930",
+          // ascend steps (gentle curve up-right)
+          "C 130,910 150,885 170,870",
+          "C 185,858 195,848 210,838",
+          // ── RAMP 1 (marketing zone): bottom-left → right ──
+          "L 280,790",
+          "C 310,772 340,752 370,735",
+          "L 390,722",
+          // ── p_marketing_end ≈ 35% ──
+          // ── RAMP 2 (sales zone entry): switchback right → upper-right ──
+          "C 420,706 460,680 500,655",
+          "C 530,638 560,618 585,600",
+          "L 600,590",
+          // ── switchback: right → left (sales mid) ──
+          "C 560,565 500,530 440,500",
+          "C 380,475 320,510 280,530",
+          "L 240,555",
+          // ── p_sales_end ≈ 70% ──
+          // ── RAMP 3 (service zone): left → upper-right ──
+          "C 280,530 330,498 380,472",
+          "C 420,452 460,435 500,410",
+          "C 540,388 570,365 600,345",
+          "L 630,328",
+          // ── p_service_end ≈ 93% ──
+          // ── FINAL: approach gear & goal ──
+          "C 645,318 660,300 670,278",
+          "C 678,260 690,240 700,220",
+          "C 710,200 720,180 735,160",
+          "L 740,150",
+        ].join(" ")}
         fill="none"
         stroke="none"
       />
