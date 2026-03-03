@@ -20,8 +20,16 @@ interface TestimonialVideo {
   thumbnail?: string;
 }
 
+const sanitizeYouTubeId = (raw: string): string => {
+  // Handle full URLs
+  const urlMatch = raw.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+  if (urlMatch) return urlMatch[1];
+  // Strip query params like &t=123
+  return raw.replace(/[&?].*$/, '').trim();
+};
+
 const getYouTubeThumbnail = (id: string) =>
-  `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  `https://img.youtube.com/vi/${sanitizeYouTubeId(id)}/maxresdefault.jpg`;
 
 const isTestimonialVideo = (value: unknown): value is TestimonialVideo => {
   if (!value || typeof value !== "object") return false;
@@ -129,7 +137,7 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.25 }}
-                    src={`https://www.youtube-nocookie.com/embed/${featured.youtube_id}?autoplay=1&rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&color=white&playsinline=1&fs=1`}
+                    src={`https://www.youtube-nocookie.com/embed/${sanitizeYouTubeId(featured.youtube_id)}?autoplay=1&rel=0&modestbranding=1&showinfo=0&controls=1&iv_load_policy=3&color=white&playsinline=1&fs=1`}
                     title={featured.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
