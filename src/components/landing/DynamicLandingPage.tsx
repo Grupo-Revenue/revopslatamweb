@@ -4,6 +4,7 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 import {
   ArrowRight, Search, Settings, Rocket, RefreshCw,
   BarChart3, Wrench, Target, Building2, Megaphone,
+  type LucideProps,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -17,7 +18,7 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
+const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
   Search, Settings, Rocket, RefreshCw, BarChart3, Wrench, Target, Building2, Megaphone,
 };
 
