@@ -40,11 +40,10 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
       })
     : defaultCerts;
 
-  // Split certs into three columns
+  // Split certs into two columns
   const colA: CertItem[] = [];
   const colB: CertItem[] = [];
-  const colC: CertItem[] = [];
-  certs.forEach((c, i) => [colA, colB, colC][i % 3].push(c));
+  certs.forEach((c, i) => (i % 2 === 0 ? colA : colB).push(c));
 
   const speed = Math.max(certs.length * 3, 14);
 
@@ -128,8 +127,8 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
             )}
           </div>
 
-          {/* Right — Dual-column marquee (50%) with margin & fade */}
-          <div className="lg:w-1/2 flex-shrink-0 w-full relative px-4 sm:px-6 lg:px-8 xl:pr-16">
+          {/* Right — Dual-column marquee (50%) full-width */}
+          <div className="lg:w-1/2 flex-shrink-0 w-full relative">
             {certs.length === 0 ?
             <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
                 <p className="text-sm" style={{ color: "#9CA3AF" }}>
@@ -140,8 +139,8 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
             <div className="relative h-[420px] overflow-hidden cert-mask">
                 <style>{`
                   .cert-mask {
-                    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
-                    mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+                    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                    mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
                   }
                   @keyframes cert-scroll-up {
                     0% { transform: translateY(0); }
@@ -161,17 +160,23 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                     animation-play-state: paused;
                   }
                 `}</style>
-                <div className="flex gap-3 h-full" style={{ columns: 3 }}>
-                  {/* 3 columns */}
-                  {[colA, colB, colC].map((col, colIdx) => (
-                    <div key={colIdx} className="flex-1 overflow-hidden">
-                      <div className={colIdx % 2 === 0 ? "cert-col-up flex flex-col gap-3" : "cert-col-down flex flex-col gap-3"}>
-                        {[...col, ...col].map((cert, i) =>
-                          <CertCard key={`col${colIdx}-${i}`} cert={cert} />
-                        )}
-                      </div>
+                <div className="flex gap-3 h-full">
+                  {/* Column A — scrolls UP */}
+                  <div className="flex-1 overflow-hidden">
+                    <div className="cert-col-up flex flex-col gap-3">
+                      {[...colA, ...colA].map((cert, i) =>
+                    <CertCard key={`a-${i}`} cert={cert} />
+                    )}
                     </div>
-                  ))}
+                  </div>
+                  {/* Column B — scrolls DOWN */}
+                  <div className="flex-1 overflow-hidden">
+                    <div className="cert-col-down flex flex-col gap-3">
+                      {[...colB, ...colB].map((cert, i) =>
+                    <CertCard key={`b-${i}`} cert={cert} />
+                    )}
+                    </div>
+                  </div>
                 </div>
               </div>
             }
@@ -185,7 +190,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 function CertCard({ cert }: {cert: CertItem;}) {
   return (
     <div className="flex items-center justify-center px-1 py-1">
-      <div className="bg-white rounded-xl shadow-md p-3 w-full flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-md p-4 w-full flex items-center justify-center">
         <img
           src={cert.image_url}
           alt={cert.name || "Certificación"}
