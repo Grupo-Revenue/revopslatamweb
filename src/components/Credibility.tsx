@@ -130,18 +130,11 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
 
 function CertCard({ cert }: { cert: CertItem }) {
   return (
-    <div
-      className="group rounded-2xl p-5 flex items-center justify-center transition-shadow duration-300 hover:shadow-lg"
-      style={{
-        background: "white",
-        border: "1px solid #E5E7EB",
-        minHeight: "140px",
-      }}
-    >
+    <div className="flex items-center justify-center">
       <img
         src={cert.image_url}
         alt={cert.name || "Certificación"}
-        className="max-h-[80px] w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+        className="w-full h-auto object-contain transition-transform duration-300 hover:scale-105"
         loading="lazy"
       />
     </div>
