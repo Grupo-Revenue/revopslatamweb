@@ -636,8 +636,8 @@ function TrackVisual({
       <div
         className="relative rounded-2xl overflow-hidden"
         style={{
-          background: "hsl(var(--dark-card))",
-          border: "1px solid hsl(var(--muted-foreground) / 0.06)",
+          background: "#F5F5F8",
+          border: "1px solid hsl(var(--muted-foreground) / 0.1)",
         }}
       >
         {showConfetti && <Confetti />}
