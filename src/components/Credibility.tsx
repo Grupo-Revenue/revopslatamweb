@@ -56,8 +56,8 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
       <div className="relative z-10 w-full">
         <div className="flex flex-col lg:flex-row items-stretch">
-          {/* Left — Text (50%) boxed */}
-          <div className="lg:w-1/2 lg:sticky lg:top-32 py-10 lg:py-16 px-6 sm:px-10 lg:pl-16 xl:pl-24 lg:pr-12">
+          {/* Left — Text (50%) aligned to main container */}
+          <div className="lg:w-1/2 lg:sticky lg:top-32 py-10 lg:py-16 px-6 sm:px-10 lg:pr-12 lg:pl-[calc((100vw-1100px)/2)] xl:pl-[calc((100vw-1100px)/2)]">
             <motion.p
               {...fadeUp(0)}
               className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
