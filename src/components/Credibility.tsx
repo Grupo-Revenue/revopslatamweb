@@ -26,8 +26,9 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
   const eyebrow = section?.subtitle ?? "CERTIFICACIONES";
   const title = section?.title ?? "Somos expertos";
   const body =
-  section?.body ??
-  "Nuestro equipo de consultores especializados, contamos con certificaciones oficiales de HubSpot que validan experiencia y conocimiento.";
+    section?.body ??
+    "No llegamos a RevOps por tendencia. Llegamos porque vimos el mismo patrón repetirse empresa tras empresa.";
+  const bodyAsList = meta.body_as_list === true;
   const certs: CertItem[] = Array.isArray(meta.certifications)
     ? meta.certifications.filter((item): item is CertItem => {
         if (!item || typeof item !== "object") return false;
@@ -66,12 +67,23 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
               style={{ color: "#1A1A2E", ...getStyle("title") }}>
               {title}
             </motion.h2>
-            <motion.p
-              {...fadeUp(0.16)}
-              className="mt-5 text-[16px] sm:text-[17px] leading-relaxed"
-              style={{ color: "#6B7280", ...getStyle("body") }}>
-              {body}
-            </motion.p>
+            {bodyAsList ? (
+              <motion.ul
+                {...fadeUp(0.16)}
+                className="mt-5 text-[16px] sm:text-[17px] leading-relaxed space-y-2 list-disc list-inside"
+                style={{ color: "#6B7280", ...getStyle("body") }}>
+                {body.split("\n").filter(Boolean).map((line, i) => (
+                  <li key={i}>{line.trim()}</li>
+                ))}
+              </motion.ul>
+            ) : (
+              <motion.p
+                {...fadeUp(0.16)}
+                className="mt-5 text-[16px] sm:text-[17px] leading-relaxed"
+                style={{ color: "#6B7280", ...getStyle("body") }}>
+                {body}
+              </motion.p>
+            )}
           </div>
 
           {/* Right — Dual-column marquee (1/3) */}
