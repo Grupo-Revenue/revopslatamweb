@@ -18,6 +18,7 @@ import {
 } from "@/components/admin/SectionStyleEditor";
 import { useCTAStyles } from "@/hooks/useCTAStyles";
 import MethodologyEditor from "@/components/admin/MethodologyEditor";
+import TestimonialsEditor from "@/components/admin/TestimonialsEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -746,6 +747,14 @@ export default function AdminPageSections() {
                   {/* Methodology Editor */}
                   {section.section_key === "methodology" && (
                     <MethodologyEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Testimonials Editor */}
+                  {section.section_key === "testimonials" && (
+                    <TestimonialsEditor
                       metadata={meta}
                       onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                     />
