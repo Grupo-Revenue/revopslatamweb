@@ -39,40 +39,37 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
   return (
     <section
-      className="relative px-4 sm:px-6 overflow-hidden"
+      className="relative overflow-hidden"
       style={{ background: "#F5F5F8", ...getBgStyle() }}>
       
       {hasBg && <div style={bgLayerStyle} />}
-      <div className="relative z-10 max-w-[1100px] mx-auto flex-col items-start gap-12 lg:gap-20 my-0 mt-[20px] mb-[20px] flex lg:flex-row">
+      <div className="relative z-10 flex flex-col lg:flex-row items-start gap-12 lg:gap-0">
         {/* Left — Text */}
-        <div className="flex-1 lg:max-w-[460px] lg:sticky lg:top-32">
+        <div className="flex-1 lg:max-w-[460px] lg:sticky lg:top-32 px-4 sm:px-6 lg:pl-[max(1.5rem,calc((100%-1100px)/2))] py-8">
           <motion.p
             {...fadeUp(0)}
             className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
             style={{ color: "#0779D7", ...getStyle("subtitle") }}>
-            
             {eyebrow}
           </motion.p>
           <motion.h2
             {...fadeUp(0.08)}
             className="mt-3 text-[32px] md:text-[44px] font-bold leading-[1.15] tracking-tight"
             style={{ color: "#1A1A2E", ...getStyle("title") }}>
-            
             {title}
           </motion.h2>
           <motion.p
             {...fadeUp(0.16)}
             className="mt-5 text-[16px] sm:text-[17px] leading-relaxed"
             style={{ color: "#6B7280", ...getStyle("body") }}>
-            
             {body}
           </motion.p>
         </div>
 
-        {/* Right — Dual-column marquee (opposite directions) */}
-        <div className="flex-1 w-full lg:max-w-[560px] relative">
+        {/* Right — Dual-column marquee flush to right edge */}
+        <div className="flex-1 w-full lg:max-w-[560px] lg:ml-auto relative">
           {certs.length === 0 ?
-          <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
+          <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed mx-4" style={{ borderColor: "#D1D5DB" }}>
               <p className="text-sm" style={{ color: "#9CA3AF" }}>
                 Sube certificaciones desde el admin
               </p>
