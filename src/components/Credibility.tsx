@@ -28,7 +28,13 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
   const body =
   section?.body ??
   "Nuestro equipo de consultores especializados, contamos con certificaciones oficiales de HubSpot que validan experiencia y conocimiento.";
-  const certs = meta.certifications as CertItem[] ?? defaultCerts;
+  const certs: CertItem[] = Array.isArray(meta.certifications)
+    ? meta.certifications.filter((item): item is CertItem => {
+        if (!item || typeof item !== "object") return false;
+        const cert = item as Record<string, unknown>;
+        return typeof cert.name === "string" && typeof cert.image_url === "string";
+      })
+    : defaultCerts;
 
   // Split certs into two columns
   const colA: CertItem[] = [];

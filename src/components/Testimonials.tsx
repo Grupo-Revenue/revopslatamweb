@@ -23,6 +23,16 @@ interface TestimonialVideo {
 const getYouTubeThumbnail = (id: string) =>
   `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
 
+const isTestimonialVideo = (value: unknown): value is TestimonialVideo => {
+  if (!value || typeof value !== "object") return false;
+  const item = value as Record<string, unknown>;
+  return (
+    typeof item.youtube_id === "string" &&
+    typeof item.title === "string" &&
+    typeof item.client === "string"
+  );
+};
+
 const defaultTestimonials: TestimonialVideo[] = [
   {
     youtube_id: "dQw4w9WgXcQ",
@@ -55,7 +65,8 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
 
-  const videos = (meta.videos as TestimonialVideo[]) ?? defaultTestimonials;
+  const rawVideos = Array.isArray(meta.videos) ? meta.videos : defaultTestimonials;
+  const videos = rawVideos.filter(isTestimonialVideo);
   const eyebrow = section?.subtitle ?? "Casos de éxito";
   const headline = section?.title ?? "Quienes ya transformaron su revenue";
 

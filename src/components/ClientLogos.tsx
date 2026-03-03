@@ -34,14 +34,23 @@ const LogoImage = ({ client }: { client: ClientData }) => (
 
 const ClientLogos = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
-  const clientsData = meta.clients_data as ClientData[] | undefined;
-  const clientNames = (meta.clients as string[]) ?? defaultClients;
+  const clientsData = Array.isArray(meta.clients_data)
+    ? meta.clients_data.filter((item): item is ClientData => {
+        if (!item || typeof item !== "object") return false;
+        const client = item as Record<string, unknown>;
+        return typeof client.name === "string" && typeof client.logo_url === "string";
+      })
+    : undefined;
+  const clientNames = Array.isArray(meta.clients)
+    ? meta.clients.filter((item): item is string => typeof item === "string")
+    : defaultClients;
 
   const hasLogos = clientsData && clientsData.length > 0 && clientsData.some((c) => c.logo_url);
 
   // Repeat enough times to ensure seamless loop
-  const repeat = (arr: any[]) => [...arr, ...arr, ...arr, ...arr];
-  const items = hasLogos ? repeat(clientsData!) : repeat(clientNames);
+  const repeat = <T,>(arr: T[]) => [...arr, ...arr, ...arr, ...arr];
+  const logoItems = hasLogos ? repeat(clientsData ?? []) : [];
+  const textItems = hasLogos ? [] : repeat(clientNames);
 
   return (
     <section className="relative py-3 sm:py-5 overflow-hidden" style={{ background: "#FFFFFF" }}>
@@ -50,8 +59,8 @@ const ClientLogos = ({ section }: { section?: HomeSection }) => {
         <div className="absolute right-0 top-0 bottom-0 w-20 z-10" style={{ background: "linear-gradient(to left, #FFFFFF, transparent)" }} />
         <div className="marquee-track">
           {hasLogos
-            ? items.map((client: ClientData, i: number) => <LogoImage key={`${client.name}-${i}`} client={client} />)
-            : items.map((name: string, i: number) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
+            ? logoItems.map((client, i) => <LogoImage key={`${client.name}-${i}`} client={client} />)
+            : textItems.map((name, i) => <LogoPlaceholder key={`${name}-${i}`} name={name} />)
           }
         </div>
       </div>

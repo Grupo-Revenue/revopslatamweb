@@ -35,16 +35,31 @@ export function useDynamicStyles() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    supabase
-      .from("site_styles")
-      .select("style_key, value, style_type")
-      .then(({ data }) => {
+    let mounted = true;
+
+    const loadStyles = async () => {
+      try {
+        const { data } = await supabase
+          .from("site_styles")
+          .select("style_key, value, style_type");
+
+        if (!mounted) return;
         if (data) {
           setStyles(data);
           applyStyles(data);
         }
-        setLoaded(true);
-      });
+      } catch (error) {
+        console.error("Failed to load dynamic styles:", error);
+      } finally {
+        if (mounted) setLoaded(true);
+      }
+    };
+
+    void loadStyles();
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return { styles, loaded };

@@ -25,50 +25,90 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const hasAccess = isAdmin || isEditor;
 
   const checkRoles = async (userId: string) => {
-    const [adminRes, editorRes] = await Promise.all([
-      supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
-      supabase.rpc("has_role", { _user_id: userId, _role: "editor" }),
-    ]);
-    setIsAdmin(!!adminRes.data);
-    setIsEditor(!!editorRes.data);
+    try {
+      const [adminRes, editorRes] = await Promise.all([
+        supabase.rpc("has_role", { _user_id: userId, _role: "admin" }),
+        supabase.rpc("has_role", { _user_id: userId, _role: "editor" }),
+      ]);
+
+      setIsAdmin(!!adminRes.data);
+      setIsEditor(!!editorRes.data);
+    } catch (error) {
+      console.error("Failed to check user roles:", error);
+      setIsAdmin(false);
+      setIsEditor(false);
+    }
   };
 
   useEffect(() => {
+    let mounted = true;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
+        if (!mounted) return;
         setSession(session);
         setUser(session?.user ?? null);
+
         if (session?.user) {
-          setTimeout(() => checkRoles(session.user.id), 0);
+          void checkRoles(session.user.id);
         } else {
           setIsAdmin(false);
           setIsEditor(false);
         }
+
         setLoading(false);
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        checkRoles(session.user.id);
-      }
-      setLoading(false);
-    });
+    const initSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!mounted) return;
 
-    return () => subscription.unsubscribe();
+        setSession(session);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          await checkRoles(session.user.id);
+        }
+      } catch (error) {
+        console.error("Failed to initialize auth session:", error);
+        if (mounted) {
+          setIsAdmin(false);
+          setIsEditor(false);
+        }
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    void initSession();
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error: error as Error | null };
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      return { error: error as Error | null };
+    } catch (error) {
+      console.error("Sign-in failed:", error);
+      return { error: error as Error };
+    }
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setIsAdmin(false);
-    setIsEditor(false);
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error("Sign-out failed:", error);
+    } finally {
+      setIsAdmin(false);
+      setIsEditor(false);
+    }
   };
 
   return (
