@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
+import Nosotros from "./pages/Nosotros";
 import ParaCeos from "./pages/ParaCeos";
 import ParaDirectoresComerciales from "./pages/ParaDirectoresComerciales";
 import ParaMarketingDirectors from "./pages/ParaMarketingDirectors";
@@ -40,6 +41,7 @@ const App = () => (
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<Index />} />
+            <Route path="/nosotros" element={<Nosotros />} />
             <Route path="/para-ceos-y-gerentes-generales" element={<ParaCeos />} />
             <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
             <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
