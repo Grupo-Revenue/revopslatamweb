@@ -18,7 +18,8 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: "easeOut" as const },
 });
 
-const ICON_MAP: Record<string, React.ComponentType<LucideProps>> = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ICON_MAP: Record<string, React.ComponentType<any>> = {
   Search, Settings, Rocket, RefreshCw, BarChart3, Wrench, Target, Building2, Megaphone,
 };
 
