@@ -65,7 +65,7 @@ const Testimonials = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
 
-  const rawVideos = Array.isArray(meta.videos) ? meta.videos : defaultTestimonials;
+  const rawVideos = Array.isArray(meta.videos) && meta.videos.length > 0 ? meta.videos : defaultTestimonials;
   const videos = rawVideos.filter(isTestimonialVideo);
   const eyebrow = section?.subtitle ?? "Casos de éxito";
   const headline = section?.title ?? "Quienes ya transformaron su revenue";
