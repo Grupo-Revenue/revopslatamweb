@@ -1,0 +1,288 @@
+import { motion } from "framer-motion";
+import { usePageSections } from "@/hooks/usePageSections";
+import type { HomeSection } from "@/hooks/useHomeSections";
+import {
+  ArrowRight, Search, Settings, Rocket, RefreshCw,
+  BarChart3, Wrench, Target, Building2, Megaphone,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import DynamicCTA from "@/components/DynamicCTA";
+
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-50px" },
+  transition: { duration: 0.5, delay, ease: "easeOut" as const },
+});
+
+const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string; style?: React.CSSProperties }>> = {
+  Search, Settings, Rocket, RefreshCw, BarChart3, Wrench, Target, Building2, Megaphone,
+};
+
+function getMeta(section?: HomeSection): Record<string, unknown> {
+  return (section?.metadata as Record<string, unknown>) ?? {};
+}
+
+function getSectionBg(section?: HomeSection): React.CSSProperties {
+  const meta = getMeta(section);
+  const styles = (meta.styles as Record<string, unknown>)?.background as Record<string, string> | undefined;
+  if (styles?.gradient) return { background: styles.gradient };
+  if (styles?.color) return { background: styles.color };
+  return {};
+}
+
+function renderTitle(title: string, gradientText?: string) {
+  if (!gradientText || !title.includes(gradientText)) return <>{title}</>;
+  const idx = title.indexOf(gradientText);
+  return (
+    <>
+      {title.slice(0, idx)}
+      <span className="text-gradient-brand">{gradientText}</span>
+      {title.slice(idx + gradientText.length)}
+    </>
+  );
+}
+
+/* ── HERO ── */
+function HeroSection({ section }: { section?: HomeSection }) {
+  if (!section) return null;
+  const meta = getMeta(section);
+  const badge = meta.badge as string | undefined;
+
+  return (
+    <section className="relative pt-32 pb-24 px-6 gradient-hero overflow-hidden" style={getSectionBg(section)}>
+      <div className="absolute rounded-full pointer-events-none" style={{ width: 500, height: 500, top: -120, right: -200, background: "radial-gradient(circle, hsl(var(--pink) / 0.15) 0%, transparent 70%)", filter: "blur(140px)" }} />
+      <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, bottom: -100, left: -150, background: "radial-gradient(circle, hsl(var(--purple) / 0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
+
+      <div className="relative z-10 max-w-[800px] mx-auto text-center">
+        {badge && (
+          <motion.span {...fadeUp(0)} className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold tracking-widest uppercase border border-pink/30 text-pink mb-8">
+            {badge}
+          </motion.span>
+        )}
+
+        <motion.h1 {...fadeUp(0.1)} className="text-hero font-bold leading-[1.08] tracking-tight">
+          {renderTitle(section.title ?? "", meta.gradient_text as string)}
+        </motion.h1>
+
+        {section.subtitle && (
+          <motion.p {...fadeUp(0.2)} className="mt-6 text-lg md:text-xl leading-relaxed text-muted-foreground max-w-[640px] mx-auto">
+            {section.subtitle}
+          </motion.p>
+        )}
+
+        {(section.cta_text || meta.cta2_text) && (
+          <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {section.cta_text && (
+              <DynamicCTA
+                styleKey={meta.cta_style_key as string}
+                onClick={() => section.cta_url && (window.location.href = section.cta_url)}
+                className="gap-2"
+              >
+                {section.cta_text} <ArrowRight size={18} />
+              </DynamicCTA>
+            )}
+            {meta.cta2_text && (
+              <DynamicCTA
+                styleKey={meta.cta2_style_key as string}
+                onClick={() => meta.cta2_url && (window.location.href = meta.cta2_url as string)}
+              >
+                {meta.cta2_text as string}
+              </DynamicCTA>
+            )}
+          </motion.div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/* ── CHALLENGE / BRIDGE (text block with gradient title) ── */
+function TextBlockSection({ section, defaultBg }: { section?: HomeSection; defaultBg?: string }) {
+  if (!section) return null;
+  const meta = getMeta(section);
+  const paragraphs = (section.body ?? "").split("\n\n").filter(Boolean);
+
+  return (
+    <section className="py-24 px-6" style={Object.keys(getSectionBg(section)).length ? getSectionBg(section) : defaultBg ? { background: defaultBg } : {}}>
+      <div className="max-w-[780px] mx-auto">
+        {section.title && (
+          <motion.h2 {...fadeUp(0)} className="text-section font-bold leading-[1.15] tracking-tight text-center">
+            {renderTitle(section.title, meta.gradient_text as string)}
+          </motion.h2>
+        )}
+        {paragraphs.map((p, i) => (
+          <motion.p key={i} {...fadeUp(0.1 + i * 0.05)} className="mt-8 text-lg leading-relaxed text-muted-foreground text-center first:mt-8">
+            {p}
+          </motion.p>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ── PAINS ── */
+function PainsSection({ section }: { section?: HomeSection }) {
+  if (!section) return null;
+  const meta = getMeta(section);
+  const items = (meta.items as string[]) ?? [];
+
+  return (
+    <section className="py-24 px-6 bg-dark-bg" style={getSectionBg(section)}>
+      <div className="max-w-[800px] mx-auto">
+        {section.title && (
+          <motion.h2 {...fadeUp(0)} className="text-section font-bold leading-[1.2] tracking-tight text-center mb-14">
+            {section.title}
+          </motion.h2>
+        )}
+        <div className="space-y-5">
+          {items.map((d, i) => (
+            <motion.div
+              key={i}
+              {...fadeUp(0.1 + i * 0.08)}
+              className="relative rounded-2xl p-6 md:p-8 border border-pink/10 bg-dark-card"
+              style={{ boxShadow: "0 0 30px hsl(var(--pink) / 0.04)" }}
+            >
+              <span className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-8 rounded-full bg-pink" />
+              <p className="text-base md:text-lg font-medium leading-relaxed italic text-primary-foreground/90">
+                "{d}"
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── SOLUTIONS CARDS ── */
+type SolutionCard = {
+  icon?: string;
+  title: string;
+  text: string;
+  accent?: string;
+  highlighted?: boolean;
+  badge?: string;
+};
+
+function SolutionsSection({ section }: { section?: HomeSection }) {
+  if (!section) return null;
+  const meta = getMeta(section);
+  const solutions = (meta.solutions as SolutionCard[]) ?? [];
+
+  return (
+    <section className="py-24 px-6 bg-dark-bg" style={getSectionBg(section)}>
+      <div className="max-w-[1100px] mx-auto">
+        {section.title && (
+          <motion.h2 {...fadeUp(0)} className="text-section font-bold leading-[1.2] tracking-tight text-center mb-14">
+            {section.title}
+          </motion.h2>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {solutions.map((s, i) => {
+            const Icon = ICON_MAP[s.icon ?? "Settings"] ?? Settings;
+            const hue = s.accent || "337 74% 44%";
+            return (
+              <motion.div
+                key={i}
+                {...fadeUp(0.1 + i * 0.1)}
+                className={`relative rounded-2xl p-8 border transition-all duration-300 hover:-translate-y-1 ${
+                  s.highlighted
+                    ? "border-purple/40 bg-dark-card shadow-[0_0_60px_hsl(263_70%_44%/0.12)]"
+                    : "border-primary-foreground/10 bg-dark-card"
+                }`}
+              >
+                {s.highlighted && s.badge && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest gradient-brand text-primary-foreground">
+                    {s.badge}
+                  </span>
+                )}
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                  style={{ background: `hsl(${hue} / 0.12)` }}
+                >
+                  <Icon size={22} style={{ color: `hsl(${hue})` }} />
+                </div>
+                <h4 className="text-lg font-bold mb-3">{s.title}</h4>
+                <p className="text-[15px] leading-relaxed text-muted-foreground">{s.text}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── CTA FINAL ── */
+function CTASection({ section }: { section?: HomeSection }) {
+  if (!section) return null;
+  const meta = getMeta(section);
+
+  return (
+    <section
+      className="relative py-24 px-6 overflow-hidden"
+      style={
+        Object.keys(getSectionBg(section)).length
+          ? getSectionBg(section)
+          : { background: "linear-gradient(135deg, hsl(var(--pink) / 0.15) 0%, hsl(var(--purple) / 0.1) 50%, hsl(240 33% 8%) 100%)" }
+      }
+    >
+      <div className="absolute rounded-full pointer-events-none" style={{ width: 400, height: 400, top: -80, left: -150, background: "radial-gradient(circle, hsl(var(--pink) / 0.12) 0%, transparent 70%)", filter: "blur(120px)" }} />
+
+      <div className="relative z-10 max-w-[640px] mx-auto text-center">
+        {section.title && (
+          <motion.h2 {...fadeUp(0)} className="text-section font-bold leading-[1.15] tracking-tight">
+            {renderTitle(section.title, meta.gradient_text as string)}
+          </motion.h2>
+        )}
+        {section.body && (
+          <motion.p {...fadeUp(0.1)} className="mt-5 text-lg leading-relaxed text-muted-foreground">
+            {section.body}
+          </motion.p>
+        )}
+        <motion.div {...fadeUp(0.25)} className="mt-10 flex flex-col items-center gap-4">
+          {section.cta_text && (
+            <DynamicCTA
+              styleKey={meta.cta_style_key as string}
+              onClick={() => section.cta_url && (window.location.href = section.cta_url)}
+              className="gap-2"
+            >
+              {section.cta_text} <ArrowRight size={18} />
+            </DynamicCTA>
+          )}
+          {meta.cta2_text && (
+            <a
+              href={meta.cta2_url as string || "#"}
+              className="text-sm font-medium text-muted-foreground hover:text-pink transition-colors"
+            >
+              {meta.cta2_text as string}
+            </a>
+          )}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+/* ── MAIN PAGE COMPONENT ── */
+export default function DynamicLandingPage({ slug }: { slug: string }) {
+  const { getSection, loading } = usePageSections(slug);
+
+  if (loading) return <div className="min-h-screen bg-dark-bg" />;
+
+  return (
+    <div className="min-h-screen bg-dark-bg text-primary-foreground">
+      <Navbar />
+      <HeroSection section={getSection("hero")} />
+      <TextBlockSection section={getSection("challenge")} defaultBg="hsl(240 33% 6%)" />
+      <PainsSection section={getSection("pains")} />
+      <TextBlockSection section={getSection("bridge")} defaultBg="hsl(240 33% 6%)" />
+      <SolutionsSection section={getSection("solutions")} />
+      <CTASection section={getSection("cta-final")} />
+      <Footer />
+    </div>
+  );
+}
