@@ -95,7 +95,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                 </p>
               </div> :
 
-            <div className="relative h-[540px] overflow-hidden cert-mask">
+            <div className="relative h-[420px] overflow-hidden cert-mask">
                 <style>{`
                   .cert-mask {
                     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
