@@ -286,7 +286,7 @@ const Navbar = () => {
                 Recursos
               </Link>
               <Link
-                to="#"
+                to="/nosotros"
                 className="text-sm font-medium transition-colors duration-200"
                 style={{ color: "#1a1a2e" }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
@@ -389,7 +389,7 @@ const Navbar = () => {
               Recursos
             </Link>
             <Link
-              to="#"
+              to="/nosotros"
               onClick={() => setMobileOpen(false)}
               className="py-4 text-lg font-semibold"
               style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
