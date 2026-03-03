@@ -252,6 +252,134 @@ function ClientLogosEditor({
   );
 }
 
+function CertificationsEditor({
+  metadata,
+  sectionId,
+  onChange,
+}: {
+  metadata: Record<string, unknown>;
+  sectionId: string;
+  onChange: (m: Record<string, unknown>) => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const certs = (metadata.certifications as Array<{ name: string; image_url: string }>) ?? [];
+
+  const updateCerts = (updated: Array<{ name: string; image_url: string }>) => {
+    onChange({ ...metadata, certifications: updated });
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files?.length) return;
+    setUploading(true);
+
+    const newCerts = [...certs];
+    for (const file of Array.from(files)) {
+      const ext = file.name.split(".").pop();
+      const path = `sections/${sectionId}/certs/${Date.now()}-${Math.random().toString(36).slice(2, 6)}.${ext}`;
+      const { error } = await supabase.storage.from("media").upload(path, file, {
+        cacheControl: "3600",
+        upsert: true,
+      });
+      if (error) {
+        toast({ title: "Error", description: error.message, variant: "destructive" });
+        continue;
+      }
+      const { data: urlData } = supabase.storage.from("media").getPublicUrl(path);
+      const name = file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ");
+      newCerts.push({ name, image_url: urlData.publicUrl });
+    }
+    updateCerts(newCerts);
+    setUploading(false);
+    if (inputRef.current) inputRef.current.value = "";
+    toast({ title: "Certificaciones subidas" });
+  };
+
+  const removeCert = (index: number) => {
+    updateCerts(certs.filter((_, i) => i !== index));
+  };
+
+  const updateCertName = (index: number, name: string) => {
+    const updated = [...certs];
+    updated[index] = { ...updated[index], name };
+    updateCerts(updated);
+  };
+
+  return (
+    <div className="space-y-3 p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
+      <div className="flex items-center justify-between">
+        <Label className="text-zinc-400 text-xs font-semibold uppercase tracking-wider">Certificaciones (carrusel)</Label>
+        <button
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+          className="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+        >
+          <Upload className="h-3 w-3" />
+          {uploading ? "Subiendo..." : "Subir certificaciones"}
+        </button>
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={handleUpload}
+      />
+
+      {certs.length === 0 && (
+        <div
+          onClick={() => inputRef.current?.click()}
+          className="border border-dashed border-zinc-700 rounded-lg p-6 text-center cursor-pointer hover:border-zinc-500 transition-colors"
+        >
+          <Upload className="h-6 w-6 mx-auto text-zinc-600 mb-2" />
+          <p className="text-zinc-500 text-xs">Sube imágenes de las certificaciones HubSpot</p>
+          <p className="text-zinc-600 text-[10px] mt-1">PNG o SVG recomendados</p>
+        </div>
+      )}
+
+      {certs.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+          {certs.map((cert, i) => (
+            <div
+              key={i}
+              className="relative group bg-zinc-800 border border-zinc-700 rounded-lg p-2 flex flex-col items-center gap-1.5"
+            >
+              <button
+                onClick={() => removeCert(i)}
+                className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+              >
+                <X className="h-3 w-3" />
+              </button>
+              <img
+                src={cert.image_url}
+                alt={cert.name}
+                className="h-12 w-full object-contain"
+              />
+              <Input
+                value={cert.name}
+                onChange={(e) => updateCertName(i, e.target.value)}
+                className="bg-zinc-900 border-zinc-700 text-white text-[10px] h-6 px-1.5 text-center"
+                placeholder="Nombre"
+              />
+            </div>
+          ))}
+          <button
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+            className="border border-dashed border-zinc-700 rounded-lg p-2 flex flex-col items-center justify-center text-zinc-500 hover:text-zinc-300 hover:border-zinc-500 transition-colors min-h-[72px]"
+          >
+            <Plus className="h-5 w-5" />
+            <span className="text-[10px] mt-0.5">Agregar</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 export default function AdminPageSections() {
   const { pageId } = useParams<{ pageId: string }>();
@@ -600,6 +728,15 @@ export default function AdminPageSections() {
                   {/* Client Logos Editor (only for client-logos section) */}
                   {section.section_key === "client-logos" && (
                     <ClientLogosEditor
+                      metadata={meta}
+                      sectionId={section.id}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Credibility Certifications Editor */}
+                  {section.section_key === "credibility" && (
+                    <CertificationsEditor
                       metadata={meta}
                       sectionId={section.id}
                       onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
