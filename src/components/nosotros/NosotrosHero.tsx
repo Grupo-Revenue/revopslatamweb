@@ -20,64 +20,67 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
   return (
     <section
       className="relative min-h-[85vh] flex items-center overflow-hidden"
-      style={{ background: "var(--gradient-hero)" }}
+      style={{
+        background: `
+          radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,229,160,0.07) 0%, transparent 60%),
+          radial-gradient(ellipse 60% 40% at 20% 100%, rgba(124,92,252,0.06) 0%, transparent 50%),
+          var(--gradient-hero)
+        `,
+      }}
     >
-      {/* Ambient glows */}
+      {/* Noise texture overlay */}
       <div
-        className="absolute pointer-events-none"
+        className="absolute inset-0 pointer-events-none z-0"
         style={{
-          width: 600,
-          height: 600,
-          top: -200,
-          right: -100,
-          background: "radial-gradient(circle, rgba(190,24,105,0.08) 0%, transparent 70%)",
-          filter: "blur(140px)",
-        }}
-      />
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 500,
-          height: 500,
-          bottom: -100,
-          left: -150,
-          background: "radial-gradient(circle, rgba(98,36,190,0.1) 0%, transparent 70%)",
-          filter: "blur(140px)",
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E")`,
         }}
       />
 
-      <div className="relative z-10 max-w-[900px] mx-auto px-6 sm:px-10 py-32 sm:py-40 text-center">
+      <div
+        className="relative z-10 max-w-[900px] mx-auto px-6 sm:px-10 text-center"
+        style={{ paddingTop: 140, paddingBottom: 80 }}
+      >
         <motion.span
           {...fadeUp(0)}
-          className="inline-block text-[12px] sm:text-[13px] font-semibold tracking-[0.2em] uppercase mb-8"
-          style={{ color: "hsl(var(--pink))" }}
+          className="inline-block font-semibold tracking-[0.2em] uppercase mb-8"
+          style={{ fontSize: "0.75rem", color: "hsl(var(--green))" }}
         >
           {label}
         </motion.span>
 
         <motion.h1
           {...fadeUp(0.12)}
-          className="text-[32px] sm:text-[40px] md:text-[52px] lg:text-[60px] font-bold leading-[1.08] tracking-tight"
-          style={{ color: "white" }}
+          style={{
+            fontSize: "clamp(3.5rem, 8vw, 7rem)",
+            fontWeight: 800,
+            lineHeight: 1.05,
+            letterSpacing: "-0.04em",
+            color: "#F0F4FF",
+          }}
         >
           {title}
         </motion.h1>
 
         <motion.p
           {...fadeUp(0.24)}
-          className="mt-8 text-[17px] sm:text-[19px] leading-[1.7] max-w-[720px] mx-auto"
-          style={{ color: "rgba(255,255,255,0.65)" }}
+          className="mx-auto"
+          style={{
+            marginTop: 32,
+            fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
+            lineHeight: 1.7,
+            color: "rgba(240,244,255,0.6)",
+            maxWidth: 640,
+            textAlign: "center",
+          }}
         >
           {body}
         </motion.p>
       </div>
 
-      {/* Bottom fade into next section */}
+      {/* Bottom fade */}
       <div
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{
-          background: "linear-gradient(to bottom, transparent, #0D0D1A)",
-        }}
+        style={{ background: "linear-gradient(to bottom, transparent, #0D0D1A)" }}
       />
     </section>
   );

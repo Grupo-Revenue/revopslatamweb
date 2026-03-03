@@ -14,7 +14,7 @@ const Nosotros = () => {
   const { getSection } = usePageSections("/nosotros");
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ background: "var(--gradient-hero)" }}>
       <Navbar />
       <NosotrosHero section={getSection("nosotros-hero")} />
       <PorQueExistimos section={getSection("por-que-existimos")} />
