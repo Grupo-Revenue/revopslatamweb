@@ -136,11 +136,11 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
                 </p>
               </div> :
 
-            <div className="relative h-[420px] overflow-hidden cert-mask mt-8 mr-6 sm:mr-10 lg:mr-12">
+            <div className="relative h-[480px] overflow-hidden cert-mask mt-4 mr-6 sm:mr-10 lg:mr-12">
                 <style>{`
                   .cert-mask {
-                    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
-                    mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 4%, black 100%);
+                    mask-image: linear-gradient(to bottom, transparent 0%, black 4%, black 100%);
                   }
                   @keyframes cert-scroll-up {
                     0% { transform: translateY(0); }
@@ -189,7 +189,7 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
 function CertCard({ cert }: {cert: CertItem;}) {
   return (
-    <div className="flex items-center justify-center px-1 py-1" style={{ height: 'calc((420px - 16px) / 3)' }}>
+    <div className="flex items-center justify-center px-1 py-1" style={{ height: 'calc((480px - 16px) / 3)' }}>
       <div className="bg-white rounded-xl shadow-md p-3 w-full h-full flex items-center justify-center">
         <img
           src={cert.image_url}
