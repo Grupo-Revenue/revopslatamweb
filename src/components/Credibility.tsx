@@ -68,14 +68,38 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
               {title}
             </motion.h2>
             {bodyAsList ? (
-              <motion.ul
+              <motion.div
                 {...fadeUp(0.16)}
-                className="mt-5 text-[16px] sm:text-[17px] leading-relaxed space-y-2 list-disc list-inside"
+                className="mt-5 text-[16px] sm:text-[17px] leading-relaxed"
                 style={{ color: "#6B7280", ...getStyle("body") }}>
-                {body.split("\n").filter(Boolean).map((line, i) => (
-                  <li key={i}>{line.trim()}</li>
-                ))}
-              </motion.ul>
+                {(() => {
+                  const lines = body.split("\n").filter(Boolean);
+                  const elements: React.ReactNode[] = [];
+                  let bulletBuffer: string[] = [];
+
+                  const flushBullets = () => {
+                    if (bulletBuffer.length > 0) {
+                      elements.push(
+                        <ul key={`ul-${elements.length}`} className="my-2 space-y-1 list-disc list-inside">
+                          {bulletBuffer.map((b, j) => <li key={j}>{b}</li>)}
+                        </ul>
+                      );
+                      bulletBuffer = [];
+                    }
+                  };
+
+                  lines.forEach((line) => {
+                    if (line.trimStart().startsWith("- ")) {
+                      bulletBuffer.push(line.trimStart().slice(2));
+                    } else {
+                      flushBullets();
+                      elements.push(<p key={`p-${elements.length}`} className="my-2">{line.trim()}</p>);
+                    }
+                  });
+                  flushBullets();
+                  return elements;
+                })()}
+              </motion.div>
             ) : (
               <motion.p
                 {...fadeUp(0.16)}
