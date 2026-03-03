@@ -70,7 +70,13 @@ const Symptoms = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
-  const cards = (meta.cards as SymptomData[]) ?? defaultSymptoms;
+  const cards: SymptomData[] = Array.isArray(meta.cards)
+    ? meta.cards.filter((item): item is SymptomData => {
+        if (!item || typeof item !== "object") return false;
+        const card = item as Record<string, unknown>;
+        return typeof card.icon === "string" && typeof card.title === "string" && typeof card.text === "string";
+      })
+    : defaultSymptoms;
   const eyebrow = section?.subtitle ?? "¿Te suena familiar?";
   const headline = section?.title ?? "Si diriges una empresa que ya creció, probablemente reconoces esto.";
 

@@ -51,7 +51,13 @@ const AnimatedStats = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
-  const stats = (meta.stats as CounterProps[]) ?? defaultStats;
+  const stats: CounterProps[] = Array.isArray(meta.stats)
+    ? meta.stats.filter((item): item is CounterProps => {
+        if (!item || typeof item !== "object") return false;
+        const stat = item as Record<string, unknown>;
+        return typeof stat.target === "number" && typeof stat.label === "string" && typeof stat.color === "string";
+      })
+    : defaultStats;
   const title = section?.title ?? "Números que hablan por sí solos";
 
   return (

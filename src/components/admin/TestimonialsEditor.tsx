@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Trash2, GripVertical, Video } from "lucide-react";
+import { Plus, Trash2, Video } from "lucide-react";
 
 interface TestimonialVideo {
   youtube_id: string;
@@ -18,7 +17,17 @@ export default function TestimonialsEditor({
   metadata: Record<string, unknown>;
   onChange: (m: Record<string, unknown>) => void;
 }) {
-  const videos = (metadata.videos as TestimonialVideo[]) ?? [];
+  const videos: TestimonialVideo[] = Array.isArray(metadata.videos)
+    ? metadata.videos
+        .filter((item): item is Record<string, unknown> => !!item && typeof item === "object")
+        .map((item) => ({
+          youtube_id: typeof item.youtube_id === "string" ? item.youtube_id : "",
+          title: typeof item.title === "string" ? item.title : "",
+          client: typeof item.client === "string" ? item.client : "",
+          role: typeof item.role === "string" ? item.role : "",
+          thumbnail: typeof item.thumbnail === "string" ? item.thumbnail : "",
+        }))
+    : [];
 
   const updateVideos = (updated: TestimonialVideo[]) => {
     onChange({ ...metadata, videos: updated });
