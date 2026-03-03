@@ -49,82 +49,85 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
       style={{ background: "#F5F5F8", ...getBgStyle() }}>
       
       {hasBg && <div style={bgLayerStyle} />}
-      <div className="relative z-10 flex flex-col lg:flex-row items-start gap-12 lg:gap-0">
-        {/* Left — Text */}
-        <div className="flex-1 lg:max-w-[460px] lg:sticky lg:top-32 px-4 sm:px-6 lg:pl-[max(1.5rem,calc((100%-1100px)/2))] py-8">
-          <motion.p
-            {...fadeUp(0)}
-            className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
-            style={{ color: "#0779D7", ...getStyle("subtitle") }}>
-            {eyebrow}
-          </motion.p>
-          <motion.h2
-            {...fadeUp(0.08)}
-            className="mt-3 text-[32px] md:text-[44px] font-bold leading-[1.15] tracking-tight"
-            style={{ color: "#1A1A2E", ...getStyle("title") }}>
-            {title}
-          </motion.h2>
-          <motion.p
-            {...fadeUp(0.16)}
-            className="mt-5 text-[16px] sm:text-[17px] leading-relaxed"
-            style={{ color: "#6B7280", ...getStyle("body") }}>
-            {body}
-          </motion.p>
-        </div>
 
-        {/* Right — Dual-column marquee flush to right edge */}
-        <div className="flex-1 w-full lg:max-w-[560px] lg:ml-auto relative">
-          {certs.length === 0 ?
-          <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed mx-4" style={{ borderColor: "#D1D5DB" }}>
-              <p className="text-sm" style={{ color: "#9CA3AF" }}>
-                Sube certificaciones desde el admin
-              </p>
-            </div> :
+      <div className="relative z-10 max-w-[1100px] mx-auto px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
+          {/* Left — Text */}
+          <div className="flex-shrink-0 lg:max-w-[340px] lg:sticky lg:top-32 py-10 lg:py-16">
+            <motion.p
+              {...fadeUp(0)}
+              className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
+              style={{ color: "#0779D7", ...getStyle("subtitle") }}>
+              {eyebrow}
+            </motion.p>
+            <motion.h2
+              {...fadeUp(0.08)}
+              className="mt-3 text-[32px] md:text-[44px] font-bold leading-[1.15] tracking-tight"
+              style={{ color: "#1A1A2E", ...getStyle("title") }}>
+              {title}
+            </motion.h2>
+            <motion.p
+              {...fadeUp(0.16)}
+              className="mt-5 text-[16px] sm:text-[17px] leading-relaxed"
+              style={{ color: "#6B7280", ...getStyle("body") }}>
+              {body}
+            </motion.p>
+          </div>
 
-          <div className="relative h-[420px] overflow-hidden cert-mask">
-              <style>{`
-                .cert-mask {
-                  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
-                  mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
-                }
-                @keyframes cert-scroll-up {
-                  0% { transform: translateY(0); }
-                  100% { transform: translateY(-50%); }
-                }
-                @keyframes cert-scroll-down {
-                  0% { transform: translateY(-50%); }
-                  100% { transform: translateY(0); }
-                }
-                .cert-col-up {
-                  animation: cert-scroll-up ${speed}s linear infinite;
-                }
-                .cert-col-down {
-                  animation: cert-scroll-down ${speed}s linear infinite;
-                }
-                .cert-col-up:hover, .cert-col-down:hover {
-                  animation-play-state: paused;
-                }
-              `}</style>
-              <div className="flex gap-4 h-full">
-                {/* Column A — scrolls UP */}
-                <div className="flex-1 overflow-hidden">
-                  <div className="cert-col-up flex flex-col gap-4">
-                    {[...colA, ...colA].map((cert, i) =>
-                  <CertCard key={`a-${i}`} cert={cert} />
-                  )}
+          {/* Right — Dual-column marquee */}
+          <div className="flex-1 w-full relative">
+            {certs.length === 0 ?
+            <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
+                <p className="text-sm" style={{ color: "#9CA3AF" }}>
+                  Sube certificaciones desde el admin
+                </p>
+              </div> :
+
+            <div className="relative h-[460px] overflow-hidden cert-mask">
+                <style>{`
+                  .cert-mask {
+                    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                    mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
+                  }
+                  @keyframes cert-scroll-up {
+                    0% { transform: translateY(0); }
+                    100% { transform: translateY(-50%); }
+                  }
+                  @keyframes cert-scroll-down {
+                    0% { transform: translateY(-50%); }
+                    100% { transform: translateY(0); }
+                  }
+                  .cert-col-up {
+                    animation: cert-scroll-up ${speed}s linear infinite;
+                  }
+                  .cert-col-down {
+                    animation: cert-scroll-down ${speed}s linear infinite;
+                  }
+                  .cert-col-up:hover, .cert-col-down:hover {
+                    animation-play-state: paused;
+                  }
+                `}</style>
+                <div className="flex gap-4 h-full">
+                  {/* Column A — scrolls UP */}
+                  <div className="flex-1 overflow-hidden">
+                    <div className="cert-col-up flex flex-col gap-4">
+                      {[...colA, ...colA].map((cert, i) =>
+                    <CertCard key={`a-${i}`} cert={cert} />
+                    )}
+                    </div>
                   </div>
-                </div>
-                {/* Column B — scrolls DOWN */}
-                <div className="flex-1 overflow-hidden">
-                  <div className="cert-col-down flex flex-col gap-4">
-                    {[...colB, ...colB].map((cert, i) =>
-                  <CertCard key={`b-${i}`} cert={cert} />
-                  )}
+                  {/* Column B — scrolls DOWN */}
+                  <div className="flex-1 overflow-hidden">
+                    <div className="cert-col-down flex flex-col gap-4">
+                      {[...colB, ...colB].map((cert, i) =>
+                    <CertCard key={`b-${i}`} cert={cert} />
+                    )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         </div>
       </div>
     </section>);
