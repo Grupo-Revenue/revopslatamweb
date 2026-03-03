@@ -45,15 +45,15 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
   return (
     <section
-      className="relative overflow-hidden"
+      className="relative overflow-hidden w-full"
       style={{ background: "#F5F5F8", ...getBgStyle() }}>
       
       {hasBg && <div style={bgLayerStyle} />}
 
-      <div className="relative z-10 max-w-[1100px] mx-auto px-4 sm:px-6">
+      <div className="relative z-10 w-full px-6 sm:px-10 lg:px-16 xl:px-24">
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
-          {/* Left — Text */}
-          <div className="flex-shrink-0 lg:max-w-[340px] lg:sticky lg:top-32 py-10 lg:py-16">
+          {/* Left — Text (2/3) */}
+          <div className="flex-1 lg:basis-2/3 lg:sticky lg:top-32 py-10 lg:py-16">
             <motion.p
               {...fadeUp(0)}
               className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
@@ -74,8 +74,8 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
             </motion.p>
           </div>
 
-          {/* Right — Dual-column marquee */}
-          <div className="flex-1 w-full relative">
+          {/* Right — Dual-column marquee (1/3) */}
+          <div className="lg:basis-1/3 flex-shrink-0 w-full relative">
             {certs.length === 0 ?
             <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
                 <p className="text-sm" style={{ color: "#9CA3AF" }}>
@@ -136,15 +136,15 @@ const Credibility = ({ section }: {section?: HomeSection;}) => {
 
 function CertCard({ cert }: {cert: CertItem;}) {
   return (
-    <div className="flex items-center justify-center px-2">
-      <img
-        src={cert.image_url}
-        alt={cert.name || "Certificación"}
-        className="w-4/5 h-auto object-contain transition-transform duration-300 hover:scale-105 mx-auto"
-        loading="lazy" />
-      
+    <div className="flex items-center justify-center px-2 py-2">
+      <div className="bg-white rounded-xl shadow-md p-3 inline-flex items-center justify-center">
+        <img
+          src={cert.image_url}
+          alt={cert.name || "Certificación"}
+          className="w-full max-w-[140px] h-auto object-contain transition-transform duration-300 hover:scale-105"
+          loading="lazy" />
+      </div>
     </div>);
-
 }
 
 export default Credibility;
