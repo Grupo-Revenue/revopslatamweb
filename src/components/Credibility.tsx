@@ -8,7 +8,7 @@ const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-50px" },
-  transition: { duration: 0.5, delay, ease: "easeOut" as const },
+  transition: { duration: 0.5, delay, ease: "easeOut" as const }
 });
 
 interface CertItem {
@@ -18,7 +18,7 @@ interface CertItem {
 
 const defaultCerts: CertItem[] = [];
 
-const Credibility = ({ section }: { section?: HomeSection }) => {
+const Credibility = ({ section }: {section?: HomeSection;}) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
@@ -26,9 +26,9 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
   const eyebrow = section?.subtitle ?? "CERTIFICACIONES";
   const title = section?.title ?? "Somos expertos";
   const body =
-    section?.body ??
-    "Nuestro equipo de consultores especializados, contamos con certificaciones oficiales de HubSpot que validan experiencia y conocimiento.";
-  const certs = (meta.certifications as CertItem[]) ?? defaultCerts;
+  section?.body ??
+  "Nuestro equipo de consultores especializados, contamos con certificaciones oficiales de HubSpot que validan experiencia y conocimiento.";
+  const certs = meta.certifications as CertItem[] ?? defaultCerts;
 
   // Split certs into two columns
   const colA: CertItem[] = [];
@@ -40,45 +40,45 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
   return (
     <section
       className="relative px-4 sm:px-6 overflow-hidden"
-      style={{ background: "#F5F5F8", ...getBgStyle() }}
-    >
+      style={{ background: "#F5F5F8", ...getBgStyle() }}>
+      
       {hasBg && <div style={bgLayerStyle} />}
-      <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-start gap-12 lg:gap-20">
+      <div className="relative z-10 max-w-[1100px] mx-auto flex-col items-start gap-12 lg:gap-20 my-0 mt-[20px] mb-[20px] flex lg:flex-row">
         {/* Left — Text */}
         <div className="flex-1 lg:max-w-[460px] lg:sticky lg:top-32">
           <motion.p
             {...fadeUp(0)}
             className="text-[12px] sm:text-[13px] font-semibold tracking-[0.18em] uppercase"
-            style={{ color: "#0779D7", ...getStyle("subtitle") }}
-          >
+            style={{ color: "#0779D7", ...getStyle("subtitle") }}>
+            
             {eyebrow}
           </motion.p>
           <motion.h2
             {...fadeUp(0.08)}
             className="mt-3 text-[32px] md:text-[44px] font-bold leading-[1.15] tracking-tight"
-            style={{ color: "#1A1A2E", ...getStyle("title") }}
-          >
+            style={{ color: "#1A1A2E", ...getStyle("title") }}>
+            
             {title}
           </motion.h2>
           <motion.p
             {...fadeUp(0.16)}
             className="mt-5 text-[16px] sm:text-[17px] leading-relaxed"
-            style={{ color: "#6B7280", ...getStyle("body") }}
-          >
+            style={{ color: "#6B7280", ...getStyle("body") }}>
+            
             {body}
           </motion.p>
         </div>
 
         {/* Right — Dual-column marquee (opposite directions) */}
         <div className="flex-1 w-full lg:max-w-[560px] relative">
-          {certs.length === 0 ? (
-            <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
+          {certs.length === 0 ?
+          <div className="flex items-center justify-center h-64 rounded-2xl border-2 border-dashed" style={{ borderColor: "#D1D5DB" }}>
               <p className="text-sm" style={{ color: "#9CA3AF" }}>
                 Sube certificaciones desde el admin
               </p>
-            </div>
-          ) : (
-            <div className="relative h-[420px] overflow-hidden cert-mask">
+            </div> :
+
+          <div className="relative h-[420px] overflow-hidden cert-mask">
               <style>{`
                 .cert-mask {
                   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%);
@@ -106,39 +106,39 @@ const Credibility = ({ section }: { section?: HomeSection }) => {
                 {/* Column A — scrolls UP */}
                 <div className="flex-1 overflow-hidden">
                   <div className="cert-col-up flex flex-col gap-4">
-                    {[...colA, ...colA].map((cert, i) => (
-                      <CertCard key={`a-${i}`} cert={cert} />
-                    ))}
+                    {[...colA, ...colA].map((cert, i) =>
+                  <CertCard key={`a-${i}`} cert={cert} />
+                  )}
                   </div>
                 </div>
                 {/* Column B — scrolls DOWN */}
                 <div className="flex-1 overflow-hidden">
                   <div className="cert-col-down flex flex-col gap-4">
-                    {[...colB, ...colB].map((cert, i) => (
-                      <CertCard key={`b-${i}`} cert={cert} />
-                    ))}
+                    {[...colB, ...colB].map((cert, i) =>
+                  <CertCard key={`b-${i}`} cert={cert} />
+                  )}
                   </div>
                 </div>
               </div>
             </div>
-          )}
+          }
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
-function CertCard({ cert }: { cert: CertItem }) {
+function CertCard({ cert }: {cert: CertItem;}) {
   return (
     <div className="flex items-center justify-center px-2">
       <img
         src={cert.image_url}
         alt={cert.name || "Certificación"}
         className="w-4/5 h-auto object-contain transition-transform duration-300 hover:scale-105 mx-auto"
-        loading="lazy"
-      />
-    </div>
-  );
+        loading="lazy" />
+      
+    </div>);
+
 }
 
 export default Credibility;
