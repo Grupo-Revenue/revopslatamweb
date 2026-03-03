@@ -147,7 +147,7 @@ function HeroSection({ section }: { section?: HomeSection }) {
                 onClick={() => section.cta_url && (window.location.href = section.cta_url)}
                 className="gap-2"
               >
-                {section.cta_text} <ArrowRight size={18} />
+                {section.cta_text}
               </DynamicCTA>
             )}
             {meta.cta2_text && (
@@ -442,7 +442,7 @@ function CTASection({ section }: { section?: HomeSection }) {
               onClick={() => section.cta_url && (window.location.href = section.cta_url)}
               className="gap-2"
             >
-              {section.cta_text} <ArrowRight size={18} />
+              {section.cta_text}
             </DynamicCTA>
           )}
 
