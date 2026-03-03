@@ -19,7 +19,7 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
 
   return (
     <section
-      className="relative min-h-[85vh] flex items-center overflow-hidden"
+      className="relative flex items-center overflow-hidden"
       style={{
         background: `
           radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,229,160,0.07) 0%, transparent 60%),
@@ -37,8 +37,8 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       />
 
       <div
-        className="relative z-10 max-w-[900px] mx-auto px-6 sm:px-10 text-center"
-        style={{ paddingTop: 140, paddingBottom: 80 }}
+        className="relative z-10 px-6 sm:px-10 text-center"
+        style={{ maxWidth: 860, margin: "0 auto", paddingTop: 120, paddingBottom: 80 }}
       >
         <motion.span
           {...fadeUp(0)}
@@ -51,10 +51,10 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
         <motion.h1
           {...fadeUp(0.12)}
           style={{
-            fontSize: "clamp(3.5rem, 8vw, 7rem)",
+            fontSize: "clamp(2.4rem, 4.5vw, 3.8rem)",
             fontWeight: 800,
-            lineHeight: 1.05,
-            letterSpacing: "-0.04em",
+            lineHeight: 1.1,
+            letterSpacing: "-0.03em",
             color: "#F0F4FF",
           }}
         >
@@ -66,10 +66,10 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
           className="mx-auto"
           style={{
             marginTop: 32,
-            fontSize: "clamp(1rem, 1.8vw, 1.25rem)",
+            fontSize: "clamp(1rem, 1.6vw, 1.15rem)",
             lineHeight: 1.7,
             color: "rgba(240,244,255,0.6)",
-            maxWidth: 640,
+            maxWidth: 600,
             textAlign: "center",
           }}
         >
