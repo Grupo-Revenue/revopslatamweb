@@ -16,6 +16,7 @@ import RevOpsCheckup from "./pages/RevOpsCheckup";
 import DiagnosticoRevOps from "./pages/DiagnosticoRevOps";
 import MotorDeIngresos from "./pages/MotorDeIngresos";
 import DisenaYConstruye from "./pages/DisenaYConstruye";
+import DisenoDeProcesos from "./pages/DisenoDeProcesos";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -57,6 +58,7 @@ const App = () => (
             <Route path="/diagnostico-revops" element={<DiagnosticoRevOps />} />
             <Route path="/motor-de-ingresos" element={<MotorDeIngresos />} />
             <Route path="/diseña-y-construye-tu-pista" element={<DisenaYConstruye />} />
+            <Route path="/diseño-de-procesos" element={<DisenoDeProcesos />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
