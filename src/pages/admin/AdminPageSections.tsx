@@ -21,6 +21,7 @@ import MethodologyEditor from "@/components/admin/MethodologyEditor";
 import TestimonialsEditor from "@/components/admin/TestimonialsEditor";
 import PainsEditor from "@/components/admin/PainsEditor";
 import SolutionsEditor from "@/components/admin/SolutionsEditor";
+import PorQueExistimosEditor from "@/components/admin/PorQueExistimosEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
