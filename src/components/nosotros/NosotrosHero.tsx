@@ -87,12 +87,12 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       {heroImage && (
         <motion.div
           {...fadeUp(0.36)}
-          className="relative z-10 w-full max-w-[1100px] mx-auto px-6 sm:px-10 pb-12"
+          className="relative z-10 w-full"
         >
           <img
             src={heroImage}
             alt={title}
-            className="w-full h-auto rounded-xl shadow-2xl"
+            className="w-full h-auto"
           />
         </motion.div>
       )}
