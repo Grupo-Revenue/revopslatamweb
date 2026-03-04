@@ -238,7 +238,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         {/* ── Right: sticky layered track ── */}
         <div
           className="hidden lg:flex items-start justify-center sticky top-0"
-          style={{ height: "100vh", paddingTop: "15vh" }}
+          style={{ height: "100vh", paddingTop: "8vh" }}
         >
           <div className="relative" style={{ maxWidth: 540, width: "100%" }}>
             {/* Ambient glow */}
