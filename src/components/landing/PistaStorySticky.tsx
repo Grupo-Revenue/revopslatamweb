@@ -10,25 +10,15 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 
 /* ─── Track layers: each step reveals a new piece ─── */
 const TRACK_LAYERS = [
-  null,                // 0 – metaphor: no track yet
-  pistaInicio,         // 1 – pieces: base track appears
-  pistaMarketing,      // 2 – fall: marketing section
-  pistaVentas,         // 3 – broken: sales section  
-  pistaServicio,       // 4 – incomplete: service section
-  pistaCompleta,       // 5 – complete: full assembled track
-  pistaCompleta,       // 6 – solution: full track glowing
+  pistaInicio,         // 0 – pieces: base track appears
+  pistaMarketing,      // 1 – fall: marketing section
+  pistaVentas,         // 2 – broken: sales section  
+  pistaServicio,       // 3 – incomplete: service section
+  pistaCompleta,       // 4 – complete: full assembled track
 ];
 
-/* ─── Story steps ─── */
+/* ─── Story steps (without "La metáfora" and "La solución") ─── */
 const STEPS = [
-  {
-    id: "metaphor",
-    eyebrow: "La metáfora",
-    title: "Imagina que tu empresa es una pista de Imánix.",
-    body: "¿Recuerdas esas pistas modulares donde una pelotita baja por rampas, curvas y túneles? El revenue de tu empresa funciona exactamente igual.",
-    accent: "hsl(263 70% 44%)",
-    accentHsl: "263 70% 44%",
-  },
   {
     id: "pieces",
     eyebrow: "Las piezas",
@@ -72,14 +62,6 @@ const STEPS = [
     accent: "hsl(175 73% 37%)",
     accentHsl: "175 73% 37%",
   },
-  {
-    id: "solution",
-    eyebrow: "La solución",
-    title: "RevOps LATAM no optimiza una pieza aislada.",
-    body: "Ordena y conecta todo el sistema para que el revenue fluya sin fricción: predecible, escalable y sin depender de héroes individuales. Diagnosticamos dónde se rompe tu pista y la reconstruimos pieza a pieza.",
-    accent: "hsl(208 95% 44%)",
-    accentHsl: "208 95% 44%",
-  },
 ];
 
 export default function PistaStorySticky({ section }: { section?: HomeSection }) {
@@ -115,8 +97,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         `,
       }}
     >
-      {/* ── Section intro title ── */}
-      <div className="pt-10 pb-0 px-6 text-center max-w-[800px] mx-auto">
+      {/* ── Section intro title (includes metaphor content) ── */}
+      <div className="pt-24 pb-6 px-6 text-center max-w-[800px] mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -146,8 +128,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             color: "#1d1d1f",
           }}
         >
-          Es el sistema que{" "}
-          <span className="text-gradient-brand">conecta las piezas.</span>
+          Imagina que tu empresa es una{" "}
+          <span className="text-gradient-brand">pista de Imánix.</span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -158,13 +140,13 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             fontSize: 18,
             lineHeight: 1.6,
             color: "#86868b",
-            marginTop: 12,
-            maxWidth: 560,
+            marginTop: 16,
+            maxWidth: 600,
             marginLeft: "auto",
             marginRight: "auto",
           }}
         >
-          Descubre cómo funciona —y cómo se rompe— el revenue de tu empresa.
+          ¿Recuerdas esas pistas modulares donde una pelotita baja por rampas, curvas y túneles? El revenue de tu empresa funciona exactamente igual. Descubre cómo se rompe —y cómo se arma.
         </motion.p>
       </div>
 
@@ -175,14 +157,14 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
       >
         {/* ── Left: scrolling text ── */}
         <div className="flex flex-col" style={{ paddingTop: 16, paddingBottom: 60 }}>
-           {STEPS.map((step, i) => (
-             <div
-               key={step.id}
-               ref={(el) => { stepRefs.current[i] = el; }}
-               className="flex flex-col justify-start pt-6"
-               style={{ paddingBottom: 28 }}
-             >
-               <motion.div
+          {STEPS.map((step, i) => (
+            <div
+              key={step.id}
+              ref={(el) => { stepRefs.current[i] = el; }}
+              className="flex flex-col justify-start"
+              style={{ paddingTop: 32, paddingBottom: 48 }}
+            >
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-8%" }}
@@ -217,14 +199,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                     marginBottom: 14,
                   }}
                 >
-                  {step.title.includes("Imánix") ? (
-                    <>
-                      Imagina que tu empresa es una{" "}
-                      <span className="text-gradient-brand">pista de Imánix.</span>
-                    </>
-                  ) : (
-                    step.title
-                  )}
+                  {step.title}
                 </h3>
 
                 <p
@@ -255,34 +230,6 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                     {step.highlight}
                   </p>
                 )}
-
-                {/* CTA on last step */}
-                {i === STEPS.length - 1 && (
-                  <a
-                    href={ctaUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-3 mt-6"
-                    style={{ fontSize: 16, fontWeight: 600, color: "#1d1d1f", textDecoration: "none" }}
-                  >
-                    <span
-                      className="transition-transform duration-300 group-hover:scale-110"
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 999,
-                        background: "var(--gradient-brand)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        boxShadow: "0 4px 20px hsl(var(--pink) / 0.3)",
-                      }}
-                    >
-                      <ArrowRight size={18} color="#fff" />
-                    </span>
-                    Diagnosticar mi sistema de revenue
-                  </a>
-                )}
               </motion.div>
             </div>
           ))}
@@ -291,10 +238,10 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         {/* ── Right: sticky layered track ── */}
         <div
           className="hidden lg:flex items-center justify-center sticky top-0"
-          style={{ height: "100vh", paddingTop: -40 }}
+          style={{ height: "100vh" }}
         >
           <div className="relative" style={{ maxWidth: 540, width: "100%" }}>
-            {/* Ambient glow that changes color */}
+            {/* Ambient glow */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
@@ -307,9 +254,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             {/* Layered SVG pieces */}
             <div className="relative w-full" style={{ aspectRatio: "779 / 881" }}>
               {TRACK_LAYERS.map((src, i) => {
-                if (!src) return null;
                 const isVisible = i <= activeIndex;
-                const isComplete = i >= 5;
+                const isComplete = i >= 4;
                 return (
                   <motion.img
                     key={`layer-${i}`}
@@ -320,7 +266,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                     animate={{
                       opacity: isVisible ? 1 : 0,
                       scale: isVisible ? 1 : 0.95,
-                      filter: isComplete && activeIndex === 6
+                      filter: isComplete && activeIndex === 4
                         ? "drop-shadow(0 0 40px hsl(208 95% 44% / 0.3))"
                         : "none",
                     }}
@@ -389,6 +335,83 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
           />
         </div>
       </div>
+
+      {/* ── Bottom CTA closure (La solución) ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+        className="text-center px-6 pb-24 pt-8"
+        style={{ maxWidth: 720, marginLeft: "auto", marginRight: "auto" }}
+      >
+        <p
+          style={{
+            fontSize: 12,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            fontWeight: 600,
+            color: "hsl(var(--pink))",
+            marginBottom: 16,
+          }}
+        >
+          La solución
+        </p>
+        <h3
+          style={{
+            fontSize: "clamp(28px, 3.5vw, 44px)",
+            fontWeight: 700,
+            lineHeight: 1.1,
+            letterSpacing: "-0.025em",
+            color: "#1d1d1f",
+            marginBottom: 16,
+          }}
+        >
+          No optimizamos una pieza aislada.{" "}
+          <span className="text-gradient-brand">Conectamos todo el sistema.</span>
+        </h3>
+        <p
+          style={{
+            fontSize: 18,
+            lineHeight: 1.6,
+            color: "#6e6e73",
+            marginBottom: 32,
+            maxWidth: 560,
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          Diagnosticamos dónde se rompe tu pista y la reconstruimos pieza a pieza para que el revenue fluya sin fricción: predecible, escalable y sin depender de héroes.
+        </p>
+        <a
+          href={ctaUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-3"
+          style={{
+            fontSize: 17,
+            fontWeight: 600,
+            color: "#fff",
+            textDecoration: "none",
+            background: "var(--gradient-brand)",
+            padding: "16px 36px",
+            borderRadius: 999,
+            boxShadow: "0 4px 24px hsl(var(--pink) / 0.3)",
+            transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "scale(1.04)";
+            e.currentTarget.style.boxShadow = "0 6px 32px hsl(var(--pink) / 0.4)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "scale(1)";
+            e.currentTarget.style.boxShadow = "0 4px 24px hsl(var(--pink) / 0.3)";
+          }}
+        >
+          Diagnosticar mi sistema de revenue
+          <ArrowRight size={18} />
+        </a>
+      </motion.div>
     </section>
   );
 }
