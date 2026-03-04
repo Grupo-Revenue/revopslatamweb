@@ -169,6 +169,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-8%" }}
                 transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+               <div
                 style={{
                   borderLeft: `3px solid ${step.accent}`,
                   paddingLeft: 28,
@@ -230,6 +232,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                     {step.highlight}
                   </p>
                 )}
+              </div>
               </motion.div>
             </div>
           ))}
