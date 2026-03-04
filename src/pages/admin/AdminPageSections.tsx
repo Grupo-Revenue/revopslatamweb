@@ -21,6 +21,7 @@ import MethodologyEditor from "@/components/admin/MethodologyEditor";
 import TestimonialsEditor from "@/components/admin/TestimonialsEditor";
 import PainsEditor from "@/components/admin/PainsEditor";
 import SolutionsEditor from "@/components/admin/SolutionsEditor";
+import PorQueExistimosEditor from "@/components/admin/PorQueExistimosEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -816,6 +817,14 @@ export default function AdminPageSections() {
                   {/* Solutions Editor */}
                   {section.section_key === "solutions" && (
                     <SolutionsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Por qué existimos Editor */}
+                  {section.section_key === "por-que-existimos" && (
+                    <PorQueExistimosEditor
                       metadata={meta}
                       onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                     />
