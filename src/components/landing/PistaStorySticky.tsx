@@ -280,32 +280,6 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
               })}
             </div>
 
-            {/* State label */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeStep.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.35 }}
-                className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-20"
-                style={{
-                  padding: "6px 16px",
-                  borderRadius: 999,
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  color: activeStep.accent,
-                  background: `${activeStep.accent.replace(")", " / 0.08)")}`,
-                  border: `1px solid ${activeStep.accent.replace(")", " / 0.15)")}`,
-                  backdropFilter: "blur(12px)",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {activeStep.eyebrow}
-              </motion.div>
-            </AnimatePresence>
 
             {/* Progress dots */}
             <div
