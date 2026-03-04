@@ -13,17 +13,26 @@ import NosotrosCTA from "@/components/nosotros/NosotrosCTA";
 const Nosotros = () => {
   const { getSection } = usePageSections("/nosotros");
 
+  const heroSection = getSection("nosotros-hero");
+  const porQueExistimosSection = getSection("por-que-existimos");
+  const porQueDeEstaFormaSection = getSection("por-que-de-esta-forma");
+  const comoEntendemosSection = getSection("como-entendemos");
+  const losNumerosSection = getSection("los-numeros");
+  const elEquipoSection = getSection("el-equipo");
+  const masAllaDelRevenueSection = getSection("mas-alla-del-revenue");
+  const nosotrosCTASection = getSection("nosotros-cta");
+
   return (
     <div className="min-h-screen">
       <Navbar />
-      <NosotrosHero section={getSection("nosotros-hero")} />
-      <PorQueExistimos section={getSection("por-que-existimos")} />
-      <PorQueDeEstaForma section={getSection("por-que-de-esta-forma")} />
-      <ComoEntendemos section={getSection("como-entendemos")} />
-      <LosNumeros section={getSection("los-numeros")} />
-      <ElEquipo section={getSection("el-equipo")} />
-      <MasAllaDelRevenue section={getSection("mas-alla-del-revenue")} />
-      <NosotrosCTA section={getSection("nosotros-cta")} />
+      {heroSection && <NosotrosHero section={heroSection} />}
+      {porQueExistimosSection && <PorQueExistimos section={porQueExistimosSection} />}
+      {porQueDeEstaFormaSection && <PorQueDeEstaForma section={porQueDeEstaFormaSection} />}
+      {comoEntendemosSection && <ComoEntendemos section={comoEntendemosSection} />}
+      {losNumerosSection && <LosNumeros section={losNumerosSection} />}
+      {elEquipoSection && <ElEquipo section={elEquipoSection} />}
+      {masAllaDelRevenueSection && <MasAllaDelRevenue section={masAllaDelRevenueSection} />}
+      {nosotrosCTASection && <NosotrosCTA section={nosotrosCTASection} />}
       <Footer />
     </div>
   );
