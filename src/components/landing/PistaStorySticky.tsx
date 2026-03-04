@@ -68,61 +68,84 @@ const STEPS = [
   },
 ];
 
-/* ─── Falling ball component ─── */
+/* ─── Gap indicator + falling ball ─── */
 function FallingBall({ isActive }: { isActive: boolean }) {
   return (
     <AnimatePresence>
       {isActive && (
         <>
-          {/* Ball traveling then falling */}
+          {/* Pulsing gap indicator — where the piece is missing */}
           <motion.div
-            initial={{ opacity: 0, x: "62%", y: "52%" }}
-            animate={{
-              opacity: [0, 1, 1, 1, 0.6, 0],
-              x: ["62%", "60%", "58%", "56%", "52%", "48%"],
-              y: ["52%", "55%", "60%", "68%", "82%", "98%"],
-              scale: [0.8, 1, 1, 1, 0.9, 0.7],
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.15, 0.35, 0.15] }}
             exit={{ opacity: 0 }}
-            transition={{
-              duration: 2.8,
-              ease: [0.25, 0.1, 0.25, 1],
-              repeat: Infinity,
-              repeatDelay: 1,
-            }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             style={{
               position: "absolute",
-              width: 14,
-              height: 14,
-              borderRadius: "50%",
-              background: "hsl(42 93% 54%)",
-              boxShadow: "0 0 16px hsl(42 93% 54% / 0.6), 0 0 4px hsl(42 93% 54% / 0.8)",
-              zIndex: 15,
+              left: "18%",
+              top: "62%",
+              width: "50%",
+              height: "32%",
+              borderRadius: 20,
+              background: "radial-gradient(ellipse, hsl(0 84% 60% / 0.15), transparent 70%)",
+              border: "2px dashed hsl(0 84% 60% / 0.25)",
+              zIndex: 12,
               pointerEvents: "none",
             }}
           />
-          {/* Impact flash where ball falls */}
+
+          {/* "Pieza faltante" label */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "78%",
+              transform: "translateX(-50%)",
+              padding: "6px 14px",
+              borderRadius: 999,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "hsl(0 84% 60%)",
+              background: "hsl(0 84% 60% / 0.08)",
+              border: "1px solid hsl(0 84% 60% / 0.2)",
+              backdropFilter: "blur(8px)",
+              whiteSpace: "nowrap",
+              zIndex: 16,
+              pointerEvents: "none",
+            }}
+          >
+            ⚠ Pieza faltante
+          </motion.div>
+
+          {/* Animated ball that falls through the gap */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{
-              opacity: [0, 0, 0, 0, 0.5, 0],
+              opacity: [0, 1, 1, 1, 0.5, 0],
+              left: ["63%", "61%", "58%", "50%", "44%", "40%"],
+              top: ["48%", "52%", "58%", "66%", "80%", "95%"],
             }}
+            exit={{ opacity: 0 }}
             transition={{
-              duration: 2.8,
-              ease: "easeOut",
+              duration: 3,
+              ease: [0.4, 0, 1, 1],
               repeat: Infinity,
-              repeatDelay: 1,
+              repeatDelay: 1.5,
             }}
             style={{
               position: "absolute",
-              left: "45%",
-              top: "92%",
-              width: 30,
-              height: 6,
+              width: 18,
+              height: 18,
               borderRadius: "50%",
-              background: "hsl(0 84% 60% / 0.4)",
-              filter: "blur(4px)",
-              zIndex: 14,
+              background: "radial-gradient(circle at 35% 35%, hsl(42 100% 70%), hsl(42 93% 50%))",
+              boxShadow: "0 0 20px hsl(42 93% 54% / 0.7), 0 2px 8px rgba(0,0,0,0.2)",
+              zIndex: 18,
               pointerEvents: "none",
             }}
           />
