@@ -38,7 +38,7 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
 
   // Render title with optional gradient span and line break
   const renderTitle = () => {
-    let fullText = title;
+    const fullText = title;
 
     // Split by line break marker
     let lines: string[];
@@ -49,36 +49,51 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       lines = [fullText];
     }
 
-    const gradientStyle: React.CSSProperties = gradientText
-      ? {
-          background: titleGradient,
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          display: "inline",
-          color: "transparent",
-        }
-      : {};
+    if (!gradientText) {
+      return lines.map((line, li) => (
+        <span key={li}>
+          {li > 0 && <br />}
+          {line}
+        </span>
+      ));
+    }
 
-    return lines.map((line, li) => (
-      <span key={li}>
-        {li > 0 && <br />}
-        {gradientText && line.includes(gradientText)
-          ? (
-            <>
-              {line.split(gradientText).map((part, pi, arr) => (
-                <span key={pi}>
+    const escaped = gradientText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const highlightRegex = new RegExp(`(${escaped})`, "gi");
+    const hasMatch = lines.some((line) => new RegExp(escaped, "i").test(line));
+
+    const gradientStyle: React.CSSProperties = {
+      background: titleGradient,
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      backgroundClip: "text",
+      display: "inline",
+      color: "transparent",
+    };
+
+    return lines.map((line, li) => {
+      const lineParts = hasMatch ? line.split(highlightRegex) : [line];
+
+      return (
+        <span key={li}>
+          {li > 0 && <br />}
+          {lineParts.map((part, pi) => {
+            const isMatch = hasMatch && pi % 2 === 1;
+            const shouldApplyFallbackGradient = !hasMatch;
+
+            if (isMatch || shouldApplyFallbackGradient) {
+              return (
+                <span key={pi} style={gradientStyle}>
                   {part}
-                  {pi < arr.length - 1 && (
-                    <span style={gradientStyle}>{gradientText}</span>
-                  )}
                 </span>
-              ))}
-            </>
-          )
-          : line}
-      </span>
-    ));
+              );
+            }
+
+            return <span key={pi}>{part}</span>;
+          })}
+        </span>
+      );
+    });
   };
 
   return (
