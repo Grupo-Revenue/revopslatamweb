@@ -20,27 +20,34 @@ const serviciosGroups = [
   {
     label: "DISEÑA TU PISTA",
     color: "#BE1869",
-    items: ["Diagnóstico del Motor de Ingresos"],
+    items: [{ label: "Conoce tu Pista", to: "/conoce-tu-pista" }],
   },
   {
     label: "CONSTRUYE TU PISTA",
     color: "#6224BE",
-    items: ["Implementación HubSpot CRM", "Marketing Ops", "Integraciones y Desarrollo"],
+    items: [
+      { label: "Implementación HubSpot CRM", to: "#" },
+      { label: "Marketing Ops", to: "#" },
+      { label: "Integraciones y Desarrollo", to: "#" },
+    ],
   },
   {
     label: "OPERA TU PISTA",
     color: "#1CA398",
-    items: ["RevOps as a Service", "Soporte HubSpot"],
+    items: [
+      { label: "RevOps as a Service", to: "#" },
+      { label: "Soporte HubSpot", to: "#" },
+    ],
   },
   {
     label: "POTENCIA CON IA",
     color: "#0779D7",
-    items: ["IA para tu Motor de Ingresos"],
+    items: [{ label: "IA para tu Motor de Ingresos", to: "#" }],
   },
 ];
 
 const serviciosItemsFlat = serviciosGroups.flatMap((g) =>
-  g.items.map((item) => ({ label: item, to: "#" }))
+  g.items.map((item) => ({ label: item.label, to: item.to }))
 );
 
 /* ─── Simple Dropdown ─── */
@@ -178,8 +185,8 @@ const ServiciosDropdown = () => {
                 </p>
                 {group.items.map((item) => (
                   <Link
-                    key={item}
-                    to="#"
+                    key={item.label}
+                    to={item.to}
                     onClick={() => setOpen(false)}
                     className="block rounded-lg text-[14px] transition-colors duration-150"
                     style={{ padding: "10px 16px", color: "#1a1a2e" }}
@@ -192,7 +199,7 @@ const ServiciosDropdown = () => {
                       e.currentTarget.style.color = "#1a1a2e";
                     }}
                   >
-                    {item}
+                    {item.label}
                   </Link>
                 ))}
               </div>

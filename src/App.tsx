@@ -11,6 +11,7 @@ import ParaDirectoresComerciales from "./pages/ParaDirectoresComerciales";
 import ParaMarketingDirectors from "./pages/ParaMarketingDirectors";
 import ParaCustomerSuccess from "./pages/ParaCustomerSuccess";
 import ParaOperaciones from "./pages/ParaOperaciones";
+import ConoceTuPista from "./pages/ConoceTuPista";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -47,6 +48,7 @@ const App = () => (
             <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
             <Route path="/para-customer-success-y-servicio-al-cliente" element={<ParaCustomerSuccess />} />
             <Route path="/para-los-que-operan-el-negocio-sin-el-titulo" element={<ParaOperaciones />} />
+            <Route path="/conoce-tu-pista" element={<ConoceTuPista />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
