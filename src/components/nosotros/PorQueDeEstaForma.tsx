@@ -15,6 +15,7 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const title = section?.title ?? "Por qué lo hacemos de esta forma";
+  const imageUrl = section?.image_url;
 
   const paragraphs = [
     (meta.p1 as string) ?? "Somos una empresa fundada sobre principios cristianos. Y eso no es un detalle biográfico — es la razón por la que hacemos lo que hacemos de la forma en que lo hacemos.",
@@ -32,7 +33,16 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
     <section className="relative py-20 sm:py-28 px-6 sm:px-10" style={sectionBg}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[820px] mx-auto">
-        <motion.h2 {...fadeUp(0)} className="text-[32px] sm:text-[40px] md:text-[48px] font-bold leading-[1.12] tracking-tight" style={{ color: "#1A1A2E", ...getStyle("title") }}>
+        {imageUrl && (
+          <motion.div {...fadeUp(0)} className="mb-10">
+            <img
+              src={imageUrl}
+              alt={title}
+              className="w-full max-w-[600px] mx-auto h-auto object-contain"
+            />
+          </motion.div>
+        )}
+        <motion.h2 {...fadeUp(imageUrl ? 0.1 : 0)} className="text-[32px] sm:text-[40px] md:text-[48px] font-bold leading-[1.12] tracking-tight" style={{ color: "#1A1A2E", ...getStyle("title") }}>
           {title}
         </motion.h2>
 
