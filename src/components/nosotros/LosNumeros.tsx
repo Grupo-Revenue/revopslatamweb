@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -16,59 +18,32 @@ const defaultMetrics = [
 ];
 
 const LosNumeros = ({ section }: { section?: HomeSection }) => {
+  const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const title = section?.title ?? "Lo que hemos construido hasta aquí";
-  const metrics = Array.isArray(meta.metrics)
-    ? (meta.metrics as typeof defaultMetrics)
-    : defaultMetrics;
+  const metrics = Array.isArray(meta.metrics) ? (meta.metrics as typeof defaultMetrics) : defaultMetrics;
+
+  const bgStyle = getBgStyle();
+  const sectionBg = bgStyle.background ? bgStyle : { background: "linear-gradient(135deg, #0D0D1A 0%, #1A0A2E 50%, #0D1A2E 100%)" };
 
   return (
-    <section
-      className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #0D0D1A 0%, #1A0A2E 50%, #0D1A2E 100%)",
-      }}
-    >
-      {/* Subtle pink glow */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 500,
-          height: 300,
-          bottom: -50,
-          left: "20%",
-          background: "radial-gradient(ellipse, rgba(190,24,105,0.1) 0%, transparent 70%)",
-          filter: "blur(100px)",
-        }}
-      />
+    <section className="relative py-16 sm:py-20 px-6 sm:px-10 overflow-hidden" style={sectionBg}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="absolute pointer-events-none" style={{ width: 500, height: 300, bottom: -50, left: "20%", background: "radial-gradient(ellipse, rgba(190,24,105,0.1) 0%, transparent 70%)", filter: "blur(100px)" }} />
 
       <div className="relative z-10 max-w-[1100px] mx-auto">
-        <motion.h2
-          {...fadeUp(0)}
-          className="text-[28px] sm:text-[36px] md:text-[44px] font-bold leading-[1.12] tracking-tight text-center mb-14"
-          style={{ color: "white" }}
-        >
+        <motion.h2 {...fadeUp(0)} className="text-[28px] sm:text-[36px] md:text-[44px] font-bold leading-[1.12] tracking-tight text-center mb-14" style={{ color: "white", ...getStyle("title") }}>
           {title}
         </motion.h2>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6">
           {metrics.map((m, i) => (
             <motion.div key={i} {...fadeUp(0.1 + i * 0.08)} className="text-center">
-              <span
-                className="block text-[36px] sm:text-[44px] md:text-[52px] font-bold leading-none tracking-tight"
-                style={{
-                  background: "var(--gradient-brand)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
+              <span className="block text-[36px] sm:text-[44px] md:text-[52px] font-bold leading-none tracking-tight" style={{ background: "var(--gradient-brand)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 {m.value}
               </span>
-              <p
-                className="mt-3 text-[14px] sm:text-[15px] leading-[1.5]"
-                style={{ color: "rgba(255,255,255,0.55)" }}
-              >
+              <p className="mt-3 text-[14px] sm:text-[15px] leading-[1.5]" style={{ color: "rgba(255,255,255,0.55)", ...getStyle("body") }}>
                 {m.label}
               </p>
             </motion.div>
