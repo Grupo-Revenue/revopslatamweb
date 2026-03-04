@@ -32,24 +32,11 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
 
   return (
     <section
-      className="relative min-h-[85vh] flex items-center overflow-hidden"
+      className="relative flex flex-col overflow-hidden"
       style={sectionBg}
     >
       {/* Background image from admin (background_image_url) */}
       {hasBg && <div style={bgLayerStyle} />}
-
-      {/* Hero image from admin (image_url) — full cover behind content */}
-      {heroImage && (
-        <div
-          className="absolute inset-0 z-[1]"
-          style={{
-            backgroundImage: `url(${heroImage})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
-      )}
 
       {/* Ambient glows */}
       <div
@@ -69,7 +56,8 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
         }}
       />
 
-      <div className="relative z-10 max-w-[900px] mx-auto px-6 sm:px-10 py-32 sm:py-40 text-center">
+      {/* Text content */}
+      <div className="relative z-10 max-w-[900px] mx-auto px-6 sm:px-10 pt-32 sm:pt-40 pb-16 text-center">
         <motion.span
           {...fadeUp(0)}
           className="inline-block text-[12px] sm:text-[13px] font-semibold tracking-[0.2em] uppercase mb-8"
@@ -95,10 +83,24 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
         </motion.p>
       </div>
 
-      {/* Bottom gradient — configurable via metadata.bottom_gradient_color or set to "none" to disable */}
+      {/* Hero image below text */}
+      {heroImage && (
+        <motion.div
+          {...fadeUp(0.36)}
+          className="relative z-10 w-full max-w-[1100px] mx-auto px-6 sm:px-10 pb-12"
+        >
+          <img
+            src={heroImage}
+            alt={title}
+            className="w-full h-auto rounded-xl shadow-2xl"
+          />
+        </motion.div>
+      )}
+
+      {/* Bottom gradient */}
       {showBottomGradient && (
         <div
-          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-20"
           style={{
             background: `linear-gradient(to bottom, transparent, ${bottomGradientColor || "hsl(var(--background))"})`,
           }}
