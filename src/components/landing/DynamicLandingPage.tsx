@@ -15,11 +15,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import DynamicCTA from "@/components/DynamicCTA";
-import RevenueTrackSimulator from "@/components/landing/RevenueTrackSimulator";
-import PistaDiagnostico from "@/components/landing/PistaDiagnostico";
 import PistaStorySticky from "@/components/landing/PistaStorySticky";
-import PistaStoryFullscreen from "@/components/landing/PistaStoryFullscreen";
-import PistaStoryTimeline from "@/components/landing/PistaStoryTimeline";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -476,8 +472,6 @@ export default function DynamicLandingPage({ slug }: { slug: string }) {
       <Navbar />
       <HeroSection section={getSection("hero")} />
       <PistaStorySticky section={getSection("challenge")} />
-      <PistaStoryFullscreen section={getSection("challenge")} />
-      <PistaStoryTimeline section={getSection("challenge")} />
       <PainsSection section={getSection("pains")} />
       <TextBlockSection section={getSection("bridge")} defaultBg="hsl(240 33% 6%)" />
       <SolutionsSection section={getSection("solutions")} />
