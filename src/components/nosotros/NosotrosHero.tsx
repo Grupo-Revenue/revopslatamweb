@@ -55,6 +55,8 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
+          display: "inline",
+          color: "transparent",
         }
       : {};
 
