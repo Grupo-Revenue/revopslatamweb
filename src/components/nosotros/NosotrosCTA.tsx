@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -11,57 +13,38 @@ const fadeUp = (delay: number) => ({
 });
 
 const NosotrosCTA = ({ section }: { section?: HomeSection }) => {
+  const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
-  const title =
-    section?.title ??
-    "Si esto resuena contigo, probablemente trabajemos bien juntos.";
-  const body =
-    section?.body ??
-    "No trabajamos con todos. Trabajamos con empresas que quieren crecer de forma real, sana y sostenible — y con personas que valoran la honestidad por encima del discurso bonito.";
+  const title = section?.title ?? "Si esto resuena contigo, probablemente trabajemos bien juntos.";
+  const body = section?.body ?? "No trabajamos con todos. Trabajamos con empresas que quieren crecer de forma real, sana y sostenible — y con personas que valoran la honestidad por encima del discurso bonito.";
   const ctaText = section?.cta_text ?? "Hacer el Pulso Comercial";
   const ctaUrl = section?.cta_url ?? "#";
   const cta2Text = (meta.cta2_text as string) ?? "Prefiero hablar directo → Agendar conversación";
   const cta2Url = (meta.cta2_url as string) ?? "#";
 
+  const bgStyle = getBgStyle();
+  const sectionBg = bgStyle.background ? bgStyle : { background: "#F5F5F8" };
+
   return (
-    <section
-      className="relative py-20 sm:py-28 px-6 sm:px-10"
-      style={{ background: "#F5F5F8" }}
-    >
+    <section className="relative py-20 sm:py-28 px-6 sm:px-10" style={sectionBg}>
+      {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[700px] mx-auto text-center">
-        <motion.h2
-          {...fadeUp(0)}
-          className="text-[28px] sm:text-[36px] md:text-[44px] font-bold leading-[1.12] tracking-tight"
-          style={{ color: "#1A1A2E" }}
-        >
+        <motion.h2 {...fadeUp(0)} className="text-[28px] sm:text-[36px] md:text-[44px] font-bold leading-[1.12] tracking-tight" style={{ color: "#1A1A2E", ...getStyle("title") }}>
           {title}
         </motion.h2>
 
-        <motion.p
-          {...fadeUp(0.1)}
-          className="mt-6 text-[17px] sm:text-[18px] leading-[1.7]"
-          style={{ color: "#6B7280" }}
-        >
+        <motion.p {...fadeUp(0.1)} className="mt-6 text-[17px] sm:text-[18px] leading-[1.7]" style={{ color: "#6B7280", ...getStyle("body") }}>
           {body}
         </motion.p>
 
         <motion.div {...fadeUp(0.22)} className="mt-10 flex flex-col items-center gap-4">
-          <Button
-            size="lg"
-            className="gap-2 text-[16px] px-8"
-            onClick={() => window.open(ctaUrl, "_blank")}
-          >
+          <Button size="lg" className="gap-2 text-[16px] px-8" onClick={() => window.open(ctaUrl, "_blank")}>
             {ctaText}
             <ArrowRight size={18} />
           </Button>
 
-          <a
-            href={cta2Url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[15px] font-medium transition-colors duration-200"
-            style={{ color: "hsl(var(--pink))" }}
-          >
+          <a href={cta2Url} target="_blank" rel="noopener noreferrer" className="text-[15px] font-medium transition-colors duration-200" style={{ color: "hsl(var(--pink))", ...getStyle("cta") }}>
             {cta2Text}
           </a>
         </motion.div>
