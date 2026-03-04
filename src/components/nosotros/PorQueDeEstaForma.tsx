@@ -34,29 +34,11 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[820px] mx-auto">
         {imageUrl && (
-          <motion.div {...fadeUp(0)} className="mb-10 relative w-full max-w-[600px] mx-auto overflow-hidden">
+          <motion.div {...fadeUp(0)} className="mb-10">
             <img
               src={imageUrl}
               alt={title}
-              className="w-full h-auto object-contain relative z-0"
-            />
-            {/* Video destello positioned over the cross area */}
-            <video
-              src="/videos/destello-cruz.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute z-10 pointer-events-none"
-              style={{
-                mixBlendMode: "screen",
-                top: "5%",
-                left: "30%",
-                width: "45%",
-                height: "80%",
-                objectFit: "cover",
-                opacity: 1,
-              }}
+              className="w-full max-w-[600px] mx-auto h-auto object-contain"
             />
           </motion.div>
         )}
