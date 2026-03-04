@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import pistaImg from "@/assets/pista-negro.svg";
 
-/* ─── Types & Data ─── */
+/* ─── Data ─── */
 type PainOption = {
   id: string;
   label: string;
@@ -36,20 +36,23 @@ const PAIN_OPTIONS: PainOption[] = [
   },
 ];
 
-const ZONE_COLORS: Record<string, string> = {
-  marketing: "var(--pink)",
-  ventas: "var(--purple)",
-  servicio: "var(--teal)",
+const ZONE_COLORS: Record<string, { h: string; rgb: string }> = {
+  marketing: { h: "var(--pink)", rgb: "255,60,172" },
+  ventas: { h: "var(--purple)", rgb: "120,75,160" },
+  servicio: { h: "var(--teal)", rgb: "43,134,197" },
 };
 
-/* Zone highlight areas on the track (%, relative to image) */
 const ZONE_HIGHLIGHTS: Record<string, { cx: string; cy: string; rx: string; ry: string }> = {
   marketing: { cx: "28%", cy: "72%", rx: "22%", ry: "18%" },
   ventas: { cx: "50%", cy: "48%", rx: "24%", ry: "18%" },
   servicio: { cx: "72%", cy: "22%", rx: "22%", ry: "18%" },
 };
 
-const ease = [0.25, 0.1, 0.25, 1] as const;
+const ZONE_LABEL_POS: Record<string, { top: string; left: string }> = {
+  marketing: { top: "72%", left: "28%" },
+  ventas: { top: "48%", left: "50%" },
+  servicio: { top: "22%", left: "72%" },
+};
 
 /* ═══════════════════════════════════════════════════════════ */
 export default function RevenueTrackSimulator({ section }: { section?: HomeSection }) {
@@ -57,79 +60,103 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
   const ctaUrl = section?.cta_url ?? "#";
 
   const [selected, setSelected] = useState<string | null>(null);
-
   const handleSelect = useCallback((id: string) => {
     setSelected((prev) => (prev === id ? null : id));
   }, []);
-
   const activeOption = PAIN_OPTIONS.find((p) => p.id === selected);
 
   return (
     <section
-      className="relative py-24 sm:py-32 lg:py-40 px-6 overflow-hidden"
-      style={{ background: "hsl(var(--dark-bg))" }}
+      className="relative overflow-hidden"
+      style={{
+        minHeight: "100vh",
+        paddingTop: 120,
+        paddingBottom: 120,
+        background: `
+          radial-gradient(circle at 20% 30%, rgba(120,80,255,0.15), transparent 40%),
+          radial-gradient(circle at 80% 70%, rgba(255,0,120,0.12), transparent 40%),
+          #0b0b0f
+        `,
+      }}
     >
-      {/* Ambient */}
       <div
-        className="absolute pointer-events-none"
-        style={{
-          width: 800, height: 800,
-          top: "50%", left: "50%",
-          transform: "translate(-50%, -50%)",
-          background: "radial-gradient(circle, hsl(var(--pink) / 0.03) 0%, transparent 70%)",
-          filter: "blur(100px)",
-        }}
-      />
-
-      <div className="relative z-10 max-w-7xl mx-auto">
-        {/* ─── 50/50 Grid ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-
-          {/* ══ LEFT COLUMN — grouped content ══ */}
+        className="relative z-10 mx-auto"
+        style={{ maxWidth: 1280, paddingLeft: 40, paddingRight: 40 }}
+      >
+        {/* ─── 50 / 50 Grid ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          {/* ══════ LEFT ══════ */}
           <div className="flex flex-col order-2 lg:order-1">
             {/* Headline */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, ease }}
+              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{
+                fontSize: "clamp(36px, 5vw, 64px)",
+                lineHeight: 1.05,
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                maxWidth: 700,
+                color: "#ffffff",
+              }}
             >
-              <h2 className="text-[28px] sm:text-[36px] md:text-[42px] lg:text-[48px] font-bold leading-[1.08] tracking-[-0.03em] text-primary-foreground">
-                El problema no es tu equipo.
-                <br />
-                <span
-                  className="bg-clip-text text-transparent"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(135deg, hsl(var(--pink)), hsl(var(--purple)), hsl(var(--teal)))",
-                  }}
-                >
-                  Es el sistema donde operan.
-                </span>
-              </h2>
-              <p className="mt-5 text-[15px] sm:text-base leading-relaxed text-muted-foreground max-w-lg">
-                Muchas empresas intentan resolver fricciones cambiando personas,
-                pero el problema casi siempre está en cómo interactúan los procesos,
-                las herramientas y los datos.
-              </p>
-            </motion.div>
+              El problema no es tu equipo.
+              <br />
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#ff3cac,#784ba0,#2b86c5)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Es el sistema donde operan.
+              </span>
+            </motion.h2>
 
-            {/* Section label */}
+            {/* Subtext */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{
+                fontSize: 18,
+                lineHeight: 1.6,
+                color: "#9ca3af",
+                maxWidth: 560,
+                marginTop: 20,
+              }}
+            >
+              Muchas empresas intentan resolver fricciones cambiando personas,
+              pero el problema casi siempre está en cómo interactúan procesos,
+              herramientas y datos.
+            </motion.p>
+
+            {/* Diagnosis label */}
             <motion.p
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="mt-10 mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-muted-foreground/50"
+              style={{
+                fontSize: 14,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase" as const,
+                color: "#6b7280",
+                marginTop: 40,
+                marginBottom: 16,
+              }}
             >
               Diagnóstico rápido
             </motion.p>
 
             {/* ─── Cards ─── */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col" style={{ gap: 16 }}>
               {PAIN_OPTIONS.map((pain, i) => {
                 const isActive = selected === pain.id;
-                const color = ZONE_COLORS[pain.zone];
+                const zc = ZONE_COLORS[pain.zone];
 
                 return (
                   <motion.button
@@ -137,67 +164,76 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                     initial={{ opacity: 0, y: 14 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.15 + i * 0.07, duration: 0.5, ease }}
+                    transition={{
+                      delay: 0.15 + i * 0.07,
+                      duration: 0.5,
+                      ease: [0.25, 0.1, 0.25, 1],
+                    }}
                     onClick={() => handleSelect(pain.id)}
-                    className="group text-left w-full rounded-2xl px-5 py-4 sm:px-6 sm:py-5 transition-all duration-500 ease-out outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer relative overflow-hidden"
+                    className="text-left w-full outline-none cursor-pointer"
                     style={{
                       background: isActive
-                        ? `hsl(${color} / 0.08)`
-                        : "hsl(var(--muted-foreground) / 0.03)",
-                      border: "1px solid transparent",
-                      borderImage: isActive
-                        ? `linear-gradient(135deg, hsl(${color} / 0.4), hsl(${color} / 0.1)) 1`
-                        : undefined,
-                      borderColor: isActive ? undefined : "hsl(var(--muted-foreground) / 0.06)",
+                        ? `rgba(${zc.rgb}, 0.15)`
+                        : "rgba(255,255,255,0.04)",
+                      border: isActive
+                        ? `1px solid rgba(${zc.rgb}, 0.6)`
+                        : "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: 14,
+                      padding: "18px 20px",
+                      transition: "all 0.25s ease",
                       boxShadow: isActive
-                        ? `0 0 24px hsl(${color} / 0.12), 0 0 60px hsl(${color} / 0.06)`
+                        ? `0 0 30px rgba(${zc.rgb}, 0.25)`
                         : "none",
                     }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                      }
+                    }}
                   >
-                    <div className="flex items-start gap-4">
-                      {/* Accent bar */}
-                      <div
-                        className="mt-1 w-[3px] rounded-full shrink-0 transition-all duration-500"
-                        style={{
-                          height: isActive ? 22 : 16,
-                          background: isActive
-                            ? `hsl(${color})`
-                            : "hsl(var(--muted-foreground) / 0.12)",
-                          boxShadow: isActive
-                            ? `0 0 12px hsl(${color} / 0.5)`
-                            : "none",
-                        }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p
-                          className="text-[14px] sm:text-[16px] font-semibold leading-snug transition-colors duration-500"
-                          style={{
-                            color: isActive
-                              ? "hsl(var(--primary-foreground))"
-                              : "hsl(var(--muted-foreground) / 0.6)",
-                          }}
-                        >
-                          {pain.label}
-                        </p>
+                    <p
+                      style={{
+                        fontSize: 16,
+                        fontWeight: 500,
+                        color: "#ffffff",
+                        margin: 0,
+                      }}
+                    >
+                      {pain.label}
+                    </p>
 
-                        <AnimatePresence initial={false}>
-                          {isActive && (
-                            <motion.div
-                              key="insight"
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              transition={{ duration: 0.4, ease }}
-                              className="overflow-hidden"
-                            >
-                              <p className="text-[13px] leading-relaxed mt-2.5 pr-2 text-muted-foreground/60">
-                                {pain.insight}
-                              </p>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </div>
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.div
+                          key="insight"
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <p
+                            style={{
+                              fontSize: 14,
+                              color: "#9ca3af",
+                              marginTop: 6,
+                              lineHeight: 1.5,
+                              margin: 0,
+                              paddingTop: 6,
+                            }}
+                          >
+                            {pain.insight}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.button>
                 );
               })}
@@ -209,55 +245,69 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-8"
+              style={{ marginTop: 28 }}
             >
               <a
                 href={ctaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 text-sm sm:text-base font-semibold text-primary-foreground transition-all duration-300"
+                className="group"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  fontSize: 16,
+                  fontWeight: 500,
+                  color: "#ffffff",
+                  textDecoration: "none",
+                }}
               >
                 <span
-                  className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-transform duration-300 group-hover:scale-110"
+                  className="transition-transform duration-300 group-hover:scale-105"
                   style={{
-                    background: "linear-gradient(135deg, hsl(var(--pink)), hsl(var(--purple)))",
-                    boxShadow: "0 4px 20px hsl(var(--pink) / 0.3)",
+                    width: 44,
+                    height: 44,
+                    borderRadius: 999,
+                    background: "linear-gradient(135deg,#ff3cac,#784ba0,#2b86c5)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
                   }}
                 >
-                  <ArrowRight size={16} className="text-primary-foreground" />
+                  <ArrowRight size={18} color="#fff" />
                 </span>
-                <span className="border-b border-transparent group-hover:border-primary-foreground/30 transition-colors duration-300 pb-0.5">
+                <span className="border-b border-transparent group-hover:border-white/30 transition-colors duration-300 pb-0.5">
                   {ctaText}
                 </span>
               </a>
             </motion.div>
           </div>
 
-          {/* ══ RIGHT COLUMN — Track ══ */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1, ease }}
-            className="relative order-1 lg:order-2 flex items-center justify-center"
-          >
-            <div className="relative w-full max-w-[480px] mx-auto">
-              {/* Base track */}
+          {/* ══════ RIGHT — Sticky Track ══════ */}
+          <div className="order-1 lg:order-2 lg:sticky lg:top-32 flex items-center justify-center">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+              className="relative w-full max-w-[520px] mx-auto"
+            >
+              {/* Track image */}
               <img
                 src={pistaImg}
                 alt="Sistema de revenue — pista comercial"
-                className="w-full h-auto select-none transition-all duration-700"
+                className="w-full h-auto select-none"
                 style={{
-                  opacity: selected ? 0.85 : 0.5,
-                  filter: selected
-                    ? "brightness(1.15)"
-                    : "brightness(0.75)",
+                  opacity: selected ? 0.9 : 0.5,
+                  filter: selected ? "brightness(1.2)" : "brightness(0.7)",
+                  transition: "all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)",
                 }}
                 loading="lazy"
                 draggable={false}
               />
 
-              {/* Zone highlight overlays */}
+              {/* SVG zone highlights */}
               <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
                 viewBox="0 0 100 100"
@@ -265,7 +315,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
               >
                 {(["marketing", "ventas", "servicio"] as const).map((zone) => {
                   const isActive = activeOption?.zone === zone;
-                  const color = ZONE_COLORS[zone];
+                  const zc = ZONE_COLORS[zone];
                   const h = ZONE_HIGHLIGHTS[zone];
 
                   return (
@@ -275,12 +325,14 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                       cy={h.cy}
                       rx={h.rx}
                       ry={h.ry}
-                      fill={`hsl(${color} / ${isActive ? 0.15 : 0})`}
-                      stroke={`hsl(${color} / ${isActive ? 0.25 : 0})`}
-                      strokeWidth="0.3"
+                      fill={`rgba(${zc.rgb}, ${isActive ? 0.18 : 0})`}
+                      stroke={`rgba(${zc.rgb}, ${isActive ? 0.3 : 0})`}
+                      strokeWidth="0.4"
                       style={{
-                        transition: "all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)",
-                        filter: isActive ? `drop-shadow(0 0 8px hsl(${color} / 0.3))` : "none",
+                        transition: "all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)",
+                        filter: isActive
+                          ? `drop-shadow(0 0 12px rgba(${zc.rgb}, 0.4))`
+                          : "none",
                       }}
                     />
                   );
@@ -290,13 +342,8 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
               {/* Zone labels */}
               {(["marketing", "ventas", "servicio"] as const).map((zone) => {
                 const isActive = activeOption?.zone === zone;
-                const color = ZONE_COLORS[zone];
-                const positions: Record<string, { top: string; left: string }> = {
-                  marketing: { top: "72%", left: "28%" },
-                  ventas: { top: "48%", left: "50%" },
-                  servicio: { top: "22%", left: "72%" },
-                };
-                const pos = positions[zone];
+                const zc = ZONE_COLORS[zone];
+                const pos = ZONE_LABEL_POS[zone];
                 const label = zone.charAt(0).toUpperCase() + zone.slice(1);
 
                 return (
@@ -304,16 +351,27 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                     key={zone}
                     className="absolute pointer-events-none"
                     animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.85 }}
-                    transition={{ duration: 0.45, ease }}
-                    style={{ top: pos.top, left: pos.left, transform: "translate(-50%, -50%)" }}
+                    transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                    style={{
+                      top: pos.top,
+                      left: pos.left,
+                      transform: "translate(-50%, -50%)",
+                    }}
                   >
                     <span
-                      className="inline-block px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em] backdrop-blur-sm"
                       style={{
-                        color: `hsl(${color})`,
-                        background: `hsl(${color} / 0.1)`,
-                        border: `1px solid hsl(${color} / 0.2)`,
-                        textShadow: `0 0 16px hsl(${color} / 0.4)`,
+                        display: "inline-block",
+                        padding: "4px 12px",
+                        borderRadius: 999,
+                        fontSize: 11,
+                        fontWeight: 700,
+                        textTransform: "uppercase" as const,
+                        letterSpacing: "0.15em",
+                        color: `rgba(${zc.rgb}, 1)`,
+                        background: `rgba(${zc.rgb}, 0.12)`,
+                        border: `1px solid rgba(${zc.rgb}, 0.25)`,
+                        backdropFilter: "blur(8px)",
+                        textShadow: `0 0 16px rgba(${zc.rgb}, 0.5)`,
                       }}
                     >
                       {label}
@@ -321,8 +379,8 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                   </motion.div>
                 );
               })}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
