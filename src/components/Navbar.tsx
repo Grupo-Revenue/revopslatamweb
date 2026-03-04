@@ -18,9 +18,14 @@ const solucionesItems = [
 
 const serviciosGroups = [
   {
-    label: "DISEÑA TU PISTA",
+    label: "CONOCE TU PISTA",
     color: "#BE1869",
-    items: [{ label: "Conoce tu Pista", to: "/conoce-tu-pista" }],
+    link: "/conoce-tu-pista",
+    items: [
+      { label: "RevOps Checkup", to: "/revops-checkup" },
+      { label: "Diagnóstico RevOps", to: "/diagnostico-revops" },
+      { label: "Diagnóstico Motor de Ingresos", to: "/motor-de-ingresos" },
+    ],
   },
   {
     label: "CONSTRUYE TU PISTA",
@@ -172,17 +177,33 @@ const ServiciosDropdown = () => {
                 {gi > 0 && (
                   <div className="my-2 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
                 )}
-                <p
-                  className="px-4 pt-2 pb-1 select-none"
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    color: group.color,
-                  }}
-                >
-                  {group.label}
-                </p>
+                {group.link ? (
+                  <Link
+                    to={group.link}
+                    onClick={() => setOpen(false)}
+                    className="block px-4 pt-2 pb-1 transition-opacity hover:opacity-70"
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "0.12em",
+                      color: group.color,
+                    }}
+                  >
+                    {group.label}
+                  </Link>
+                ) : (
+                  <p
+                    className="px-4 pt-2 pb-1 select-none"
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 700,
+                      letterSpacing: "0.12em",
+                      color: group.color,
+                    }}
+                  >
+                    {group.label}
+                  </p>
+                )}
                 {group.items.map((item) => (
                   <Link
                     key={item.label}
