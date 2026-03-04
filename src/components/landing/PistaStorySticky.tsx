@@ -180,7 +180,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                key={step.id}
                ref={(el) => { stepRefs.current[i] = el; }}
                className="flex flex-col justify-center"
-               style={{ minHeight: "32vh", paddingTop: 0, paddingBottom: 0 }}
+               style={{ minHeight: "45vh", paddingTop: 4, paddingBottom: 4 }}
             >
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
