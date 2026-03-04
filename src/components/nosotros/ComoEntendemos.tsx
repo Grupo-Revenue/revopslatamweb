@@ -32,11 +32,32 @@ const ComoEntendemos = ({ section }: { section?: HomeSection }) => {
   const bgStyle = getBgStyle();
   const sectionBg = bgStyle.background ? bgStyle : { background: "white" };
 
+  // Dynamic styles from metadata
+  const titleColor = (meta.title_color as string) || "#1A1A2E";
+  const titleFontSize = (meta.title_font_size as string) || undefined;
+
+  const cardBg = (meta.card_bg as string) || "#F9FAFB";
+  const cardBorder = (meta.card_border as string) || "#E5E7EB";
+  const cardGradient = (meta.card_gradient as string) || undefined;
+
+  const iconColor = (meta.icon_color as string) || "hsl(var(--pink))";
+  const iconBg = (meta.icon_bg as string) || "hsl(var(--pink) / 0.08)";
+  const iconSize = parseInt((meta.icon_size as string) || "24") || 24;
+
+  const cardTitleColor = (meta.card_title_color as string) || "#1A1A2E";
+  const cardTextColor = (meta.card_text_color as string) || "#6B7280";
+  const cardTitleSize = (meta.card_title_size as string) || undefined;
+  const cardTextSize = (meta.card_text_size as string) || undefined;
+
   return (
     <section className="relative py-20 sm:py-28 px-6 sm:px-10" style={sectionBg}>
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[1100px] mx-auto">
-        <motion.h2 {...fadeUp(0)} className="text-[32px] sm:text-[40px] md:text-[48px] font-bold leading-[1.12] tracking-tight text-center" style={{ color: "#1A1A2E", ...getStyle("title") }}>
+        <motion.h2
+          {...fadeUp(0)}
+          className="text-[32px] sm:text-[40px] md:text-[48px] font-bold leading-[1.12] tracking-tight text-center"
+          style={{ color: titleColor, ...(titleFontSize ? { fontSize: titleFontSize } : {}), ...getStyle("title") }}
+        >
           {title}
         </motion.h2>
 
@@ -44,14 +65,31 @@ const ComoEntendemos = ({ section }: { section?: HomeSection }) => {
           {cards.map((card, i) => {
             const Icon = iconMap[card.icon] ?? Search;
             return (
-              <motion.div key={i} {...fadeUp(0.1 + i * 0.08)} className="rounded-2xl p-7 sm:p-8 transition-shadow duration-300 hover:shadow-lg" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB" }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: "hsl(var(--pink) / 0.08)" }}>
-                  <Icon size={24} style={{ color: "hsl(var(--pink))" }} />
+              <motion.div
+                key={i}
+                {...fadeUp(0.1 + i * 0.08)}
+                className="rounded-2xl p-7 sm:p-8 transition-shadow duration-300 hover:shadow-lg"
+                style={{
+                  background: cardGradient || cardBg,
+                  border: `1px solid ${cardBorder}`,
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5"
+                  style={{ background: iconBg }}
+                >
+                  <Icon size={iconSize} style={{ color: iconColor }} />
                 </div>
-                <h3 className="text-[20px] sm:text-[22px] font-bold leading-[1.25] tracking-tight" style={{ color: "#1A1A2E", ...getStyle("subtitle") }}>
+                <h3
+                  className="text-[20px] sm:text-[22px] font-bold leading-[1.25] tracking-tight"
+                  style={{ color: cardTitleColor, ...(cardTitleSize ? { fontSize: cardTitleSize } : {}), ...getStyle("subtitle") }}
+                >
                   {card.title}
                 </h3>
-                <p className="mt-3 text-[15px] sm:text-[16px] leading-[1.7]" style={{ color: "#6B7280", ...getStyle("body") }}>
+                <p
+                  className="mt-3 text-[15px] sm:text-[16px] leading-[1.7]"
+                  style={{ color: cardTextColor, ...(cardTextSize ? { fontSize: cardTextSize } : {}), ...getStyle("body") }}
+                >
                   {card.text}
                 </p>
               </motion.div>

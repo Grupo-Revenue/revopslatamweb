@@ -22,6 +22,7 @@ import TestimonialsEditor from "@/components/admin/TestimonialsEditor";
 import PainsEditor from "@/components/admin/PainsEditor";
 import SolutionsEditor from "@/components/admin/SolutionsEditor";
 import PorQueExistimosEditor from "@/components/admin/PorQueExistimosEditor";
+import ComoEntendemosEditor from "@/components/admin/ComoEntendemosEditor";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -833,6 +834,14 @@ export default function AdminPageSections() {
                   {/* Por qué existimos Editor */}
                   {section.section_key === "por-que-existimos" && (
                     <PorQueExistimosEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Cómo entendemos Editor */}
+                  {section.section_key === "como-entendemos" && (
+                    <ComoEntendemosEditor
                       metadata={meta}
                       onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                     />
