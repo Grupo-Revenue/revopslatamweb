@@ -749,6 +749,14 @@ export default function AdminPageSections() {
                     />
                   </div>
 
+                  {/* Row 5b: Second image for split hero */}
+                  <ImageField
+                    label="Imagen 2 (fila inferior del hero — para efecto de scroll opuesto)"
+                    value={(meta.image_url_2 as string) ?? ""}
+                    onChange={(url) => updateSectionLocal(section.id, "metadata", { ...meta, image_url_2: url || undefined })}
+                    sectionId={section.id}
+                  />
+
                   {/* Background options row */}
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
