@@ -20,8 +20,8 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
   const heroImage = section?.image_url;
 
   // Gradient text config from admin
-  const gradientText = (meta.title_gradient_text as string) || "";
-  const titleGradient = (meta.title_gradient as string) || "linear-gradient(90deg, hsl(var(--pink)), hsl(var(--purple)))";
+  const gradientText = ((meta.title_gradient_text as string) || "").trim();
+  const titleGradient = ((meta.title_gradient as string) || "").trim() || "linear-gradient(90deg, hsl(var(--pink)), hsl(var(--purple)))";
   // Line break: text before this marker goes on line 1
   const lineBreakAfter = (meta.title_line_break as string) || "";
 
@@ -55,6 +55,8 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
+          display: "inline",
+          color: "transparent",
         }
       : {};
 
