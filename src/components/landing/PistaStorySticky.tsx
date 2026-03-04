@@ -116,7 +116,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
       }}
     >
       {/* ── Section intro title ── */}
-      <div className="pt-16 pb-4 px-6 text-center max-w-[800px] mx-auto">
+      <div className="pt-10 pb-0 px-6 text-center max-w-[800px] mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -174,13 +174,13 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         style={{ maxWidth: 1280, paddingLeft: 48, paddingRight: 48 }}
       >
         {/* ── Left: scrolling text ── */}
-        <div className="flex flex-col" style={{ paddingTop: 40, paddingBottom: 80 }}>
+        <div className="flex flex-col" style={{ paddingTop: 16, paddingBottom: 60 }}>
            {STEPS.map((step, i) => (
              <div
                key={step.id}
                ref={(el) => { stepRefs.current[i] = el; }}
                className="flex flex-col justify-center"
-               style={{ minHeight: "55vh", paddingTop: 8, paddingBottom: 8 }}
+               style={{ minHeight: "45vh", paddingTop: 4, paddingBottom: 4 }}
             >
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
