@@ -1,5 +1,5 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, animate } from "framer-motion";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -44,8 +44,39 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
     target: imagesRef,
     offset: ["start end", "end start"],
   });
-  const xLeft = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const xRight = useTransform(scrollYProgress, [0, 1], [0, 60]);
+  const xScrollLeft = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const xScrollRight = useTransform(scrollYProgress, [0, 1], [0, 60]);
+
+  // Continuous slow drift animation
+  const driftLeft = useMotionValue(0);
+  const driftRight = useMotionValue(0);
+
+  useEffect(() => {
+    const controlsLeft = animate(driftLeft, [-8, 8, -8], {
+      duration: 12,
+      repeat: Infinity,
+      ease: "easeInOut",
+    });
+    const controlsRight = animate(driftRight, [8, -8, 8], {
+      duration: 14,
+      repeat: Infinity,
+      ease: "easeInOut",
+    });
+    return () => {
+      controlsLeft.stop();
+      controlsRight.stop();
+    };
+  }, []);
+
+  // Combine scroll + drift
+  const xLeft = useTransform(
+    [xScrollLeft, driftLeft] as const,
+    ([scroll, drift]: number[]) => scroll + drift
+  );
+  const xRight = useTransform(
+    [xScrollRight, driftRight] as const,
+    ([scroll, drift]: number[]) => scroll + drift
+  );
 
   // Build the full title: title (normal) + gradientText (with gradient)
   const renderTitle = () => {
