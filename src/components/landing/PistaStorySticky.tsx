@@ -179,8 +179,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
              <div
                key={step.id}
                ref={(el) => { stepRefs.current[i] = el; }}
-               className="flex flex-col justify-start pt-12"
-               style={{ minHeight: "40vh", paddingBottom: 4 }}
+               className="flex flex-col justify-start pt-6"
+               style={{ paddingBottom: 28 }}
              >
                <motion.div
                 initial={{ opacity: 0, y: 30 }}
