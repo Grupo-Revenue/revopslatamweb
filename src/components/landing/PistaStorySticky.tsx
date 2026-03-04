@@ -237,8 +237,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
 
         {/* ── Right: sticky layered track ── */}
         <div
-          className="hidden lg:flex items-center justify-center sticky top-0"
-          style={{ height: "100vh" }}
+          className="hidden lg:flex items-start justify-center sticky top-0"
+          style={{ height: "100vh", paddingTop: "15vh" }}
         >
           <div className="relative" style={{ maxWidth: 540, width: "100%" }}>
             {/* Ambient glow */}
@@ -343,7 +343,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
         className="text-center px-6 pb-24 pt-8"
-        style={{ maxWidth: 720, marginLeft: "auto", marginRight: "auto" }}
+        style={{ maxWidth: 900, marginLeft: "auto", marginRight: "auto" }}
       >
         <p
           style={{
@@ -376,7 +376,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             lineHeight: 1.6,
             color: "#6e6e73",
             marginBottom: 32,
-            maxWidth: 560,
+            maxWidth: 700,
             marginLeft: "auto",
             marginRight: "auto",
           }}
