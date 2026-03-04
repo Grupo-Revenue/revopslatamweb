@@ -61,9 +61,9 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
         paddingTop: 120,
         paddingBottom: 120,
         background: `
-          radial-gradient(circle at 20% 30%, rgba(120,80,255,0.12), transparent 40%),
-          radial-gradient(circle at 80% 70%, rgba(255,0,120,0.08), transparent 40%),
-          #0b0b0f
+          radial-gradient(circle at 20% 30%, rgba(120,80,255,0.04), transparent 40%),
+          radial-gradient(circle at 80% 70%, rgba(255,0,120,0.03), transparent 40%),
+          #F5F5F7
         `,
       }}
     >
@@ -88,7 +88,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                 fontWeight: 700,
                 letterSpacing: "-0.02em",
                 maxWidth: 700,
-                color: "#ffffff",
+                color: "#1d1d1f",
                 margin: 0,
               }}
             >
@@ -114,7 +114,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
               style={{
                 fontSize: 18,
                 lineHeight: 1.6,
-                color: "#9ca3af",
+                color: "#6e6e73",
                 maxWidth: 560,
                 marginTop: 20,
               }}
@@ -134,7 +134,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                 fontSize: 14,
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: "#6b7280",
+                color: "#86868b",
                 marginTop: 40,
                 marginBottom: 16,
               }}
@@ -163,32 +163,32 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                     className="text-left w-full outline-none cursor-pointer"
                     style={{
                       background: isActive
-                        ? `rgba(${meta.rgb}, 0.12)`
-                        : "rgba(255,255,255,0.04)",
+                        ? `rgba(${meta.rgb}, 0.08)`
+                        : "rgba(0,0,0,0.02)",
                       border: isActive
-                        ? `1px solid rgba(${meta.rgb}, 0.5)`
-                        : "1px solid rgba(255,255,255,0.08)",
+                        ? `1px solid rgba(${meta.rgb}, 0.35)`
+                        : "1px solid rgba(0,0,0,0.06)",
                       borderRadius: 14,
                       padding: "18px 20px",
                       transition: "all 0.25s ease",
                       boxShadow: isActive
-                        ? `0 0 30px rgba(${meta.rgb}, 0.2)`
+                        ? `0 0 24px rgba(${meta.rgb}, 0.15)`
                         : "none",
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive) {
-                        e.currentTarget.style.background = "rgba(255,255,255,0.07)";
-                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
+                        e.currentTarget.style.background = "rgba(0,0,0,0.04)";
+                        e.currentTarget.style.borderColor = "rgba(0,0,0,0.1)";
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
-                        e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+                        e.currentTarget.style.background = "rgba(0,0,0,0.02)";
+                        e.currentTarget.style.borderColor = "rgba(0,0,0,0.06)";
                       }
                     }}
                   >
-                    <p style={{ fontSize: 16, fontWeight: 500, color: "#ffffff", margin: 0 }}>
+                    <p style={{ fontSize: 16, fontWeight: 500, color: "#1d1d1f", margin: 0 }}>
                       {pain.label}
                     </p>
                     <AnimatePresence initial={false}>
@@ -201,7 +201,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                           className="overflow-hidden"
                         >
-                          <p style={{ fontSize: 14, color: "#9ca3af", lineHeight: 1.5, margin: 0, paddingTop: 8 }}>
+                          <p style={{ fontSize: 14, color: "#6e6e73", lineHeight: 1.5, margin: 0, paddingTop: 8 }}>
                             {pain.insight}
                           </p>
                         </motion.div>
@@ -236,7 +236,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                   gap: 10,
                   fontSize: 16,
                   fontWeight: 500,
-                  color: "#ffffff",
+                  color: "#1d1d1f",
                   textDecoration: "none",
                 }}
               >
@@ -255,7 +255,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                 >
                   <ArrowRight size={18} color="#fff" />
                 </span>
-                <span className="border-b border-transparent group-hover:border-white/30 transition-colors duration-300 pb-0.5">
+                <span className="border-b border-transparent group-hover:border-black/20 transition-colors duration-300 pb-0.5">
                   {ctaText}
                 </span>
               </a>
@@ -314,9 +314,9 @@ function TrackVisual({
         alt="Sistema de revenue — pista comercial"
         className="w-full h-auto select-none"
         style={{
-          opacity: selected ? 0.3 : 0.45,
+          opacity: selected ? 0.4 : 0.7,
           transition: "opacity 0.35s ease, filter 0.35s ease",
-          filter: selected ? "brightness(0.6)" : "brightness(0.8)",
+          filter: "none",
         }}
         loading="lazy"
         draggable={false}
@@ -370,7 +370,7 @@ function TrackVisual({
             className="w-full h-auto"
             style={{
               opacity: 1,
-              filter: `brightness(1.3) drop-shadow(0 0 18px rgba(${ZONE_META[activeOption.zone].rgb}, 0.5))`,
+              filter: `drop-shadow(0 0 14px rgba(${ZONE_META[activeOption.zone].rgb}, 0.4))`,
             }}
             draggable={false}
           />
