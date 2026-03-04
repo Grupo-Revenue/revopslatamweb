@@ -116,7 +116,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
       }}
     >
       {/* ── Section intro title ── */}
-      <div className="pt-28 pb-8 px-6 text-center max-w-[800px] mx-auto">
+      <div className="pt-16 pb-4 px-6 text-center max-w-[800px] mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -128,7 +128,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             textTransform: "uppercase",
             fontWeight: 600,
             color: "hsl(var(--pink))",
-            marginBottom: 16,
+            marginBottom: 12,
           }}
         >
           El problema no es tu equipo
@@ -158,7 +158,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             fontSize: 18,
             lineHeight: 1.6,
             color: "#86868b",
-            marginTop: 20,
+            marginTop: 12,
             maxWidth: 560,
             marginLeft: "auto",
             marginRight: "auto",
@@ -174,13 +174,13 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         style={{ maxWidth: 1280, paddingLeft: 48, paddingRight: 48 }}
       >
         {/* ── Left: scrolling text ── */}
-        <div className="flex flex-col" style={{ paddingTop: 60, paddingBottom: 80 }}>
-          {STEPS.map((step, i) => (
-            <div
-              key={step.id}
-              ref={(el) => { stepRefs.current[i] = el; }}
-              className="flex flex-col justify-center"
-              style={{ minHeight: "55vh", paddingTop: 16, paddingBottom: 16 }}
+        <div className="flex flex-col" style={{ paddingTop: 40, paddingBottom: 80 }}>
+           {STEPS.map((step, i) => (
+             <div
+               key={step.id}
+               ref={(el) => { stepRefs.current[i] = el; }}
+               className="flex flex-col justify-center"
+               style={{ minHeight: "55vh", paddingTop: 8, paddingBottom: 8 }}
             >
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -291,9 +291,9 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         {/* ── Right: sticky layered track ── */}
         <div
           className="hidden lg:flex items-center justify-center sticky top-0"
-          style={{ height: "100vh" }}
+          style={{ height: "100vh", paddingTop: -40 }}
         >
-          <div className="relative" style={{ maxWidth: 460, width: "100%" }}>
+          <div className="relative" style={{ maxWidth: 540, width: "100%" }}>
             {/* Ambient glow that changes color */}
             <div
               className="absolute inset-0 pointer-events-none"
