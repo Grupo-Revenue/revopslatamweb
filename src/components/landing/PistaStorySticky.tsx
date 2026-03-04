@@ -5,20 +5,16 @@ import pistaInicio from "@/assets/pista-inicio.svg";
 import pistaMarketing from "@/assets/pista-marketing.svg";
 import pistaVentas from "@/assets/pista-ventas.svg";
 import pistaServicio from "@/assets/pista-servicio.svg";
+import pistaCompleta from "@/assets/pista-completa.svg";
 import type { HomeSection } from "@/hooks/useHomeSections";
 
-/* ─── Track layers ─── 
-   Step 0 (Las piezas)       → pistaInicio
-   Step 1 (La realidad)      → + pistaMarketing
-   Step 2 (Pista rota)       → + pistaVentas
-   Step 3 (Pista incompleta) → same layers, ball falls in gap
-   Step 4 (Pista bien armada)→ + pistaServicio (completes everything)
-*/
+/* ─── Track layers: each step reveals a new piece ─── */
 const TRACK_LAYERS = [
-  pistaInicio,
-  pistaMarketing,
-  pistaVentas,
-  pistaServicio,    // only shown on step 4
+  pistaInicio,         // 0 – pieces
+  pistaMarketing,      // 1 – fall
+  pistaVentas,         // 2 – broken
+  pistaServicio,       // 3 – incomplete
+  pistaCompleta,       // 4 – complete
 ];
 
 /* ─── Story steps ─── */
@@ -68,93 +64,6 @@ const STEPS = [
   },
 ];
 
-/* ─── Gap indicator + falling ball ─── */
-function FallingBall({ isActive }: { isActive: boolean }) {
-  return (
-    <AnimatePresence>
-      {isActive && (
-        <>
-          {/* Pulsing gap indicator — where the piece is missing */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: [0.15, 0.35, 0.15] }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              position: "absolute",
-              left: "18%",
-              top: "62%",
-              width: "50%",
-              height: "32%",
-              borderRadius: 20,
-              background: "radial-gradient(ellipse, hsl(0 84% 60% / 0.15), transparent 70%)",
-              border: "2px dashed hsl(0 84% 60% / 0.25)",
-              zIndex: 12,
-              pointerEvents: "none",
-            }}
-          />
-
-          {/* "Pieza faltante" label */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "78%",
-              transform: "translateX(-50%)",
-              padding: "6px 14px",
-              borderRadius: 999,
-              fontSize: 11,
-              fontWeight: 700,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              color: "hsl(0 84% 60%)",
-              background: "hsl(0 84% 60% / 0.08)",
-              border: "1px solid hsl(0 84% 60% / 0.2)",
-              backdropFilter: "blur(8px)",
-              whiteSpace: "nowrap",
-              zIndex: 16,
-              pointerEvents: "none",
-            }}
-          >
-            ⚠ Pieza faltante
-          </motion.div>
-
-          {/* Animated ball that falls through the gap */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: [0, 1, 1, 1, 0.5, 0],
-              left: ["63%", "61%", "58%", "50%", "44%", "40%"],
-              top: ["48%", "52%", "58%", "66%", "80%", "95%"],
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: 3,
-              ease: [0.4, 0, 1, 1],
-              repeat: Infinity,
-              repeatDelay: 1.5,
-            }}
-            style={{
-              position: "absolute",
-              width: 18,
-              height: 18,
-              borderRadius: "50%",
-              background: "radial-gradient(circle at 35% 35%, hsl(42 100% 70%), hsl(42 93% 50%))",
-              boxShadow: "0 0 20px hsl(42 93% 54% / 0.7), 0 2px 8px rgba(0,0,0,0.2)",
-              zIndex: 18,
-              pointerEvents: "none",
-            }}
-          />
-        </>
-      )}
-    </AnimatePresence>
-  );
-}
-
 export default function PistaStorySticky({ section }: { section?: HomeSection }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -177,21 +86,6 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
 
   const activeStep = STEPS[activeIndex];
   const ctaUrl = section?.cta_url ?? "#";
-
-  /* Determine which SVG layers to show:
-     Steps 0-2: show layers 0..activeIndex (inicio, marketing, ventas)
-     Step 3 (incomplete): show layers 0-2 only (no servicio), + falling ball
-     Step 4 (complete): show all layers 0-3 (including servicio) */
-  const getLayerVisibility = (layerIndex: number) => {
-    if (layerIndex === 3) {
-      // pistaServicio: only visible on step 4
-      return activeIndex >= 4;
-    }
-    // layers 0-2: visible up to their index
-    return layerIndex <= activeIndex;
-  };
-
-  const showFallingBall = activeIndex === 3;
 
   return (
     <section
@@ -363,8 +257,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             {/* Layered SVG pieces */}
             <div className="relative w-full" style={{ aspectRatio: "779 / 881" }}>
               {TRACK_LAYERS.map((src, i) => {
-                const isVisible = getLayerVisibility(i);
-                const isLast = i === 3 && activeIndex === 4;
+                const isVisible = i <= activeIndex;
+                const isComplete = i === 4;
                 return (
                   <motion.img
                     key={`layer-${i}`}
@@ -375,7 +269,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                     animate={{
                       opacity: isVisible ? 1 : 0,
                       scale: isVisible ? 1 : 0.95,
-                      filter: isLast
+                      filter: isComplete && activeIndex === 4
                         ? "drop-shadow(0 0 40px hsl(175 73% 37% / 0.3))"
                         : "none",
                     }}
@@ -384,9 +278,6 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                   />
                 );
               })}
-
-              {/* Falling ball on incomplete step */}
-              <FallingBall isActive={showFallingBall} />
             </div>
 
             {/* State label */}
@@ -440,7 +331,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         {/* Mobile: inline track */}
         <div className="lg:hidden flex justify-center py-8">
           <img
-            src={pistaServicio}
+            src={pistaCompleta}
             alt="Pista modular completa"
             style={{ maxWidth: 300, width: "100%", opacity: 0.5 }}
             draggable={false}
