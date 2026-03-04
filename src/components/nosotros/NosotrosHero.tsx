@@ -138,7 +138,7 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       {heroImage && (
         <motion.div
           {...fadeUp(0.36)}
-          className="relative z-10 w-full"
+          className="relative z-10 w-full -mt-8"
         >
           <img
             src={heroImage}
