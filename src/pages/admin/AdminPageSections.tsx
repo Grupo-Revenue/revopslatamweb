@@ -577,9 +577,9 @@ export default function AdminPageSections() {
                         value={(meta.title_gradient_text as string) ?? ""}
                         onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, title_gradient_text: e.target.value })}
                         className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
-                        placeholder="Ej: Arquitectos del Revenue"
+                        placeholder="Ej: del revenue con propósito."
                       />
-                      <p className="text-zinc-600 text-[10px] mt-0.5">Parte del título que tendrá gradiente</p>
+                      <p className="text-zinc-600 text-[10px] mt-0.5">Se agrega después del título, con gradiente</p>
                     </div>
                     <div>
                       <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">CSS Gradiente</Label>
@@ -597,7 +597,7 @@ export default function AdminPageSections() {
                         value={(meta.title_line_break as string) ?? ""}
                         onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, title_line_break: e.target.value })}
                         className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
-                        placeholder="Ej: Revenue."
+                        placeholder="Ej: arquitectos"
                       />
                       <p className="text-zinc-600 text-[10px] mt-0.5">Texto tras el cual se fuerza salto de línea</p>
                     </div>
@@ -748,6 +748,14 @@ export default function AdminPageSections() {
                       sectionId={section.id}
                     />
                   </div>
+
+                  {/* Row 5b: Second image for split hero */}
+                  <ImageField
+                    label="Imagen 2 (fila inferior del hero — para efecto de scroll opuesto)"
+                    value={(meta.image_url_2 as string) ?? ""}
+                    onChange={(url) => updateSectionLocal(section.id, "metadata", { ...meta, image_url_2: url || undefined })}
+                    sectionId={section.id}
+                  />
 
                   {/* Background options row */}
                   <div className="flex items-center gap-4">

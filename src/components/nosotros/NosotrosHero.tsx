@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -13,13 +14,15 @@ const fadeUp = (delay: number) => ({
 const NosotrosHero = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  const imagesRef = useRef<HTMLDivElement>(null);
 
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const bottomGradientColor = (meta.bottom_gradient_color as string) || "";
   const showBottomGradient = bottomGradientColor !== "none";
   const heroImage = section?.image_url;
+  const heroImage2 = (meta.image_url_2 as string) || "";
 
-  // Gradient text config from admin
+  // Gradient text config from admin — this is APPENDED after the title, not searched within
   const gradientText = ((meta.title_gradient_text as string) || "").trim();
   const titleGradient = ((meta.title_gradient as string) || "").trim() || "linear-gradient(90deg, hsl(var(--pink)), hsl(var(--purple)))";
   // Line break: text before this marker goes on line 1
@@ -28,19 +31,27 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
   const label = section?.subtitle ?? "Quiénes somos";
   const title =
     section?.title ??
-    "Somos Arquitectos del Revenue. Y hacemos este trabajo para algo más grande que el revenue.";
+    "Somos Arquitectos del Revenue.";
   const body =
     section?.body ??
-    "Creemos que el orden, el diseño y el crecimiento sano son formas concretas de hacer bien en el mundo. Por eso construimos sistemas de revenue con la misma convicción con que otros construyen catedrales — pieza a pieza, con propósito, sin atajos.";
+    "Creemos que el orden, el diseño y el crecimiento sano son formas concretas de hacer bien en el mundo.";
 
   const bgStyle = getBgStyle();
   const sectionBg = bgStyle.background ? bgStyle : { background: "var(--gradient-hero)" };
 
-  // Render title with optional gradient span and line break
-  const renderTitle = () => {
-    const fullText = title;
+  // Scroll-driven horizontal animation for split images
+  const { scrollYProgress } = useScroll({
+    target: imagesRef,
+    offset: ["start end", "end start"],
+  });
+  const xLeft = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const xRight = useTransform(scrollYProgress, [0, 1], [0, 60]);
 
-    // Split by line break marker
+  // Build the full title: title (normal) + gradientText (with gradient)
+  const renderTitle = () => {
+    const fullText = gradientText ? `${title} ${gradientText}` : title;
+
+    // Apply line break if configured
     let lines: string[];
     if (lineBreakAfter && fullText.includes(lineBreakAfter)) {
       const idx = fullText.indexOf(lineBreakAfter) + lineBreakAfter.length;
@@ -58,10 +69,6 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       ));
     }
 
-    const escaped = gradientText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const highlightRegex = new RegExp(`(${escaped})`, "gi");
-    const hasMatch = lines.some((line) => new RegExp(escaped, "i").test(line));
-
     const gradientStyle: React.CSSProperties = {
       background: titleGradient,
       WebkitBackgroundClip: "text",
@@ -71,37 +78,35 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       color: "transparent",
     };
 
-    return lines.map((line, li) => {
-      const lineParts = hasMatch ? line.split(highlightRegex) : [line];
+    // For each line, find gradientText and wrap it
+    const escaped = gradientText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const highlightRegex = new RegExp(`(${escaped})`, "gi");
 
+    return lines.map((line, li) => {
+      const parts = line.split(highlightRegex);
       return (
         <span key={li}>
           {li > 0 && <br />}
-          {lineParts.map((part, pi) => {
-            const isMatch = hasMatch && pi % 2 === 1;
-            const shouldApplyFallbackGradient = !hasMatch;
-
-            if (isMatch || shouldApplyFallbackGradient) {
-              return (
-                <span key={pi} style={gradientStyle}>
-                  {part}
-                </span>
-              );
-            }
-
-            return <span key={pi}>{part}</span>;
+          {parts.map((part, pi) => {
+            const isGradient = part.toLowerCase() === gradientText.toLowerCase();
+            return isGradient ? (
+              <span key={pi} style={gradientStyle}>{part}</span>
+            ) : (
+              <span key={pi}>{part}</span>
+            );
           })}
         </span>
       );
     });
   };
 
+  const hasSplitImages = heroImage && heroImage2;
+
   return (
     <section
       className="relative flex flex-col overflow-hidden"
       style={sectionBg}
     >
-      {/* Background image from admin (background_image_url) */}
       {hasBg && <div style={bgLayerStyle} />}
 
       {/* Ambient glows */}
@@ -151,8 +156,30 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
         </motion.p>
       </div>
 
-      {/* Hero image below text */}
-      {heroImage && (
+      {/* Split images with opposite scroll animation */}
+      {hasSplitImages && (
+        <div ref={imagesRef} className="relative z-10 w-full -mt-8 overflow-hidden">
+          <motion.div style={{ x: xLeft }} className="w-full">
+            <img
+              src={heroImage}
+              alt={title}
+              className="w-full h-auto"
+              loading="eager"
+            />
+          </motion.div>
+          <motion.div style={{ x: xRight }} className="w-full">
+            <img
+              src={heroImage2}
+              alt={`${title} - 2`}
+              className="w-full h-auto"
+              loading="eager"
+            />
+          </motion.div>
+        </div>
+      )}
+
+      {/* Single image fallback */}
+      {heroImage && !hasSplitImages && (
         <motion.div
           {...fadeUp(0.36)}
           className="relative z-10 w-full -mt-8"
