@@ -34,11 +34,28 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[820px] mx-auto">
         {imageUrl && (
-          <motion.div {...fadeUp(0)} className="mb-10">
+          <motion.div {...fadeUp(0)} className="mb-10 relative">
             <img
               src={imageUrl}
               alt={title}
-              className="w-full max-w-[600px] mx-auto h-auto object-contain"
+              className="w-full max-w-[600px] mx-auto h-auto object-contain relative z-[1]"
+            />
+            <video
+              src="/videos/cross-flare.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="pointer-events-none"
+              style={{
+                position: "absolute",
+                mixBlendMode: "screen",
+                width: 280,
+                top: "5%",
+                left: "50%",
+                transform: "translateX(-20%)",
+                zIndex: 2,
+              }}
             />
           </motion.div>
         )}
