@@ -156,24 +156,22 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
         </motion.p>
       </div>
 
-      {/* Split images with opposite scroll animation */}
+      {/* Split images with infinite marquee + scroll parallax */}
       {hasSplitImages && (
         <div ref={imagesRef} className="relative z-10 w-full -mt-8 overflow-hidden">
+          {/* Row 1: scrolls left continuously */}
           <motion.div style={{ x: xLeft }} className="w-full">
-            <img
-              src={heroImage}
-              alt={title}
-              className="w-full h-auto"
-              loading="eager"
-            />
+            <div className="flex animate-marquee-left">
+              <img src={heroImage} alt={title} className="w-full h-auto flex-shrink-0" loading="eager" />
+              <img src={heroImage} alt={title} className="w-full h-auto flex-shrink-0" loading="eager" />
+            </div>
           </motion.div>
+          {/* Row 2: scrolls right continuously */}
           <motion.div style={{ x: xRight }} className="w-full">
-            <img
-              src={heroImage2}
-              alt={`${title} - 2`}
-              className="w-full h-auto"
-              loading="eager"
-            />
+            <div className="flex animate-marquee-right">
+              <img src={heroImage2} alt={`${title} - 2`} className="w-full h-auto flex-shrink-0" loading="eager" />
+              <img src={heroImage2} alt={`${title} - 2`} className="w-full h-auto flex-shrink-0" loading="eager" />
+            </div>
           </motion.div>
         </div>
       )}
