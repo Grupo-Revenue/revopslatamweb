@@ -822,6 +822,14 @@ export default function AdminPageSections() {
                     />
                   )}
 
+                  {/* Por qué existimos Editor */}
+                  {section.section_key === "por-que-existimos" && (
+                    <PorQueExistimosEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
                   {/* Gradient text & badge (for hero/text sections) */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
