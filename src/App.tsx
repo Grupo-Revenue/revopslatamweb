@@ -13,6 +13,7 @@ import ParaCustomerSuccess from "./pages/ParaCustomerSuccess";
 import ParaOperaciones from "./pages/ParaOperaciones";
 import ConoceTuPista from "./pages/ConoceTuPista";
 import RevOpsCheckup from "./pages/RevOpsCheckup";
+import DiagnosticoRevOps from "./pages/DiagnosticoRevOps";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/para-los-que-operan-el-negocio-sin-el-titulo" element={<ParaOperaciones />} />
             <Route path="/conoce-tu-pista" element={<ConoceTuPista />} />
             <Route path="/revops-checkup" element={<RevOpsCheckup />} />
+            <Route path="/diagnostico-revops" element={<DiagnosticoRevOps />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
