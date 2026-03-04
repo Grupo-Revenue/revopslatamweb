@@ -14,6 +14,11 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
 
+  const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const bottomGradientColor = (meta.bottom_gradient_color as string) || "";
+  const showBottomGradient = bottomGradientColor !== "none";
+  const heroImage = section?.image_url;
+
   const label = section?.subtitle ?? "Quiénes somos";
   const title =
     section?.title ??
@@ -30,7 +35,21 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       className="relative min-h-[85vh] flex items-center overflow-hidden"
       style={sectionBg}
     >
+      {/* Background image from admin (background_image_url) */}
       {hasBg && <div style={bgLayerStyle} />}
+
+      {/* Hero image from admin (image_url) — full cover behind content */}
+      {heroImage && (
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{
+            backgroundImage: `url(${heroImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+      )}
 
       {/* Ambient glows */}
       <div
@@ -76,10 +95,15 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
         </motion.p>
       </div>
 
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: "linear-gradient(to bottom, transparent, #0D0D1A)" }}
-      />
+      {/* Bottom gradient — configurable via metadata.bottom_gradient_color or set to "none" to disable */}
+      {showBottomGradient && (
+        <div
+          className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+          style={{
+            background: `linear-gradient(to bottom, transparent, ${bottomGradientColor || "hsl(var(--background))"})`,
+          }}
+        />
+      )}
     </section>
   );
 };
