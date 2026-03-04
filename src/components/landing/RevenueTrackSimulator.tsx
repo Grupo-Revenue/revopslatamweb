@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Settings } from "lucide-react";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import pistaImg from "@/assets/pista-negro.svg";
 
@@ -36,22 +36,10 @@ const PAIN_OPTIONS: PainOption[] = [
   },
 ];
 
-const ZONE_COLORS: Record<string, { h: string; rgb: string }> = {
-  marketing: { h: "var(--pink)", rgb: "255,60,172" },
-  ventas: { h: "var(--purple)", rgb: "120,75,160" },
-  servicio: { h: "var(--teal)", rgb: "43,134,197" },
-};
-
-const ZONE_HIGHLIGHTS: Record<string, { cx: string; cy: string; rx: string; ry: string }> = {
-  marketing: { cx: "28%", cy: "72%", rx: "22%", ry: "18%" },
-  ventas: { cx: "50%", cy: "48%", rx: "24%", ry: "18%" },
-  servicio: { cx: "72%", cy: "22%", rx: "22%", ry: "18%" },
-};
-
-const ZONE_LABEL_POS: Record<string, { top: string; left: string }> = {
-  marketing: { top: "72%", left: "28%" },
-  ventas: { top: "48%", left: "50%" },
-  servicio: { top: "22%", left: "72%" },
+const ZONE_META: Record<string, { rgb: string; cx: string; cy: string; rx: string; ry: string; labelTop: string; labelLeft: string }> = {
+  marketing: { rgb: "255,80,200", cx: "28%", cy: "72%", rx: "22%", ry: "18%", labelTop: "72%", labelLeft: "28%" },
+  ventas:    { rgb: "140,100,255", cx: "50%", cy: "48%", rx: "24%", ry: "18%", labelTop: "48%", labelLeft: "50%" },
+  servicio:  { rgb: "60,180,220", cx: "72%", cy: "22%", rx: "22%", ry: "18%", labelTop: "22%", labelLeft: "72%" },
 };
 
 /* ═══════════════════════════════════════════════════════════ */
@@ -73,8 +61,8 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
         paddingTop: 120,
         paddingBottom: 120,
         background: `
-          radial-gradient(circle at 20% 30%, rgba(120,80,255,0.15), transparent 40%),
-          radial-gradient(circle at 80% 70%, rgba(255,0,120,0.12), transparent 40%),
+          radial-gradient(circle at 20% 30%, rgba(120,80,255,0.12), transparent 40%),
+          radial-gradient(circle at 80% 70%, rgba(255,0,120,0.08), transparent 40%),
           #0b0b0f
         `,
       }}
@@ -83,23 +71,25 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
         className="relative z-10 mx-auto"
         style={{ maxWidth: 1280, paddingLeft: 40, paddingRight: 40 }}
       >
-        {/* ─── 50 / 50 Grid ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* ══════ LEFT ══════ */}
-          <div className="flex flex-col order-2 lg:order-1">
-            {/* Headline */}
+
+          {/* ══════ LEFT COLUMN ══════ */}
+          <div className="flex flex-col order-1 lg:order-1">
+
+            {/* Title */}
             <motion.h2
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
-                fontSize: "clamp(36px, 5vw, 64px)",
+                fontSize: "clamp(32px, 4.5vw, 64px)",
                 lineHeight: 1.05,
                 fontWeight: 700,
                 letterSpacing: "-0.02em",
                 maxWidth: 700,
                 color: "#ffffff",
+                margin: 0,
               }}
             >
               El problema no es tu equipo.
@@ -117,10 +107,10 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
 
             {/* Subtext */}
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+              transition={{ delay: 0.08, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
                 fontSize: 18,
                 lineHeight: 1.6,
@@ -143,7 +133,7 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
               style={{
                 fontSize: 14,
                 letterSpacing: "0.12em",
-                textTransform: "uppercase" as const,
+                textTransform: "uppercase",
                 color: "#6b7280",
                 marginTop: 40,
                 marginBottom: 16,
@@ -152,20 +142,20 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
               Diagnóstico rápido
             </motion.p>
 
-            {/* ─── Cards ─── */}
+            {/* Cards */}
             <div className="flex flex-col" style={{ gap: 16 }}>
               {PAIN_OPTIONS.map((pain, i) => {
                 const isActive = selected === pain.id;
-                const zc = ZONE_COLORS[pain.zone];
+                const meta = ZONE_META[pain.zone];
 
                 return (
                   <motion.button
                     key={pain.id}
-                    initial={{ opacity: 0, y: 14 }}
+                    initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{
-                      delay: 0.15 + i * 0.07,
+                      delay: 0.2 + i * 0.08,
                       duration: 0.5,
                       ease: [0.25, 0.1, 0.25, 1],
                     }}
@@ -173,22 +163,22 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                     className="text-left w-full outline-none cursor-pointer"
                     style={{
                       background: isActive
-                        ? `rgba(${zc.rgb}, 0.15)`
+                        ? `rgba(${meta.rgb}, 0.12)`
                         : "rgba(255,255,255,0.04)",
                       border: isActive
-                        ? `1px solid rgba(${zc.rgb}, 0.6)`
+                        ? `1px solid rgba(${meta.rgb}, 0.5)`
                         : "1px solid rgba(255,255,255,0.08)",
                       borderRadius: 14,
                       padding: "18px 20px",
                       transition: "all 0.25s ease",
                       boxShadow: isActive
-                        ? `0 0 30px rgba(${zc.rgb}, 0.25)`
+                        ? `0 0 30px rgba(${meta.rgb}, 0.2)`
                         : "none",
                     }}
                     onMouseEnter={(e) => {
                       if (!isActive) {
-                        e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                        e.currentTarget.style.background = "rgba(255,255,255,0.07)";
+                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -198,17 +188,9 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                       }
                     }}
                   >
-                    <p
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 500,
-                        color: "#ffffff",
-                        margin: 0,
-                      }}
-                    >
+                    <p style={{ fontSize: 16, fontWeight: 500, color: "#ffffff", margin: 0 }}>
                       {pain.label}
                     </p>
-
                     <AnimatePresence initial={false}>
                       {isActive && (
                         <motion.div
@@ -216,19 +198,10 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: "auto", opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                          transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                           className="overflow-hidden"
                         >
-                          <p
-                            style={{
-                              fontSize: 14,
-                              color: "#9ca3af",
-                              marginTop: 6,
-                              lineHeight: 1.5,
-                              margin: 0,
-                              paddingTop: 6,
-                            }}
-                          >
+                          <p style={{ fontSize: 14, color: "#9ca3af", lineHeight: 1.5, margin: 0, paddingTop: 8 }}>
                             {pain.insight}
                           </p>
                         </motion.div>
@@ -239,12 +212,17 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
               })}
             </div>
 
+            {/* Track — mobile only (order 4, after cards) */}
+            <div className="block lg:hidden" style={{ marginTop: 40 }}>
+              <TrackVisual activeOption={activeOption} selected={selected} mobile />
+            </div>
+
             {/* CTA */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.4, duration: 0.5 }}
+              transition={{ delay: 0.45, duration: 0.5 }}
               style={{ marginTop: 28 }}
             >
               <a
@@ -284,105 +262,176 @@ export default function RevenueTrackSimulator({ section }: { section?: HomeSecti
             </motion.div>
           </div>
 
-          {/* ══════ RIGHT — Sticky Track ══════ */}
-          <div className="order-1 lg:order-2 lg:sticky lg:top-32 flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
-              className="relative w-full max-w-[520px] mx-auto"
-            >
-              {/* Track image */}
-              <img
-                src={pistaImg}
-                alt="Sistema de revenue — pista comercial"
-                className="w-full h-auto select-none"
-                style={{
-                  opacity: selected ? 0.9 : 0.5,
-                  filter: selected ? "brightness(1.2)" : "brightness(0.7)",
-                  transition: "all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)",
-                }}
-                loading="lazy"
-                draggable={false}
-              />
-
-              {/* SVG zone highlights */}
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                {(["marketing", "ventas", "servicio"] as const).map((zone) => {
-                  const isActive = activeOption?.zone === zone;
-                  const zc = ZONE_COLORS[zone];
-                  const h = ZONE_HIGHLIGHTS[zone];
-
-                  return (
-                    <ellipse
-                      key={zone}
-                      cx={h.cx}
-                      cy={h.cy}
-                      rx={h.rx}
-                      ry={h.ry}
-                      fill={`rgba(${zc.rgb}, ${isActive ? 0.18 : 0})`}
-                      stroke={`rgba(${zc.rgb}, ${isActive ? 0.3 : 0})`}
-                      strokeWidth="0.4"
-                      style={{
-                        transition: "all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1)",
-                        filter: isActive
-                          ? `drop-shadow(0 0 12px rgba(${zc.rgb}, 0.4))`
-                          : "none",
-                      }}
-                    />
-                  );
-                })}
-              </svg>
-
-              {/* Zone labels */}
-              {(["marketing", "ventas", "servicio"] as const).map((zone) => {
-                const isActive = activeOption?.zone === zone;
-                const zc = ZONE_COLORS[zone];
-                const pos = ZONE_LABEL_POS[zone];
-                const label = zone.charAt(0).toUpperCase() + zone.slice(1);
-
-                return (
-                  <motion.div
-                    key={zone}
-                    className="absolute pointer-events-none"
-                    animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.85 }}
-                    transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                    style={{
-                      top: pos.top,
-                      left: pos.left,
-                      transform: "translate(-50%, -50%)",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "4px 12px",
-                        borderRadius: 999,
-                        fontSize: 11,
-                        fontWeight: 700,
-                        textTransform: "uppercase" as const,
-                        letterSpacing: "0.15em",
-                        color: `rgba(${zc.rgb}, 1)`,
-                        background: `rgba(${zc.rgb}, 0.12)`,
-                        border: `1px solid rgba(${zc.rgb}, 0.25)`,
-                        backdropFilter: "blur(8px)",
-                        textShadow: `0 0 16px rgba(${zc.rgb}, 0.5)`,
-                      }}
-                    >
-                      {label}
-                    </span>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
+          {/* ══════ RIGHT COLUMN — Desktop sticky track ══════ */}
+          <div className="hidden lg:flex order-2 lg:sticky lg:top-32 items-center justify-end">
+            <TrackVisual activeOption={activeOption} selected={selected} />
           </div>
         </div>
       </div>
+
+      {/* Gear rotation keyframe */}
+      <style>{`
+        @keyframes gear-rotate {
+          0% { transform: translate(-50%, -50%) rotate(0deg); }
+          100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+      `}</style>
     </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRACK VISUAL — extracted sub-component
+   ═══════════════════════════════════════════════════════════ */
+function TrackVisual({
+  activeOption,
+  selected,
+  mobile = false,
+}: {
+  activeOption?: (typeof PAIN_OPTIONS)[number];
+  selected: string | null;
+  mobile?: boolean;
+}) {
+  const isVentasActive = activeOption?.zone === "ventas";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.7, delay: 0.15 }}
+      className="relative"
+      style={{
+        width: "100%",
+        maxWidth: mobile ? 360 : 520,
+        marginLeft: mobile ? "auto" : "auto",
+        marginRight: mobile ? "auto" : 0,
+      }}
+    >
+      {/* Track image */}
+      <img
+        src={pistaImg}
+        alt="Sistema de revenue — pista comercial"
+        className="w-full h-auto select-none"
+        style={{
+          opacity: selected ? 0.3 : 0.45,
+          transition: "opacity 0.35s ease, filter 0.35s ease",
+          filter: selected ? "brightness(0.6)" : "brightness(0.8)",
+        }}
+        loading="lazy"
+        draggable={false}
+      />
+
+      {/* SVG zone highlights */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        {(["marketing", "ventas", "servicio"] as const).map((zone) => {
+          const isActive = activeOption?.zone === zone;
+          const meta = ZONE_META[zone];
+
+          return (
+            <ellipse
+              key={zone}
+              cx={meta.cx}
+              cy={meta.cy}
+              rx={meta.rx}
+              ry={meta.ry}
+              fill={`rgba(${meta.rgb}, ${isActive ? 0.15 : 0})`}
+              stroke={`rgba(${meta.rgb}, ${isActive ? 0.2 : 0})`}
+              strokeWidth="0.3"
+              style={{
+                transition: "all 0.35s ease",
+                filter: isActive
+                  ? `drop-shadow(0 0 18px rgba(${meta.rgb}, 0.5))`
+                  : "none",
+                opacity: isActive ? 1 : 0,
+              }}
+            />
+          );
+        })}
+      </svg>
+
+      {/* Bright track overlay per zone — shows the track at full brightness in the active area */}
+      {activeOption && (
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            maskImage: `radial-gradient(ellipse ${ZONE_META[activeOption.zone].rx} ${ZONE_META[activeOption.zone].ry} at ${ZONE_META[activeOption.zone].cx} ${ZONE_META[activeOption.zone].cy}, black 40%, transparent 100%)`,
+            WebkitMaskImage: `radial-gradient(ellipse ${ZONE_META[activeOption.zone].rx} ${ZONE_META[activeOption.zone].ry} at ${ZONE_META[activeOption.zone].cx} ${ZONE_META[activeOption.zone].cy}, black 40%, transparent 100%)`,
+            transition: "opacity 0.35s ease",
+          }}
+        >
+          <img
+            src={pistaImg}
+            alt=""
+            className="w-full h-auto"
+            style={{
+              opacity: 1,
+              filter: `brightness(1.3) drop-shadow(0 0 18px rgba(${ZONE_META[activeOption.zone].rgb}, 0.5))`,
+            }}
+            draggable={false}
+          />
+        </div>
+      )}
+
+      {/* Gear icon — rotates when ventas is active */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: "48%",
+          left: "50%",
+          width: 28,
+          height: 28,
+          opacity: isVentasActive ? 0.6 : 0,
+          transition: "opacity 0.35s ease",
+          animation: isVentasActive ? "gear-rotate 6s linear infinite" : "none",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <Settings size={28} color={`rgba(${ZONE_META.ventas.rgb}, 0.8)`} />
+      </div>
+
+      {/* Zone labels */}
+      {(["marketing", "ventas", "servicio"] as const).map((zone) => {
+        const isActive = activeOption?.zone === zone;
+        const meta = ZONE_META[zone];
+        const label = zone.charAt(0).toUpperCase() + zone.slice(1);
+
+        return (
+          <div
+            key={zone}
+            className="absolute pointer-events-none"
+            style={{
+              top: meta.labelTop,
+              left: meta.labelLeft,
+              transform: `translate(-50%, -50%) scale(${isActive ? 1 : 0.85})`,
+              opacity: isActive ? 1 : 0,
+              transition: "all 0.35s ease",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-block",
+                padding: "4px 12px",
+                borderRadius: 999,
+                fontSize: 11,
+                fontWeight: 600,
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: `rgba(${meta.rgb}, 1)`,
+                background: `rgba(${meta.rgb}, 0.1)`,
+                border: `1px solid rgba(${meta.rgb}, 0.2)`,
+                backdropFilter: "blur(6px)",
+              }}
+            >
+              {label}
+            </span>
+          </div>
+        );
+      })}
+    </motion.div>
   );
 }
