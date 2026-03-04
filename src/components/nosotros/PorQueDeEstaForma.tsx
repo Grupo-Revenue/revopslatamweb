@@ -50,6 +50,7 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
               style={{
                 position: "absolute",
                 mixBlendMode: "screen",
+                background: "transparent",
                 width: 280,
                 top: "5%",
                 left: "50%",
