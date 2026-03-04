@@ -34,11 +34,20 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[820px] mx-auto">
         {imageUrl && (
-          <motion.div {...fadeUp(0)} className="mb-10">
+          <motion.div {...fadeUp(0)} className="mb-10 relative w-full max-w-[600px] mx-auto">
             <img
               src={imageUrl}
               alt={title}
-              className="w-full max-w-[600px] mx-auto h-auto object-contain"
+              className="w-full h-auto object-contain relative z-0"
+            />
+            <video
+              src="/videos/destello-cruz.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+              style={{ mixBlendMode: "screen" }}
             />
           </motion.div>
         )}
