@@ -57,14 +57,16 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
       />
 
       {/* Text content */}
-      <div className="relative z-10 max-w-[900px] mx-auto px-6 sm:px-10 pt-32 sm:pt-40 pb-16 text-center">
-        <motion.span
-          {...fadeUp(0)}
-          className="inline-block text-[12px] sm:text-[13px] font-semibold tracking-[0.2em] uppercase mb-8"
-          style={{ color: "hsl(var(--pink))", ...getStyle("subtitle") }}
-        >
-          {label}
-        </motion.span>
+      <div className="relative z-10 max-w-[1100px] mx-auto px-6 sm:px-10 pt-32 sm:pt-40 pb-16 text-center">
+        {section?.subtitle && (
+          <motion.span
+            {...fadeUp(0)}
+            className="inline-block text-[12px] sm:text-[13px] font-semibold tracking-[0.2em] uppercase mb-8"
+            style={{ color: "hsl(var(--pink))", ...getStyle("subtitle") }}
+          >
+            {label}
+          </motion.span>
+        )}
 
         <motion.h1
           {...fadeUp(0.12)}
@@ -76,7 +78,7 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
 
         <motion.p
           {...fadeUp(0.24)}
-          className="mt-8 text-[17px] sm:text-[19px] leading-[1.7] max-w-[720px] mx-auto"
+          className="mt-8 text-[17px] sm:text-[19px] leading-[1.7] max-w-[900px] mx-auto"
           style={{ color: "rgba(255,255,255,0.65)", ...getStyle("body") }}
         >
           {body}
