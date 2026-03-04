@@ -112,51 +112,120 @@ export default function PistaDiagnostico({ section }: { section?: HomeSection })
       }}
     >
       <div className="relative z-10 mx-auto" style={{ maxWidth: 1280, paddingLeft: 40, paddingRight: 40 }}>
-        {/* ── Intro block ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          className="text-center mb-16 lg:mb-20"
-        >
-          <p
-            style={{
-              fontSize: 14,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "#86868b",
-              marginBottom: 16,
-            }}
+        {/* ── Storytelling intro ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center mb-20 lg:mb-28">
+          {/* Left: narrative text */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            Metodología Imanix
-          </p>
-          <h2
-            style={{
-              fontSize: "clamp(28px, 4vw, 52px)",
-              lineHeight: 1.1,
-              fontWeight: 700,
-              letterSpacing: "-0.02em",
-              color: "#1d1d1f",
-              maxWidth: 700,
-              margin: "0 auto",
-            }}
+            <p
+              style={{
+                fontSize: 13,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                color: "#86868b",
+                marginBottom: 20,
+              }}
+            >
+              La metáfora que lo explica todo
+            </p>
+
+            <h2
+              style={{
+                fontSize: "clamp(26px, 3.5vw, 44px)",
+                lineHeight: 1.15,
+                fontWeight: 700,
+                letterSpacing: "-0.02em",
+                color: "#1d1d1f",
+                margin: 0,
+              }}
+            >
+              Imagina que tu empresa es una{" "}
+              <span
+                style={{
+                  background: "linear-gradient(90deg,#ff3cac,#784ba0,#2b86c5)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                pista de Imánix.
+              </span>
+            </h2>
+
+            <div style={{ marginTop: 24, display: "flex", flexDirection: "column", gap: 16 }}>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.15, duration: 0.6 }}
+                style={{ fontSize: 17, lineHeight: 1.7, color: "#4b5563", margin: 0 }}
+              >
+                La pelotita —el revenue— solo fluye si cada pieza encaja perfectamente:
+                marketing, ventas, CRM, automatizaciones y procesos.
+                <br />
+                <strong style={{ color: "#1d1d1f" }}>Si una pieza falla, se cae.</strong> Aunque la pelotita sea buena.
+              </motion.p>
+
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.25, duration: 0.6 }}
+                style={{ fontSize: 17, lineHeight: 1.7, color: "#4b5563", margin: 0 }}
+              >
+                Eso es lo que les pasa a muchas empresas en crecimiento:
+                <strong style={{ color: "#1d1d1f" }}> no les falta talento, les falta un sistema bien diseñado.</strong>
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.35, duration: 0.5 }}
+                style={{
+                  marginTop: 8,
+                  padding: "16px 20px",
+                  borderRadius: 12,
+                  background: "rgba(120,80,255,0.04)",
+                  borderLeft: "3px solid rgba(120,80,255,0.3)",
+                }}
+              >
+                <p style={{ fontSize: 16, lineHeight: 1.6, color: "#1d1d1f", margin: 0, fontWeight: 500 }}>
+                  RevOps LATAM no optimiza una pieza aislada.
+                  <span style={{ color: "#6e6e73", fontWeight: 400 }}>
+                    {" "}Ordena y conecta todo el sistema para que el revenue fluya sin fricción: predecible, escalable y sin depender de héroes individuales.
+                  </span>
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Right: track image as hero visual */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            className="flex justify-center lg:justify-end"
           >
-            Tu motor de ingresos es como una pista modular.
-          </h2>
-          <p
-            style={{
-              fontSize: 18,
-              lineHeight: 1.6,
-              color: "#6e6e73",
-              maxWidth: 600,
-              margin: "20px auto 0",
-            }}
-          >
-            Cada pieza —proceso, dato, acuerdo, automatización— determina si tu lead
-            llega al final o se pierde en el camino.
-          </p>
-        </motion.div>
+            <img
+              src={pistaImg}
+              alt="Pista modular Imánix — metáfora del sistema de revenue"
+              className="w-full h-auto select-none"
+              style={{ maxWidth: 420, opacity: 0.75 }}
+              loading="lazy"
+              draggable={false}
+            />
+          </motion.div>
+        </div>
+
+        {/* ── Gradient divider ── */}
+        <div className="flex justify-center mb-16">
+          <div style={{ width: 80, height: 3, borderRadius: 2, background: "linear-gradient(90deg,#ff3cac,#784ba0,#2b86c5)", opacity: 0.4 }} />
+        </div>
 
         {/* ── Two columns ── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
@@ -168,26 +237,16 @@ export default function PistaDiagnostico({ section }: { section?: HomeSection })
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
-                fontSize: "clamp(24px, 3vw, 40px)",
-                lineHeight: 1.1,
+                fontSize: "clamp(22px, 2.5vw, 34px)",
+                lineHeight: 1.15,
                 fontWeight: 700,
                 letterSpacing: "-0.02em",
                 color: "#1d1d1f",
-                maxWidth: 560,
+                maxWidth: 500,
                 margin: 0,
               }}
             >
-              El problema no es tu equipo.
-              <br />
-              <span
-                style={{
-                  background: "linear-gradient(90deg,#ff3cac,#784ba0,#2b86c5)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Es la pista donde corren.
-              </span>
+              ¿Cómo está tu pista hoy?
             </motion.h3>
 
             <motion.p
@@ -196,14 +255,14 @@ export default function PistaDiagnostico({ section }: { section?: HomeSection })
               viewport={{ once: true }}
               transition={{ delay: 0.08, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               style={{
-                fontSize: 17,
+                fontSize: 16,
                 lineHeight: 1.6,
                 color: "#6e6e73",
-                maxWidth: 520,
-                marginTop: 16,
+                maxWidth: 480,
+                marginTop: 12,
               }}
             >
-              Identifica el estado de tu sistema comercial y descubre qué necesitas para que tu revenue sea predecible.
+              Selecciona el estado que mejor describe tu sistema comercial y descubre qué necesitas.
             </motion.p>
 
             {/* Diagnostic label */}
