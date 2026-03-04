@@ -5,19 +5,23 @@ import pistaInicio from "@/assets/pista-inicio.svg";
 import pistaMarketing from "@/assets/pista-marketing.svg";
 import pistaVentas from "@/assets/pista-ventas.svg";
 import pistaServicio from "@/assets/pista-servicio.svg";
-import pistaCompleta from "@/assets/pista-completa.svg";
 import type { HomeSection } from "@/hooks/useHomeSections";
 
-/* ─── Track layers: each step reveals a new piece ─── */
+/* ─── Track layers ─── 
+   Step 0 (Las piezas)       → pistaInicio
+   Step 1 (La realidad)      → + pistaMarketing
+   Step 2 (Pista rota)       → + pistaVentas
+   Step 3 (Pista incompleta) → same layers, ball falls in gap
+   Step 4 (Pista bien armada)→ + pistaServicio (completes everything)
+*/
 const TRACK_LAYERS = [
-  pistaInicio,         // 0 – pieces: base track appears
-  pistaMarketing,      // 1 – fall: marketing section
-  pistaVentas,         // 2 – broken: sales section  
-  pistaServicio,       // 3 – incomplete: service section
-  pistaCompleta,       // 4 – complete: full assembled track
+  pistaInicio,
+  pistaMarketing,
+  pistaVentas,
+  pistaServicio,    // only shown on step 4
 ];
 
-/* ─── Story steps (without "La metáfora" and "La solución") ─── */
+/* ─── Story steps ─── */
 const STEPS = [
   {
     id: "pieces",
@@ -64,6 +68,70 @@ const STEPS = [
   },
 ];
 
+/* ─── Falling ball component ─── */
+function FallingBall({ isActive }: { isActive: boolean }) {
+  return (
+    <AnimatePresence>
+      {isActive && (
+        <>
+          {/* Ball traveling then falling */}
+          <motion.div
+            initial={{ opacity: 0, x: "62%", y: "52%" }}
+            animate={{
+              opacity: [0, 1, 1, 1, 0.6, 0],
+              x: ["62%", "60%", "58%", "56%", "52%", "48%"],
+              y: ["52%", "55%", "60%", "68%", "82%", "98%"],
+              scale: [0.8, 1, 1, 1, 0.9, 0.7],
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 2.8,
+              ease: [0.25, 0.1, 0.25, 1],
+              repeat: Infinity,
+              repeatDelay: 1,
+            }}
+            style={{
+              position: "absolute",
+              width: 14,
+              height: 14,
+              borderRadius: "50%",
+              background: "hsl(42 93% 54%)",
+              boxShadow: "0 0 16px hsl(42 93% 54% / 0.6), 0 0 4px hsl(42 93% 54% / 0.8)",
+              zIndex: 15,
+              pointerEvents: "none",
+            }}
+          />
+          {/* Impact flash where ball falls */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: [0, 0, 0, 0, 0.5, 0],
+            }}
+            transition={{
+              duration: 2.8,
+              ease: "easeOut",
+              repeat: Infinity,
+              repeatDelay: 1,
+            }}
+            style={{
+              position: "absolute",
+              left: "45%",
+              top: "92%",
+              width: 30,
+              height: 6,
+              borderRadius: "50%",
+              background: "hsl(0 84% 60% / 0.4)",
+              filter: "blur(4px)",
+              zIndex: 14,
+              pointerEvents: "none",
+            }}
+          />
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function PistaStorySticky({ section }: { section?: HomeSection }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -87,6 +155,21 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
   const activeStep = STEPS[activeIndex];
   const ctaUrl = section?.cta_url ?? "#";
 
+  /* Determine which SVG layers to show:
+     Steps 0-2: show layers 0..activeIndex (inicio, marketing, ventas)
+     Step 3 (incomplete): show layers 0-2 only (no servicio), + falling ball
+     Step 4 (complete): show all layers 0-3 (including servicio) */
+  const getLayerVisibility = (layerIndex: number) => {
+    if (layerIndex === 3) {
+      // pistaServicio: only visible on step 4
+      return activeIndex >= 4;
+    }
+    // layers 0-2: visible up to their index
+    return layerIndex <= activeIndex;
+  };
+
+  const showFallingBall = activeIndex === 3;
+
   return (
     <section
       style={{
@@ -97,7 +180,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         `,
       }}
     >
-      {/* ── Section intro title (includes metaphor content) ── */}
+      {/* ── Section intro title ── */}
       <div className="pt-24 pb-6 px-6 text-center max-w-[800px] mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -170,69 +253,69 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                 viewport={{ once: true, margin: "-8%" }}
                 transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
               >
-               <div
-                style={{
-                  borderLeft: `3px solid ${step.accent}`,
-                  paddingLeft: 28,
-                  opacity: activeIndex === i ? 1 : 0.35,
-                  transition: "opacity 0.5s ease",
-                }}
-              >
-                <p
+                <div
                   style={{
-                    fontSize: 11,
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    fontWeight: 700,
-                    marginBottom: 10,
-                    color: step.accent,
+                    borderLeft: `3px solid ${step.accent}`,
+                    paddingLeft: 28,
+                    opacity: activeIndex === i ? 1 : 0.35,
+                    transition: "opacity 0.5s ease",
                   }}
                 >
-                  {step.eyebrow}
-                </p>
-
-                <h3
-                  style={{
-                    fontSize: "clamp(24px, 2.8vw, 40px)",
-                    fontWeight: 700,
-                    lineHeight: 1.1,
-                    letterSpacing: "-0.025em",
-                    color: "#1d1d1f",
-                    marginBottom: 14,
-                  }}
-                >
-                  {step.title}
-                </h3>
-
-                <p
-                  style={{
-                    fontSize: 17,
-                    lineHeight: 1.7,
-                    color: "#6e6e73",
-                    maxWidth: 480,
-                    marginBottom: step.highlight ? 14 : 0,
-                  }}
-                >
-                  {step.body}
-                </p>
-
-                {step.highlight && (
                   <p
                     style={{
-                      fontSize: 15,
-                      fontWeight: 600,
-                      lineHeight: 1.5,
+                      fontSize: 11,
+                      letterSpacing: "0.16em",
+                      textTransform: "uppercase",
+                      fontWeight: 700,
+                      marginBottom: 10,
                       color: step.accent,
-                      padding: "12px 16px",
-                      borderRadius: 12,
-                      background: `${step.accent.replace(")", " / 0.06)")}`,
-                      border: `1px solid ${step.accent.replace(")", " / 0.12)")}`,
                     }}
                   >
-                    {step.highlight}
+                    {step.eyebrow}
                   </p>
-                )}
-              </div>
+
+                  <h3
+                    style={{
+                      fontSize: "clamp(24px, 2.8vw, 40px)",
+                      fontWeight: 700,
+                      lineHeight: 1.1,
+                      letterSpacing: "-0.025em",
+                      color: "#1d1d1f",
+                      marginBottom: 14,
+                    }}
+                  >
+                    {step.title}
+                  </h3>
+
+                  <p
+                    style={{
+                      fontSize: 17,
+                      lineHeight: 1.7,
+                      color: "#6e6e73",
+                      maxWidth: 480,
+                      marginBottom: step.highlight ? 14 : 0,
+                    }}
+                  >
+                    {step.body}
+                  </p>
+
+                  {step.highlight && (
+                    <p
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 600,
+                        lineHeight: 1.5,
+                        color: step.accent,
+                        padding: "12px 16px",
+                        borderRadius: 12,
+                        background: `${step.accent.replace(")", " / 0.06)")}`,
+                        border: `1px solid ${step.accent.replace(")", " / 0.12)")}`,
+                      }}
+                    >
+                      {step.highlight}
+                    </p>
+                  )}
+                </div>
               </motion.div>
             </div>
           ))}
@@ -257,8 +340,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             {/* Layered SVG pieces */}
             <div className="relative w-full" style={{ aspectRatio: "779 / 881" }}>
               {TRACK_LAYERS.map((src, i) => {
-                const isVisible = i <= activeIndex;
-                const isComplete = i >= 4;
+                const isVisible = getLayerVisibility(i);
+                const isLast = i === 3 && activeIndex === 4;
                 return (
                   <motion.img
                     key={`layer-${i}`}
@@ -269,8 +352,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                     animate={{
                       opacity: isVisible ? 1 : 0,
                       scale: isVisible ? 1 : 0.95,
-                      filter: isComplete && activeIndex === 4
-                        ? "drop-shadow(0 0 40px hsl(208 95% 44% / 0.3))"
+                      filter: isLast
+                        ? "drop-shadow(0 0 40px hsl(175 73% 37% / 0.3))"
                         : "none",
                     }}
                     transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
@@ -278,6 +361,9 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                   />
                 );
               })}
+
+              {/* Falling ball on incomplete step */}
+              <FallingBall isActive={showFallingBall} />
             </div>
 
             {/* State label */}
@@ -331,7 +417,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         {/* Mobile: inline track */}
         <div className="lg:hidden flex justify-center py-8">
           <img
-            src={pistaCompleta}
+            src={pistaServicio}
             alt="Pista modular completa"
             style={{ maxWidth: 300, width: "100%", opacity: 0.5 }}
             draggable={false}
