@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
@@ -18,49 +17,6 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
   const title = section?.title ?? "Por qué lo hacemos de esta forma";
   const imageUrl = section?.image_url;
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    if (!video || !canvas) return;
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
-
-    let raf: number;
-
-    const renderFrame = () => {
-      if (video.paused || video.ended) return;
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imageData.data;
-
-      for (let i = 0; i < data.length; i += 4) {
-        const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
-        if (brightness < 30) {
-          data[i + 3] = 0;
-        } else if (brightness < 80) {
-          data[i + 3] = Math.round((brightness - 30) * (255 / 50));
-        }
-      }
-
-      ctx.putImageData(imageData, 0, 0);
-      raf = requestAnimationFrame(renderFrame);
-    };
-
-    const onPlay = () => { raf = requestAnimationFrame(renderFrame); };
-    video.addEventListener("play", onPlay);
-    if (!video.paused) onPlay();
-
-    return () => {
-      cancelAnimationFrame(raf);
-      video.removeEventListener("play", onPlay);
-    };
-  }, [imageUrl]);
-
   const paragraphs = [
     (meta.p1 as string) ?? "Somos una empresa fundada sobre principios cristianos. Y eso no es un detalle biográfico — es la razón por la que hacemos lo que hacemos de la forma en que lo hacemos.",
     (meta.p2 as string) ?? "Entendemos nuestro trabajo como parte de algo más grande: el mandato de llenar el mundo de orden, bien y propósito. Cada sistema que diseñamos, cada proceso que conectamos, cada empresa que acompañamos es una oportunidad concreta de hacer bien al mundo y a las personas.",
@@ -78,35 +34,11 @@ const PorQueDeEstaForma = ({ section }: { section?: HomeSection }) => {
       {hasBg && <div style={bgLayerStyle} />}
       <div className="relative z-10 max-w-[820px] mx-auto">
         {imageUrl && (
-          <motion.div {...fadeUp(0)} className="mb-10 relative">
+          <motion.div {...fadeUp(0)} className="mb-10">
             <img
               src={imageUrl}
               alt={title}
-              className="w-full max-w-[600px] mx-auto h-auto object-contain relative z-[1]"
-            />
-            <video
-              ref={videoRef}
-              src="/videos/cross-flare.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{ display: "none" }}
-            />
-            <canvas
-              ref={canvasRef}
-              width={280}
-              height={280}
-              className="pointer-events-none"
-              style={{
-                position: "absolute",
-                width: 280,
-                height: 280,
-                top: "5%",
-                left: "50%",
-                transform: "translateX(-20%)",
-                zIndex: 2,
-              }}
+              className="w-full max-w-[600px] mx-auto h-auto object-contain"
             />
           </motion.div>
         )}
