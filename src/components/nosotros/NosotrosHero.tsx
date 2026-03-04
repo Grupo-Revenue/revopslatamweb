@@ -19,6 +19,12 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
   const showBottomGradient = bottomGradientColor !== "none";
   const heroImage = section?.image_url;
 
+  // Gradient text config from admin
+  const gradientText = (meta.title_gradient_text as string) || "";
+  const titleGradient = (meta.title_gradient as string) || "linear-gradient(90deg, hsl(var(--pink)), hsl(var(--purple)))";
+  // Line break: text before this marker goes on line 1
+  const lineBreakAfter = (meta.title_line_break as string) || "";
+
   const label = section?.subtitle ?? "Quiénes somos";
   const title =
     section?.title ??
@@ -29,6 +35,49 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
 
   const bgStyle = getBgStyle();
   const sectionBg = bgStyle.background ? bgStyle : { background: "var(--gradient-hero)" };
+
+  // Render title with optional gradient span and line break
+  const renderTitle = () => {
+    let fullText = title;
+
+    // Split by line break marker
+    let lines: string[];
+    if (lineBreakAfter && fullText.includes(lineBreakAfter)) {
+      const idx = fullText.indexOf(lineBreakAfter) + lineBreakAfter.length;
+      lines = [fullText.slice(0, idx), fullText.slice(idx).trimStart()];
+    } else {
+      lines = [fullText];
+    }
+
+    const gradientStyle: React.CSSProperties = gradientText
+      ? {
+          background: titleGradient,
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+        }
+      : {};
+
+    return lines.map((line, li) => (
+      <span key={li}>
+        {li > 0 && <br />}
+        {gradientText && line.includes(gradientText)
+          ? (
+            <>
+              {line.split(gradientText).map((part, pi, arr) => (
+                <span key={pi}>
+                  {part}
+                  {pi < arr.length - 1 && (
+                    <span style={gradientStyle}>{gradientText}</span>
+                  )}
+                </span>
+              ))}
+            </>
+          )
+          : line}
+      </span>
+    ));
+  };
 
   return (
     <section
@@ -73,7 +122,7 @@ const NosotrosHero = ({ section }: { section?: HomeSection }) => {
           className="text-[32px] sm:text-[40px] md:text-[52px] lg:text-[60px] font-bold leading-[1.08] tracking-tight"
           style={{ color: "white", ...getStyle("title") }}
         >
-          {title}
+          {renderTitle()}
         </motion.h1>
 
         <motion.p

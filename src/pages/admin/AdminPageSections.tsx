@@ -566,6 +566,40 @@ export default function AdminPageSections() {
                         onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                       />
                     </div>
+                    </div>
+
+                  {/* Title gradient text & line break (hero controls) */}
+                  <div className="grid grid-cols-3 gap-2 p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto con gradiente</Label>
+                      <Input
+                        value={(meta.title_gradient_text as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, title_gradient_text: e.target.value })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Ej: Arquitectos del Revenue"
+                      />
+                      <p className="text-zinc-600 text-[10px] mt-0.5">Parte del título que tendrá gradiente</p>
+                    </div>
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">CSS Gradiente</Label>
+                      <Input
+                        value={(meta.title_gradient as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, title_gradient: e.target.value })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="linear-gradient(90deg, #BE1869, #6224BE)"
+                      />
+                      <p className="text-zinc-600 text-[10px] mt-0.5">Gradiente CSS para el texto destacado</p>
+                    </div>
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Salto de línea después de</Label>
+                      <Input
+                        value={(meta.title_line_break as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, title_line_break: e.target.value })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Ej: Revenue."
+                      />
+                      <p className="text-zinc-600 text-[10px] mt-0.5">Texto tras el cual se fuerza salto de línea</p>
+                    </div>
                   </div>
 
                   {/* Row 2: Subtitle with inline style */}
