@@ -14,6 +14,7 @@ import ParaOperaciones from "./pages/ParaOperaciones";
 import ConoceTuPista from "./pages/ConoceTuPista";
 import RevOpsCheckup from "./pages/RevOpsCheckup";
 import DiagnosticoRevOps from "./pages/DiagnosticoRevOps";
+import MotorDeIngresos from "./pages/MotorDeIngresos";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/conoce-tu-pista" element={<ConoceTuPista />} />
             <Route path="/revops-checkup" element={<RevOpsCheckup />} />
             <Route path="/diagnostico-revops" element={<DiagnosticoRevOps />} />
+            <Route path="/motor-de-ingresos" element={<MotorDeIngresos />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
