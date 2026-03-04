@@ -28,12 +28,13 @@ const serviciosGroups = [
     ],
   },
   {
-    label: "CONSTRUYE TU PISTA",
+    label: "DISEÑA Y CONSTRUYE TU PISTA",
     color: "#6224BE",
+    link: "/diseña-y-construye-tu-pista",
     items: [
-      { label: "Implementación HubSpot CRM", to: "#" },
-      { label: "Marketing Ops", to: "#" },
-      { label: "Integraciones y Desarrollo", to: "#" },
+      { label: "Diseño de Procesos", to: "/diseño-de-procesos" },
+      { label: "Onboarding HubSpot", to: "/onboarding-hubspot" },
+      { label: "Integraciones y Desarrollo", to: "/integraciones-desarrollo" },
     ],
   },
   {
