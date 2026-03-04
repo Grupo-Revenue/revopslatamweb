@@ -33,8 +33,8 @@ const STEPS = [
     title: "Si una pieza falla, se cae.",
     body: "Aunque la pelotita sea buena —aunque tengas talento, producto y mercado— si las piezas no encajan, el revenue se frena, se desvía o se pierde. Y no sabes exactamente dónde.",
     highlight: "No les falta talento. Les falta un sistema bien diseñado.",
-    accent: "hsl(0 84% 60%)",
-    accentHsl: "0 84% 60%",
+    accent: "hsl(266 66% 44%)",
+    accentHsl: "266 66% 44%",
   },
   {
     id: "broken",
