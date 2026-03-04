@@ -175,13 +175,16 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
       >
         {/* ── Left: scrolling text ── */}
         <div className="flex flex-col" style={{ paddingTop: 16, paddingBottom: 60 }}>
-           {STEPS.map((step, i) => (
-             <div
-               key={step.id}
+           {STEPS.map((step, i) => {
+             const stepMinHeight = i <= 1 ? "34vh" : "45vh";
+
+             return (
+              <div
+                key={step.id}
                 ref={(el) => { stepRefs.current[i] = el; }}
                 className="flex flex-col justify-start pt-12"
-                style={{ minHeight: "45vh", paddingBottom: 4 }}
-            >
+                style={{ minHeight: stepMinHeight, paddingBottom: 4 }}
+             >
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -285,7 +288,8 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                 )}
               </motion.div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* ── Right: sticky layered track ── */}
