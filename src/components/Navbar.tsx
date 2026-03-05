@@ -42,8 +42,9 @@ const serviciosGroups = [
     color: "#1CA398",
     link: "/opera-tu-pista",
     items: [
-      { label: "RevOps as a Service", to: "#" },
-      { label: "Soporte HubSpot", to: "#" },
+      { label: "RevOps as a Service", to: "/revops-as-a-service" },
+      { label: "Marketing Ops", to: "/marketing-ops" },
+      { label: "Soporte HubSpot", to: "/soporte-hubspot" },
     ],
   },
   {
