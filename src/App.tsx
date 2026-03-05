@@ -17,6 +17,7 @@ import DiagnosticoRevOps from "./pages/DiagnosticoRevOps";
 import MotorDeIngresos from "./pages/MotorDeIngresos";
 import DisenaYConstruye from "./pages/DisenaYConstruye";
 import DisenoDeProcesos from "./pages/DisenoDeProcesos";
+import OnboardingHubspot from "./pages/OnboardingHubspot";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -59,6 +60,7 @@ const App = () => (
             <Route path="/motor-de-ingresos" element={<MotorDeIngresos />} />
             <Route path="/diseña-y-construye-tu-pista" element={<DisenaYConstruye />} />
             <Route path="/diseño-de-procesos" element={<DisenoDeProcesos />} />
+            <Route path="/onboarding-hubspot" element={<OnboardingHubspot />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
