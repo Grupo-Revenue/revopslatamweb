@@ -19,6 +19,7 @@ import DisenaYConstruye from "./pages/DisenaYConstruye";
 import DisenoDeProcesos from "./pages/DisenoDeProcesos";
 import OnboardingHubspot from "./pages/OnboardingHubspot";
 import ImplementacionHubspot from "./pages/ImplementacionHubspot";
+import PersonalizacionCRM from "./pages/PersonalizacionCRM";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -63,6 +64,7 @@ const App = () => (
             <Route path="/diseño-de-procesos" element={<DisenoDeProcesos />} />
             <Route path="/onboarding-hubspot" element={<OnboardingHubspot />} />
             <Route path="/implementacion-hubspot" element={<ImplementacionHubspot />} />
+            <Route path="/personalizacion-crm" element={<PersonalizacionCRM />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
