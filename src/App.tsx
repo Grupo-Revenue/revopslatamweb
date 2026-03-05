@@ -21,6 +21,7 @@ import OnboardingHubspot from "./pages/OnboardingHubspot";
 import ImplementacionHubspot from "./pages/ImplementacionHubspot";
 import PersonalizacionCRM from "./pages/PersonalizacionCRM";
 import IntegracionesDesarrollo from "./pages/IntegracionesDesarrollo";
+import OperaTuPista from "./pages/OperaTuPista";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -67,6 +68,7 @@ const App = () => (
             <Route path="/implementacion-hubspot" element={<ImplementacionHubspot />} />
             <Route path="/personalizacion-crm" element={<PersonalizacionCRM />} />
             <Route path="/integraciones-desarrollo" element={<IntegracionesDesarrollo />} />
+            <Route path="/opera-tu-pista" element={<OperaTuPista />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
