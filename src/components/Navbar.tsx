@@ -34,8 +34,6 @@ const serviciosGroups = [
     items: [
       { label: "Diseño de Procesos", to: "/diseño-de-procesos" },
       { label: "Onboarding HubSpot", to: "/onboarding-hubspot" },
-      { label: "Implementación HubSpot", to: "/implementacion-hubspot" },
-      { label: "Personalización CRM", to: "/personalizacion-crm" },
       { label: "Integraciones y Desarrollo", to: "/integraciones-desarrollo" },
     ],
   },
