@@ -23,6 +23,7 @@ import PersonalizacionCRM from "./pages/PersonalizacionCRM";
 import IntegracionesDesarrollo from "./pages/IntegracionesDesarrollo";
 import OperaTuPista from "./pages/OperaTuPista";
 import RevOpsAsAService from "./pages/RevOpsAsAService";
+import MarketingOps from "./pages/MarketingOps";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -71,6 +72,7 @@ const App = () => (
             <Route path="/integraciones-desarrollo" element={<IntegracionesDesarrollo />} />
             <Route path="/opera-tu-pista" element={<OperaTuPista />} />
             <Route path="/revops-as-a-service" element={<RevOpsAsAService />} />
+            <Route path="/marketing-ops" element={<MarketingOps />} />
             {/* Admin routes */}
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin/login" element={<AdminLogin />} />
