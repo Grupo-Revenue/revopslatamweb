@@ -271,7 +271,7 @@ export default function PersonalizacionCRM() {
                 onMouseLeave={e => (e.currentTarget.style.borderColor = "#E5E7EB")}
               >
                 <span className="text-2xl shrink-0">{p.icon}</span>
-                <span className="text-sm" style={{ color: "#374151" }}>{p.text}</span>
+                <span className="text-[15px]" style={{ color: "#374151" }}>{p.text}</span>
               </motion.div>
             ))}
           </div>
