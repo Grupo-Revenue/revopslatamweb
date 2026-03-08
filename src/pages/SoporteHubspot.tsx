@@ -114,7 +114,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
       {plan.note && <p className="text-[13px] italic mb-5" style={{ color: "#6B7280" }}>{plan.note}</p>}
       <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
       <button
-        className="w-full text-sm font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
+        className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
         style={
           plan.ctaSolid
             ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }
