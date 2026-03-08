@@ -161,7 +161,7 @@ const HorizontalTimeline = ({ weeks }: { weeks: Array<{ num: string; title: stri
       {weeks.map((w, i) => (
         <motion.div key={w.num} {...fadeUp(0.1 + i * 0.08)} className="flex gap-4">
           <div className="flex flex-col items-center">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[15px] font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
             {i < weeks.length - 1 && <div className="w-[2px] flex-1 mt-2" style={{ background: GRADIENT, opacity: 0.3 }} />}
           </div>
           <div className="pt-2 pb-4">
