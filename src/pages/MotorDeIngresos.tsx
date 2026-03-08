@@ -148,7 +148,7 @@ const HorizontalTimeline = ({ weeks }: { weeks: Array<{ num: string; title: stri
           <motion.div key={w.num} {...fadeUp(0.1 + i * 0.1)} className="flex-1 flex flex-col items-center text-center">
             <div className="flex items-center w-full">
               {i > 0 && <motion.div className="flex-1 h-[2px]" style={{ background: GRADIENT, opacity: 0.4 }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }} />}
-              <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[15px] font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
               {i < weeks.length - 1 && <motion.div className="flex-1 h-[2px]" style={{ background: GRADIENT, opacity: 0.4 }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }} />}
             </div>
             <p className="mt-3 text-[13px] font-bold" style={{ color: "#1A1A2E" }}>Semana {w.num}</p>
