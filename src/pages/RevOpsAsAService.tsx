@@ -253,7 +253,7 @@ const ComparisonTable = () => {
 
   return (
     <motion.div ref={ref} className="mx-auto max-w-[700px] overflow-x-auto backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 28, border: "1px solid rgba(255,255,255,0.08)" }} initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
-      <div className="grid grid-cols-3 gap-2 mb-4 text-xs font-bold uppercase tracking-wider">
+      <div className="grid grid-cols-3 gap-2 mb-4 text-[12px] font-bold uppercase tracking-wider">
         <span />
         <span className="text-white/40 text-center">RevOps Manager interno</span>
         <span className="text-center px-3 py-2 rounded-lg" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.2), rgba(98,36,190,0.2))", color: "#fff" }}>Plan Momentum</span>
