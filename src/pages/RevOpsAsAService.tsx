@@ -259,7 +259,7 @@ const ComparisonTable = () => {
         <span className="text-center px-3 py-2 rounded-lg" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.2), rgba(98,36,190,0.2))", color: "#fff" }}>Plan Momentum</span>
       </div>
       {compRows.map(([label, intern, us], i) => (
-        <div key={label} className="grid grid-cols-3 gap-2 py-3 text-sm" style={{ borderTop: i > 0 ? "1px solid rgba(255,255,255,0.06)" : undefined }}>
+        <div key={label} className="grid grid-cols-3 gap-2 py-3 text-[15px]" style={{ borderTop: i > 0 ? "1px solid rgba(255,255,255,0.06)" : undefined }}>
           <span className="text-white/70 font-medium">{label}</span>
           <span className="text-center text-white/40">{intern}</span>
           <span className="text-center font-bold bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{us}</span>
