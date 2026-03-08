@@ -218,7 +218,7 @@ const RevOpsCheckup = () => {
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           <div className="flex-1 lg:max-w-[55%]">
-            <motion.nav {...fadeUp(0)} className="flex items-center gap-2 text-[12px] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <motion.nav {...fadeUp(0)} className="flex items-center gap-2 text-[13px] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
               <Link to={breadcrumbParentUrl} className="hover:text-white/60 transition-colors">{breadcrumbParent}</Link>
               <span>→</span>
               <span className="text-white/60">{breadcrumbCurrent}</span>
