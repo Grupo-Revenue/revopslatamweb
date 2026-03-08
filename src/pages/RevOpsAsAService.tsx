@@ -445,7 +445,7 @@ const ProblemSection = () => {
             ))
           )}
         </div>
-        <motion.div className="mt-14 mx-auto text-center text-sm font-bold leading-relaxed px-6 py-4 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.06), rgba(98,36,190,0.06))", color: "#BE1869", maxWidth: 560 }} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 }}>
+        <motion.div className="mt-14 mx-auto text-center text-base font-bold leading-relaxed px-6 py-4 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.06), rgba(98,36,190,0.06))", color: "#BE1869", maxWidth: 560 }} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 }}>
           No es falta de voluntad. Es falta de una función dedicada a que eso no pase.
         </motion.div>
       </div>

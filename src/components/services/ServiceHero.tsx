@@ -103,7 +103,7 @@ const ServiceHero = ({
             {primaryCta && (
               <button
                 onClick={primaryCta.onClick}
-                className="text-sm font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]"
+                className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]"
                 style={{
                   background: GRADIENT,
                   boxShadow: "0 4px 20px rgba(190,24,105,0.35)",
@@ -115,7 +115,7 @@ const ServiceHero = ({
             {secondaryCta && (
               <button
                 onClick={secondaryCta.onClick}
-                className="text-sm font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer"
+                className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer"
               >
                 {secondaryCta.label}
               </button>
