@@ -440,7 +440,7 @@ const ProblemSection = () => {
             col.map((text, i) => (
               <motion.div key={text} className="flex items-start gap-3" initial={{ opacity: 0, x: ci === 0 ? -15 : 15 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2 + (ci * 3 + i) * 0.08, duration: 0.4 }}>
                 <X size={16} className="mt-0.5 shrink-0" style={{ color: "#EF4444" }} />
-                <span className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>{text}</span>
+                <span className="text-base leading-relaxed" style={{ color: "#6B7280" }}>{text}</span>
               </motion.div>
             ))
           )}
