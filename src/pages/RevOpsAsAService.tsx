@@ -330,20 +330,25 @@ const RevOpsAsAService = () => {
       <SectionDivider />
 
       {/* S5: El equipo */}
-      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
-        <DotPattern opacity={0.3} />
+      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "120px 0" }}>
+        <BackgroundOrbs variant="section" />
+        <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
-          <SectionHeading title="No contratas una persona. Accedes a un equipo." />
+          <SectionHeading title="No contratas una persona. Accedes a un equipo." light highlightWord={6} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamRoles.map((r, i) => (
-              <ServiceCard key={r.title} delay={i * 0.1} hoverBorder="#BE1869">
-                <span className="text-3xl mb-3 block">{r.emoji}</span>
-                <h4 className="font-bold text-[15px] mb-1" style={{ color: DARK }}>{r.title}</h4>
-                <p className="text-[13px] leading-relaxed" style={{ color: "#6B7280" }}>{r.desc}</p>
-              </ServiceCard>
-            ))}
+            {teamRoles.map((r, i) => {
+              const icons = [Brain, Cog, HardHat, Megaphone, BarChart3];
+              const Icon = icons[i] || Cog;
+              return (
+                <ServiceCard key={r.title} delay={i * 0.1} variant="glass" hoverBorder="#BE1869">
+                  <GradientIcon icon={Icon} size={44} iconSize={20} className="mb-4" />
+                  <h4 className="font-bold text-[15px] mb-1 text-white">{r.title}</h4>
+                  <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{r.desc}</p>
+                </ServiceCard>
+              );
+            })}
           </div>
-          <p className="text-center text-[13px] mt-8" style={{ color: "#6B7280" }}>
+          <p className="text-center text-[13px] mt-8" style={{ color: "rgba(255,255,255,0.5)" }}>
             <strong>Claridad:</strong> roles 1+2 · <strong>Momentum:</strong> roles 1+2+3+4 · <strong>Escala:</strong> equipo completo
           </p>
         </div>
