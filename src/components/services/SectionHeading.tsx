@@ -8,6 +8,8 @@ interface SectionHeadingProps {
   badgeBg?: string;
   align?: "center" | "left";
   light?: boolean;
+  /** Index of word in title to highlight with brand gradient (0-based). Only works with string titles. */
+  highlightWord?: number;
 }
 
 const fadeUp = (d = 0) => ({
