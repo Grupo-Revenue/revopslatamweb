@@ -11,6 +11,9 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
 const HUBSPOT = "#FF7A59";
