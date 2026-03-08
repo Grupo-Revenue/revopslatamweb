@@ -174,7 +174,7 @@ const SoporteHubspot = () => {
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <span className="text-[32px] font-bold bg-clip-text text-transparent block" style={{ backgroundImage: GRADIENT }}>{s.value}</span>
-                  <span className="text-xs block mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
+                  <span className="text-[13px] block mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
                 </div>
               ))}
             </div>
