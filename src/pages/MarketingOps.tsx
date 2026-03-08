@@ -190,16 +190,17 @@ const MarketingOps = () => {
       <SectionDivider />
 
       {/* S6: CTA Final */}
-      <section style={{ padding: "100px 0" }}>
-        <div className="mx-auto max-w-[480px] px-6">
-          <div className="text-center rounded-[20px] p-10" style={{ background: "#fff", border: "1.5px solid #E5E7EB", boxShadow: "0 8px 40px rgba(0,0,0,0.06)" }}>
-            <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "#6B7280" }}>
+      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "100px 0" }}>
+        <BackgroundOrbs variant="section" />
+        <div className="relative z-10 mx-auto max-w-[480px] px-6">
+          <div className="text-center rounded-[20px] p-10" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}>
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>
               Este servicio empieza con una conversación
             </span>
-            <h2 className="text-lg font-bold mb-3" style={{ color: DARK }}>
+            <h2 className="text-lg font-bold mb-3 text-white">
               Cuéntanos cómo está operando tu marketing hoy.
             </h2>
-            <p className="text-sm mb-7 leading-relaxed" style={{ color: "#6B7280" }}>
+            <p className="text-sm mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
               En 30 minutos evaluamos qué tiene más impacto en tu operación.
             </p>
             <button

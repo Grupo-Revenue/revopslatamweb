@@ -384,8 +384,9 @@ const RevOpsAsAService = () => {
       <SectionDivider />
 
       {/* S8: CTA Final */}
-      <section style={{ padding: "100px 0" }}>
-        <div className="mx-auto max-w-[600px] px-6 text-center">
+      <section className="relative overflow-hidden" style={{ padding: "100px 0", background: "#fff" }}>
+        <GradientMesh variant="center" />
+        <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center">
           <h2 className="font-bold mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)", color: DARK }}>
             El primer sprint empieza cuando tú quieras
           </h2>
