@@ -389,7 +389,7 @@ const MotorDeIngresos = () => {
       {/* ─── PRECIO ─── */}
       <SectionShell section={precio} className="py-16 sm:py-20 px-6" defaultBg={{ background: "#ffffff" }}>
         <div className="relative z-10 max-w-[520px] mx-auto text-center">
-          <motion.span {...fadeUp(0)} className="inline-block text-[12px] font-bold uppercase tracking-[0.1em] px-5 py-2 rounded-full mb-8" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{priceData.top_badge}</motion.span>
+          <motion.span {...fadeUp(0)} className="inline-block text-[13px] font-bold uppercase tracking-[0.1em] px-5 py-2 rounded-full mb-8" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{priceData.top_badge}</motion.span>
           <motion.div {...fadeUp(0.1)} className="relative rounded-[20px] p-[2px]" style={{ background: GRADIENT, boxShadow: "0 32px 80px rgba(190,24,105,0.15)" }}>
             <div className="rounded-[18px] bg-white p-12 sm:p-14 text-center">
               <p className="text-[12px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
