@@ -380,7 +380,7 @@ const RevOpsAsAService = () => {
         <div className="relative z-10 mx-auto max-w-[700px] px-6 text-center">
           <SectionHeading title="Lo que cuesta no tenerlo" light />
           <ComparisonTable />
-          <p className="text-[13px] mt-6" style={{ color: "rgba(255,255,255,0.5)" }}>
+          <p className="text-[14px] mt-6" style={{ color: "rgba(255,255,255,0.5)" }}>
             Estimación basada en rangos salariales de mercado en Chile para perfiles RevOps senior, 2025.
           </p>
         </div>
