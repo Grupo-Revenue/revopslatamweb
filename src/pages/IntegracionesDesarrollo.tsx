@@ -378,7 +378,7 @@ export default function IntegracionesDesarrollo() {
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
-            <EcosystemDiagram nodes={h.nodes} />
+            <EcosystemDiagram />
           </motion.div>
         </div>
       </SectionShell>
