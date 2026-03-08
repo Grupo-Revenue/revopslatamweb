@@ -403,7 +403,7 @@ const RevOpsAsAService = () => {
             >
               Ver los planes →
             </button>
-            <button className="text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>
+            <button className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>
               Conversemos primero →
             </button>
           </div>
