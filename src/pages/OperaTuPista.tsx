@@ -433,7 +433,7 @@ const OperaTuPista = () => {
           <h2 className="text-3xl font-bold mb-4 text-white">
             ¿No sabes por dónde partir?
           </h2>
-          <p className="text-base mb-8" style={{ color: "#6B7280" }}>
+          <p className="text-base mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>
             Si aún no tienes claridad de qué necesita tu operación, el primer paso es un diagnóstico.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
