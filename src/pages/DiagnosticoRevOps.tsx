@@ -219,8 +219,10 @@ const DiagnosticoRevOps = () => {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ─── PROBLEMA ─── */}
-      <SectionShell section={problema} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#ffffff" }}>
+      <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
         <div className="relative z-10 max-w-[900px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
             {columns.map((col, i) => (
