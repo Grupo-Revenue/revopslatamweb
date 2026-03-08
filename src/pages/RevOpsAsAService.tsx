@@ -348,7 +348,7 @@ const RevOpsAsAService = () => {
               );
             })}
           </div>
-          <p className="text-center text-[13px] mt-8" style={{ color: "rgba(255,255,255,0.5)" }}>
+          <p className="text-center text-[14px] mt-8" style={{ color: "rgba(255,255,255,0.5)" }}>
             <strong>Claridad:</strong> roles 1+2 · <strong>Momentum:</strong> roles 1+2+3+4 · <strong>Escala:</strong> equipo completo
           </p>
         </div>
