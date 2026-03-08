@@ -52,11 +52,21 @@ const ServiceCard = ({
       boxShadow: "0 20px 60px rgba(190,24,105,0.12)",
       ...style,
     },
+    elevated: {
+      background: "#fff",
+      border: "1px solid transparent",
+      borderRadius: 20,
+      padding: "36px",
+      boxShadow: "0 4px 6px rgba(0,0,0,0.02), 0 12px 40px rgba(190,24,105,0.06)",
+      ...style,
+    },
   };
 
   const hoverShadow =
     variant === "featured"
       ? "0 24px 70px rgba(190,24,105,0.18)"
+      : variant === "elevated"
+      ? "0 20px 50px rgba(190,24,105,0.14)"
       : variant === "glass"
       ? "0 16px 48px rgba(0,0,0,0.2)"
       : "0 8px 32px rgba(0,0,0,0.08)";
