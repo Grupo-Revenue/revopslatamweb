@@ -330,7 +330,7 @@ const MotorDeIngresos = () => {
             ))}
           </motion.div>
           <motion.div {...fadeUp(0.2)} className="mt-8 text-center">
-            <span className="inline-block text-[13px] font-semibold px-5 py-2.5 rounded-full" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{extraChip}</span>
+            <span className="inline-block text-[14px] font-semibold px-5 py-2.5 rounded-full" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{extraChip}</span>
           </motion.div>
         </div>
       </SectionShell>
