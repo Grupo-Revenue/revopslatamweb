@@ -351,8 +351,8 @@ const MotorDeIngresos = () => {
             <div className="space-y-4">
               {forYouItems.map((item) => (
                 <div key={item} className="flex items-start gap-3">
-                  <span className="text-[14px] mt-0.5 flex-shrink-0" style={{ color: "#22C55E" }}>✓</span>
-                  <span className="text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item}</span>
+                  <span className="text-[15px] mt-0.5 flex-shrink-0" style={{ color: "#22C55E" }}>✓</span>
+                  <span className="text-base leading-[1.6]" style={{ color: "#6B7280" }}>{item}</span>
                 </div>
               ))}
             </div>
