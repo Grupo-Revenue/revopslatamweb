@@ -327,8 +327,8 @@ const RevOpsCheckup = () => {
               {notForYouItems.map((item, i) => (
                 <div key={i}>
                   <div className="flex items-start gap-3">
-                    <span className="text-[14px] mt-0.5 flex-shrink-0" style={{ color: "#6B7280" }}>→</span>
-                    <span className="text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.text}</span>
+                    <span className="text-[15px] mt-0.5 flex-shrink-0" style={{ color: "#6B7280" }}>→</span>
+                    <span className="text-base leading-[1.6]" style={{ color: "#6B7280" }}>{item.text}</span>
                   </div>
                   <div className="ml-7 mt-1.5"><ChipLink to={item.chip_href} label={item.chip_label} /></div>
                 </div>
