@@ -67,8 +67,8 @@ const FunnelVisual = ({ stages }: { stages: Array<{ label: string; conv: string;
 const ProblemCol = ({ icon, title, desc, delay }: { icon: string; title: string; desc: string; delay: number }) => (
   <motion.div {...fadeUp(delay)} className="text-center">
     <span className="text-[40px] block mb-4">{icon}</span>
-    <h3 className="text-[16px] font-bold mb-2" style={{ color: "#1A1A2E" }}>{title}</h3>
-    <p className="text-[14px] leading-[1.7]" style={{ color: "#6B7280" }}>{desc}</p>
+    <h3 className="text-[17px] font-bold mb-2" style={{ color: "#1A1A2E" }}>{title}</h3>
+    <p className="text-[15px] leading-[1.7]" style={{ color: "#6B7280" }}>{desc}</p>
   </motion.div>
 );
 
