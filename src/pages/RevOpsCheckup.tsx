@@ -51,7 +51,7 @@ const DeliverableCard = ({ data }: { data: { title: string; items: string[]; foo
   >
     <style>{`@keyframes floatCard { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }`}</style>
     <div className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-      <p className="text-[14px] font-bold text-white mb-4">{data.title}</p>
+      <p className="text-[15px] font-bold text-white mb-4">{data.title}</p>
       <div className="space-y-3">
         {data.items.map((item) => (
           <div key={item} className="flex items-start gap-3">
