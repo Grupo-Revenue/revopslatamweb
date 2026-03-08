@@ -245,7 +245,7 @@ const RevOpsCheckup = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* ─── PROBLEMA ─── */}
       <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
