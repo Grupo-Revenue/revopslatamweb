@@ -427,8 +427,10 @@ const OperaTuPista = () => {
       {/* ── S5: CTA FINAL ── */}
       <WaveDivider fromColor="#F9FAFB" toColor={DARK} />
       <section className="relative overflow-hidden" style={{ padding: "80px 0", background: DARK }}>
-        <div className="mx-auto max-w-[600px] px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4" style={{ color: DARK }}>
+        <BackgroundOrbs variant="section" />
+        <GradientMesh variant="center" />
+        <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center">
+          <h2 className="text-3xl font-bold mb-4 text-white">
             ¿No sabes por dónde partir?
           </h2>
           <p className="text-base mb-8" style={{ color: "#6B7280" }}>
