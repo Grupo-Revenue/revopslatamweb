@@ -117,7 +117,7 @@ const MarketingOps = () => {
         minHeight="85vh"
       />
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* S2: El Problema */}
       <ProblemSection />
@@ -125,18 +125,23 @@ const MarketingOps = () => {
       <SectionDivider />
 
       {/* S3: Lo que operamos */}
-      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
-        <DotPattern opacity={0.3} />
+      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "120px 0" }}>
+        <BackgroundOrbs variant="section" />
+        <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
-          <SectionHeading title="Lo que operamos" />
+          <SectionHeading title="Lo que operamos" light highlightWord={2} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {opsItems.map((item, i) => (
-              <ServiceCard key={item.title} delay={i * 0.1} hoverBorder={ACCENT}>
-                <span className="text-3xl mb-3 block">{item.emoji}</span>
-                <h4 className="font-bold text-[15px] mb-2" style={{ color: DARK }}>{item.title}</h4>
-                <p className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>{item.desc}</p>
-              </ServiceCard>
-            ))}
+            {opsItems.map((item, i) => {
+              const icons = [Cog, Megaphone, Wrench, Handshake, BarChart3];
+              const Icon = icons[i] || Cog;
+              return (
+                <ServiceCard key={item.title} delay={i * 0.1} variant="glass" hoverBorder={ACCENT}>
+                  <GradientIcon icon={Icon} size={44} iconSize={20} gradient={`linear-gradient(135deg, ${ACCENT}, #BE1869)`} className="mb-4" />
+                  <h4 className="font-bold text-[15px] mb-2 text-white">{item.title}</h4>
+                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{item.desc}</p>
+                </ServiceCard>
+              );
+            })}
           </div>
         </div>
       </section>
