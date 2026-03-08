@@ -425,7 +425,8 @@ const OperaTuPista = () => {
       <WhyUsSection />
 
       {/* ── S5: CTA FINAL ── */}
-      <section style={{ padding: "80px 0" }}>
+      <WaveDivider fromColor="#F9FAFB" toColor={DARK} />
+      <section className="relative overflow-hidden" style={{ padding: "80px 0", background: DARK }}>
         <div className="mx-auto max-w-[600px] px-6 text-center">
           <h2 className="text-3xl font-bold mb-4" style={{ color: DARK }}>
             ¿No sabes por dónde partir?
