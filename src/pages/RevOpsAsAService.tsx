@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { ChevronRight, Check, X } from "lucide-react";
+import { ChevronRight, Check, X, Brain, Cog, HardHat, Megaphone, BarChart3 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ServiceHero from "@/components/services/ServiceHero";
@@ -11,6 +11,10 @@ import ForWhomSection from "@/components/services/ForWhomSection";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
+import GradientIcon from "@/components/services/GradientIcon";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const DARK = "#1A1A2E";
