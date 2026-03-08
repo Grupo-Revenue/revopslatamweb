@@ -5,6 +5,9 @@ import { ChevronRight, ArrowRight, Zap, TrendingDown, GitBranch, Cog, Megaphone,
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
