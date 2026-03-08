@@ -290,9 +290,9 @@ const HowSection = () => {
                 <div className="mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ background: isGrad ? GRADIENT : `${ACCENT}1a`, boxShadow: isGrad ? "0 4px 16px rgba(190,24,105,0.3)" : undefined }}>
                   <Icon size={22} color={isGrad ? "#fff" : ACCENT} />
                 </div>
-                <span className="text-[11px] font-bold tracking-widest bg-clip-text text-transparent block mb-2" style={{ backgroundImage: GRADIENT }}>{s.num}</span>
-                <h4 className="font-bold text-base mb-2" style={{ color: DARK }}>{s.title}</h4>
-                <p className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>{s.desc}</p>
+                <span className="text-[12px] font-bold tracking-widest bg-clip-text text-transparent block mb-2" style={{ backgroundImage: GRADIENT }}>{s.num}</span>
+                <h4 className="font-bold text-[17px] mb-2" style={{ color: DARK }}>{s.title}</h4>
+                <p className="text-[15px] leading-relaxed" style={{ color: "#6B7280" }}>{s.desc}</p>
               </motion.div>
             );
           })}
