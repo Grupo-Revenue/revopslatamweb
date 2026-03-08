@@ -8,6 +8,9 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import SectionDivider from "@/components/services/SectionDivider";
+import DotPattern from "@/components/services/DotPattern";
 
 /* ─── constants ─── */
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
