@@ -289,7 +289,10 @@ const ConoceTuPista = () => {
       </SectionShell>
 
       {/* ─── SECTION 3: ELIGE TU DIAGNÓSTICO ─── */}
-      <SectionShell section={diagnosticos} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionDivider />
+
+      <SectionShell section={diagnosticos} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
         <div className="relative z-10 max-w-[1100px] mx-auto" id="diagnosticos">
           <motion.h2
             {...fadeUp(0)}

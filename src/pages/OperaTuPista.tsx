@@ -400,8 +400,11 @@ const OperaTuPista = () => {
       <ProblemSection />
 
       {/* ── S3: SERVICIOS ── */}
-      <section style={{ background: "#F9FAFB", padding: "100px 0" }}>
-        <div className="mx-auto max-w-[1100px] px-6">
+      <SectionDivider />
+
+      <section className="relative" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+        <DotPattern />
+        <div className="mx-auto max-w-[1100px] px-6 relative z-10">
           <h2 className="text-center text-3xl md:text-4xl font-bold mb-14" style={{ color: DARK }}>
             Tres formas de operar tu pista con nosotros
           </h2>

@@ -342,7 +342,10 @@ const DisenaYConstruye = () => {
       </SectionShell>
 
       {/* ──── SERVICIOS ──── */}
-      <SectionShell section={servicios} className="py-24 px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionDivider />
+
+      <SectionShell section={servicios} className="py-24 sm:py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
         <div id="servicios" className="relative z-10 container max-w-[1100px] mx-auto">
           <motion.div {...fadeUp()} className="text-center mb-14">
             <h2 className="font-bold text-[#1A1A2E] tracking-[-0.02em]" style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>{svcTitle}</h2>

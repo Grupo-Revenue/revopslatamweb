@@ -310,8 +310,10 @@ export default function OnboardingHubspot() {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-20 md:py-[80px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[680px] mx-auto px-6 text-center">
           <motion.h2 {...fadeUp()} className="font-bold tracking-[-0.02em] mb-6" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{prob.title}</motion.h2>
           {prob.body.split("\n\n").map((p, i) => (

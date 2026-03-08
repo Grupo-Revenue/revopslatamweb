@@ -309,8 +309,11 @@ const MotorDeIngresos = () => {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ─── ENTREGABLES ─── */}
-      <SectionShell section={entregables} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={entregables} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
         <div className="relative z-10 max-w-[720px] mx-auto">
           <motion.h2 {...fadeUp(0)} className="text-[28px] sm:text-[32px] md:text-[36px] font-bold leading-[1.15] tracking-tight text-center" style={{ color: "#1A1A2E", ...entStyle("title") }}>{entregables?.title ?? DEF.entregables.title}</motion.h2>
           <motion.p {...fadeUp(0.08)} className="mt-4 text-center text-[16px]" style={{ color: "#6B7280" }}>{entregables?.subtitle ?? DEF.entregables.subtitle}</motion.p>
