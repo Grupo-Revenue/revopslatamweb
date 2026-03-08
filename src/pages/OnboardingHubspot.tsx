@@ -313,7 +313,7 @@ export default function OnboardingHubspot() {
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* ── PROBLEMA ── */}
       <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
