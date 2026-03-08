@@ -165,7 +165,7 @@ const HorizontalTimeline = ({ weeks }: { weeks: Array<{ num: string; title: stri
             {i < weeks.length - 1 && <div className="w-[2px] flex-1 mt-2" style={{ background: GRADIENT, opacity: 0.3 }} />}
           </div>
           <div className="pt-2 pb-4">
-            <p className="text-[15px] font-bold" style={{ color: "#1A1A2E" }}>Semana {w.num} — {w.title}</p>
+            <p className="text-base font-bold" style={{ color: "#1A1A2E" }}>Semana {w.num} — {w.title}</p>
           </div>
         </motion.div>
       ))}
