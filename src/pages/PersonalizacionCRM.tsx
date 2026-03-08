@@ -234,6 +234,7 @@ export default function PersonalizacionCRM() {
 
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[85vh] flex items-center" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="hero" />
         <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
           <div>
             <motion.p {...fadeUp()} className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>{h.breadcrumb}</motion.p>
