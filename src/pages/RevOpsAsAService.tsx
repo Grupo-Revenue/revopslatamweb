@@ -85,8 +85,8 @@ const SprintTimeline = () => {
                 {item.done && <Check size={12} color="#fff" strokeWidth={3} />}
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wide block mb-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{item.label}</span>
-                <span className="text-sm text-white/90">{item.text}</span>
+                <span className="text-[12px] uppercase tracking-wide block mb-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{item.label}</span>
+                <span className="text-[15px] text-white/90">{item.text}</span>
               </div>
             </motion.div>
           ))}
