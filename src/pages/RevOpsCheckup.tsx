@@ -78,8 +78,8 @@ const BigDeliverableCard = ({ num, title, description, tag, delay }: {
       {num}
     </span>
     <h3 className="text-[20px] font-bold tracking-tight relative z-10" style={{ color: "#1A1A2E" }}>{title}</h3>
-    <p className="mt-3 text-[15px] leading-[1.7] relative z-10" style={{ color: "#6B7280" }}>{description}</p>
-    <span className="inline-block mt-5 text-[12px] font-medium px-3 py-1 rounded-full relative z-10" style={{ background: "#F3F4F6", color: "#6B7280" }}>{tag}</span>
+    <p className="mt-3 text-base leading-[1.7] relative z-10" style={{ color: "#6B7280" }}>{description}</p>
+    <span className="inline-block mt-5 text-[13px] font-medium px-3 py-1 rounded-full relative z-10" style={{ background: "#F3F4F6", color: "#6B7280" }}>{tag}</span>
   </motion.div>
 );
 
