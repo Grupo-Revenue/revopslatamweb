@@ -5,7 +5,7 @@ const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 
 interface ServiceCardProps {
   children: React.ReactNode;
-  variant?: "default" | "glass" | "featured";
+  variant?: "default" | "glass" | "featured" | "elevated";
   hoverBorder?: string;
   delay?: number;
   className?: string;
