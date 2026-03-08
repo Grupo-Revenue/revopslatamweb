@@ -185,8 +185,8 @@ const ResultCard = ({ title, desc, delay }: { title: string; desc: string; delay
     <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: "rgba(190,24,105,0.1)" }}>
       <span style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 800, fontSize: 16 }}>✦</span>
     </div>
-    <h4 className="text-[16px] font-bold mb-2 text-white">{title}</h4>
-    <p className="text-[14px] leading-[1.7]" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>
+    <h4 className="text-[17px] font-bold mb-2 text-white">{title}</h4>
+    <p className="text-[15px] leading-[1.7]" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>
   </motion.div>
 );
 
