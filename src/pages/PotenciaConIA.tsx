@@ -159,7 +159,7 @@ const PotenciaConIA = () => {
           <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed max-w-[620px] mx-auto -mt-8" style={{ color: "#6B7280" }}>
             La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas — no los resolvió.
           </motion.p>
-          <motion.div {...fadeUp(0.15)} className="mt-6 inline-block px-5 py-2.5 rounded-full text-sm font-bold" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>
+          <motion.div {...fadeUp(0.15)} className="mt-6 inline-block px-5 py-2.5 rounded-full text-[15px] font-bold" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>
             La IA que genera ventaja real no se instala. Se diseña.
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-6 mt-10 text-left">
