@@ -124,7 +124,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
         {plan.cta}
       </button>
       {plan.savingChip && (
-        <span className="mt-4 mx-auto inline-block text-xs font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>
+        <span className="mt-4 mx-auto inline-block text-[13px] font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>
           {plan.savingChip}
         </span>
       )}
