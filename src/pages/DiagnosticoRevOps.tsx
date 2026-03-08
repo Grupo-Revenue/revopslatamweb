@@ -89,8 +89,8 @@ const DeliverableCard = ({ num, title, description, tag, extraBadge, delay }: {
 const TimelineStep = ({ num, label, items, delay }: { num: string; label: string; items: string[]; delay: number }) => (
   <motion.div {...fadeUp(delay)} className="flex-1">
     <div className="flex items-center gap-4 mb-5">
-      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: GRADIENT }}>{num}</div>
-      <p className="text-[15px] sm:text-[17px] font-bold" style={{ color: "#1A1A2E" }}>{label}</p>
+      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[15px] font-bold flex-shrink-0" style={{ background: GRADIENT }}>{num}</div>
+      <p className="text-base sm:text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{label}</p>
     </div>
     <div className="space-y-0 ml-14">
       {items.map((item, i) => (
