@@ -164,9 +164,9 @@ const PotenciaConIA = () => {
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-6 mt-10 text-left">
             <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-7" style={{ background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.12)" }}>
-              <p className="text-[13px] font-semibold uppercase mb-3" style={{ color: "#EF4444" }}>IA mal implementada</p>
+              <p className="text-[14px] font-semibold uppercase mb-3" style={{ color: "#EF4444" }}>IA mal implementada</p>
               {["Herramienta comprada, proceso sin ordenar", "Solución genérica, sin integración al CRM", "El equipo no la entiende, nadie la usa"].map((t) => (
-                <p key={t} className="flex items-start gap-2 text-sm mb-2" style={{ color: "#6B7280" }}><span style={{ color: "#EF4444" }}>✗</span> {t}</p>
+                <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ color: "#EF4444" }}>✗</span> {t}</p>
               ))}
             </motion.div>
             <motion.div {...fadeUp(0.25)} className="rounded-[20px] p-7" style={{ border: "1px solid transparent", borderImage: `${gradient} 1`, background: "#fff" }}>
