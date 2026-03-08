@@ -58,7 +58,7 @@ const FunnelVisual = ({ stages }: { stages: Array<{ label: string; conv: string;
         </motion.div>
       ))}
     </div>
-    <div className="mt-4 flex items-center gap-2 text-[11px] text-white/30">
+    <div className="mt-4 flex items-center gap-2 text-[12px] text-white/30">
       <span className="w-3 h-[2px] rounded-full" style={{ background: GRADIENT }} />Tasa de conversión entre etapas
     </div>
   </motion.div>
