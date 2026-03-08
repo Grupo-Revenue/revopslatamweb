@@ -88,11 +88,11 @@ const AgentFeed = () => {
         {items.map((item, i) => (
           <motion.div key={`${item.time}-${item.text}-${i}`} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.4, delay: i * 0.08 }}
             className="flex items-start gap-3 rounded-xl px-4 py-3" style={{ background: "rgba(255,255,255,0.03)" }}>
-            <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>[{item.time}]</span>
-            <span className="text-xs shrink-0 mt-0.5" style={{ color: item.done ? "rgba(74,222,128,0.8)" : "rgba(234,179,8,0.8)" }}>{item.done ? "✓" : "⟳"}</span>
+            <span className="text-[12px] font-mono shrink-0 mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>[{item.time}]</span>
+            <span className="text-[12px] shrink-0 mt-0.5" style={{ color: item.done ? "rgba(74,222,128,0.8)" : "rgba(234,179,8,0.8)" }}>{item.done ? "✓" : "⟳"}</span>
             <div className="flex-1 min-w-0">
-              <span className="text-sm block" style={{ color: "rgba(255,255,255,0.8)" }}>{item.text}</span>
-              <span className="inline-block mt-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full" style={{ color: item.chipColor, background: item.chipBg, animation: item.done ? "none" : "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }}>
+              <span className="text-[15px] block" style={{ color: "rgba(255,255,255,0.8)" }}>{item.text}</span>
+              <span className="inline-block mt-1.5 text-[12px] font-medium px-2 py-0.5 rounded-full" style={{ color: item.chipColor, background: item.chipBg, animation: item.done ? "none" : "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }}>
                 {item.chipLabel}
               </span>
             </div>
