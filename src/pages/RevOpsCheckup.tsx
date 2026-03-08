@@ -121,7 +121,7 @@ const TimelineConnector = () => {
 const ResultItem = ({ num, text, delay }: { num: string; text: string; delay: number }) => (
   <motion.div {...fadeUp(delay)} className="flex-1 text-center sm:text-left">
     <span className="text-[36px] sm:text-[48px] font-extrabold tracking-tight block" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{num}</span>
-    <p className="mt-2 text-[15px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.7)" }}>{text}</p>
+    <p className="mt-2 text-base leading-[1.6]" style={{ color: "rgba(255,255,255,0.7)" }}>{text}</p>
   </motion.div>
 );
 
