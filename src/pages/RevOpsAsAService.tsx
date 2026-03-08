@@ -342,8 +342,8 @@ const RevOpsAsAService = () => {
               return (
                 <ServiceCard key={r.title} delay={i * 0.1} variant="glass" hoverBorder="#BE1869">
                   <GradientIcon icon={Icon} size={44} iconSize={20} className="mb-4" />
-                  <h4 className="font-bold text-[15px] mb-1 text-white">{r.title}</h4>
-                  <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{r.desc}</p>
+                  <h4 className="font-bold text-base mb-1 text-white">{r.title}</h4>
+                  <p className="text-[15px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{r.desc}</p>
                 </ServiceCard>
               );
             })}
