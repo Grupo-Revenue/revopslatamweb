@@ -182,7 +182,7 @@ const SoporteHubspot = () => {
         />
       </div>
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* S2: Cómo funciona */}
       <HowSection />
