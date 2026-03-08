@@ -308,7 +308,7 @@ const RevOpsAsAService = () => {
               <PlanCard key={p.key} plan={p} i={i} />
             ))}
           </div>
-          <p className="text-center text-[13px] mt-8" style={{ color: "#6B7280" }}>
+          <p className="text-center text-[14px] mt-8" style={{ color: "#6B7280" }}>
             Todos los planes incluyen onboarding sin costo. Compromiso mínimo 3 meses. Precios en UF + IVA.
           </p>
         </div>
