@@ -78,10 +78,10 @@ const DeliverableCard = ({ num, title, description, tag, extraBadge, delay }: {
   <motion.div {...fadeUp(delay)} className="relative rounded-[20px] p-8 sm:p-10 overflow-hidden transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]" style={{ background: "#ffffff", border: "1px solid #E5E7EB" }}>
     <span className="absolute top-4 right-6 text-[64px] font-extrabold leading-none select-none pointer-events-none" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", opacity: 0.12 }}>{num}</span>
     <h3 className="text-[20px] font-bold tracking-tight relative z-10" style={{ color: "#1A1A2E" }}>{title}</h3>
-    <p className="mt-3 text-[15px] leading-[1.7] relative z-10" style={{ color: "#6B7280" }}>{description}</p>
+    <p className="mt-3 text-base leading-[1.7] relative z-10" style={{ color: "#6B7280" }}>{description}</p>
     <div className="mt-5 flex items-center gap-2 relative z-10">
-      <span className="inline-block text-[12px] font-medium px-3 py-1 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>{tag}</span>
-      {extraBadge && <span className="inline-block text-[11px] font-bold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>{extraBadge}</span>}
+      <span className="inline-block text-[13px] font-medium px-3 py-1 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>{tag}</span>
+      {extraBadge && <span className="inline-block text-[12px] font-bold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>{extraBadge}</span>}
     </div>
   </motion.div>
 );
