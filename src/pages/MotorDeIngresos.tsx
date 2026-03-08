@@ -83,7 +83,7 @@ const RevOpsScorecard = ({ score: targetScore, bars }: { score: number; bars: Ar
           </div>
         ))}
       </div>
-      <p className="mt-6 text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>Basado en benchmarks LATAM</p>
+      <p className="mt-6 text-[12px]" style={{ color: "rgba(255,255,255,0.3)" }}>Basado en benchmarks LATAM</p>
     </motion.div>
   );
 };
