@@ -188,7 +188,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
         ))}
       </ul>
       <button
-        className="w-full text-sm font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
+        className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
         style={
           plan.ctaSolid
             ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }
