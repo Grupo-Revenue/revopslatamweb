@@ -181,8 +181,8 @@ function Timeline({ steps }: { steps: typeof DEF.proceso.steps }) {
                 {i + 1}
               </div>
               <span className="text-2xl mb-2 block">{s.icon}</span>
-              <h4 className="font-bold text-sm mb-2" style={{ color: "#1A1A2E" }}>{s.title}</h4>
-              <p className="text-xs" style={{ color: "#6B7280" }}>{s.text}</p>
+              <h4 className="font-bold text-[15px] mb-2" style={{ color: "#1A1A2E" }}>{s.title}</h4>
+              <p className="text-[13px]" style={{ color: "#6B7280" }}>{s.text}</p>
             </motion.div>
           ))}
         </div>
