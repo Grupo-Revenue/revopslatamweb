@@ -163,7 +163,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
       {"labelGradient" in plan && plan.labelGradient ? (
         <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4 bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{plan.label}</span>
       ) : (
-        <span className="text-xs font-bold uppercase tracking-[0.14em] mb-4" style={{ color: plan.labelColor }}>{plan.label}</span>
+        <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4" style={{ color: plan.labelColor }}>{plan.label}</span>
       )}
       <div className="flex items-baseline gap-2 mb-1">
         {"labelGradient" in plan && plan.labelGradient ? (
