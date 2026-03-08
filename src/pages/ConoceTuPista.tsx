@@ -260,8 +260,10 @@ const ConoceTuPista = () => {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ─── SECTION 2: EL PROBLEMA ─── */}
-      <SectionShell section={problema} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#ffffff" }}>
+      <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
           <div className="flex-1 max-w-[520px]">
             <motion.h2
