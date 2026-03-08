@@ -6,7 +6,7 @@ import hubspotLogo from "@/assets/logos/hubspot.svg";
 import whatsappLogo from "@/assets/logos/whatsapp.svg";
 import slackLogo from "@/assets/logos/slack-icon.png";
 import sapLogo from "@/assets/logos/sap.svg";
-import defontanaLogo from "@/assets/logos/defontana.png";
+import defontanaLogo from "@/assets/logos/defontana-real.svg";
 import zoomLogo from "@/assets/logos/zoom.svg";
 import googleCalendarLogo from "@/assets/logos/google-calendar.svg";
 import mailLogo from "@/assets/logos/mail.svg";
