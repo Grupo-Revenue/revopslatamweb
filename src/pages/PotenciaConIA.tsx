@@ -258,9 +258,9 @@ const PotenciaConIA = () => {
           <div className="grid sm:grid-cols-2 gap-8">
             <ServiceCard delay={0.1} style={{ borderLeft: "3px solid", borderImage: `${gradient} 1` }}>
               <span className="text-2xl mb-3 block">🎯</span>
-              <h3 className="text-[16px] font-bold mb-2" style={{ color: DARK }}>Como proyecto independiente</h3>
-              <p className="text-[14px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Fases definidas, alcance claro, entrega. Para empresas que quieren implementar una capacidad de IA específica.</p>
-              <button className="text-sm font-semibold inline-flex items-center gap-1" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <h3 className="text-[17px] font-bold mb-2" style={{ color: DARK }}>Como proyecto independiente</h3>
+              <p className="text-[15px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Fases definidas, alcance claro, entrega. Para empresas que quieren implementar una capacidad de IA específica.</p>
+              <button className="text-[15px] font-semibold inline-flex items-center gap-1" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Conversemos <ArrowRight size={14} style={{ color: "#BE1869" }} />
               </button>
             </ServiceCard>
