@@ -315,7 +315,7 @@ const CoverageSection = () => {
           {coverageTags.map((tag, i) => (
             <motion.span
               key={tag}
-              className="text-sm px-5 py-2.5 rounded-full border cursor-default transition-all duration-300"
+              className="text-[15px] px-5 py-2.5 rounded-full border cursor-default transition-all duration-300"
               style={{ background: "#F9FAFB", borderColor: "#E5E7EB", color: DARK }}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}
