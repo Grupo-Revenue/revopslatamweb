@@ -77,7 +77,7 @@ const ServiceCard = ({
       className={`transition-all duration-300 ${className}`}
       style={baseStyles[variant]}
       whileHover={{
-        y: -6,
+        y: variant === "elevated" ? -8 : -6,
         boxShadow: hoverShadow,
         ...(hoverBorder ? { borderColor: hoverBorder } : {}),
       }}
