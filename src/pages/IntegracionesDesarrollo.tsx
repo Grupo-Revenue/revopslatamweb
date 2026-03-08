@@ -407,7 +407,10 @@ export default function IntegracionesDesarrollo() {
       </SectionShell>
 
       {/* ── NUESTRO PRINCIPIO ── */}
+      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
       <SectionShell section={principio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="section" />
+        <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 max-w-[700px] mx-auto px-6 text-center">
           <motion.h2 {...fadeUp()} className="font-bold text-white tracking-[-0.02em] mb-8" style={{ fontSize: "clamp(26px, 3.5vw, 36px)" }}>{prin.title}</motion.h2>
           <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.7)" }}>{prin.body1}</motion.p>
