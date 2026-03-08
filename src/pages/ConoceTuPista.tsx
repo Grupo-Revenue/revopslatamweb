@@ -355,7 +355,9 @@ const ConoceTuPista = () => {
       </SectionShell>
 
       {/* ─── SECTION 5: CTA FINAL ─── */}
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
       <SectionShell section={ctaFinal} className="py-16 sm:py-20 px-6 text-center" defaultBg={{ background: "#ffffff" }}>
+        <GradientMesh variant="center" />
         <div className="relative z-10 max-w-[560px] mx-auto">
           <motion.h2
             {...fadeUp(0)}

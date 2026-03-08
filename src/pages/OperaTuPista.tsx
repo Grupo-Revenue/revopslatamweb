@@ -447,8 +447,8 @@ const OperaTuPista = () => {
               to="/conoce-tu-pista"
               className="text-sm font-semibold px-7 py-3.5 rounded-xl transition-all hover:scale-[1.03]"
               style={{
-                border: "1.5px solid #E5E7EB",
-                color: DARK,
+                border: "1.5px solid rgba(255,255,255,0.2)",
+                color: "#fff",
               }}
             >
               Primero quiero un diagnóstico →
