@@ -398,7 +398,7 @@ const RevOpsAsAService = () => {
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <button
               onClick={() => scrollTo("planes")}
-              className="text-sm font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all"
+              className="text-[15px] font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all"
               style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}
             >
               Ver los planes →
