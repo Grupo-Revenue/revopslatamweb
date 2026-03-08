@@ -49,7 +49,7 @@ const FunnelVisual = ({ stages }: { stages: Array<{ label: string; conv: string;
     className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-2xl p-6"
     style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
   >
-    <p className="text-[13px] font-bold text-white/50 uppercase tracking-[0.1em] mb-5">Funnel de ventas</p>
+    <p className="text-[14px] font-bold text-white/50 uppercase tracking-[0.1em] mb-5">Funnel de ventas</p>
     <div className="space-y-2">
       {stages.map((s, i) => (
         <motion.div key={s.label} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: 0.5 + i * 0.15 }} className="flex items-center gap-3">
