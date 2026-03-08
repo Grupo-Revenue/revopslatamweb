@@ -92,7 +92,7 @@ const ServiceHero = ({
 
           {/* Subtitle */}
           <p
-            className={`text-lg leading-relaxed mb-10 ${centered ? "mx-auto" : ""}`}
+            className={`text-lg sm:text-[19px] leading-relaxed mb-10 ${centered ? "mx-auto" : ""}`}
             style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}
           >
             {subtitle}
