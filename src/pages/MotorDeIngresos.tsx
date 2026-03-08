@@ -174,7 +174,7 @@ const HorizontalTimeline = ({ weeks }: { weeks: Array<{ num: string; title: stri
 );
 
 const ChipLink = ({ to, label }: { to: string; label: string }) => (
-  <Link to={to} className="inline-flex items-center text-[12px] font-semibold px-3 py-1 rounded-full transition-all duration-200 mt-1.5" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}
+  <Link to={to} className="inline-flex items-center text-[13px] font-semibold px-3 py-1 rounded-full transition-all duration-200 mt-1.5" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}
     onMouseEnter={(e) => { e.currentTarget.style.background = GRADIENT; e.currentTarget.style.color = "#fff"; }}
     onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(190,24,105,0.08)"; e.currentTarget.style.color = "#BE1869"; }}
   >{label}</Link>
