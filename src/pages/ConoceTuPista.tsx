@@ -298,6 +298,8 @@ const ConoceTuPista = () => {
 
       <SectionShell section={diagnosticos} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern />
+        <GradientMesh variant="muted" />
+        <NoiseOverlay />
         <div className="relative z-10 max-w-[1100px] mx-auto" id="diagnosticos">
           <motion.h2
             {...fadeUp(0)}
