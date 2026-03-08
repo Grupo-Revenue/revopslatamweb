@@ -394,6 +394,8 @@ const OperaTuPista = () => {
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── S2: EL PROBLEMA ── */}
       <ProblemSection />
 
