@@ -266,9 +266,9 @@ const PotenciaConIA = () => {
             </ServiceCard>
             <ServiceCard delay={0.15} style={{ borderLeft: `3px solid ${AI_BLUE}` }}>
               <span className="text-2xl mb-3 block">♾️</span>
-              <h3 className="text-[16px] font-bold mb-2" style={{ color: DARK }}>Como add-on de RevOps as a Service</h3>
-              <p className="text-[14px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Integrado al ciclo de sprints. La IA se incorpora progresivamente a medida que la operación madura.</p>
-              <Link to="/revops-as-a-service" className="text-sm font-semibold inline-flex items-center gap-1" style={{ color: AI_BLUE }}>
+              <h3 className="text-[17px] font-bold mb-2" style={{ color: DARK }}>Como add-on de RevOps as a Service</h3>
+              <p className="text-[15px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Integrado al ciclo de sprints. La IA se incorpora progresivamente a medida que la operación madura.</p>
+              <Link to="/revops-as-a-service" className="text-[15px] font-semibold inline-flex items-center gap-1" style={{ color: AI_BLUE }}>
                 Ver RevOps as a Service <ArrowRight size={14} />
               </Link>
             </ServiceCard>
