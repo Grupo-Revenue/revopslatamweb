@@ -94,7 +94,7 @@ const TimelineStep = ({ num, label, items, delay }: { num: string; label: string
     </div>
     <div className="space-y-0 ml-14">
       {items.map((item, i) => (
-        <div key={i} className="py-3 text-[15px]" style={{ color: "#6B7280", borderBottom: i < items.length - 1 ? "1px solid #F3F4F6" : "none" }}>{item}</div>
+        <div key={i} className="py-3 text-base" style={{ color: "#6B7280", borderBottom: i < items.length - 1 ? "1px solid #F3F4F6" : "none" }}>{item}</div>
       ))}
     </div>
   </motion.div>
