@@ -270,8 +270,10 @@ export default function ImplementacionHubspot() {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-24 md:py-[100px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[800px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="font-bold tracking-[-0.02em] mb-10 text-center" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)", maxWidth: 640, margin: "0 auto 40px" }}>{prob.title}</motion.h2>
           <motion.div {...fadeUp(0.1)}>
