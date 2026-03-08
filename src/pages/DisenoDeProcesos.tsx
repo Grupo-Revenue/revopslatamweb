@@ -364,9 +364,12 @@ export default function DisenoDeProcesos() {
       </SectionShell>
 
       {/* ── PROCESO ── */}
-      <SectionShell section={proceso} className="py-24 md:py-[100px]" defaultBg={{ background: "#fff" }}>
+      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
+      <SectionShell section={proceso} className="py-24 md:py-[100px]" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="section" />
+        <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 max-w-[900px] mx-auto px-6">
-          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>
+          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#ffffff", fontSize: "clamp(28px, 4vw, 36px)" }}>
             {procesoData.title}
           </motion.h2>
           <Timeline steps={procesoData.steps} />
