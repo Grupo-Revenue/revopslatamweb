@@ -103,7 +103,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
       <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
       <ul className="space-y-3 mb-5 flex-1">
         {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2.5 text-sm" style={{ color: DARK }}>
+          <li key={f} className="flex items-start gap-2.5 text-[15px]" style={{ color: DARK }}>
             <span className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: plan.featured ? GRADIENT : `${ACCENT}1a` }}>
               <Check size={12} color={plan.featured ? "#fff" : ACCENT} strokeWidth={3} />
             </span>
