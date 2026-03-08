@@ -334,6 +334,7 @@ const OperaTuPista = () => {
         className="relative overflow-hidden"
         style={{ background: DARK, minHeight: "90vh" }}
       >
+        <BackgroundOrbs variant="hero" />
         <div className="mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-[90vh]">
           {/* text */}
           <motion.div
