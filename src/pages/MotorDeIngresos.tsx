@@ -132,8 +132,8 @@ const AccordionItem = ({ num, title, description, badge, isOpen, onToggle, isLas
     </button>
     <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{ maxHeight: isOpen ? 200 : 0, opacity: isOpen ? 1 : 0 }}>
       <div className="pb-5 pl-14">
-        <p className="text-[15px] leading-[1.7]" style={{ color: "#6B7280" }}>{description}</p>
-        <span className="inline-block mt-3 text-[12px] font-medium px-3 py-1 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>{badge}</span>
+        <p className="text-base leading-[1.7]" style={{ color: "#6B7280" }}>{description}</p>
+        <span className="inline-block mt-3 text-[13px] font-medium px-3 py-1 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>{badge}</span>
       </div>
     </div>
   </div>
