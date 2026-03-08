@@ -181,8 +181,8 @@ function Timeline({ steps }: { steps: typeof DEF.proceso.steps }) {
                 {i + 1}
               </div>
               <span className="text-2xl mb-2 block">{s.icon}</span>
-              <h4 className="font-bold text-sm mb-2" style={{ color: "#1A1A2E" }}>{s.title}</h4>
-              <p className="text-xs" style={{ color: "#6B7280" }}>{s.text}</p>
+              <h4 className="font-bold text-[15px] mb-2" style={{ color: "#1A1A2E" }}>{s.title}</h4>
+              <p className="text-[13px]" style={{ color: "#6B7280" }}>{s.text}</p>
             </motion.div>
           ))}
         </div>
@@ -196,8 +196,8 @@ function Timeline({ steps }: { steps: typeof DEF.proceso.steps }) {
           <motion.div key={i} className="relative" initial={{ opacity: 0, x: -16 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2 + i * 0.15 }}>
             <div className="absolute -left-8 top-0 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs" style={{ background: GRADIENT }}>{i + 1}</div>
             <span className="text-xl mb-1 block">{s.icon}</span>
-            <h4 className="font-bold text-sm mb-1" style={{ color: "#1A1A2E" }}>{s.title}</h4>
-            <p className="text-xs" style={{ color: "#6B7280" }}>{s.text}</p>
+            <h4 className="font-bold text-[15px] mb-1" style={{ color: "#1A1A2E" }}>{s.title}</h4>
+            <p className="text-[13px]" style={{ color: "#6B7280" }}>{s.text}</p>
           </motion.div>
         ))}
       </div>
@@ -403,7 +403,7 @@ export default function DisenoDeProcesos() {
               </h3>
               <ul className="space-y-4">
                 {paraQuienData.no.map((item, i) => (
-                  <li key={i} className="text-sm" style={{ color: "#6B7280" }}>
+                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>
                     <p className="mb-2">{item.text}</p>
                     <div className="flex flex-wrap gap-2">
                       {item.chip && <RedirectChip label={item.chip.label} href={item.chip.href} text="" />}

@@ -80,9 +80,9 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
         </span>
       )}
       {"labelGradient" in plan && plan.labelGradient ? (
-        <span className="text-xs font-bold uppercase tracking-[0.14em] mb-4 bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{plan.label}</span>
+        <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4 bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{plan.label}</span>
       ) : (
-        <span className="text-xs font-bold uppercase tracking-[0.14em] mb-4" style={{ color: plan.labelColor }}>{plan.label}</span>
+        <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4" style={{ color: plan.labelColor }}>{plan.label}</span>
       )}
       {plan.priceDisplay && plan.price ? (
         <>
@@ -92,18 +92,18 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
             ) : (
               <span className="text-[48px] font-bold leading-none" style={{ color: DARK }}>{plan.price}</span>
             )}
-            <span className="text-sm" style={{ color: "#6B7280" }}>UF</span>
+            <span className="text-[15px]" style={{ color: "#6B7280" }}>UF</span>
           </div>
-          <span className="text-sm mb-1" style={{ color: "#6B7280" }}>+ IVA / mes</span>
+          <span className="text-[15px] mb-1" style={{ color: "#6B7280" }}>+ IVA / mes</span>
         </>
       ) : (
         <span className="text-xl font-bold mb-1" style={{ color: DARK }}>{(plan as any).priceText}</span>
       )}
-      <span className="text-sm mb-5" style={{ color: "#6B7280" }}>{plan.hours}</span>
+      <span className="text-[15px] mb-5" style={{ color: "#6B7280" }}>{plan.hours}</span>
       <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
       <ul className="space-y-3 mb-5 flex-1">
         {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2.5 text-sm" style={{ color: DARK }}>
+          <li key={f} className="flex items-start gap-2.5 text-[15px]" style={{ color: DARK }}>
             <span className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: plan.featured ? GRADIENT : `${ACCENT}1a` }}>
               <Check size={12} color={plan.featured ? "#fff" : ACCENT} strokeWidth={3} />
             </span>
@@ -111,10 +111,10 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
           </li>
         ))}
       </ul>
-      {plan.note && <p className="text-xs italic mb-5" style={{ color: "#6B7280" }}>{plan.note}</p>}
+      {plan.note && <p className="text-[13px] italic mb-5" style={{ color: "#6B7280" }}>{plan.note}</p>}
       <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
       <button
-        className="w-full text-sm font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
+        className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
         style={
           plan.ctaSolid
             ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }
@@ -124,7 +124,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
         {plan.cta}
       </button>
       {plan.savingChip && (
-        <span className="mt-4 mx-auto inline-block text-xs font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>
+        <span className="mt-4 mx-auto inline-block text-[13px] font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>
           {plan.savingChip}
         </span>
       )}
@@ -174,7 +174,7 @@ const SoporteHubspot = () => {
               ].map((s) => (
                 <div key={s.label} className="text-center">
                   <span className="text-[32px] font-bold bg-clip-text text-transparent block" style={{ backgroundImage: GRADIENT }}>{s.value}</span>
-                  <span className="text-xs block mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
+                  <span className="text-[13px] block mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
                 </div>
               ))}
             </div>
@@ -204,7 +204,7 @@ const SoporteHubspot = () => {
               <PlanCard key={p.key} plan={p} i={i} />
             ))}
           </div>
-          <p className="text-center text-xs mt-8" style={{ color: "#9CA3AF" }}>
+          <p className="text-center text-[13px] mt-8" style={{ color: "#9CA3AF" }}>
             Todos los planes requieren portal HubSpot activo. Servicio reactivo — se activa vía ticket. No incluye consultoría estratégica.
           </p>
         </div>
@@ -290,9 +290,9 @@ const HowSection = () => {
                 <div className="mx-auto w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ background: isGrad ? GRADIENT : `${ACCENT}1a`, boxShadow: isGrad ? "0 4px 16px rgba(190,24,105,0.3)" : undefined }}>
                   <Icon size={22} color={isGrad ? "#fff" : ACCENT} />
                 </div>
-                <span className="text-[11px] font-bold tracking-widest bg-clip-text text-transparent block mb-2" style={{ backgroundImage: GRADIENT }}>{s.num}</span>
-                <h4 className="font-bold text-base mb-2" style={{ color: DARK }}>{s.title}</h4>
-                <p className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>{s.desc}</p>
+                <span className="text-[12px] font-bold tracking-widest bg-clip-text text-transparent block mb-2" style={{ backgroundImage: GRADIENT }}>{s.num}</span>
+                <h4 className="font-bold text-[17px] mb-2" style={{ color: DARK }}>{s.title}</h4>
+                <p className="text-[15px] leading-relaxed" style={{ color: "#6B7280" }}>{s.desc}</p>
               </motion.div>
             );
           })}
@@ -315,7 +315,7 @@ const CoverageSection = () => {
           {coverageTags.map((tag, i) => (
             <motion.span
               key={tag}
-              className="text-sm px-5 py-2.5 rounded-full border cursor-default transition-all duration-300"
+              className="text-[15px] px-5 py-2.5 rounded-full border cursor-default transition-all duration-300"
               style={{ background: "#F9FAFB", borderColor: "#E5E7EB", color: DARK }}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={inView ? { opacity: 1, scale: 1 } : {}}

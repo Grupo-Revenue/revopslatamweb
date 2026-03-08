@@ -419,7 +419,7 @@ export default function IntegracionesDesarrollo() {
             {prin.stats.map((s, i) => (
               <div key={i} className="text-center">
                 <span className="block text-lg font-bold bg-clip-text text-transparent mb-1" style={{ backgroundImage: GRADIENT }}>{s.value}</span>
-                <span className="text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
+                <span className="text-[13px]" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
               </div>
             ))}
           </motion.div>
@@ -445,7 +445,7 @@ export default function IntegracionesDesarrollo() {
               </h3>
               <ul className="space-y-3">
                 {pq.yes.map((it, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "#374151" }}>
+                  <li key={i} className="flex items-start gap-2 text-[15px]" style={{ color: "#374151" }}>
                     <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
                   </li>
                 ))}
@@ -458,7 +458,7 @@ export default function IntegracionesDesarrollo() {
               </h3>
               <ul className="space-y-4">
                 {pq.no.map((item, i) => (
-                  <li key={i} className="text-sm" style={{ color: "#6B7280" }}>
+                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>
                     <p className="mb-2">{item.text}</p>
                     {item.chip && <RedirectChip label={item.chip.label} href={item.chip.href} />}
                   </li>

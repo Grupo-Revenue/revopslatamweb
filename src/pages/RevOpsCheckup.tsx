@@ -51,16 +51,16 @@ const DeliverableCard = ({ data }: { data: { title: string; items: string[]; foo
   >
     <style>{`@keyframes floatCard { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }`}</style>
     <div className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-      <p className="text-[14px] font-bold text-white mb-4">{data.title}</p>
+      <p className="text-[15px] font-bold text-white mb-4">{data.title}</p>
       <div className="space-y-3">
         {data.items.map((item) => (
           <div key={item} className="flex items-start gap-3">
             <span className="mt-0.5 text-sm font-bold flex-shrink-0" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span>
-            <span className="text-[14px] text-white/80">{item}</span>
+            <span className="text-[15px] text-white/80">{item}</span>
           </div>
         ))}
       </div>
-      <p className="mt-5 text-[13px]" style={{ color: "rgba(255,255,255,0.5)" }}>{data.footer}</p>
+      <p className="mt-5 text-[14px]" style={{ color: "rgba(255,255,255,0.5)" }}>{data.footer}</p>
     </div>
   </motion.div>
 );
@@ -78,8 +78,8 @@ const BigDeliverableCard = ({ num, title, description, tag, delay }: {
       {num}
     </span>
     <h3 className="text-[20px] font-bold tracking-tight relative z-10" style={{ color: "#1A1A2E" }}>{title}</h3>
-    <p className="mt-3 text-[15px] leading-[1.7] relative z-10" style={{ color: "#6B7280" }}>{description}</p>
-    <span className="inline-block mt-5 text-[12px] font-medium px-3 py-1 rounded-full relative z-10" style={{ background: "#F3F4F6", color: "#6B7280" }}>{tag}</span>
+    <p className="mt-3 text-base leading-[1.7] relative z-10" style={{ color: "#6B7280" }}>{description}</p>
+    <span className="inline-block mt-5 text-[13px] font-medium px-3 py-1 rounded-full relative z-10" style={{ background: "#F3F4F6", color: "#6B7280" }}>{tag}</span>
   </motion.div>
 );
 
@@ -87,12 +87,12 @@ const BigDeliverableCard = ({ num, title, description, tag, delay }: {
 const TimelineStep = ({ num, label, items, delay }: { num: string; label: string; items: string[]; delay: number }) => (
   <motion.div {...fadeUp(delay)} className="flex-1">
     <div className="flex items-center gap-4 mb-5">
-      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: GRADIENT }}>{num}</div>
-      <p className="text-[16px] sm:text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{label}</p>
+      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[15px] font-bold flex-shrink-0" style={{ background: GRADIENT }}>{num}</div>
+      <p className="text-base sm:text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{label}</p>
     </div>
     <div className="space-y-0 ml-14">
       {items.map((item, i) => (
-        <div key={i} className="py-3 text-[15px]" style={{ color: "#6B7280", borderBottom: i < items.length - 1 ? "1px solid #F3F4F6" : "none" }}>{item}</div>
+        <div key={i} className="py-3 text-base" style={{ color: "#6B7280", borderBottom: i < items.length - 1 ? "1px solid #F3F4F6" : "none" }}>{item}</div>
       ))}
     </div>
   </motion.div>
@@ -121,7 +121,7 @@ const TimelineConnector = () => {
 const ResultItem = ({ num, text, delay }: { num: string; text: string; delay: number }) => (
   <motion.div {...fadeUp(delay)} className="flex-1 text-center sm:text-left">
     <span className="text-[36px] sm:text-[48px] font-extrabold tracking-tight block" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{num}</span>
-    <p className="mt-2 text-[15px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.7)" }}>{text}</p>
+    <p className="mt-2 text-base leading-[1.6]" style={{ color: "rgba(255,255,255,0.7)" }}>{text}</p>
   </motion.div>
 );
 
@@ -129,7 +129,7 @@ const ResultItem = ({ num, text, delay }: { num: string; text: string; delay: nu
 const ChipLink = ({ to, label }: { to: string; label: string }) => (
   <Link
     to={to}
-    className="inline-flex items-center text-[12px] font-semibold px-3 py-1 rounded-full transition-all duration-200 mt-1.5"
+    className="inline-flex items-center text-[13px] font-semibold px-3 py-1 rounded-full transition-all duration-200 mt-1.5"
     style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}
     onMouseEnter={(e) => { e.currentTarget.style.background = GRADIENT; e.currentTarget.style.color = "#fff"; }}
     onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(190,24,105,0.08)"; e.currentTarget.style.color = "#BE1869"; }}
@@ -218,12 +218,12 @@ const RevOpsCheckup = () => {
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           <div className="flex-1 lg:max-w-[55%]">
-            <motion.nav {...fadeUp(0)} className="flex items-center gap-2 text-[12px] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <motion.nav {...fadeUp(0)} className="flex items-center gap-2 text-[13px] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
               <Link to={breadcrumbParentUrl} className="hover:text-white/60 transition-colors">{breadcrumbParent}</Link>
               <span>→</span>
               <span className="text-white/60">{breadcrumbCurrent}</span>
             </motion.nav>
-            <motion.span {...fadeUp(0.05)} className="inline-block text-[11px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: "rgba(255,255,255,0.1)", color: "#fff" }}>{badge}</motion.span>
+            <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: "rgba(255,255,255,0.1)", color: "#fff" }}>{badge}</motion.span>
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold leading-[1.08] tracking-tight" style={{ color: "#ffffff", fontSize: "clamp(40px, 5.5vw, 60px)", ...heroStyle("title") }}>
               {hero?.title ?? DEF.hero.title}
             </motion.h1>
@@ -234,7 +234,7 @@ const RevOpsCheckup = () => {
               <Link to={hero?.cta_url ?? "#"} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]" style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px" }}>
                 {hero?.cta_text ?? DEF.hero.cta_text}
               </Link>
-              <button onClick={() => scrollToSection(cta2Target)} className="text-[14px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+              <button onClick={() => scrollToSection(cta2Target)} className="text-[15px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
                 {cta2Text}
               </button>
             </motion.div>
@@ -315,8 +315,8 @@ const RevOpsCheckup = () => {
             <div className="space-y-4">
               {forYouItems.map((item) => (
                 <div key={item} className="flex items-start gap-3">
-                  <span className="text-[14px] mt-0.5 flex-shrink-0" style={{ color: "#22C55E" }}>✓</span>
-                  <span className="text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item}</span>
+                  <span className="text-[15px] mt-0.5 flex-shrink-0" style={{ color: "#22C55E" }}>✓</span>
+                  <span className="text-base leading-[1.6]" style={{ color: "#6B7280" }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -327,8 +327,8 @@ const RevOpsCheckup = () => {
               {notForYouItems.map((item, i) => (
                 <div key={i}>
                   <div className="flex items-start gap-3">
-                    <span className="text-[14px] mt-0.5 flex-shrink-0" style={{ color: "#6B7280" }}>→</span>
-                    <span className="text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.text}</span>
+                    <span className="text-[15px] mt-0.5 flex-shrink-0" style={{ color: "#6B7280" }}>→</span>
+                    <span className="text-base leading-[1.6]" style={{ color: "#6B7280" }}>{item.text}</span>
                   </div>
                   <div className="ml-7 mt-1.5"><ChipLink to={item.chip_href} label={item.chip_label} /></div>
                 </div>
@@ -357,15 +357,15 @@ const RevOpsCheckup = () => {
         <div className="relative z-10 max-w-[480px] mx-auto">
           <motion.div {...fadeUp(0)} className="relative rounded-[20px] p-[2px]" style={{ background: GRADIENT, boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
             <div className="rounded-[18px] bg-white p-10 sm:p-12 text-center">
-              <p className="text-[12px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
+              <p className="text-[13px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
               <p className="text-[40px] font-extrabold tracking-tight" style={{ color: "#1A1A2E" }}>{priceData.price}</p>
-              <p className="text-[14px] mt-1" style={{ color: "#6B7280" }}>{priceData.price_sub}</p>
+              <p className="text-[15px] mt-1" style={{ color: "#6B7280" }}>{priceData.price_sub}</p>
               <div className="my-6 h-px" style={{ background: "#E5E7EB" }} />
-              <p className="text-[13px] italic leading-[1.6]" style={{ color: "#6B7280" }}>{priceData.note}</p>
+              <p className="text-[14px] italic leading-[1.6]" style={{ color: "#6B7280" }}>{priceData.note}</p>
               <Link to={priceData.cta_url} className="mt-8 w-full inline-flex items-center justify-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.02]" style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px" }}>
                 {priceData.cta_text}
               </Link>
-              <Link to={priceData.cta2_url} className="block mt-4 text-[14px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+              <Link to={priceData.cta2_url} className="block mt-4 text-[15px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>
                 {priceData.cta2_text}
               </Link>
             </div>

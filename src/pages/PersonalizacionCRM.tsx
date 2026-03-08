@@ -271,7 +271,7 @@ export default function PersonalizacionCRM() {
                 onMouseLeave={e => (e.currentTarget.style.borderColor = "#E5E7EB")}
               >
                 <span className="text-2xl shrink-0">{p.icon}</span>
-                <span className="text-sm" style={{ color: "#374151" }}>{p.text}</span>
+                <span className="text-[15px]" style={{ color: "#374151" }}>{p.text}</span>
               </motion.div>
             ))}
           </div>
@@ -312,7 +312,7 @@ export default function PersonalizacionCRM() {
               </h3>
               <ul className="space-y-3">
                 {pq.yes.map((it, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "#374151" }}>
+                  <li key={i} className="flex items-start gap-2 text-[15px]" style={{ color: "#374151" }}>
                     <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
                   </li>
                 ))}
@@ -325,7 +325,7 @@ export default function PersonalizacionCRM() {
               </h3>
               <ul className="space-y-4">
                 {pq.no.map((item, i) => (
-                  <li key={i} className="text-sm" style={{ color: "#6B7280" }}>
+                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>
                     <p className="mb-2">{item.text}</p>
                     {item.chip && <RedirectChip label={item.chip.label} href={item.chip.href} />}
                   </li>

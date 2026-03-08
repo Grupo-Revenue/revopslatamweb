@@ -51,7 +51,7 @@ const SprintTimeline = () => {
       transition={{ duration: 0.7 }}
     >
       <div className="flex items-center justify-between mb-7 flex-wrap gap-3">
-        <span className="text-white/80 text-sm font-semibold">Sprint actual</span>
+        <span className="text-white/80 text-[15px] font-semibold">Sprint actual</span>
         <span className="text-[11px] font-bold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.15)", color: "#BE1869" }}>
           Semana 2 de 2
         </span>
@@ -85,15 +85,15 @@ const SprintTimeline = () => {
                 {item.done && <Check size={12} color="#fff" strokeWidth={3} />}
               </div>
               <div>
-                <span className="text-[11px] uppercase tracking-wide block mb-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{item.label}</span>
-                <span className="text-sm text-white/90">{item.text}</span>
+                <span className="text-[12px] uppercase tracking-wide block mb-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>{item.label}</span>
+                <span className="text-[15px] text-white/90">{item.text}</span>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
       <div className="mt-7 pt-5" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="flex items-center justify-between text-xs mb-2">
+        <div className="flex items-center justify-between text-[13px] mb-2">
           <span className="text-white/50">Siguiente sprint en 4 días</span>
           <span className="text-white/60 font-semibold">75%</span>
         </div>
@@ -161,9 +161,9 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
         </span>
       )}
       {"labelGradient" in plan && plan.labelGradient ? (
-        <span className="text-xs font-bold uppercase tracking-[0.14em] mb-4 bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{plan.label}</span>
+        <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4 bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{plan.label}</span>
       ) : (
-        <span className="text-xs font-bold uppercase tracking-[0.14em] mb-4" style={{ color: plan.labelColor }}>{plan.label}</span>
+        <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4" style={{ color: plan.labelColor }}>{plan.label}</span>
       )}
       <div className="flex items-baseline gap-2 mb-1">
         {"labelGradient" in plan && plan.labelGradient ? (
@@ -179,7 +179,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
       <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
       <ul className="space-y-3 mb-8 flex-1">
         {plan.features.map((f) => (
-          <li key={f} className="flex items-start gap-2.5 text-sm" style={{ color: DARK }}>
+          <li key={f} className="flex items-start gap-2.5 text-[15px]" style={{ color: DARK }}>
             <span className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: GRADIENT }}>
               <Check size={12} color="#fff" strokeWidth={3} />
             </span>
@@ -188,7 +188,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
         ))}
       </ul>
       <button
-        className="w-full text-sm font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
+        className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
         style={
           plan.ctaSolid
             ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }
@@ -253,13 +253,13 @@ const ComparisonTable = () => {
 
   return (
     <motion.div ref={ref} className="mx-auto max-w-[700px] overflow-x-auto backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 28, border: "1px solid rgba(255,255,255,0.08)" }} initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
-      <div className="grid grid-cols-3 gap-2 mb-4 text-xs font-bold uppercase tracking-wider">
+      <div className="grid grid-cols-3 gap-2 mb-4 text-[12px] font-bold uppercase tracking-wider">
         <span />
         <span className="text-white/40 text-center">RevOps Manager interno</span>
         <span className="text-center px-3 py-2 rounded-lg" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.2), rgba(98,36,190,0.2))", color: "#fff" }}>Plan Momentum</span>
       </div>
       {compRows.map(([label, intern, us], i) => (
-        <div key={label} className="grid grid-cols-3 gap-2 py-3 text-sm" style={{ borderTop: i > 0 ? "1px solid rgba(255,255,255,0.06)" : undefined }}>
+        <div key={label} className="grid grid-cols-3 gap-2 py-3 text-[15px]" style={{ borderTop: i > 0 ? "1px solid rgba(255,255,255,0.06)" : undefined }}>
           <span className="text-white/70 font-medium">{label}</span>
           <span className="text-center text-white/40">{intern}</span>
           <span className="text-center font-bold bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{us}</span>
@@ -308,7 +308,7 @@ const RevOpsAsAService = () => {
               <PlanCard key={p.key} plan={p} i={i} />
             ))}
           </div>
-          <p className="text-center text-[13px] mt-8" style={{ color: "#6B7280" }}>
+          <p className="text-center text-[14px] mt-8" style={{ color: "#6B7280" }}>
             Todos los planes incluyen onboarding sin costo. Compromiso mínimo 3 meses. Precios en UF + IVA.
           </p>
         </div>
@@ -342,13 +342,13 @@ const RevOpsAsAService = () => {
               return (
                 <ServiceCard key={r.title} delay={i * 0.1} variant="glass" hoverBorder="#BE1869">
                   <GradientIcon icon={Icon} size={44} iconSize={20} className="mb-4" />
-                  <h4 className="font-bold text-[15px] mb-1 text-white">{r.title}</h4>
-                  <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{r.desc}</p>
+                  <h4 className="font-bold text-base mb-1 text-white">{r.title}</h4>
+                  <p className="text-[15px] leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{r.desc}</p>
                 </ServiceCard>
               );
             })}
           </div>
-          <p className="text-center text-[13px] mt-8" style={{ color: "rgba(255,255,255,0.5)" }}>
+          <p className="text-center text-[14px] mt-8" style={{ color: "rgba(255,255,255,0.5)" }}>
             <strong>Claridad:</strong> roles 1+2 · <strong>Momentum:</strong> roles 1+2+3+4 · <strong>Escala:</strong> equipo completo
           </p>
         </div>
@@ -380,7 +380,7 @@ const RevOpsAsAService = () => {
         <div className="relative z-10 mx-auto max-w-[700px] px-6 text-center">
           <SectionHeading title="Lo que cuesta no tenerlo" light />
           <ComparisonTable />
-          <p className="text-[13px] mt-6" style={{ color: "rgba(255,255,255,0.5)" }}>
+          <p className="text-[14px] mt-6" style={{ color: "rgba(255,255,255,0.5)" }}>
             Estimación basada en rangos salariales de mercado en Chile para perfiles RevOps senior, 2025.
           </p>
         </div>
@@ -398,12 +398,12 @@ const RevOpsAsAService = () => {
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <button
               onClick={() => scrollTo("planes")}
-              className="text-sm font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all"
+              className="text-[15px] font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all"
               style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}
             >
               Ver los planes →
             </button>
-            <button className="text-sm font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>
+            <button className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>
               Conversemos primero →
             </button>
           </div>
@@ -440,12 +440,12 @@ const ProblemSection = () => {
             col.map((text, i) => (
               <motion.div key={text} className="flex items-start gap-3" initial={{ opacity: 0, x: ci === 0 ? -15 : 15 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 0.2 + (ci * 3 + i) * 0.08, duration: 0.4 }}>
                 <X size={16} className="mt-0.5 shrink-0" style={{ color: "#EF4444" }} />
-                <span className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>{text}</span>
+                <span className="text-base leading-relaxed" style={{ color: "#6B7280" }}>{text}</span>
               </motion.div>
             ))
           )}
         </div>
-        <motion.div className="mt-14 mx-auto text-center text-sm font-bold leading-relaxed px-6 py-4 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.06), rgba(98,36,190,0.06))", color: "#BE1869", maxWidth: 560 }} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 }}>
+        <motion.div className="mt-14 mx-auto text-center text-base font-bold leading-relaxed px-6 py-4 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.06), rgba(98,36,190,0.06))", color: "#BE1869", maxWidth: 560 }} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.6 }}>
           No es falta de voluntad. Es falta de una función dedicada a que eso no pase.
         </motion.div>
       </div>

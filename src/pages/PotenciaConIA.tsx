@@ -82,17 +82,17 @@ const AgentFeed = () => {
     <div className="rounded-[20px] p-6 md:p-8 relative overflow-hidden backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}>
       <div className="flex items-center gap-2 mb-6">
         <span className="w-2 h-2 rounded-full" style={{ background: AI_BLUE, boxShadow: `0 0 8px ${AI_BLUE}`, animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }} />
-        <span className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>Agente IA — Activo</span>
+        <span className="text-[15px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>Agente IA — Activo</span>
       </div>
       <div className="space-y-3 min-h-[200px]">
         {items.map((item, i) => (
           <motion.div key={`${item.time}-${item.text}-${i}`} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.4, delay: i * 0.08 }}
             className="flex items-start gap-3 rounded-xl px-4 py-3" style={{ background: "rgba(255,255,255,0.03)" }}>
-            <span className="text-xs font-mono shrink-0 mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>[{item.time}]</span>
-            <span className="text-xs shrink-0 mt-0.5" style={{ color: item.done ? "rgba(74,222,128,0.8)" : "rgba(234,179,8,0.8)" }}>{item.done ? "✓" : "⟳"}</span>
+            <span className="text-[12px] font-mono shrink-0 mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>[{item.time}]</span>
+            <span className="text-[12px] shrink-0 mt-0.5" style={{ color: item.done ? "rgba(74,222,128,0.8)" : "rgba(234,179,8,0.8)" }}>{item.done ? "✓" : "⟳"}</span>
             <div className="flex-1 min-w-0">
-              <span className="text-sm block" style={{ color: "rgba(255,255,255,0.8)" }}>{item.text}</span>
-              <span className="inline-block mt-1.5 text-[11px] font-medium px-2 py-0.5 rounded-full" style={{ color: item.chipColor, background: item.chipBg, animation: item.done ? "none" : "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }}>
+              <span className="text-[15px] block" style={{ color: "rgba(255,255,255,0.8)" }}>{item.text}</span>
+              <span className="inline-block mt-1.5 text-[12px] font-medium px-2 py-0.5 rounded-full" style={{ color: item.chipColor, background: item.chipBg, animation: item.done ? "none" : "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }}>
                 {item.chipLabel}
               </span>
             </div>
@@ -100,7 +100,7 @@ const AgentFeed = () => {
         ))}
       </div>
       <div className="mt-6 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>
+        <p className="text-[13px]" style={{ color: "rgba(255,255,255,0.45)" }}>
           Tiempo promedio de respuesta:{" "}
           <span className="font-bold" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>3 min</span>
           <span className="mx-2" style={{ color: "rgba(255,255,255,0.2)" }}>vs</span>
@@ -159,20 +159,20 @@ const PotenciaConIA = () => {
           <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed max-w-[620px] mx-auto -mt-8" style={{ color: "#6B7280" }}>
             La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas — no los resolvió.
           </motion.p>
-          <motion.div {...fadeUp(0.15)} className="mt-6 inline-block px-5 py-2.5 rounded-full text-sm font-bold" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>
+          <motion.div {...fadeUp(0.15)} className="mt-6 inline-block px-5 py-2.5 rounded-full text-[15px] font-bold" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>
             La IA que genera ventaja real no se instala. Se diseña.
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-6 mt-10 text-left">
             <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-7" style={{ background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.12)" }}>
-              <p className="text-[13px] font-semibold uppercase mb-3" style={{ color: "#EF4444" }}>IA mal implementada</p>
+              <p className="text-[14px] font-semibold uppercase mb-3" style={{ color: "#EF4444" }}>IA mal implementada</p>
               {["Herramienta comprada, proceso sin ordenar", "Solución genérica, sin integración al CRM", "El equipo no la entiende, nadie la usa"].map((t) => (
-                <p key={t} className="flex items-start gap-2 text-sm mb-2" style={{ color: "#6B7280" }}><span style={{ color: "#EF4444" }}>✗</span> {t}</p>
+                <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ color: "#EF4444" }}>✗</span> {t}</p>
               ))}
             </motion.div>
             <motion.div {...fadeUp(0.25)} className="rounded-[20px] p-7" style={{ border: "1px solid transparent", borderImage: `${gradient} 1`, background: "#fff" }}>
-              <p className="text-[13px] font-semibold uppercase mb-3" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IA con RevOps LATAM</p>
+              <p className="text-[14px] font-semibold uppercase mb-3" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IA con RevOps LATAM</p>
               {["Proceso diseñado antes de implementar", "Integrada a HubSpot, sin silos", "El equipo la opera desde el día 1"].map((t) => (
-                <p key={t} className="flex items-start gap-2 text-sm mb-2" style={{ color: "#6B7280" }}><span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span> {t}</p>
+                <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span> {t}</p>
               ))}
             </motion.div>
           </div>
@@ -258,17 +258,17 @@ const PotenciaConIA = () => {
           <div className="grid sm:grid-cols-2 gap-8">
             <ServiceCard delay={0.1} style={{ borderLeft: "3px solid", borderImage: `${gradient} 1` }}>
               <span className="text-2xl mb-3 block">🎯</span>
-              <h3 className="text-[16px] font-bold mb-2" style={{ color: DARK }}>Como proyecto independiente</h3>
-              <p className="text-[14px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Fases definidas, alcance claro, entrega. Para empresas que quieren implementar una capacidad de IA específica.</p>
-              <button className="text-sm font-semibold inline-flex items-center gap-1" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <h3 className="text-[17px] font-bold mb-2" style={{ color: DARK }}>Como proyecto independiente</h3>
+              <p className="text-[15px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Fases definidas, alcance claro, entrega. Para empresas que quieren implementar una capacidad de IA específica.</p>
+              <button className="text-[15px] font-semibold inline-flex items-center gap-1" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Conversemos <ArrowRight size={14} style={{ color: "#BE1869" }} />
               </button>
             </ServiceCard>
             <ServiceCard delay={0.15} style={{ borderLeft: `3px solid ${AI_BLUE}` }}>
               <span className="text-2xl mb-3 block">♾️</span>
-              <h3 className="text-[16px] font-bold mb-2" style={{ color: DARK }}>Como add-on de RevOps as a Service</h3>
-              <p className="text-[14px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Integrado al ciclo de sprints. La IA se incorpora progresivamente a medida que la operación madura.</p>
-              <Link to="/revops-as-a-service" className="text-sm font-semibold inline-flex items-center gap-1" style={{ color: AI_BLUE }}>
+              <h3 className="text-[17px] font-bold mb-2" style={{ color: DARK }}>Como add-on de RevOps as a Service</h3>
+              <p className="text-[15px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Integrado al ciclo de sprints. La IA se incorpora progresivamente a medida que la operación madura.</p>
+              <Link to="/revops-as-a-service" className="text-[15px] font-semibold inline-flex items-center gap-1" style={{ color: AI_BLUE }}>
                 Ver RevOps as a Service <ArrowRight size={14} />
               </Link>
             </ServiceCard>

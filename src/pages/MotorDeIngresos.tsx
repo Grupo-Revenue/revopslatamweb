@@ -68,14 +68,14 @@ const RevOpsScorecard = ({ score: targetScore, bars }: { score: number; bars: Ar
     <motion.div ref={ref} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
       className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-[20px] p-7"
       style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-      <p className="text-[12px] uppercase tracking-[0.1em] mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>RevOps Score™</p>
+      <p className="text-[13px] uppercase tracking-[0.1em] mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>RevOps Score™</p>
       <p className="text-[72px] font-extrabold tracking-tight leading-none" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{score}</p>
       <div className="mt-8 space-y-4">
         {bars.map((bar, i) => (
           <div key={bar.label}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[13px] text-white/60">{bar.label}</span>
-              <span className="text-[13px] font-mono text-white/40">{bar.pct}%</span>
+              <span className="text-[14px] text-white/60">{bar.label}</span>
+              <span className="text-[14px] font-mono text-white/40">{bar.pct}%</span>
             </div>
             <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
               <motion.div className="h-full rounded-full" style={{ background: GRADIENT }} initial={{ width: 0 }} whileInView={{ width: `${bar.pct}%` }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.6 + i * 0.2, ease: "easeOut" }} />
@@ -83,7 +83,7 @@ const RevOpsScorecard = ({ score: targetScore, bars }: { score: number; bars: Ar
           </div>
         ))}
       </div>
-      <p className="mt-6 text-[11px]" style={{ color: "rgba(255,255,255,0.3)" }}>Basado en benchmarks LATAM</p>
+      <p className="mt-6 text-[12px]" style={{ color: "rgba(255,255,255,0.3)" }}>Basado en benchmarks LATAM</p>
     </motion.div>
   );
 };
@@ -99,7 +99,7 @@ const SilosDiagram = ({ silos }: { silos: string[] }) => {
           <div key={silo} className="flex items-center flex-1">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.15 }}
               className="flex-1 rounded-xl p-4 sm:p-5 text-center" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB" }}>
-              <p className="text-[14px] font-bold" style={{ color: "#1A1A2E" }}>{silo}</p>
+              <p className="text-[15px] font-bold" style={{ color: "#1A1A2E" }}>{silo}</p>
             </motion.div>
             {i < silos.length - 1 && (
               <div className="w-8 sm:w-12 flex-shrink-0 flex items-center justify-center">
@@ -132,8 +132,8 @@ const AccordionItem = ({ num, title, description, badge, isOpen, onToggle, isLas
     </button>
     <div className="overflow-hidden transition-all duration-300 ease-in-out" style={{ maxHeight: isOpen ? 200 : 0, opacity: isOpen ? 1 : 0 }}>
       <div className="pb-5 pl-14">
-        <p className="text-[15px] leading-[1.7]" style={{ color: "#6B7280" }}>{description}</p>
-        <span className="inline-block mt-3 text-[12px] font-medium px-3 py-1 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>{badge}</span>
+        <p className="text-base leading-[1.7]" style={{ color: "#6B7280" }}>{description}</p>
+        <span className="inline-block mt-3 text-[13px] font-medium px-3 py-1 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>{badge}</span>
       </div>
     </div>
   </div>
@@ -148,11 +148,11 @@ const HorizontalTimeline = ({ weeks }: { weeks: Array<{ num: string; title: stri
           <motion.div key={w.num} {...fadeUp(0.1 + i * 0.1)} className="flex-1 flex flex-col items-center text-center">
             <div className="flex items-center w-full">
               {i > 0 && <motion.div className="flex-1 h-[2px]" style={{ background: GRADIENT, opacity: 0.4 }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 + i * 0.15 }} />}
-              <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
+              <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[15px] font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
               {i < weeks.length - 1 && <motion.div className="flex-1 h-[2px]" style={{ background: GRADIENT, opacity: 0.4 }} initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 + i * 0.15 }} />}
             </div>
-            <p className="mt-3 text-[13px] font-bold" style={{ color: "#1A1A2E" }}>Semana {w.num}</p>
-            <p className="mt-1 text-[13px]" style={{ color: "#6B7280" }}>{w.title}</p>
+            <p className="mt-3 text-[14px] font-bold" style={{ color: "#1A1A2E" }}>Semana {w.num}</p>
+            <p className="mt-1 text-[14px]" style={{ color: "#6B7280" }}>{w.title}</p>
           </motion.div>
         ))}
       </div>
@@ -161,11 +161,11 @@ const HorizontalTimeline = ({ weeks }: { weeks: Array<{ num: string; title: stri
       {weeks.map((w, i) => (
         <motion.div key={w.num} {...fadeUp(0.1 + i * 0.08)} className="flex gap-4">
           <div className="flex flex-col items-center">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[15px] font-bold flex-shrink-0" style={{ background: GRADIENT }}>{w.num}</div>
             {i < weeks.length - 1 && <div className="w-[2px] flex-1 mt-2" style={{ background: GRADIENT, opacity: 0.3 }} />}
           </div>
           <div className="pt-2 pb-4">
-            <p className="text-[15px] font-bold" style={{ color: "#1A1A2E" }}>Semana {w.num} — {w.title}</p>
+            <p className="text-base font-bold" style={{ color: "#1A1A2E" }}>Semana {w.num} — {w.title}</p>
           </div>
         </motion.div>
       ))}
@@ -174,7 +174,7 @@ const HorizontalTimeline = ({ weeks }: { weeks: Array<{ num: string; title: stri
 );
 
 const ChipLink = ({ to, label }: { to: string; label: string }) => (
-  <Link to={to} className="inline-flex items-center text-[12px] font-semibold px-3 py-1 rounded-full transition-all duration-200 mt-1.5" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}
+  <Link to={to} className="inline-flex items-center text-[13px] font-semibold px-3 py-1 rounded-full transition-all duration-200 mt-1.5" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}
     onMouseEnter={(e) => { e.currentTarget.style.background = GRADIENT; e.currentTarget.style.color = "#fff"; }}
     onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(190,24,105,0.08)"; e.currentTarget.style.color = "#BE1869"; }}
   >{label}</Link>
@@ -185,8 +185,8 @@ const ResultCard = ({ title, desc, delay }: { title: string; desc: string; delay
     <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: "rgba(190,24,105,0.1)" }}>
       <span style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 800, fontSize: 16 }}>✦</span>
     </div>
-    <h4 className="text-[16px] font-bold mb-2 text-white">{title}</h4>
-    <p className="text-[14px] leading-[1.7]" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>
+    <h4 className="text-[17px] font-bold mb-2 text-white">{title}</h4>
+    <p className="text-[15px] leading-[1.7]" style={{ color: "rgba(255,255,255,0.6)" }}>{desc}</p>
   </motion.div>
 );
 
@@ -276,16 +276,16 @@ const MotorDeIngresos = () => {
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           <div className="flex-1 lg:max-w-[55%]">
-            <motion.nav {...fadeUp(0)} className="flex items-center gap-2 text-[12px] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <motion.nav {...fadeUp(0)} className="flex items-center gap-2 text-[13px] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
               <Link to={breadcrumbParentUrl} className="hover:text-white/60 transition-colors">{breadcrumbParent}</Link>
               <span>→</span><span className="text-white/60">{breadcrumbCurrent}</span>
             </motion.nav>
-            <motion.span {...fadeUp(0.05)} className="inline-block text-[11px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6 text-white" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)" }}>{badge}</motion.span>
+            <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6 text-white" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)" }}>{badge}</motion.span>
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold leading-[1.08] tracking-tight max-w-[700px]" style={{ color: "#ffffff", fontSize: "clamp(40px, 5.5vw, 64px)", ...heroStyle("title") }}>{hero?.title ?? DEF.hero.title}</motion.h1>
             <motion.p {...fadeUp(0.18)} className="mt-5 text-[17px] sm:text-[18px] leading-[1.7] max-w-[560px]" style={{ color: "rgba(255,255,255,0.7)", ...heroStyle("body") }}>{hero?.subtitle ?? DEF.hero.subtitle}</motion.p>
             <motion.div {...fadeUp(0.26)} className="mt-8 flex flex-wrap items-center gap-5">
               <Link to={hero?.cta_url ?? "#"} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]" style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px" }}>{hero?.cta_text ?? DEF.hero.cta_text}</Link>
-              <button onClick={() => scrollToSection(cta2Target)} className="text-[14px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>{cta2Text}</button>
+              <button onClick={() => scrollToSection(cta2Target)} className="text-[15px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>{cta2Text}</button>
             </motion.div>
           </div>
           <div className="flex-1 lg:max-w-[45%] flex justify-center">
@@ -330,7 +330,7 @@ const MotorDeIngresos = () => {
             ))}
           </motion.div>
           <motion.div {...fadeUp(0.2)} className="mt-8 text-center">
-            <span className="inline-block text-[13px] font-semibold px-5 py-2.5 rounded-full" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{extraChip}</span>
+            <span className="inline-block text-[14px] font-semibold px-5 py-2.5 rounded-full" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{extraChip}</span>
           </motion.div>
         </div>
       </SectionShell>
@@ -351,8 +351,8 @@ const MotorDeIngresos = () => {
             <div className="space-y-4">
               {forYouItems.map((item) => (
                 <div key={item} className="flex items-start gap-3">
-                  <span className="text-[14px] mt-0.5 flex-shrink-0" style={{ color: "#22C55E" }}>✓</span>
-                  <span className="text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item}</span>
+                  <span className="text-[15px] mt-0.5 flex-shrink-0" style={{ color: "#22C55E" }}>✓</span>
+                  <span className="text-base leading-[1.6]" style={{ color: "#6B7280" }}>{item}</span>
                 </div>
               ))}
             </div>
@@ -363,8 +363,8 @@ const MotorDeIngresos = () => {
               {notForYouItems.map((item, i) => (
                 <div key={i}>
                   <div className="flex items-start gap-3">
-                    <span className="text-[14px] mt-0.5 flex-shrink-0" style={{ color: "#6B7280" }}>→</span>
-                    <span className="text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.text}</span>
+                    <span className="text-[15px] mt-0.5 flex-shrink-0" style={{ color: "#6B7280" }}>→</span>
+                    <span className="text-base leading-[1.6]" style={{ color: "#6B7280" }}>{item.text}</span>
                   </div>
                   <div className="ml-7 mt-1.5"><ChipLink to={item.chip_href} label={item.chip_label} /></div>
                 </div>
@@ -389,16 +389,16 @@ const MotorDeIngresos = () => {
       {/* ─── PRECIO ─── */}
       <SectionShell section={precio} className="py-16 sm:py-20 px-6" defaultBg={{ background: "#ffffff" }}>
         <div className="relative z-10 max-w-[520px] mx-auto text-center">
-          <motion.span {...fadeUp(0)} className="inline-block text-[12px] font-bold uppercase tracking-[0.1em] px-5 py-2 rounded-full mb-8" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{priceData.top_badge}</motion.span>
+          <motion.span {...fadeUp(0)} className="inline-block text-[13px] font-bold uppercase tracking-[0.1em] px-5 py-2 rounded-full mb-8" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{priceData.top_badge}</motion.span>
           <motion.div {...fadeUp(0.1)} className="relative rounded-[20px] p-[2px]" style={{ background: GRADIENT, boxShadow: "0 32px 80px rgba(190,24,105,0.15)" }}>
             <div className="rounded-[18px] bg-white p-12 sm:p-14 text-center">
-              <p className="text-[12px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
+              <p className="text-[13px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
               <p className="text-[44px] font-extrabold tracking-tight" style={{ color: "#1A1A2E" }}>{priceData.price}</p>
-              <p className="text-[14px] mt-1" style={{ color: "#6B7280" }}>{priceData.price_sub}</p>
+              <p className="text-[15px] mt-1" style={{ color: "#6B7280" }}>{priceData.price_sub}</p>
               <div className="my-6 h-px" style={{ background: "#E5E7EB" }} />
-              <p className="text-[13px] italic leading-[1.6]" style={{ color: "#6B7280" }}>{priceData.note}</p>
+              <p className="text-[14px] italic leading-[1.6]" style={{ color: "#6B7280" }}>{priceData.note}</p>
               <Link to={priceData.cta_url} className="mt-8 w-full inline-flex items-center justify-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.02]" style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px" }}>{priceData.cta_text}</Link>
-              <Link to={priceData.cta2_url} className="block mt-4 text-[14px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>{priceData.cta2_text}</Link>
+              <Link to={priceData.cta2_url} className="block mt-4 text-[15px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>{priceData.cta2_text}</Link>
             </div>
           </motion.div>
         </div>
