@@ -93,7 +93,7 @@ const SprintTimeline = () => {
         </div>
       </div>
       <div className="mt-7 pt-5" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="flex items-center justify-between text-xs mb-2">
+        <div className="flex items-center justify-between text-[13px] mb-2">
           <span className="text-white/50">Siguiente sprint en 4 días</span>
           <span className="text-white/60 font-semibold">75%</span>
         </div>
