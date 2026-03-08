@@ -405,8 +405,10 @@ const OperaTuPista = () => {
       {/* ── S3: SERVICIOS ── */}
       <SectionDivider />
 
-      <section className="relative" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
         <DotPattern />
+        <GradientMesh variant="muted" />
+        <NoiseOverlay />
         <div className="mx-auto max-w-[1100px] px-6 relative z-10">
           <h2 className="text-center text-3xl md:text-4xl font-bold mb-14" style={{ color: DARK }}>
             Tres formas de operar tu pista con nosotros
