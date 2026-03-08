@@ -99,7 +99,7 @@ const SilosDiagram = ({ silos }: { silos: string[] }) => {
           <div key={silo} className="flex items-center flex-1">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.15 }}
               className="flex-1 rounded-xl p-4 sm:p-5 text-center" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB" }}>
-              <p className="text-[14px] font-bold" style={{ color: "#1A1A2E" }}>{silo}</p>
+              <p className="text-[15px] font-bold" style={{ color: "#1A1A2E" }}>{silo}</p>
             </motion.div>
             {i < silos.length - 1 && (
               <div className="w-8 sm:w-12 flex-shrink-0 flex items-center justify-center">
