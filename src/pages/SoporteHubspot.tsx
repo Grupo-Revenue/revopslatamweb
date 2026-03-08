@@ -99,7 +99,7 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
       ) : (
         <span className="text-xl font-bold mb-1" style={{ color: DARK }}>{(plan as any).priceText}</span>
       )}
-      <span className="text-sm mb-5" style={{ color: "#6B7280" }}>{plan.hours}</span>
+      <span className="text-[15px] mb-5" style={{ color: "#6B7280" }}>{plan.hours}</span>
       <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
       <ul className="space-y-3 mb-5 flex-1">
         {plan.features.map((f) => (
