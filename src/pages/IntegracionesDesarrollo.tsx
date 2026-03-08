@@ -419,7 +419,7 @@ export default function IntegracionesDesarrollo() {
             {prin.stats.map((s, i) => (
               <div key={i} className="text-center">
                 <span className="block text-lg font-bold bg-clip-text text-transparent mb-1" style={{ backgroundImage: GRADIENT }}>{s.value}</span>
-                <span className="text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
+                <span className="text-[13px]" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
               </div>
             ))}
           </motion.div>
