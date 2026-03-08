@@ -92,9 +92,9 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
             ) : (
               <span className="text-[48px] font-bold leading-none" style={{ color: DARK }}>{plan.price}</span>
             )}
-            <span className="text-sm" style={{ color: "#6B7280" }}>UF</span>
+            <span className="text-[15px]" style={{ color: "#6B7280" }}>UF</span>
           </div>
-          <span className="text-sm mb-1" style={{ color: "#6B7280" }}>+ IVA / mes</span>
+          <span className="text-[15px] mb-1" style={{ color: "#6B7280" }}>+ IVA / mes</span>
         </>
       ) : (
         <span className="text-xl font-bold mb-1" style={{ color: DARK }}>{(plan as any).priceText}</span>
