@@ -192,6 +192,8 @@ const SoporteHubspot = () => {
       {/* S3: Planes */}
       <section id="planes" className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
         <DotPattern opacity={0.3} />
+        <GradientMesh variant="muted" />
+        <NoiseOverlay />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
           <SectionHeading
             title="Elige tu plan y contrata ahora"

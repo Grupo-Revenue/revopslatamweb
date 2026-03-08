@@ -10,6 +10,9 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
 
 /* ─── animation helper ─── */
 const fadeUp = (delay = 0) => ({
@@ -260,10 +263,12 @@ const ConoceTuPista = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* ─── SECTION 2: EL PROBLEMA ─── */}
       <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
+        <GradientMesh variant="light" />
+        <NoiseOverlay />
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
           <div className="flex-1 max-w-[520px]">
             <motion.h2
@@ -293,6 +298,8 @@ const ConoceTuPista = () => {
 
       <SectionShell section={diagnosticos} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern />
+        <GradientMesh variant="muted" />
+        <NoiseOverlay />
         <div className="relative z-10 max-w-[1100px] mx-auto" id="diagnosticos">
           <motion.h2
             {...fadeUp(0)}
@@ -317,7 +324,10 @@ const ConoceTuPista = () => {
       </SectionShell>
 
       {/* ─── SECTION 4: POR QUÉ DIAGNOSTICAR PRIMERO ─── */}
+      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
       <SectionShell section={porQue} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="section" />
+        <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 max-w-[680px] mx-auto text-center">
           <motion.h2
             {...fadeUp(0)}
@@ -345,7 +355,9 @@ const ConoceTuPista = () => {
       </SectionShell>
 
       {/* ─── SECTION 5: CTA FINAL ─── */}
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
       <SectionShell section={ctaFinal} className="py-16 sm:py-20 px-6 text-center" defaultBg={{ background: "#ffffff" }}>
+        <GradientMesh variant="center" />
         <div className="relative z-10 max-w-[560px] mx-auto">
           <motion.h2
             {...fadeUp(0)}

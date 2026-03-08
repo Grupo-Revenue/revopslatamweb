@@ -11,6 +11,9 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 } as const,
@@ -291,10 +294,12 @@ const MotorDeIngresos = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* ─── PROBLEMA ─── */}
       <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
+        <GradientMesh variant="light" />
+        <NoiseOverlay />
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
           <div className="flex-1 max-w-[520px]">
             <motion.h2 {...fadeUp(0)} className="text-[28px] sm:text-[32px] md:text-[40px] font-bold leading-[1.15] tracking-tight" style={{ color: "#1A1A2E", ...probStyle("title") }}>{problema?.title ?? DEF.problema.title}</motion.h2>
@@ -314,6 +319,8 @@ const MotorDeIngresos = () => {
       {/* ─── ENTREGABLES ─── */}
       <SectionShell section={entregables} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern />
+        <GradientMesh variant="muted" />
+        <NoiseOverlay />
         <div className="relative z-10 max-w-[720px] mx-auto">
           <motion.h2 {...fadeUp(0)} className="text-[28px] sm:text-[32px] md:text-[36px] font-bold leading-[1.15] tracking-tight text-center" style={{ color: "#1A1A2E", ...entStyle("title") }}>{entregables?.title ?? DEF.entregables.title}</motion.h2>
           <motion.p {...fadeUp(0.08)} className="mt-4 text-center text-[16px]" style={{ color: "#6B7280" }}>{entregables?.subtitle ?? DEF.entregables.subtitle}</motion.p>

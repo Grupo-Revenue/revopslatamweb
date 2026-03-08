@@ -5,6 +5,9 @@ import { ChevronRight, ArrowRight, Zap, TrendingDown, GitBranch, Cog, Megaphone,
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -394,7 +397,7 @@ const OperaTuPista = () => {
         </div>
       </section>
 
-      <SectionDivider />
+      <WaveDivider fromColor={DARK} toColor="#ffffff" />
 
       {/* ── S2: EL PROBLEMA ── */}
       <ProblemSection />
@@ -402,8 +405,10 @@ const OperaTuPista = () => {
       {/* ── S3: SERVICIOS ── */}
       <SectionDivider />
 
-      <section className="relative" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
         <DotPattern />
+        <GradientMesh variant="muted" />
+        <NoiseOverlay />
         <div className="mx-auto max-w-[1100px] px-6 relative z-10">
           <h2 className="text-center text-3xl md:text-4xl font-bold mb-14" style={{ color: DARK }}>
             Tres formas de operar tu pista con nosotros
@@ -420,12 +425,15 @@ const OperaTuPista = () => {
       <WhyUsSection />
 
       {/* ── S5: CTA FINAL ── */}
-      <section style={{ padding: "80px 0" }}>
-        <div className="mx-auto max-w-[600px] px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4" style={{ color: DARK }}>
+      <WaveDivider fromColor="#F9FAFB" toColor={DARK} />
+      <section className="relative overflow-hidden" style={{ padding: "80px 0", background: DARK }}>
+        <BackgroundOrbs variant="section" />
+        <GradientMesh variant="center" />
+        <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center">
+          <h2 className="text-3xl font-bold mb-4 text-white">
             ¿No sabes por dónde partir?
           </h2>
-          <p className="text-base mb-8" style={{ color: "#6B7280" }}>
+          <p className="text-base mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>
             Si aún no tienes claridad de qué necesita tu operación, el primer paso es un diagnóstico.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -439,8 +447,8 @@ const OperaTuPista = () => {
               to="/conoce-tu-pista"
               className="text-sm font-semibold px-7 py-3.5 rounded-xl transition-all hover:scale-[1.03]"
               style={{
-                border: "1.5px solid #E5E7EB",
-                color: DARK,
+                border: "1.5px solid rgba(255,255,255,0.2)",
+                color: "#fff",
               }}
             >
               Primero quiero un diagnóstico →

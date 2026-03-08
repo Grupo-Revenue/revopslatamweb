@@ -12,6 +12,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
 const HUBSPOT = "#FF7A59";
@@ -379,10 +382,12 @@ export default function IntegracionesDesarrollo() {
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* ── PROBLEMA ── */}
       <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
+        <GradientMesh variant="light" />
+        <NoiseOverlay />
         <div className="relative z-10 max-w-[700px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-6" style={{ color: "#1A1A2E", fontSize: "clamp(26px, 3.5vw, 34px)" }}>{prob.title}</motion.h2>
           <SilosVisual silos={prob.silos} />
@@ -392,6 +397,9 @@ export default function IntegracionesDesarrollo() {
 
       {/* ── LO QUE CONSTRUIMOS ── */}
       <SectionShell section={construimos} className="py-24 md:py-[100px]" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
+        <GradientMesh variant="muted" />
+        <NoiseOverlay />
         <div className="relative z-10 max-w-[1000px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{con.title}</motion.h2>
           <ServiceCards cards={con.cards} />
@@ -399,7 +407,10 @@ export default function IntegracionesDesarrollo() {
       </SectionShell>
 
       {/* ── NUESTRO PRINCIPIO ── */}
+      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
       <SectionShell section={principio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="section" />
+        <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 max-w-[700px] mx-auto px-6 text-center">
           <motion.h2 {...fadeUp()} className="font-bold text-white tracking-[-0.02em] mb-8" style={{ fontSize: "clamp(26px, 3.5vw, 36px)" }}>{prin.title}</motion.h2>
           <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.7)" }}>{prin.body1}</motion.p>
@@ -459,10 +470,13 @@ export default function IntegracionesDesarrollo() {
       </SectionShell>
 
       {/* ── PRECIO ── */}
-      <SectionShell section={precio} className="py-20 md:py-[80px]" defaultBg={{ background: "#fff" }}>
+      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
+      <SectionShell section={precio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="section" />
+        <GradientMesh variant="center" />
         <div className="relative z-10 max-w-[480px] mx-auto px-6">
-          <motion.div {...fadeUp()} className="relative rounded-[20px] p-12 text-center" style={{ border: "2px solid transparent", backgroundImage: `linear-gradient(#fff, #fff), ${GRADIENT}`, backgroundOrigin: "border-box", backgroundClip: "padding-box, border-box", boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
-            <span className="block text-[11px] uppercase tracking-wider font-semibold mb-4" style={{ color: "#6B7280" }}>{pr.label}</span>
+          <motion.div {...fadeUp()} className="relative rounded-[20px] p-12 text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
+            <span className="block text-[11px] uppercase tracking-wider font-semibold mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>{pr.label}</span>
             <h3 className="text-xl font-extrabold leading-tight mb-3" style={{ color: "#1A1A2E" }}>{pr.headline}</h3>
             <p className="text-sm mb-5" style={{ color: "#6B7280" }}>{pr.subtext}</p>
             <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
