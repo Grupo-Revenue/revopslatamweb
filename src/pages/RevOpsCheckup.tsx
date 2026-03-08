@@ -60,7 +60,7 @@ const DeliverableCard = ({ data }: { data: { title: string; items: string[]; foo
           </div>
         ))}
       </div>
-      <p className="mt-5 text-[13px]" style={{ color: "rgba(255,255,255,0.5)" }}>{data.footer}</p>
+      <p className="mt-5 text-[14px]" style={{ color: "rgba(255,255,255,0.5)" }}>{data.footer}</p>
     </div>
   </motion.div>
 );
