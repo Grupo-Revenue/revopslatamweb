@@ -204,7 +204,7 @@ const SoporteHubspot = () => {
               <PlanCard key={p.key} plan={p} i={i} />
             ))}
           </div>
-          <p className="text-center text-xs mt-8" style={{ color: "#9CA3AF" }}>
+          <p className="text-center text-[13px] mt-8" style={{ color: "#9CA3AF" }}>
             Todos los planes requieren portal HubSpot activo. Servicio reactivo — se activa vía ticket. No incluye consultoría estratégica.
           </p>
         </div>
