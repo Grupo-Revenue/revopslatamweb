@@ -280,6 +280,7 @@ const DisenaYConstruye = () => {
 
       {/* ──── HERO ──── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center pt-[120px] pb-16 px-4 sm:px-6" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="hero" />
         <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           {/* Text */}
           <div className="lg:w-[55%]">
