@@ -8,6 +8,8 @@ interface SectionHeadingProps {
   badgeBg?: string;
   align?: "center" | "left";
   light?: boolean;
+  /** Index of word in title to highlight with brand gradient (0-based). Only works with string titles. */
+  highlightWord?: number;
 }
 
 const fadeUp = (d = 0) => ({
@@ -25,9 +27,33 @@ const SectionHeading = ({
   badgeBg = "rgba(190,24,105,0.08)",
   align = "center",
   light = false,
+  highlightWord,
 }: SectionHeadingProps) => {
   const textAlign = align === "center" ? "text-center" : "text-left";
   const mx = align === "center" ? "mx-auto" : "";
+
+  const renderTitle = () => {
+    if (highlightWord !== undefined && typeof title === "string") {
+      const words = title.split(" ");
+      return words.map((word, i) =>
+        i === highlightWord ? (
+          <span
+            key={i}
+            style={{
+              background: "linear-gradient(135deg, #BE1869, #6224BE)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            {word}{" "}
+          </span>
+        ) : (
+          <span key={i}>{word} </span>
+        )
+      );
+    }
+    return title;
+  };
 
   return (
     <div className={`${textAlign} mb-14`}>
@@ -49,7 +75,7 @@ const SectionHeading = ({
           maxWidth: align === "center" ? 700 : undefined,
         }}
       >
-        {title}
+        {renderTitle()}
       </motion.h2>
       {subtitle && (
         <motion.p
@@ -57,7 +83,7 @@ const SectionHeading = ({
           className={`mt-4 text-base sm:text-lg leading-relaxed ${mx}`}
           style={{
             color: light ? "rgba(255,255,255,0.65)" : "#6B7280",
-            maxWidth: 560,
+            maxWidth: 620,
           }}
         >
           {subtitle}

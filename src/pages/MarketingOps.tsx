@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -11,6 +11,11 @@ import ForWhomSection from "@/components/services/ForWhomSection";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
+import GradientMesh from "@/components/services/GradientMesh";
+import NoiseOverlay from "@/components/services/NoiseOverlay";
+import WaveDivider from "@/components/services/WaveDivider";
+import GradientIcon from "@/components/services/GradientIcon";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const ACCENT = "#FF7A59";
@@ -112,7 +117,7 @@ const MarketingOps = () => {
         minHeight="85vh"
       />
 
-      <SectionDivider />
+      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
 
       {/* S2: El Problema */}
       <ProblemSection />
@@ -120,18 +125,23 @@ const MarketingOps = () => {
       <SectionDivider />
 
       {/* S3: Lo que operamos */}
-      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
-        <DotPattern opacity={0.3} />
+      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "120px 0" }}>
+        <BackgroundOrbs variant="section" />
+        <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
-          <SectionHeading title="Lo que operamos" />
+          <SectionHeading title="Lo que operamos" light highlightWord={2} />
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {opsItems.map((item, i) => (
-              <ServiceCard key={item.title} delay={i * 0.1} hoverBorder={ACCENT}>
-                <span className="text-3xl mb-3 block">{item.emoji}</span>
-                <h4 className="font-bold text-[15px] mb-2" style={{ color: DARK }}>{item.title}</h4>
-                <p className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>{item.desc}</p>
-              </ServiceCard>
-            ))}
+            {opsItems.map((item, i) => {
+              const icons = [Cog, Megaphone, Wrench, Handshake, BarChart3];
+              const Icon = icons[i] || Cog;
+              return (
+                <ServiceCard key={item.title} delay={i * 0.1} variant="glass" hoverBorder={ACCENT}>
+                  <GradientIcon icon={Icon} size={44} iconSize={20} gradient={`linear-gradient(135deg, ${ACCENT}, #BE1869)`} className="mb-4" />
+                  <h4 className="font-bold text-[15px] mb-2 text-white">{item.title}</h4>
+                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{item.desc}</p>
+                </ServiceCard>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -180,16 +190,17 @@ const MarketingOps = () => {
       <SectionDivider />
 
       {/* S6: CTA Final */}
-      <section style={{ padding: "100px 0" }}>
-        <div className="mx-auto max-w-[480px] px-6">
-          <div className="text-center rounded-[20px] p-10" style={{ background: "#fff", border: "1.5px solid #E5E7EB", boxShadow: "0 8px 40px rgba(0,0,0,0.06)" }}>
-            <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "#6B7280" }}>
+      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "100px 0" }}>
+        <BackgroundOrbs variant="section" />
+        <div className="relative z-10 mx-auto max-w-[480px] px-6">
+          <div className="text-center rounded-[20px] p-10" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}>
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>
               Este servicio empieza con una conversación
             </span>
-            <h2 className="text-lg font-bold mb-3" style={{ color: DARK }}>
+            <h2 className="text-lg font-bold mb-3 text-white">
               Cuéntanos cómo está operando tu marketing hoy.
             </h2>
-            <p className="text-sm mb-7 leading-relaxed" style={{ color: "#6B7280" }}>
+            <p className="text-sm mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
               En 30 minutos evaluamos qué tiene más impacto en tu operación.
             </p>
             <button
