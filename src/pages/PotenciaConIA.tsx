@@ -100,7 +100,7 @@ const AgentFeed = () => {
         ))}
       </div>
       <div className="mt-6 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>
+        <p className="text-[13px]" style={{ color: "rgba(255,255,255,0.45)" }}>
           Tiempo promedio de respuesta:{" "}
           <span className="font-bold" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>3 min</span>
           <span className="mx-2" style={{ color: "rgba(255,255,255,0.2)" }}>vs</span>
