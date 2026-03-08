@@ -252,8 +252,10 @@ export default function PersonalizacionCRM() {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-24 md:py-[100px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[700px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-10" style={{ color: "#1A1A2E", fontSize: "clamp(26px, 3.5vw, 34px)" }}>{prob.title}</motion.h2>
           <div className="space-y-3">
