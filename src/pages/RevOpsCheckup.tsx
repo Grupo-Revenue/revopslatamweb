@@ -56,7 +56,7 @@ const DeliverableCard = ({ data }: { data: { title: string; items: string[]; foo
         {data.items.map((item) => (
           <div key={item} className="flex items-start gap-3">
             <span className="mt-0.5 text-sm font-bold flex-shrink-0" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span>
-            <span className="text-[14px] text-white/80">{item}</span>
+            <span className="text-[15px] text-white/80">{item}</span>
           </div>
         ))}
       </div>
