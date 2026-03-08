@@ -403,7 +403,7 @@ export default function DisenoDeProcesos() {
               </h3>
               <ul className="space-y-4">
                 {paraQuienData.no.map((item, i) => (
-                  <li key={i} className="text-sm" style={{ color: "#6B7280" }}>
+                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>
                     <p className="mb-2">{item.text}</p>
                     <div className="flex flex-wrap gap-2">
                       {item.chip && <RedirectChip label={item.chip.label} href={item.chip.href} text="" />}
