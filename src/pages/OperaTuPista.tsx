@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ChevronRight, ArrowRight, Zap, TrendingDown, GitBranch, Cog, Megaphone, Headphones } from "lucide-react";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import SectionDivider from "@/components/services/SectionDivider";
+import DotPattern from "@/components/services/DotPattern";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -331,6 +334,7 @@ const OperaTuPista = () => {
         className="relative overflow-hidden"
         style={{ background: DARK, minHeight: "90vh" }}
       >
+        <BackgroundOrbs variant="hero" />
         <div className="mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-[90vh]">
           {/* text */}
           <motion.div
@@ -390,12 +394,17 @@ const OperaTuPista = () => {
         </div>
       </section>
 
+      <SectionDivider />
+
       {/* ── S2: EL PROBLEMA ── */}
       <ProblemSection />
 
       {/* ── S3: SERVICIOS ── */}
-      <section style={{ background: "#F9FAFB", padding: "100px 0" }}>
-        <div className="mx-auto max-w-[1100px] px-6">
+      <SectionDivider />
+
+      <section className="relative" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+        <DotPattern />
+        <div className="mx-auto max-w-[1100px] px-6 relative z-10">
           <h2 className="text-center text-3xl md:text-4xl font-bold mb-14" style={{ color: DARK }}>
             Tres formas de operar tu pista con nosotros
           </h2>

@@ -8,6 +8,9 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import SectionDivider from "@/components/services/SectionDivider";
+import DotPattern from "@/components/services/DotPattern";
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
 const HUBSPOT = "#FF7A59";
@@ -249,6 +252,7 @@ export default function ImplementacionHubspot() {
 
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="hero" />
         <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
           <div>
             <motion.p {...fadeUp()} className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>{h.breadcrumb}</motion.p>
@@ -266,8 +270,10 @@ export default function ImplementacionHubspot() {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-24 md:py-[100px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[800px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="font-bold tracking-[-0.02em] mb-10 text-center" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)", maxWidth: 640, margin: "0 auto 40px" }}>{prob.title}</motion.h2>
           <motion.div {...fadeUp(0.1)}>
@@ -279,8 +285,11 @@ export default function ImplementacionHubspot() {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ── QUÉ INCLUYE ── */}
-      <SectionShell section={incluye} className="py-24 md:py-[100px]" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={incluye} className="py-24 md:py-[120px]" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
         <div className="relative z-10 max-w-[900px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{inc.title}</motion.h2>
           <div className="grid md:grid-cols-2 gap-x-12 gap-y-0">

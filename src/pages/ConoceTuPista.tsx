@@ -7,6 +7,9 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import SectionDivider from "@/components/services/SectionDivider";
+import DotPattern from "@/components/services/DotPattern";
 
 /* ─── animation helper ─── */
 const fadeUp = (delay = 0) => ({
@@ -219,6 +222,7 @@ const ConoceTuPista = () => {
 
       {/* ─── SECTION 1: HERO ─── */}
       <SectionShell section={hero} className="pt-36 sm:pt-44 pb-20 sm:pb-28 px-6" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[800px] mx-auto text-center">
           <motion.p
             {...fadeUp(0)}
@@ -256,8 +260,10 @@ const ConoceTuPista = () => {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ─── SECTION 2: EL PROBLEMA ─── */}
-      <SectionShell section={problema} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#ffffff" }}>
+      <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
           <div className="flex-1 max-w-[520px]">
             <motion.h2
@@ -283,7 +289,10 @@ const ConoceTuPista = () => {
       </SectionShell>
 
       {/* ─── SECTION 3: ELIGE TU DIAGNÓSTICO ─── */}
-      <SectionShell section={diagnosticos} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionDivider />
+
+      <SectionShell section={diagnosticos} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
         <div className="relative z-10 max-w-[1100px] mx-auto" id="diagnosticos">
           <motion.h2
             {...fadeUp(0)}

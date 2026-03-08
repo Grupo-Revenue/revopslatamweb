@@ -9,6 +9,9 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useIsMobile } from "@/hooks/use-mobile";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import SectionDivider from "@/components/services/SectionDivider";
+import DotPattern from "@/components/services/DotPattern";
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
 const HUBSPOT = "#FF7A59";
@@ -357,6 +360,7 @@ export default function IntegracionesDesarrollo() {
 
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="hero" />
         <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
           <div>
             <motion.p {...fadeUp()} className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>{h.breadcrumb}</motion.p>
@@ -375,8 +379,10 @@ export default function IntegracionesDesarrollo() {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-24 md:py-[100px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[700px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-6" style={{ color: "#1A1A2E", fontSize: "clamp(26px, 3.5vw, 34px)" }}>{prob.title}</motion.h2>
           <SilosVisual silos={prob.silos} />

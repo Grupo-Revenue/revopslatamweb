@@ -8,6 +8,9 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import SectionDivider from "@/components/services/SectionDivider";
+import DotPattern from "@/components/services/DotPattern";
 
 /* ─── constants ─── */
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
@@ -277,6 +280,7 @@ const DisenaYConstruye = () => {
 
       {/* ──── HERO ──── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center pt-[120px] pb-16 px-4 sm:px-6" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="hero" />
         <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           {/* Text */}
           <div className="lg:w-[55%]">
@@ -312,8 +316,10 @@ const DisenaYConstruye = () => {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ──── PROBLEMA ──── */}
-      <SectionShell section={problema} className="py-24 px-4 sm:px-6" defaultBg={{ background: "#FFFFFF" }}>
+      <SectionShell section={problema} className="py-24 sm:py-[120px] px-4 sm:px-6" defaultBg={{ background: "#FFFFFF" }}>
         <div className="relative z-10 container max-w-[800px] mx-auto text-center">
           <motion.h2 {...fadeUp()} className="font-bold text-[#1A1A2E] tracking-[-0.02em]" style={{ fontSize: "clamp(36px, 4vw, 44px)" }}>
             {probTitle}
@@ -336,7 +342,10 @@ const DisenaYConstruye = () => {
       </SectionShell>
 
       {/* ──── SERVICIOS ──── */}
-      <SectionShell section={servicios} className="py-24 px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionDivider />
+
+      <SectionShell section={servicios} className="py-24 sm:py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
         <div id="servicios" className="relative z-10 container max-w-[1100px] mx-auto">
           <motion.div {...fadeUp()} className="text-center mb-14">
             <h2 className="font-bold text-[#1A1A2E] tracking-[-0.02em]" style={{ fontSize: "clamp(32px, 4vw, 44px)" }}>{svcTitle}</h2>

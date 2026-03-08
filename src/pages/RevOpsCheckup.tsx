@@ -7,6 +7,9 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import SectionDivider from "@/components/services/SectionDivider";
+import DotPattern from "@/components/services/DotPattern";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 } as const,
@@ -209,6 +212,7 @@ const RevOpsCheckup = () => {
 
       {/* ─── HERO ─── */}
       <SectionShell section={hero} className="pt-32 sm:pt-40 pb-20 sm:pb-28 px-6" defaultBg={{ background: "#1A1A2E" }}>
+        <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           <div className="flex-1 lg:max-w-[55%]">
             <motion.nav {...fadeUp(0)} className="flex items-center gap-2 text-[12px] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
@@ -238,8 +242,10 @@ const RevOpsCheckup = () => {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ─── PROBLEMA ─── */}
-      <SectionShell section={problema} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#ffffff" }}>
+      <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
         <div className="relative z-10 max-w-[640px] mx-auto text-center">
           <motion.h2 {...fadeUp(0)} className="text-[30px] sm:text-[36px] font-bold leading-[1.15] tracking-tight" style={{ color: "#1A1A2E", ...probStyle("title") }}>
             {problema?.title ?? DEF.problema.title}
@@ -255,8 +261,11 @@ const RevOpsCheckup = () => {
         </div>
       </SectionShell>
 
+      <SectionDivider />
+
       {/* ─── ENTREGABLES ─── */}
-      <SectionShell section={entregables} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={entregables} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
+        <DotPattern />
         <div className="relative z-10 max-w-[1000px] mx-auto">
           <motion.h2 {...fadeUp(0)} className="text-[28px] sm:text-[32px] md:text-[36px] font-bold leading-[1.15] tracking-tight text-center" style={{ color: "#1A1A2E", ...entStyle("title") }}>
             {entregables?.title ?? DEF.entregables.title}
