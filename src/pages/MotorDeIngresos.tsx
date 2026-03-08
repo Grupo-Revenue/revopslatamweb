@@ -392,11 +392,11 @@ const MotorDeIngresos = () => {
           <motion.span {...fadeUp(0)} className="inline-block text-[13px] font-bold uppercase tracking-[0.1em] px-5 py-2 rounded-full mb-8" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>{priceData.top_badge}</motion.span>
           <motion.div {...fadeUp(0.1)} className="relative rounded-[20px] p-[2px]" style={{ background: GRADIENT, boxShadow: "0 32px 80px rgba(190,24,105,0.15)" }}>
             <div className="rounded-[18px] bg-white p-12 sm:p-14 text-center">
-              <p className="text-[12px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
+              <p className="text-[13px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
               <p className="text-[44px] font-extrabold tracking-tight" style={{ color: "#1A1A2E" }}>{priceData.price}</p>
-              <p className="text-[14px] mt-1" style={{ color: "#6B7280" }}>{priceData.price_sub}</p>
+              <p className="text-[15px] mt-1" style={{ color: "#6B7280" }}>{priceData.price_sub}</p>
               <div className="my-6 h-px" style={{ background: "#E5E7EB" }} />
-              <p className="text-[13px] italic leading-[1.6]" style={{ color: "#6B7280" }}>{priceData.note}</p>
+              <p className="text-[14px] italic leading-[1.6]" style={{ color: "#6B7280" }}>{priceData.note}</p>
               <Link to={priceData.cta_url} className="mt-8 w-full inline-flex items-center justify-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.02]" style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px" }}>{priceData.cta_text}</Link>
               <Link to={priceData.cta2_url} className="block mt-4 text-[14px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>{priceData.cta2_text}</Link>
             </div>
