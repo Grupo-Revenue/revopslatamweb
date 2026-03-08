@@ -74,8 +74,8 @@ const RevOpsScorecard = ({ score: targetScore, bars }: { score: number; bars: Ar
         {bars.map((bar, i) => (
           <div key={bar.label}>
             <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[13px] text-white/60">{bar.label}</span>
-              <span className="text-[13px] font-mono text-white/40">{bar.pct}%</span>
+              <span className="text-[14px] text-white/60">{bar.label}</span>
+              <span className="text-[14px] font-mono text-white/40">{bar.pct}%</span>
             </div>
             <div className="h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
               <motion.div className="h-full rounded-full" style={{ background: GRADIENT }} initial={{ width: 0 }} whileInView={{ width: `${bar.pct}%` }} viewport={{ once: true }} transition={{ duration: 1, delay: 0.6 + i * 0.2, ease: "easeOut" }} />
