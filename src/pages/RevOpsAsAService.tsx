@@ -51,7 +51,7 @@ const SprintTimeline = () => {
       transition={{ duration: 0.7 }}
     >
       <div className="flex items-center justify-between mb-7 flex-wrap gap-3">
-        <span className="text-white/80 text-sm font-semibold">Sprint actual</span>
+        <span className="text-white/80 text-[15px] font-semibold">Sprint actual</span>
         <span className="text-[11px] font-bold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.15)", color: "#BE1869" }}>
           Semana 2 de 2
         </span>
