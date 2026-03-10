@@ -750,6 +750,18 @@ export default function AdminPageSections() {
                     />
                   </div>
 
+                  {/* Image max width control */}
+                  <div className="p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
+                    <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Ancho máximo de imagen principal</Label>
+                    <Input
+                      value={(meta.image_max_width as string) ?? ""}
+                      onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, image_max_width: e.target.value || undefined })}
+                      className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm w-48"
+                      placeholder="Ej: 600px, 80%, 920px"
+                    />
+                    <p className="text-zinc-600 text-[10px] mt-0.5">Controla el tamaño máximo de la imagen del hero (px o %)</p>
+                  </div>
+
                   {/* Row 5b: Second image for split hero */}
                   <ImageField
                     label="Imagen 2 (fila inferior del hero — para efecto de scroll opuesto)"
