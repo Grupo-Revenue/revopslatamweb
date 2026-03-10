@@ -246,8 +246,8 @@ const OperaTuPista = () => {
             {(() => {
               const lineBreak = hm.title_line_break as string;
               if (lineBreak && h.title.includes(lineBreak)) {
-                const idx = h.title.indexOf(lineBreak) + lineBreak.length;
-                return h.title.slice(0, idx) + "\n" + h.title.slice(idx).trimStart();
+                const idx = h.title.indexOf(lineBreak);
+                return h.title.slice(0, idx).trimEnd() + "\n" + h.title.slice(idx);
               }
               return h.title;
             })()}

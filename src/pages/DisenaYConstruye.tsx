@@ -300,8 +300,8 @@ const DisenaYConstruye = () => {
             {(() => {
               const lineBreak = hm.title_line_break as string;
               if (lineBreak && heroTitle.includes(lineBreak)) {
-                const idx = heroTitle.indexOf(lineBreak) + lineBreak.length;
-                return heroTitle.slice(0, idx) + "\n" + heroTitle.slice(idx).trimStart();
+                const idx = heroTitle.indexOf(lineBreak);
+                return heroTitle.slice(0, idx).trimEnd() + "\n" + heroTitle.slice(idx);
               }
               return heroTitle;
             })()}

@@ -197,8 +197,8 @@ const PotenciaConIA = () => {
                 const title = hero?.title || DEF.hero.title_text;
                 const lineBreak = hm.title_line_break as string;
                 if (lineBreak && title.includes(lineBreak)) {
-                  const idx = title.indexOf(lineBreak) + lineBreak.length;
-                  return title.slice(0, idx) + "\n" + title.slice(idx).trimStart();
+                  const idx = title.indexOf(lineBreak);
+                  return title.slice(0, idx).trimEnd() + "\n" + title.slice(idx);
                 }
                 return hero?.title || <>{DEF.hero.title_text.split("aún no tienen")[0]}<span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>aún no tienen</span></>;
               })()}
