@@ -282,40 +282,45 @@ const DisenaYConstruye = () => {
       <Navbar />
 
       {/* ──── HERO ──── */}
-      <SectionShell section={hero} className="min-h-[90vh] flex items-center pt-[120px] pb-16 px-4 sm:px-6" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={hero} className="pt-28 sm:pt-36 pb-16 sm:pb-24 px-6" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-          {/* Text */}
-          <div className="lg:w-[55%]">
-            <motion.div {...fadeUp(0)}>
-              <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.1em]"
-                style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}>
-                {heroEyebrow}
-              </span>
-            </motion.div>
-            <motion.h1 {...fadeUp(0.15)} className="mt-7 font-extrabold leading-[1.08] tracking-[-0.02em] text-white max-w-[720px]"
-              style={{ fontSize: "clamp(44px, 5vw, 68px)", ...heroStyle("title") }}>
-              {heroTitle}
-            </motion.h1>
-            <motion.p {...fadeUp(0.3)} className="mt-5 text-lg leading-relaxed max-w-[500px]" style={{ color: "rgba(255,255,255,0.7)" }}>
-              {heroSubtitle}
-            </motion.p>
-            <motion.div {...fadeUp(0.45)} className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <button className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-shadow hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
-                style={{ background: (hm.cta_bg as string) || GRADIENT }}
-                onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })}>
-                {heroCta}
-              </button>
-              <Link to={heroCta2Url} className="text-white/80 hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">
-                {heroCta2}
-              </Link>
-            </motion.div>
-          </div>
-
-          {/* Visual */}
-          <div className="lg:w-[45%]">
-            {hero?.image_url ? <img src={hero.image_url} alt="" className="rounded-2xl" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "420px" }} /> : <ProcessSteps steps={heroSteps} />}
-          </div>
+        <div className="relative z-10 max-w-[1400px] mx-auto text-center">
+          <motion.span
+            {...fadeUp(0)}
+            className="inline-block text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6"
+            style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}
+          >
+            {heroEyebrow}
+          </motion.span>
+          <motion.h1
+            {...fadeUp(0.1)}
+            className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
+            style={{ color: "#ffffff", fontSize: "clamp(40px, 6vw, 64px)", ...heroStyle("title") }}
+          >
+            {heroTitle}
+          </motion.h1>
+          <motion.p
+            {...fadeUp(0.2)}
+            className="mt-6 text-[17px] sm:text-[18px] leading-[1.7] mx-auto"
+            style={{ color: "rgba(255,255,255,0.7)", maxWidth: 900 }}
+          >
+            {heroSubtitle}
+          </motion.p>
+          <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
+              style={{ background: (hm.cta_bg as string) || GRADIENT }}
+              onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })}>
+              {heroCta}
+            </button>
+            <Link to={heroCta2Url} className="text-white/80 hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">
+              {heroCta2}
+            </Link>
+          </motion.div>
+          <motion.div {...fadeUp(0.5)} className="mt-14">
+            {hero?.image_url && (
+              <img src={hero.image_url} alt={heroTitle} loading="lazy" className="mx-auto rounded-2xl object-cover" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "920px" }} />
+            )}
+          </motion.div>
         </div>
       </SectionShell>
 
