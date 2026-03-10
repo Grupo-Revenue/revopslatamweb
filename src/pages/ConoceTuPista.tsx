@@ -258,7 +258,11 @@ const ConoceTuPista = () => {
             </Link>
           </motion.div>
           <motion.div {...fadeUp(0.5)} className="mt-14">
-            <TrackSVG />
+            {hero?.image_url ? (
+              <img src={hero.image_url} alt={h.title} loading="lazy" className="w-full max-w-[920px] mx-auto rounded-2xl border border-white/10 object-cover" />
+            ) : (
+              <TrackSVG />
+            )}
           </motion.div>
         </div>
       </SectionShell>
