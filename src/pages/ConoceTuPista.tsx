@@ -228,13 +228,13 @@ const ConoceTuPista = () => {
       <SectionShell section={hero} className="pt-28 sm:pt-36 pb-16 sm:pb-24 px-6" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[1100px] mx-auto text-center">
-          <motion.p
+          <motion.span
             {...fadeUp(0)}
-            className="text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.14em] mb-6"
-            style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", ...heroStyle("subtitle") }}
+            className="inline-block text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6"
+            style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}
           >
             {h.badge}
-          </motion.p>
+          </motion.span>
           <motion.h1
             {...fadeUp(0.1)}
             className="font-extrabold leading-[1.08] tracking-tight"
