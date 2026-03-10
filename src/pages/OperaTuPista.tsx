@@ -397,7 +397,7 @@ const OperaTuPista = () => {
         </div>
       </section>
 
-      <WaveDivider fromColor={DARK} toColor="#ffffff" />
+      
 
       {/* ── S2: EL PROBLEMA ── */}
       <ProblemSection />
