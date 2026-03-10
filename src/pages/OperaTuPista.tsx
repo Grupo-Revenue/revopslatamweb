@@ -224,42 +224,62 @@ const OperaTuPista = () => {
       <Navbar />
 
       {/* ── S1: HERO ── */}
-      <SectionShell section={hero} className="min-h-[90vh]" defaultBg={{ background: DARK }}>
+      <SectionShell section={hero} className="pt-28 sm:pt-36 pb-16 sm:pb-24 px-6" defaultBg={{ background: DARK }}>
         <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-[90vh]">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <div className="flex items-center gap-2 text-xs text-white/40 mb-6">
-              <Link to="/" className="hover:text-white/60 transition-colors">Inicio</Link>
-              <ChevronRight size={12} />
-              <span className="text-white/70">Opera tu Pista</span>
-            </div>
-            <span
-              className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] text-white px-4 py-1.5 rounded-full mb-6"
-              style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}
+        <div className="relative z-10 max-w-[1400px] mx-auto text-center">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-block text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6"
+            style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}
+          >
+            {h.badge}
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
+            style={{ color: "#ffffff", fontSize: "clamp(40px, 6vw, 64px)" }}
+          >
+            {h.title}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-6 text-[17px] sm:text-[18px] leading-[1.7] mx-auto"
+            style={{ color: "rgba(255,255,255,0.7)", maxWidth: 900 }}
+          >
+            {h.subtitle}
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          >
+            <button
+              className="text-sm font-semibold text-white px-8 py-3.5 rounded-full transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
+              style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff" }}
             >
-              {h.badge}
-            </span>
-            <h1 className="font-bold text-white leading-[1.08] mb-6 max-w-[720px]" style={{ fontSize: "clamp(40px, 5vw, 68px)" }}>
-              {h.title}
-            </h1>
-            <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>
-              {h.subtitle}
-            </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <button
-                className="text-sm font-semibold text-white px-7 py-3.5 rounded-xl transition-all hover:scale-[1.03] hover:shadow-xl"
-                style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff" }}
-              >
-                {h.cta_text}
-              </button>
-              <Link to="/conoce-tu-pista" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-                {h.cta2_text}
-              </Link>
-            </div>
+              {h.cta_text}
+            </button>
+            <Link to="/conoce-tu-pista" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
+              {h.cta2_text}
+            </Link>
           </motion.div>
-          <div className="hidden lg:block">
-            {hero?.image_url ? <img src={hero.image_url} alt="" className="rounded-2xl" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "460px" }} /> : <DashboardHero />}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="mt-14"
+          >
+            {hero?.image_url && (
+              <img src={hero.image_url} alt={h.title} loading="lazy" className="mx-auto rounded-2xl object-cover" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "920px" }} />
+            )}
+          </motion.div>
         </div>
       </SectionShell>
 
