@@ -753,7 +753,7 @@ export default function AdminPageSections() {
                   {/* Responsive image max width controls */}
                   <div className="p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50 space-y-3">
                     <Label className="text-zinc-400 text-xs font-semibold uppercase tracking-wider">Tamaño de imagen principal (por pantalla)</Label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                       <div>
                         <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">📱 Mobile</Label>
                         <Input
@@ -761,6 +761,15 @@ export default function AdminPageSections() {
                           onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, image_max_width_mobile: e.target.value || undefined })}
                           className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
                           placeholder="Ej: 100%"
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">📱 Tablet</Label>
+                        <Input
+                          value={(meta.image_max_width_tablet as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, image_max_width_tablet: e.target.value || undefined })}
+                          className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                          placeholder="Ej: 80%"
                         />
                       </div>
                       <div>
