@@ -4,7 +4,6 @@ import { ArrowRight, Bot, Zap, MessageSquare, Code2, Search, TrendingDown, Light
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ServiceHero from "@/components/services/ServiceHero";
 import SectionHeading from "@/components/services/SectionHeading";
 import ServiceCard from "@/components/services/ServiceCard";
 import ForWhomSection from "@/components/services/ForWhomSection";
@@ -14,11 +13,31 @@ import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import ChipLink from "@/components/services/ChipLink";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-
+import { usePageSections } from "@/hooks/usePageSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
+import type { HomeSection } from "@/hooks/useHomeSections";
 
 const AI_BLUE = "#6366F1";
 const gradient = "linear-gradient(135deg,#BE1869,#6224BE)";
 const DARK = "#1A1A2E";
+
+function mt(s?: HomeSection): Record<string, unknown> {
+  return (s?.metadata as Record<string, unknown>) ?? {};
+}
+
+function SectionShell({ section, className, defaultBg, children }: {
+  section?: HomeSection; className: string; defaultBg?: React.CSSProperties; children: React.ReactNode;
+}) {
+  const { getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  return (
+    <section className={`relative overflow-hidden ${className}`} style={{ ...(defaultBg ?? {}), ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      {children}
+    </section>
+  );
+}
 
 const fadeUp = (d = 0) => ({
   initial: { opacity: 0, y: 24 } as const,
@@ -111,8 +130,31 @@ const AgentFeed = () => {
   );
 };
 
+/* ─── defaults ─── */
+const DEF = {
+  hero: {
+    badge: "VANGUARDIA OPERATIVA",
+    title_text: "La ventaja que tus competidores aún no tienen",
+    subtitle: "No implementamos IA por implementar. Mapeamos tu operación, identificamos dónde genera más impacto y construimos la solución correcta — integrada a HubSpot desde el primer día.",
+    cta_text: "Quiero saber dónde la IA impacta mi operación →",
+    cta2_text: "¿Es este el servicio correcto? ↓",
+  },
+};
+
 /* ── Page ── */
 const PotenciaConIA = () => {
+  const { getSection, loading } = usePageSections("potencia-con-ia");
+
+  const hero = getSection("hero");
+  const hm = mt(hero);
+
+  const h = {
+    badge: (hm.badge as string) ?? DEF.hero.badge,
+    subtitle: hero?.subtitle ?? DEF.hero.subtitle,
+    cta_text: hero?.cta_text ?? DEF.hero.cta_text,
+    cta2_text: (hm.cta2_text as string) ?? DEF.hero.cta2_text,
+  };
+
   const scrollToPlans = useCallback(() => {
     document.getElementById("ia-capacidades")?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -131,24 +173,43 @@ const PotenciaConIA = () => {
     { chip: "Siempre incluido", chipColor: "#BE1869", title: "Activación y acompañamiento", desc: "No entregamos y desaparecemos. Acompañamos, medimos y ajustamos hasta que funcione como debe.", tag: "Siempre incluido", tagBg: "rgba(190,24,105,0.08)", tagColor: "#BE1869" },
   ];
 
+  if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
+
   return (
     <div className="min-h-screen" style={{ background: "#0D0D1A" }}>
       <Navbar />
 
       {/* Hero */}
-      <ServiceHero
-        breadcrumbs={[
-          { label: "Inicio", to: "/" },
-          { label: "Potencia con IA" },
-        ]}
-        badge="VANGUARDIA OPERATIVA"
-        badgeStyle={{ background: "rgba(99,102,241,0.15)", color: AI_BLUE }}
-        title={<>La ventaja que tus competidores<br /><span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>aún no tienen</span></>}
-        subtitle="No implementamos IA por implementar. Mapeamos tu operación, identificamos dónde genera más impacto y construimos la solución correcta — integrada a HubSpot desde el primer día."
-        primaryCta={{ label: "Quiero saber dónde la IA impacta mi operación →", onClick: scrollToPlans }}
-        secondaryCta={{ label: "¿Es este el servicio correcto? ↓", onClick: () => document.getElementById("ia-problema")?.scrollIntoView({ behavior: "smooth" }) }}
-        rightContent={<AgentFeed />}
-      />
+      <SectionShell section={hero} className="min-h-[90vh]" defaultBg={{ background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 100%)" }}>
+        <BackgroundOrbs variant="hero" />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-[90vh]">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <div className="flex items-center gap-2 text-xs text-white/40 mb-6">
+              <Link to="/" className="hover:text-white/60 transition-colors">Inicio</Link>
+              <ChevronRight size={12} />
+              <span className="text-white/70">Potencia con IA</span>
+            </div>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(99,102,241,0.15)", color: (hm.badge_color as string) || AI_BLUE }}>
+              {h.badge}
+            </span>
+            <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>
+              {hero?.title || <>{DEF.hero.title_text.split("aún no tienen")[0]}<span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>aún no tienen</span></>}
+            </h1>
+            <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <button onClick={scrollToPlans} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || gradient, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
+                {h.cta_text}
+              </button>
+              <button onClick={() => document.getElementById("ia-problema")?.scrollIntoView({ behavior: "smooth" })} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer">
+                {h.cta2_text}
+              </button>
+            </div>
+          </motion.div>
+          <motion.div className="hidden lg:block" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[460px] rounded-2xl" /> : <AgentFeed />}
+          </motion.div>
+        </div>
+      </SectionShell>
 
       <SectionDivider />
 
@@ -205,10 +266,7 @@ const PotenciaConIA = () => {
       {/* S4 — Consultoría Estratégica */}
       <section className="py-[120px] px-4 sm:px-6" style={{ background: "#fff" }}>
         <div className="max-w-[640px] mx-auto text-center">
-          <SectionHeading
-            badge="SIEMPRE EL PRIMER PASO"
-            title="Antes de implementar: el mapa."
-          />
+          <SectionHeading badge="SIEMPRE EL PRIMER PASO" title="Antes de implementar: el mapa." />
           <motion.div {...fadeUp(0.1)} className="text-[15px] leading-relaxed space-y-4 -mt-8" style={{ color: "#6B7280" }}>
             <p>Todo proyecto de IA en RevOps LATAM parte con una pregunta: ¿dónde está el mayor impacto en tu motor de ingresos?</p>
             <p>Mapeamos tu operación e identificamos los 3-5 puntos donde la IA genera más resultado. Ese mapa es lo que separa una implementación que funciona de una que se abandona en 60 días.</p>
@@ -242,7 +300,7 @@ const PotenciaConIA = () => {
                 {p.chip && <span className="inline-block text-[11px] font-semibold px-3 py-1 rounded-full mb-2" style={{ background: `${p.chipColor}18`, color: p.chipColor }}>{p.chip}</span>}
                 <h3 className="text-[17px] font-bold mb-1.5" style={{ color: DARK }}>{p.title}</h3>
                 <p className="text-[14px] leading-relaxed" style={{ color: "#6B7280" }}>{p.desc}</p>
-                {p.tag && <span className="inline-block mt-2 text-[12px] font-medium px-3 py-1 rounded-full" style={{ background: p.tagBg, color: p.tagColor }}>{p.tag}</span>}
+                {(p as any).tag && <span className="inline-block mt-2 text-[12px] font-medium px-3 py-1 rounded-full" style={{ background: (p as any).tagBg, color: (p as any).tagColor }}>{(p as any).tag}</span>}
               </motion.div>
             ))}
           </div>

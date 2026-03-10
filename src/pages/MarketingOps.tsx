@@ -4,7 +4,6 @@ import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3 } from "l
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ServiceHero from "@/components/services/ServiceHero";
 import SectionHeading from "@/components/services/SectionHeading";
 import ServiceCard from "@/components/services/ServiceCard";
 import ForWhomSection from "@/components/services/ForWhomSection";
@@ -13,13 +12,33 @@ import DotPattern from "@/components/services/DotPattern";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-
 import GradientIcon from "@/components/services/GradientIcon";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
+import { usePageSections } from "@/hooks/usePageSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
+import type { HomeSection } from "@/hooks/useHomeSections";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const ACCENT = "#FF7A59";
 const DARK = "#1A1A2E";
+
+function mt(s?: HomeSection): Record<string, unknown> {
+  return (s?.metadata as Record<string, unknown>) ?? {};
+}
+
+function SectionShell({ section, className, defaultBg, children }: {
+  section?: HomeSection; className: string; defaultBg?: React.CSSProperties; children: React.ReactNode;
+}) {
+  const { getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  return (
+    <section className={`relative overflow-hidden ${className}`} style={{ ...(defaultBg ?? {}), ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      {children}
+    </section>
+  );
+}
 
 /* ═══ Hero Funnel ═══ */
 const funnelLevels = [
@@ -32,34 +51,14 @@ const funnelLevels = [
 const HeroFunnel = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-
   return (
-    <motion.div
-      ref={ref}
-      className="relative backdrop-blur-sm"
-      style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 20,
-        padding: "32px 28px",
-        boxShadow: "0 16px 48px rgba(0,0,0,0.2)",
-      }}
-      initial={{ opacity: 0, x: 40 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.7 }}
-    >
+    <motion.div ref={ref} className="relative backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
       <div className="space-y-3">
         {funnelLevels.map((lvl, i) => (
           <FunnelLevel key={lvl.label} lvl={lvl} i={i} inView={inView} isLast={i === 3} />
         ))}
       </div>
-      <motion.div
-        className="absolute right-4 flex items-center gap-2"
-        style={{ top: "22%" }}
-        initial={{ opacity: 0, x: 10 }}
-        animate={inView ? { opacity: 1, x: 0 } : {}}
-        transition={{ delay: 1.4, duration: 0.5 }}
-      >
+      <motion.div className="absolute right-4 flex items-center gap-2" style={{ top: "22%" }} initial={{ opacity: 0, x: 10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
         <span className="text-[11px] text-red-400/70 italic whitespace-nowrap">Sin nurturing → se pierden</span>
         <X size={14} style={{ color: "rgba(239,68,68,0.5)" }} />
       </motion.div>
@@ -70,7 +69,6 @@ const HeroFunnel = () => {
 const FunnelLevel = ({ lvl, i, inView, isLast }: { lvl: (typeof funnelLevels)[0]; i: number; inView: boolean; isLast: boolean }) => {
   const count = useAnimatedCounter(lvl.count, 1500, inView);
   const opacities = [0.35, 0.5, 0.65, 1];
-
   return (
     <motion.div className="mx-auto relative" style={{ width: lvl.width }} initial={{ opacity: 0, y: -16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.3, duration: 0.5 }}>
       <div className="relative rounded-xl px-5 py-4 flex items-center justify-between" style={{ background: `linear-gradient(135deg, rgba(190,24,105,${opacities[i]}), rgba(98,36,190,${opacities[i]}))` }}>
@@ -95,29 +93,67 @@ const opsItems = [
   { emoji: "📊", title: "Reportería integrada", desc: "Métricas conectadas con pipeline. No solo impresiones — cuánto de lo invertido terminó en revenue." },
 ];
 
+/* ─── defaults ─── */
+const DEF = {
+  hero: {
+    badge: "Operación, no agencia",
+    title: "Tu operación de marketing funcionando, no solo planificada",
+    subtitle: "Automatizaciones activas, campañas que se miden, leads que llegan a ventas en el momento correcto. El músculo que la mayoría necesita pero pocos tienen internamente.",
+    cta_text: "Cuéntanos cómo está tu marketing →",
+    cta2_text: "¿Es este el servicio correcto? ↓",
+  },
+};
+
 /* ═══ PAGE ═══ */
 const MarketingOps = () => {
+  const { getSection, loading } = usePageSections("marketing-ops");
+
+  const hero = getSection("hero");
+  const hm = mt(hero);
+
+  const h = {
+    badge: (hm.badge as string) ?? DEF.hero.badge,
+    title: hero?.title ?? DEF.hero.title,
+    subtitle: hero?.subtitle ?? DEF.hero.subtitle,
+    cta_text: hero?.cta_text ?? DEF.hero.cta_text,
+    cta2_text: (hm.cta2_text as string) ?? DEF.hero.cta2_text,
+  };
+
+  if (loading) return <div className="min-h-screen" style={{ background: DARK }} />;
+
   return (
     <div className="min-h-screen" style={{ background: "#fff" }}>
       <Navbar />
 
       {/* Hero */}
-      <ServiceHero
-        breadcrumbs={[
-          { label: "Opera tu pista", to: "/opera-tu-pista" },
-          { label: "Marketing Ops" },
-        ]}
-        badge="Operación, no agencia"
-        badgeStyle={{ background: "rgba(255,122,89,0.15)", color: ACCENT }}
-        title="Tu operación de marketing funcionando, no solo planificada"
-        subtitle="Automatizaciones activas, campañas que se miden, leads que llegan a ventas en el momento correcto. El músculo que la mayoría necesita pero pocos tienen internamente."
-        primaryCta={{ label: "Cuéntanos cómo está tu marketing →" }}
-        secondaryCta={{ label: "¿Es este el servicio correcto? ↓", onClick: () => document.getElementById("problema")?.scrollIntoView({ behavior: "smooth" }) }}
-        rightContent={<HeroFunnel />}
-        minHeight="85vh"
-      />
-
-      
+      <SectionShell section={hero} className="min-h-[85vh]" defaultBg={{ background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 100%)" }}>
+        <BackgroundOrbs variant="hero" />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-[85vh]">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <div className="flex items-center gap-2 text-xs text-white/40 mb-6">
+              <Link to="/opera-tu-pista" className="hover:text-white/60 transition-colors">Opera tu pista</Link>
+              <ChevronRight size={12} />
+              <span className="text-white/70">Marketing Ops</span>
+            </div>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,122,89,0.15)", color: (hm.badge_color as string) || ACCENT }}>
+              {h.badge}
+            </span>
+            <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>{h.title}</h1>
+            <p className="text-lg sm:text-[19px] leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <button className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
+                {h.cta_text}
+              </button>
+              <button onClick={() => document.getElementById("problema")?.scrollIntoView({ behavior: "smooth" })} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer">
+                {h.cta2_text}
+              </button>
+            </div>
+          </motion.div>
+          <motion.div className="hidden lg:block" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[460px] rounded-2xl" /> : <HeroFunnel />}
+          </motion.div>
+        </div>
+      </SectionShell>
 
       {/* S2: El Problema */}
       <ProblemSection />
@@ -161,9 +197,7 @@ const MarketingOps = () => {
                 <h4 className="font-bold text-base mb-3" style={{ color: DARK }}>{path.title}</h4>
                 <p className="text-sm leading-relaxed mb-3" style={{ color: "#6B7280" }}>{path.desc}</p>
                 {path.chip && (
-                  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>
-                    {path.chip}
-                  </span>
+                  <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>{path.chip}</span>
                 )}
               </ServiceCard>
             ))}
@@ -175,12 +209,7 @@ const MarketingOps = () => {
 
       {/* S5: Para quién es */}
       <ForWhomSection
-        yesItems={[
-          "Tienes Marketing Hub pero no lo operas con su potencial",
-          "Nadie tiene tiempo de gestionar campañas con criterio",
-          "El handoff marketing-ventas es caótico o inexistente",
-          "Quieres pauta gestionada por alguien que entiende el CRM",
-        ]}
+        yesItems={["Tienes Marketing Hub pero no lo operas con su potencial", "Nadie tiene tiempo de gestionar campañas con criterio", "El handoff marketing-ventas es caótico o inexistente", "Quieres pauta gestionada por alguien que entiende el CRM"]}
         noItems={[
           { text: "Buscas agencia creativa, contenido o branding", note: "Ese no es nuestro foco" },
           { text: "No tienes Marketing Hub", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
@@ -194,19 +223,10 @@ const MarketingOps = () => {
         <BackgroundOrbs variant="section" />
         <div className="relative z-10 mx-auto max-w-[480px] px-6">
           <div className="text-center rounded-[20px] p-10" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}>
-            <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>
-              Este servicio empieza con una conversación
-            </span>
-            <h2 className="text-lg font-bold mb-3 text-white">
-              Cuéntanos cómo está operando tu marketing hoy.
-            </h2>
-            <p className="text-sm mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
-              En 30 minutos evaluamos qué tiene más impacto en tu operación.
-            </p>
-            <button
-              className="w-full text-sm font-semibold text-white py-3.5 rounded-full transition-all hover:scale-[1.02]"
-              style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}
-            >
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>Este servicio empieza con una conversación</span>
+            <h2 className="text-lg font-bold mb-3 text-white">Cuéntanos cómo está operando tu marketing hoy.</h2>
+            <p className="text-sm mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>En 30 minutos evaluamos qué tiene más impacto en tu operación.</p>
+            <button className="w-full text-sm font-semibold text-white py-3.5 rounded-full transition-all hover:scale-[1.02]" style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
               Cuéntanos cómo está tu marketing →
             </button>
           </div>
