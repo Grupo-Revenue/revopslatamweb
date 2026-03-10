@@ -215,7 +215,7 @@ const PotenciaConIA = () => {
             </div>
           </motion.div>
           <motion.div className="hidden lg:block" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
-            {hero?.image_url ? <ResponsiveHeroImage src={hero.image_url} alt={h.title} metadata={hm} defaultMaxWidth="460px" /> : <AgentFeed />}
+            {hero?.image_url ? <ResponsiveHeroImage src={hero.image_url} alt={hero.title || ""} metadata={hm} defaultMaxWidth="460px" /> : <AgentFeed />}
           </motion.div>
         </div>
       </SectionShell>
