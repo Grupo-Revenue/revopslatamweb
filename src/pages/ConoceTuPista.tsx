@@ -250,13 +250,14 @@ const ConoceTuPista = () => {
             {h.subtitle}
           </motion.p>
           <motion.div {...fadeUp(0.3)} className="mt-10">
-            <Link
-              to={h.cta_url}
-              className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
-              style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff", borderRadius: 9999, padding: "14px 32px" }}
+            <DynamicCTA
+              styleKey={hm.cta_style_key as string}
+              onClick={() => h.cta_url && (window.location.href = h.cta_url)}
+              className="inline-flex items-center text-[15px] sm:text-base font-semibold transition-all duration-200 hover:scale-[1.03]"
+              style={{ borderRadius: 9999, padding: "14px 32px" }}
             >
               {h.cta_text}
-            </Link>
+            </DynamicCTA>
           </motion.div>
           <motion.div {...fadeUp(0.5)} className="mt-14">
             {hero?.image_url ? (
