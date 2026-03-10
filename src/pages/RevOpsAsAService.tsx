@@ -247,7 +247,7 @@ const RevOpsAsAService = () => {
               <ChevronRight size={12} />
               <span className="text-white/70">RevOps as a Service</span>
             </div>
-            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: hm.badge_bg != null ? (hm.badge_bg as string) : GRADIENT, color: (hm.badge_color as string) || "#fff" }}>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) ? (hm.badge_bg as string) : hm.badge_bg === "" ? "transparent" : GRADIENT, color: (hm.badge_color as string) || "#fff" }}>
               {h.badge}
             </span>
             <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>{h.title}</h1>
