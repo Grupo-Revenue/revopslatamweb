@@ -237,7 +237,7 @@ const ConoceTuPista = () => {
           </motion.span>
           <motion.h1
             {...fadeUp(0.1)}
-            className="font-extrabold leading-[1.08] tracking-tight"
+            className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
             style={{ color: "#ffffff", fontSize: "clamp(40px, 6vw, 64px)", ...heroStyle("title") }}
           >
             {h.title}
