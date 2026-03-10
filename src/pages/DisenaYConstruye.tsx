@@ -288,8 +288,8 @@ const DisenaYConstruye = () => {
           {/* Text */}
           <div className="lg:w-[55%]">
             <motion.div {...fadeUp(0)}>
-              <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.1em] text-white"
-                style={{ background: GRADIENT }}>
+              <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.1em]"
+                style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}>
                 {heroEyebrow}
               </span>
             </motion.div>
@@ -302,7 +302,7 @@ const DisenaYConstruye = () => {
             </motion.p>
             <motion.div {...fadeUp(0.45)} className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <button className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-shadow hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
-                style={{ background: GRADIENT }}
+                style={{ background: (hm.cta_bg as string) || GRADIENT }}
                 onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })}>
                 {heroCta}
               </button>
@@ -314,7 +314,7 @@ const DisenaYConstruye = () => {
 
           {/* Visual */}
           <div className="lg:w-[45%]">
-            <ProcessSteps steps={heroSteps} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <ProcessSteps steps={heroSteps} />}
           </div>
         </div>
       </SectionShell>
