@@ -298,7 +298,6 @@ export default function IntegracionesDesarrollo() {
       </SectionShell>
 
       {/* ── NUESTRO PRINCIPIO ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
       <SectionShell section={principio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
