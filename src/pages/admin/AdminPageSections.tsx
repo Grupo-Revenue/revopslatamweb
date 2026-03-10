@@ -885,13 +885,24 @@ export default function AdminPageSections() {
                   <div className="grid grid-cols-2 gap-3 p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
                     <div>
                       <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Color / Gradiente del Badge</Label>
-                      <Input
-                        value={(meta.badge_bg as string) ?? ""}
-                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, badge_bg: e.target.value })}
-                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
-                        placeholder="Ej: #BE1869, linear-gradient(...), transparent, o vacío para sin fondo"
-                      />
-                      <p className="text-zinc-600 text-[10px] mt-0.5">Fondo del badge. Acepta color sólido o gradiente CSS</p>
+                      <div className="flex gap-2 mt-1">
+                        <Input
+                          value={(meta.badge_bg as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, badge_bg: e.target.value })}
+                          className="bg-zinc-800 border-zinc-700 text-white text-sm flex-1"
+                          placeholder="Ej: #BE1869, linear-gradient(...)"
+                        />
+                        <Button
+                          type="button"
+                          size="sm"
+                          variant={meta.badge_bg === "" ? "default" : "outline"}
+                          className="text-[10px] h-9 px-3 whitespace-nowrap"
+                          onClick={() => updateSectionLocal(section.id, "metadata", { ...meta, badge_bg: "" })}
+                        >
+                          Sin fondo
+                        </Button>
+                      </div>
+                      <p className="text-zinc-600 text-[10px] mt-0.5">Fondo del badge. Acepta color sólido o gradiente CSS. "Sin fondo" = transparente.</p>
                     </div>
                     <div>
                       <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Color del texto del Badge</Label>
