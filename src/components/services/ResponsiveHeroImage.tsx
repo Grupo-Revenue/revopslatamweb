@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useId } from "react";
 
 interface ResponsiveHeroImageProps {
   src: string;
@@ -8,19 +8,6 @@ interface ResponsiveHeroImageProps {
   className?: string;
 }
 
-function getResponsiveMaxWidth(
-  width: number,
-  desktop: string,
-  laptop15: string,
-  tablet: string,
-  mobile: string
-): string {
-  if (width >= 1440) return desktop;
-  if (width >= 1024) return laptop15;
-  if (width >= 768) return tablet;
-  return mobile;
-}
-
 const ResponsiveHeroImage = ({
   src,
   alt,
@@ -28,31 +15,34 @@ const ResponsiveHeroImage = ({
   defaultMaxWidth = "920px",
   className = "",
 }: ResponsiveHeroImageProps) => {
+  const reactId = useId();
+  const safeId = `rhi-${reactId.replace(/:/g, "")}`;
+
   const desktop = (metadata.image_max_width as string) || defaultMaxWidth;
   const laptop15 = (metadata.image_max_width_md as string) || desktop;
   const tablet = (metadata.image_max_width_tablet as string) || laptop15;
   const mobile = (metadata.image_max_width_mobile as string) || tablet;
 
-  const [maxWidth, setMaxWidth] = useState(() =>
-    getResponsiveMaxWidth(typeof window !== "undefined" ? window.innerWidth : 1440, desktop, laptop15, tablet, mobile)
-  );
+  console.log("[ResponsiveHeroImage] breakpoints:", { mobile, tablet, laptop15, desktop, safeId });
 
-  useEffect(() => {
-    const update = () =>
-      setMaxWidth(getResponsiveMaxWidth(window.innerWidth, desktop, laptop15, tablet, mobile));
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [desktop, laptop15, tablet, mobile]);
+  const css = `
+    img[data-rhi="${safeId}"] { max-width: ${mobile} !important; }
+    @media (min-width: 768px) { img[data-rhi="${safeId}"] { max-width: ${tablet} !important; } }
+    @media (min-width: 1024px) { img[data-rhi="${safeId}"] { max-width: ${laptop15} !important; } }
+    @media (min-width: 1440px) { img[data-rhi="${safeId}"] { max-width: ${desktop} !important; } }
+  `;
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      className={`mx-auto rounded-2xl object-cover w-full ${className}`}
-      style={{ maxWidth }}
-    />
+    <>
+      <style dangerouslySetInnerHTML={{ __html: css }} />
+      <img
+        data-rhi={safeId}
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className={`mx-auto rounded-2xl object-cover w-full ${className}`}
+      />
+    </>
   );
 };
 
