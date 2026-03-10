@@ -232,7 +232,7 @@ const OperaTuPista = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="inline-block text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6"
-            style={{ background: (hm.badge_bg as string) ? (hm.badge_bg as string) : hm.badge_bg === "" ? "transparent" : GRADIENT, color: (hm.badge_color as string) || "#fff" }}
+            style={{ background: "badge_bg" in (hm) ? ((hm.badge_bg as string) || "transparent") : GRADIENT, color: (hm.badge_color as string) || "#fff" }}
           >
             {h.badge}
           </motion.span>
