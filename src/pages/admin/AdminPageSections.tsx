@@ -593,14 +593,14 @@ export default function AdminPageSections() {
                       <p className="text-zinc-600 text-[10px] mt-0.5">Gradiente CSS para el texto destacado</p>
                     </div>
                     <div>
-                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Salto de línea después de</Label>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Salto de línea antes de</Label>
                       <Input
                         value={(meta.title_line_break as string) ?? ""}
                         onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, title_line_break: e.target.value })}
                         className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
-                        placeholder="Ej: arquitectos"
+                        placeholder="Ej: necesitas conocer tu pista"
                       />
-                      <p className="text-zinc-600 text-[10px] mt-0.5">Texto tras el cual se fuerza salto de línea</p>
+                      <p className="text-zinc-600 text-[10px] mt-0.5">Texto antes del cual se fuerza un salto de línea</p>
                     </div>
                   </div>
 
