@@ -297,7 +297,14 @@ const DisenaYConstruye = () => {
             className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
             style={{ color: "#ffffff", fontSize: "clamp(40px, 6vw, 64px)", ...heroStyle("title") }}
           >
-            {heroTitle}
+            {(() => {
+              const lineBreak = hm.title_line_break as string;
+              if (lineBreak && heroTitle.includes(lineBreak)) {
+                const idx = heroTitle.indexOf(lineBreak) + lineBreak.length;
+                return heroTitle.slice(0, idx) + "\n" + heroTitle.slice(idx).trimStart();
+              }
+              return heroTitle;
+            })()}
           </motion.h1>
           <motion.p
             {...fadeUp(0.2)}

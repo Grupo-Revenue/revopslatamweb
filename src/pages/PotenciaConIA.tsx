@@ -192,8 +192,16 @@ const PotenciaConIA = () => {
             <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(99,102,241,0.15)", color: (hm.badge_color as string) || AI_BLUE }}>
               {h.badge}
             </span>
-            <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>
-              {hero?.title || <>{DEF.hero.title_text.split("aún no tienen")[0]}<span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>aún no tienen</span></>}
+            <h1 className="font-bold text-white leading-[1.08] mb-6 whitespace-pre-line" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>
+              {(() => {
+                const title = hero?.title || DEF.hero.title_text;
+                const lineBreak = hm.title_line_break as string;
+                if (lineBreak && title.includes(lineBreak)) {
+                  const idx = title.indexOf(lineBreak) + lineBreak.length;
+                  return title.slice(0, idx) + "\n" + title.slice(idx).trimStart();
+                }
+                return hero?.title || <>{DEF.hero.title_text.split("aún no tienen")[0]}<span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>aún no tienen</span></>;
+              })()}
             </h1>
             <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4">
