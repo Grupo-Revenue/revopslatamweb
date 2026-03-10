@@ -13,7 +13,7 @@ import DotPattern from "@/components/services/DotPattern";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 import GradientIcon from "@/components/services/GradientIcon";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 
