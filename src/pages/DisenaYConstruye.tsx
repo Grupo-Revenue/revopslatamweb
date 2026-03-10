@@ -326,7 +326,7 @@ const DisenaYConstruye = () => {
           </motion.div>
           <motion.div {...fadeUp(0.5)} className="mt-14">
             {hero?.image_url && (
-              <img src={hero.image_url} alt={heroTitle} loading="lazy" className="mx-auto rounded-2xl object-cover" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "920px" }} />
+              <ResponsiveHeroImage src={hero.image_url} alt={heroTitle} metadata={hm} defaultMaxWidth="920px" />
             )}
           </motion.div>
         </div>
