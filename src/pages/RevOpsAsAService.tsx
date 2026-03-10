@@ -289,7 +289,7 @@ const RevOpsAsAService = () => {
         rightContent={<SprintTimeline />}
       />
 
-      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
+      
 
       {/* S2: El problema */}
       <ProblemSection />

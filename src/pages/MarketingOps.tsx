@@ -117,7 +117,7 @@ const MarketingOps = () => {
         minHeight="85vh"
       />
 
-      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
+      
 
       {/* S2: El Problema */}
       <ProblemSection />

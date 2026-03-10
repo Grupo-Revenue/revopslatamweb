@@ -425,7 +425,7 @@ const OperaTuPista = () => {
       <WhyUsSection />
 
       {/* ── S5: CTA FINAL ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor={DARK} />
+      
       <section className="relative overflow-hidden" style={{ padding: "80px 0", background: DARK }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />
