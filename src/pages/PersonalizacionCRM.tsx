@@ -241,7 +241,7 @@ export default function PersonalizacionCRM() {
         <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
           <div>
             <motion.p {...fadeUp()} className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>{h.breadcrumb}</motion.p>
-            <motion.span {...fadeUp(0.05)} className="inline-block text-[11px] uppercase font-bold tracking-wider px-4 py-1.5 rounded-full mb-6 text-white" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
+            <motion.span {...fadeUp(0.05)} className="inline-block text-[11px] uppercase font-bold tracking-wider px-4 py-1.5 rounded-full mb-6 text-white" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5" style={{ fontSize: "clamp(40px, 5vw, 60px)", maxWidth: 580 }}>{h.title}</motion.h1>
             <motion.p {...fadeUp(0.15)} className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 480 }}>{h.subtitle}</motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
