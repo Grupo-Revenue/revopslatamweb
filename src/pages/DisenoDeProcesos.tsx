@@ -13,7 +13,7 @@ import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
 const HUBSPOT = "#FF7A59";
@@ -309,7 +309,7 @@ export default function DisenoDeProcesos() {
         </div>
       </SectionShell>
 
-      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
+      
 
       {/* ── PROBLEMA ── */}
       <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
@@ -364,7 +364,6 @@ export default function DisenoDeProcesos() {
       </SectionShell>
 
       {/* ── PROCESO ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
       <SectionShell section={proceso} className="py-24 md:py-[100px]" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
@@ -418,7 +417,7 @@ export default function DisenoDeProcesos() {
       </SectionShell>
 
       {/* ── PRECIO ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
+      
       <SectionShell section={precio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />

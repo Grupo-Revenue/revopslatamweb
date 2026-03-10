@@ -14,7 +14,7 @@ import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 import EcosystemDiagram from "@/components/services/EcosystemDiagram";
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
@@ -298,7 +298,6 @@ export default function IntegracionesDesarrollo() {
       </SectionShell>
 
       {/* ── NUESTRO PRINCIPIO ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
       <SectionShell section={principio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
@@ -361,7 +360,7 @@ export default function IntegracionesDesarrollo() {
       </SectionShell>
 
       {/* ── PRECIO ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
+      
       <SectionShell section={precio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />

@@ -12,7 +12,7 @@ import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 } as const,
@@ -223,7 +223,7 @@ const RevOpsCheckup = () => {
               <span>→</span>
               <span className="text-white/60">{breadcrumbCurrent}</span>
             </motion.nav>
-            <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: "rgba(255,255,255,0.1)", color: "#fff" }}>{badge}</motion.span>
+            <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.1)", color: (hm.badge_color as string) || "#fff" }}>{badge}</motion.span>
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold leading-[1.08] tracking-tight" style={{ color: "#ffffff", fontSize: "clamp(40px, 5.5vw, 60px)", ...heroStyle("title") }}>
               {hero?.title ?? DEF.hero.title}
             </motion.h1>
@@ -231,7 +231,7 @@ const RevOpsCheckup = () => {
               {hero?.subtitle ?? DEF.hero.subtitle}
             </motion.p>
             <motion.div {...fadeUp(0.26)} className="mt-8 flex flex-wrap items-center gap-5">
-              <Link to={hero?.cta_url ?? "#"} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]" style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px" }}>
+              <Link to={hero?.cta_url ?? "#"} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff", borderRadius: 9999, padding: "14px 32px", ...heroStyle("cta") }}>
                 {hero?.cta_text ?? DEF.hero.cta_text}
               </Link>
               <button onClick={() => scrollToSection(cta2Target)} className="text-[15px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
@@ -245,7 +245,7 @@ const RevOpsCheckup = () => {
         </div>
       </SectionShell>
 
-      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
+      
 
       {/* ─── PROBLEMA ─── */}
       <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>

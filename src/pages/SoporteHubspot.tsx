@@ -14,7 +14,7 @@ import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 import GradientIcon from "@/components/services/GradientIcon";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
@@ -182,7 +182,7 @@ const SoporteHubspot = () => {
         />
       </div>
 
-      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
+      
 
       {/* S2: Cómo funciona */}
       <HowSection />

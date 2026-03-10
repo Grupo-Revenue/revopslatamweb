@@ -14,7 +14,7 @@ import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import ChipLink from "@/components/services/ChipLink";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 
 const AI_BLUE = "#6366F1";
 const gradient = "linear-gradient(135deg,#BE1869,#6224BE)";

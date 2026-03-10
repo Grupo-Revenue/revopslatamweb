@@ -7,7 +7,7 @@ import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -397,7 +397,7 @@ const OperaTuPista = () => {
         </div>
       </section>
 
-      <WaveDivider fromColor={DARK} toColor="#ffffff" />
+      
 
       {/* ── S2: EL PROBLEMA ── */}
       <ProblemSection />
@@ -425,7 +425,7 @@ const OperaTuPista = () => {
       <WhyUsSection />
 
       {/* ── S5: CTA FINAL ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor={DARK} />
+      
       <section className="relative overflow-hidden" style={{ padding: "80px 0", background: DARK }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />

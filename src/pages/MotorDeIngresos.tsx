@@ -13,7 +13,7 @@ import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 } as const,
@@ -294,7 +294,7 @@ const MotorDeIngresos = () => {
         </div>
       </SectionShell>
 
-      <WaveDivider fromColor="#1A1A2E" toColor="#ffffff" />
+      
 
       {/* ─── PROBLEMA ─── */}
       <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
