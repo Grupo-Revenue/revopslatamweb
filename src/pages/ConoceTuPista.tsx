@@ -13,6 +13,7 @@ import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
+import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
 
 
 /* ─── animation helper ─── */
@@ -267,7 +268,7 @@ const ConoceTuPista = () => {
           </motion.div>
           {hero?.image_url && (
             <motion.div {...fadeUp(0.5)} className="mt-14">
-              <img src={hero.image_url} alt={h.title} loading="lazy" className="mx-auto rounded-2xl object-cover" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "920px" }} />
+              <ResponsiveHeroImage src={hero.image_url} alt={h.title} metadata={hm} defaultMaxWidth="920px" />
             </motion.div>
           )}
         </div>
