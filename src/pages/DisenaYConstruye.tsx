@@ -293,7 +293,7 @@ const DisenaYConstruye = () => {
                 {heroEyebrow}
               </span>
             </motion.div>
-            <motion.h1 {...fadeUp(0.15)} className="mt-7 font-extrabold leading-[1.08] tracking-[-0.02em] text-white max-w-[580px]"
+            <motion.h1 {...fadeUp(0.15)} className="mt-7 font-extrabold leading-[1.08] tracking-[-0.02em] text-white max-w-[720px]"
               style={{ fontSize: "clamp(44px, 5vw, 68px)", ...heroStyle("title") }}>
               {heroTitle}
             </motion.h1>

@@ -361,12 +361,10 @@ const OperaTuPista = () => {
             </span>
 
             <h1
-              className="font-bold text-white leading-[1.08] mb-6"
+              className="font-bold text-white leading-[1.08] mb-6 max-w-[720px]"
               style={{ fontSize: "clamp(40px, 5vw, 68px)" }}
             >
-              Un equipo completo que opera tu pista
-              <br className="hidden md:block" />
-              {" "}mientras tú corres la carrera
+              Un equipo completo que opera tu pista mientras tú corres la carrera
             </h1>
 
             <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>
