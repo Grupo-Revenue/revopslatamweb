@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { ChevronRight, Check, X, Brain, Cog, HardHat, Megaphone, BarChart3 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ServiceHero from "@/components/services/ServiceHero";
 import SectionHeading from "@/components/services/SectionHeading";
 import ServiceCard from "@/components/services/ServiceCard";
 import ForWhomSection from "@/components/services/ForWhomSection";
@@ -13,8 +12,11 @@ import DotPattern from "@/components/services/DotPattern";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-
 import GradientIcon from "@/components/services/GradientIcon";
+import { usePageSections } from "@/hooks/usePageSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
+import type { HomeSection } from "@/hooks/useHomeSections";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const DARK = "#1A1A2E";
@@ -22,6 +24,23 @@ const DARK = "#1A1A2E";
 const scrollTo = (id: string) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 };
+
+function mt(s?: HomeSection): Record<string, unknown> {
+  return (s?.metadata as Record<string, unknown>) ?? {};
+}
+
+function SectionShell({ section, className, defaultBg, children }: {
+  section?: HomeSection; className: string; defaultBg?: React.CSSProperties; children: React.ReactNode;
+}) {
+  const { getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  return (
+    <section className={`relative overflow-hidden ${className}`} style={{ ...(defaultBg ?? {}), ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      {children}
+    </section>
+  );
+}
 
 /* ═══ Sprint Timeline ═══ */
 const sprintItems = [
@@ -36,52 +55,17 @@ const SprintTimeline = () => {
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <motion.div
-      ref={ref}
-      className="relative backdrop-blur-sm"
-      style={{
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: 20,
-        padding: 32,
-        boxShadow: "0 16px 48px rgba(0,0,0,0.2)",
-      }}
-      initial={{ opacity: 0, x: 40 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.7 }}
-    >
+    <motion.div ref={ref} className="relative backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: 32, boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
       <div className="flex items-center justify-between mb-7 flex-wrap gap-3">
         <span className="text-white/80 text-[15px] font-semibold">Sprint actual</span>
-        <span className="text-[11px] font-bold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.15)", color: "#BE1869" }}>
-          Semana 2 de 2
-        </span>
+        <span className="text-[11px] font-bold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.15)", color: "#BE1869" }}>Semana 2 de 2</span>
       </div>
       <div className="relative pl-7">
-        <motion.div
-          className="absolute left-[11px] top-1 bottom-1 w-[3px] rounded-full"
-          style={{ background: GRADIENT, transformOrigin: "top", boxShadow: "0 0 8px rgba(190,24,105,0.3)" }}
-          initial={{ scaleY: 0 }}
-          animate={inView ? { scaleY: 1 } : {}}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-        />
+        <motion.div className="absolute left-[11px] top-1 bottom-1 w-[3px] rounded-full" style={{ background: GRADIENT, transformOrigin: "top", boxShadow: "0 0 8px rgba(190,24,105,0.3)" }} initial={{ scaleY: 0 }} animate={inView ? { scaleY: 1 } : {}} transition={{ duration: 1.5, ease: "easeOut" }} />
         <div className="space-y-6">
           {sprintItems.map((item, i) => (
-            <motion.div
-              key={i}
-              className="relative flex items-start gap-4"
-              initial={{ opacity: 0, y: 12 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3 + i * 0.2, duration: 0.5 }}
-            >
-              <div
-                className="absolute -left-7 top-0.5 w-[22px] h-[22px] rounded-full flex items-center justify-center"
-                style={{
-                  background: item.done ? GRADIENT : item.partial ? "linear-gradient(135deg, #BE1869 50%, rgba(255,255,255,0.1) 50%)" : "transparent",
-                  border: item.pending ? "2px solid rgba(190,24,105,0.5)" : "none",
-                  animation: item.pending ? "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" : undefined,
-                  boxShadow: item.done ? "0 0 12px rgba(190,24,105,0.3)" : undefined,
-                }}
-              >
+            <motion.div key={i} className="relative flex items-start gap-4" initial={{ opacity: 0, y: 12 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.2, duration: 0.5 }}>
+              <div className="absolute -left-7 top-0.5 w-[22px] h-[22px] rounded-full flex items-center justify-center" style={{ background: item.done ? GRADIENT : (item as any).partial ? "linear-gradient(135deg, #BE1869 50%, rgba(255,255,255,0.1) 50%)" : "transparent", border: (item as any).pending ? "2px solid rgba(190,24,105,0.5)" : "none", animation: (item as any).pending ? "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" : undefined, boxShadow: item.done ? "0 0 12px rgba(190,24,105,0.3)" : undefined }}>
                 {item.done && <Check size={12} color="#fff" strokeWidth={3} />}
               </div>
               <div>
@@ -107,27 +91,9 @@ const SprintTimeline = () => {
 
 /* ═══ Plans ═══ */
 const plans = [
-  {
-    key: "claridad", label: "CLARIDAD", labelColor: "#6B7280", price: "50",
-    promesa: "Sabrás exactamente qué está pasando en tu operación y tendrás un camino claro de qué mejorar cada mes.",
-    para: "HubSpot funcionando, equipo pequeño, falta dirección estratégica.",
-    features: ["Consultor RevOps asignado", "Especialista HubSpot técnico", "Sprint quincenal", "Soporte por ticket", "Reporte mensual de KPIs"],
-    ctaLabel: "Empezar con Claridad →", ctaSolid: false, featured: false,
-  },
-  {
-    key: "momentum", label: "MOMENTUM", labelGradient: true, price: "90",
-    promesa: "Tu operación de ventas y marketing funcionando alineada, mejorando cada mes, sin que tengas que empujarla.",
-    para: "Equipos de ventas y marketing que necesitan alineación real y ejecución constante.",
-    features: ["Consultor RevOps Senior", "Mayor capacidad de ejecución", "Arquitecto de soluciones disponible", "Análisis de pipeline mensual", "Playbooks comerciales activos", "Marketing Ops incluido"],
-    ctaLabel: "Empezar con Momentum →", ctaSolid: true, featured: true,
-  },
-  {
-    key: "escala", label: "ESCALA", labelColor: DARK, price: "160",
-    promesa: "Tu función completa de Revenue Operations — sin contratar, sin esperar, sin riesgo.",
-    para: "Empresas en crecimiento con múltiples equipos que quieren delegar su operación completa.",
-    features: ["Marketing Ops Specialist asignado", "Gobierno ventas + marketing + CS", "Reunión estratégica mensual con liderazgo", "Reporting ejecutivo para directorio", "IA incluida en consultoría estratégica"],
-    ctaLabel: "Empezar con Escala →", ctaSolid: false, featured: false,
-  },
+  { key: "claridad", label: "CLARIDAD", labelColor: "#6B7280", price: "50", promesa: "Sabrás exactamente qué está pasando en tu operación y tendrás un camino claro de qué mejorar cada mes.", para: "HubSpot funcionando, equipo pequeño, falta dirección estratégica.", features: ["Consultor RevOps asignado", "Especialista HubSpot técnico", "Sprint quincenal", "Soporte por ticket", "Reporte mensual de KPIs"], ctaLabel: "Empezar con Claridad →", ctaSolid: false, featured: false },
+  { key: "momentum", label: "MOMENTUM", labelGradient: true, price: "90", promesa: "Tu operación de ventas y marketing funcionando alineada, mejorando cada mes, sin que tengas que empujarla.", para: "Equipos de ventas y marketing que necesitan alineación real y ejecución constante.", features: ["Consultor RevOps Senior", "Mayor capacidad de ejecución", "Arquitecto de soluciones disponible", "Análisis de pipeline mensual", "Playbooks comerciales activos", "Marketing Ops incluido"], ctaLabel: "Empezar con Momentum →", ctaSolid: true, featured: true },
+  { key: "escala", label: "ESCALA", labelColor: DARK, price: "160", promesa: "Tu función completa de Revenue Operations — sin contratar, sin esperar, sin riesgo.", para: "Empresas en crecimiento con múltiples equipos que quieren delegar su operación completa.", features: ["Marketing Ops Specialist asignado", "Gobierno ventas + marketing + CS", "Reunión estratégica mensual con liderazgo", "Reporting ejecutivo para directorio", "IA incluida en consultoría estratégica"], ctaLabel: "Empezar con Escala →", ctaSolid: false, featured: false },
 ];
 
 const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
@@ -135,30 +101,9 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <motion.div
-      ref={ref}
-      className="relative flex flex-col bg-white rounded-[20px] border"
-      style={{
-        padding: "40px 36px",
-        borderColor: plan.featured ? "transparent" : "#E5E7EB",
-        borderTopWidth: plan.featured ? 3 : 1,
-        borderTopColor: plan.featured ? "#BE1869" : "#E5E7EB",
-        borderImage: plan.featured ? `${GRADIENT} 1` : undefined,
-        boxShadow: plan.featured ? "0 20px 60px rgba(190,24,105,0.15)" : "0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04)",
-        order: plan.featured ? -1 : undefined,
-      }}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: i * 0.12, duration: 0.5 }}
-      whileHover={{
-        y: plan.featured ? -6 : -4,
-        boxShadow: plan.featured ? "0 24px 70px rgba(190,24,105,0.2)" : "0 12px 40px rgba(0,0,0,0.1)",
-      }}
-    >
+    <motion.div ref={ref} className="relative flex flex-col bg-white rounded-[20px] border" style={{ padding: "40px 36px", borderColor: plan.featured ? "transparent" : "#E5E7EB", borderTopWidth: plan.featured ? 3 : 1, borderTopColor: plan.featured ? "#BE1869" : "#E5E7EB", borderImage: plan.featured ? `${GRADIENT} 1` : undefined, boxShadow: plan.featured ? "0 20px 60px rgba(190,24,105,0.15)" : "0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04)", order: plan.featured ? -1 : undefined }} initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.12, duration: 0.5 }} whileHover={{ y: plan.featured ? -6 : -4, boxShadow: plan.featured ? "0 24px 70px rgba(190,24,105,0.2)" : "0 12px 40px rgba(0,0,0,0.1)" }}>
       {plan.featured && (
-        <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] font-bold uppercase tracking-wide text-white px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: GRADIENT }}>
-          ⭐ Más contratado
-        </span>
+        <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] font-bold uppercase tracking-wide text-white px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: GRADIENT }}>⭐ Más contratado</span>
       )}
       {"labelGradient" in plan && plan.labelGradient ? (
         <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4 bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{plan.label}</span>
@@ -180,21 +125,12 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
       <ul className="space-y-3 mb-8 flex-1">
         {plan.features.map((f) => (
           <li key={f} className="flex items-start gap-2.5 text-[15px]" style={{ color: DARK }}>
-            <span className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: GRADIENT }}>
-              <Check size={12} color="#fff" strokeWidth={3} />
-            </span>
+            <span className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: GRADIENT }}><Check size={12} color="#fff" strokeWidth={3} /></span>
             {f}
           </li>
         ))}
       </ul>
-      <button
-        className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
-        style={
-          plan.ctaSolid
-            ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }
-            : { background: "transparent", border: "2px solid transparent", backgroundClip: "padding-box", backgroundImage: `linear-gradient(#fff, #fff), ${GRADIENT}`, backgroundOrigin: "border-box", WebkitBackgroundClip: "padding-box, border-box", color: DARK }
-        }
-      >
+      <button className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]" style={plan.ctaSolid ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" } : { background: "transparent", border: "2px solid transparent", backgroundClip: "padding-box", backgroundImage: `linear-gradient(#fff, #fff), ${GRADIENT}`, backgroundOrigin: "border-box", WebkitBackgroundClip: "padding-box, border-box", color: DARK }}>
         {plan.ctaLabel}
       </button>
     </motion.div>
@@ -269,27 +205,67 @@ const ComparisonTable = () => {
   );
 };
 
+/* ─── defaults ─── */
+const DEF = {
+  hero: {
+    badge: "Tu RevOps Manager externo",
+    title: "Tu Revenue Operations, operando desde el primer mes",
+    subtitle: "Sin contratar. Sin esperar. Sin curva de aprendizaje. Un consultor asignado y un equipo especialista operando tu motor de ingresos sprint a sprint.",
+    cta_text: "Ver los planes →",
+    cta2_text: "¿Cómo funciona en la práctica? ↓",
+  },
+};
+
 /* ═══ PAGE ═══ */
 const RevOpsAsAService = () => {
+  const { getSection, loading } = usePageSections("revops-as-a-service");
+
+  const hero = getSection("hero");
+  const hm = mt(hero);
+
+  const h = {
+    badge: (hm.badge as string) ?? DEF.hero.badge,
+    title: hero?.title ?? DEF.hero.title,
+    subtitle: hero?.subtitle ?? DEF.hero.subtitle,
+    cta_text: hero?.cta_text ?? DEF.hero.cta_text,
+    cta2_text: (hm.cta2_text as string) ?? DEF.hero.cta2_text,
+  };
+
+  if (loading) return <div className="min-h-screen" style={{ background: DARK }} />;
+
   return (
     <div className="min-h-screen" style={{ background: "#fff" }}>
       <Navbar />
 
       {/* Hero */}
-      <ServiceHero
-        breadcrumbs={[
-          { label: "Opera tu pista", to: "/opera-tu-pista" },
-          { label: "RevOps as a Service" },
-        ]}
-        badge="Tu RevOps Manager externo"
-        title="Tu Revenue Operations, operando desde el primer mes"
-        subtitle="Sin contratar. Sin esperar. Sin curva de aprendizaje. Un consultor asignado y un equipo especialista operando tu motor de ingresos sprint a sprint."
-        primaryCta={{ label: "Ver los planes →", onClick: () => scrollTo("planes") }}
-        secondaryCta={{ label: "¿Cómo funciona en la práctica? ↓", onClick: () => scrollTo("tu-mes") }}
-        rightContent={<SprintTimeline />}
-      />
-
-      
+      <SectionShell section={hero} className="min-h-[90vh]" defaultBg={{ background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 100%)" }}>
+        <BackgroundOrbs variant="hero" />
+        <div className="relative z-10 mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-[90vh]">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <div className="flex items-center gap-2 text-xs text-white/40 mb-6">
+              <Link to="/opera-tu-pista" className="hover:text-white/60 transition-colors">Opera tu pista</Link>
+              <ChevronRight size={12} />
+              <span className="text-white/70">RevOps as a Service</span>
+            </div>
+            <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}>
+              {h.badge}
+            </span>
+            <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>{h.title}</h1>
+            <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
+            <div className="flex flex-wrap items-center gap-4">
+              <button onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
+                {h.cta_text}
+              </button>
+              <button onClick={() => scrollTo("tu-mes")} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer">
+                {h.cta2_text}
+              </button>
+            </div>
+          </motion.div>
+          <motion.div className="hidden lg:block" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[460px] rounded-2xl" /> : <SprintTimeline />}
+          </motion.div>
+        </div>
+      </SectionShell>
 
       {/* S2: El problema */}
       <ProblemSection />
@@ -319,10 +295,7 @@ const RevOpsAsAService = () => {
       {/* S4: Así se ve tu mes */}
       <section id="tu-mes" style={{ padding: "120px 0" }}>
         <div className="mx-auto max-w-[1100px] px-6">
-          <SectionHeading
-            title="Así se ve tu mes con RevOps LATAM"
-            subtitle="Sin sorpresas. Sabes qué esperar antes de empezar."
-          />
+          <SectionHeading title="Así se ve tu mes con RevOps LATAM" subtitle="Sin sorpresas. Sabes qué esperar antes de empezar." />
           <MonthlyFlow />
         </div>
       </section>
@@ -359,12 +332,7 @@ const RevOpsAsAService = () => {
       {/* S6: Para quién es */}
       <ForWhomSection
         background="#fff"
-        yesItems={[
-          "Tienes HubSpot pero nadie lo opera estratégicamente",
-          "Tu equipo apaga incendios en lugar de mejorar procesos",
-          "Quieres decisiones respaldadas por datos, no intuición",
-          "Estás creciendo y no quieres construir equipo interno",
-        ]}
+        yesItems={["Tienes HubSpot pero nadie lo opera estratégicamente", "Tu equipo apaga incendios en lugar de mejorar procesos", "Quieres decisiones respaldadas por datos, no intuición", "Estás creciendo y no quieres construir equipo interno"]}
         noItems={[
           { text: "Aún no tienes HubSpot", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
           { text: "No sabes dónde está el problema", chip: "Conoce tu pista →", chipTo: "/conoce-tu-pista" },
@@ -392,20 +360,10 @@ const RevOpsAsAService = () => {
       <section className="relative overflow-hidden" style={{ padding: "100px 0", background: "#fff" }}>
         <GradientMesh variant="center" />
         <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center">
-          <h2 className="font-bold mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)", color: DARK }}>
-            El primer sprint empieza cuando tú quieras
-          </h2>
+          <h2 className="font-bold mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)", color: DARK }}>El primer sprint empieza cuando tú quieras</h2>
           <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <button
-              onClick={() => scrollTo("planes")}
-              className="text-[15px] font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all"
-              style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}
-            >
-              Ver los planes →
-            </button>
-            <button className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>
-              Conversemos primero →
-            </button>
+            <button onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all" style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>Ver los planes →</button>
+            <button className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>Conversemos primero →</button>
           </div>
         </div>
       </section>
@@ -420,16 +378,8 @@ const ProblemSection = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
-  const left = [
-    "Las reuniones de pipeline son las mismas de siempre",
-    "Los procesos diseñados en la implementación se degradaron",
-    "Marketing y ventas siguen jalando para lados distintos",
-  ];
-  const right = [
-    "Nadie tiene tiempo de mejorar procesos",
-    "Las decisiones se toman con intuición, no con datos",
-    "HubSpot no evoluciona con el negocio",
-  ];
+  const left = ["Las reuniones de pipeline son las mismas de siempre", "Los procesos diseñados en la implementación se degradaron", "Marketing y ventas siguen jalando para lados distintos"];
+  const right = ["Nadie tiene tiempo de mejorar procesos", "Las decisiones se toman con intuición, no con datos", "HubSpot no evoluciona con el negocio"];
 
   return (
     <section ref={ref} style={{ padding: "120px 0" }}>

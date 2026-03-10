@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { Check, ChevronRight, Tag, User, CheckCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ServiceHero from "@/components/services/ServiceHero";
 import SectionHeading from "@/components/services/SectionHeading";
 import ServiceCard from "@/components/services/ServiceCard";
 import ForWhomSection from "@/components/services/ForWhomSection";
@@ -14,8 +13,11 @@ import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-
 import GradientIcon from "@/components/services/GradientIcon";
+import { usePageSections } from "@/hooks/usePageSections";
+import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
+import type { HomeSection } from "@/hooks/useHomeSections";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const ACCENT = "#FF7A59";
@@ -23,30 +25,28 @@ const DARK = "#1A1A2E";
 
 const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
+function mt(s?: HomeSection): Record<string, unknown> {
+  return (s?.metadata as Record<string, unknown>) ?? {};
+}
+
+function SectionShell({ section, className, defaultBg, children }: {
+  section?: HomeSection; className: string; defaultBg?: React.CSSProperties; children: React.ReactNode;
+}) {
+  const { getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  return (
+    <section className={`relative overflow-hidden ${className}`} style={{ ...(defaultBg ?? {}), ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      {children}
+    </section>
+  );
+}
+
 /* ═══ Plans ═══ */
 const plans = [
-  {
-    key: "base", label: "SOPORTE BASE", labelColor: "#6B7280", price: "15", priceDisplay: true,
-    hours: "10 horas mensuales",
-    features: ["10 horas mensuales de soporte", "Especialista HubSpot asignado", "SLA: respuesta en 24 horas hábiles", "Hora extra: 1,5 UF + IVA"],
-    note: "Horas no consumidas no se acumulan",
-    cta: "Contratar Soporte Base →", ctaSolid: false, featured: false, savingChip: null,
-  },
-  {
-    key: "activo", label: "SOPORTE ACTIVO", labelGradient: true, price: "26", priceDisplay: true,
-    hours: "20 horas mensuales",
-    features: ["20 horas mensuales de soporte", "Especialista HubSpot asignado", "SLA: respuesta en 12 horas hábiles", "Hora extra: 1,3 UF + IVA"],
-    note: "Horas no consumidas no se acumulan",
-    cta: "Contratar Soporte Activo →", ctaSolid: true, featured: true, savingChip: "Mejor tarifa por hora",
-  },
-  {
-    key: "medida", label: "SOPORTE A MEDIDA", labelColor: DARK, price: null, priceDisplay: false,
-    priceText: "Cotización personalizada",
-    hours: "Para portales con mayor volumen o necesidades especiales",
-    features: ["Horas mensuales a definir", "SLA personalizado", "Puede combinarse con otros servicios", "Tarifas por volumen disponibles"],
-    note: null,
-    cta: "Solicitar cotización →", ctaSolid: false, featured: false, savingChip: null,
-  },
+  { key: "base", label: "SOPORTE BASE", labelColor: "#6B7280", price: "15", priceDisplay: true, hours: "10 horas mensuales", features: ["10 horas mensuales de soporte", "Especialista HubSpot asignado", "SLA: respuesta en 24 horas hábiles", "Hora extra: 1,5 UF + IVA"], note: "Horas no consumidas no se acumulan", cta: "Contratar Soporte Base →", ctaSolid: false, featured: false, savingChip: null },
+  { key: "activo", label: "SOPORTE ACTIVO", labelGradient: true, price: "26", priceDisplay: true, hours: "20 horas mensuales", features: ["20 horas mensuales de soporte", "Especialista HubSpot asignado", "SLA: respuesta en 12 horas hábiles", "Hora extra: 1,3 UF + IVA"], note: "Horas no consumidas no se acumulan", cta: "Contratar Soporte Activo →", ctaSolid: true, featured: true, savingChip: "Mejor tarifa por hora" },
+  { key: "medida", label: "SOPORTE A MEDIDA", labelColor: DARK, price: null, priceDisplay: false, priceText: "Cotización personalizada", hours: "Para portales con mayor volumen o necesidades especiales", features: ["Horas mensuales a definir", "SLA personalizado", "Puede combinarse con otros servicios", "Tarifas por volumen disponibles"], note: null, cta: "Solicitar cotización →", ctaSolid: false, featured: false, savingChip: null },
 ];
 
 const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
@@ -54,30 +54,9 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <motion.div
-      ref={ref}
-      className="relative flex flex-col bg-white rounded-[20px] border"
-      style={{
-        padding: "40px 36px",
-        borderColor: plan.featured ? "transparent" : "#E5E7EB",
-        borderTopWidth: plan.featured ? 3 : 1,
-        borderTopColor: plan.featured ? "#BE1869" : "#E5E7EB",
-        borderImage: plan.featured ? `${GRADIENT} 1` : undefined,
-        boxShadow: plan.featured ? "0 20px 60px rgba(190,24,105,0.12)" : "0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04)",
-        order: plan.featured ? -1 : undefined,
-      }}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: i * 0.12, duration: 0.5 }}
-      whileHover={{
-        y: plan.featured ? -6 : -4,
-        boxShadow: plan.featured ? "0 24px 70px rgba(190,24,105,0.18)" : "0 12px 40px rgba(0,0,0,0.1)",
-      }}
-    >
+    <motion.div ref={ref} className="relative flex flex-col bg-white rounded-[20px] border" style={{ padding: "40px 36px", borderColor: plan.featured ? "transparent" : "#E5E7EB", borderTopWidth: plan.featured ? 3 : 1, borderTopColor: plan.featured ? "#BE1869" : "#E5E7EB", borderImage: plan.featured ? `${GRADIENT} 1` : undefined, boxShadow: plan.featured ? "0 20px 60px rgba(190,24,105,0.12)" : "0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04)", order: plan.featured ? -1 : undefined }} initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: i * 0.12, duration: 0.5 }} whileHover={{ y: plan.featured ? -6 : -4, boxShadow: plan.featured ? "0 24px 70px rgba(190,24,105,0.18)" : "0 12px 40px rgba(0,0,0,0.1)" }}>
       {plan.featured && (
-        <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] font-bold uppercase tracking-wide text-white px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: GRADIENT }}>
-          Más popular
-        </span>
+        <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[11px] font-bold uppercase tracking-wide text-white px-4 py-1.5 rounded-full whitespace-nowrap" style={{ background: GRADIENT }}>Más popular</span>
       )}
       {"labelGradient" in plan && plan.labelGradient ? (
         <span className="text-[13px] font-bold uppercase tracking-[0.14em] mb-4 bg-clip-text text-transparent" style={{ backgroundImage: GRADIENT }}>{plan.label}</span>
@@ -113,20 +92,11 @@ const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {
       </ul>
       {plan.note && <p className="text-[13px] italic mb-5" style={{ color: "#6B7280" }}>{plan.note}</p>}
       <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
-      <button
-        className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]"
-        style={
-          plan.ctaSolid
-            ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }
-            : { background: "transparent", border: "2px solid transparent", backgroundClip: "padding-box", backgroundImage: `linear-gradient(#fff, #fff), ${GRADIENT}`, backgroundOrigin: "border-box", WebkitBackgroundClip: "padding-box, border-box", color: DARK }
-        }
-      >
+      <button className="w-full text-[15px] font-semibold py-3.5 rounded-xl transition-all hover:scale-[1.02]" style={plan.ctaSolid ? { background: GRADIENT, color: "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" } : { background: "transparent", border: "2px solid transparent", backgroundClip: "padding-box", backgroundImage: `linear-gradient(#fff, #fff), ${GRADIENT}`, backgroundOrigin: "border-box", WebkitBackgroundClip: "padding-box, border-box", color: DARK }}>
         {plan.cta}
       </button>
       {plan.savingChip && (
-        <span className="mt-4 mx-auto inline-block text-[13px] font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>
-          {plan.savingChip}
-        </span>
+        <span className="mt-4 mx-auto inline-block text-[13px] font-semibold px-3 py-1 rounded-full" style={{ background: "rgba(190,24,105,0.08)", color: "#BE1869" }}>{plan.savingChip}</span>
       )}
     </motion.div>
   );
@@ -139,6 +109,16 @@ const coverageTags = [
   "Integraciones nativas", "Listas y segmentación", "Formularios y páginas", "Ajustes técnicos en el portal",
 ];
 
+/* ─── defaults ─── */
+const DEF = {
+  hero: {
+    badge: "Contratación online disponible",
+    title: "Tu HubSpot siempre funcionando",
+    subtitle: "Un especialista que conoce tu portal, disponible cuando lo necesitas. Sin reuniones. Sin explicar desde cero cada vez.",
+    cta_text: "Ver planes y contratar →",
+  },
+};
+
 /* ═══ PAGE ═══ */
 const SoporteHubspot = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -147,42 +127,64 @@ const SoporteHubspot = () => {
   const stat24 = useAnimatedCounter(24, 1200, heroInView, "h");
   const stat12 = useAnimatedCounter(12, 1200, heroInView, "h");
 
+  const { getSection, loading } = usePageSections("soporte-hubspot");
+
+  const hero = getSection("hero");
+  const hm = mt(hero);
+
+  const h = {
+    badge: (hm.badge as string) ?? DEF.hero.badge,
+    title: hero?.title ?? DEF.hero.title,
+    subtitle: hero?.subtitle ?? DEF.hero.subtitle,
+    cta_text: hero?.cta_text ?? DEF.hero.cta_text,
+  };
+
+  if (loading) return <div className="min-h-screen" style={{ background: DARK }} />;
+
   return (
     <div className="min-h-screen" style={{ background: "#fff" }}>
       <Navbar />
 
       {/* Hero */}
       <div ref={heroRef}>
-        <ServiceHero
-          centered
-          breadcrumbs={[
-            { label: "Opera tu pista", to: "/opera-tu-pista" },
-            { label: "Soporte HubSpot" },
-          ]}
-          badge="Contratación online disponible"
-          badgeStyle={{ background: "rgba(74,222,128,0.15)", color: "#16A34A" }}
-          title="Tu HubSpot siempre funcionando"
-          subtitle="Un especialista que conoce tu portal, disponible cuando lo necesitas. Sin reuniones. Sin explicar desde cero cada vez."
-          primaryCta={{ label: "Ver planes y contratar →", onClick: () => scrollTo("planes") }}
-          minHeight="80vh"
-          stats={
-            <div className="flex items-center justify-center gap-10 md:gap-16 flex-wrap">
-              {[
-                { value: stat24, label: "respuesta máxima plan base" },
-                { value: stat12, label: "respuesta plan activo" },
-                { value: "0", label: "reuniones para empezar" },
-              ].map((s) => (
-                <div key={s.label} className="text-center">
-                  <span className="text-[32px] font-bold bg-clip-text text-transparent block" style={{ backgroundImage: GRADIENT }}>{s.value}</span>
-                  <span className="text-[13px] block mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
+        <SectionShell section={hero} className="min-h-[80vh] flex flex-col items-center justify-center" defaultBg={{ background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 100%)" }}>
+          <BackgroundOrbs variant="hero" />
+          <div className="relative z-10 mx-auto max-w-[1200px] px-6 pt-36 pb-24 flex flex-col items-center text-center justify-center min-h-[80vh]">
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-[680px]">
+              <div className="flex items-center gap-2 text-xs text-white/40 mb-6 justify-center">
+                <Link to="/opera-tu-pista" className="hover:text-white/60 transition-colors">Opera tu pista</Link>
+                <ChevronRight size={12} />
+                <span className="text-white/70">Soporte HubSpot</span>
+              </div>
+              <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(74,222,128,0.15)", color: (hm.badge_color as string) || "#16A34A" }}>
+                {h.badge}
+              </span>
+              <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>{h.title}</h1>
+              <p className="text-lg sm:text-[19px] leading-relaxed mb-10 mx-auto" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
+              <div className="flex flex-wrap items-center gap-4 justify-center">
+                <button onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
+                  {h.cta_text}
+                </button>
+              </div>
+              {/* Stats */}
+              <div className="mt-12">
+                <div className="flex items-center justify-center gap-10 md:gap-16 flex-wrap">
+                  {[
+                    { value: stat24, label: "respuesta máxima plan base" },
+                    { value: stat12, label: "respuesta plan activo" },
+                    { value: "0", label: "reuniones para empezar" },
+                  ].map((s) => (
+                    <div key={s.label} className="text-center">
+                      <span className="text-[32px] font-bold bg-clip-text text-transparent block" style={{ backgroundImage: GRADIENT }}>{s.value}</span>
+                      <span className="text-[13px] block mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{s.label}</span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          }
-        />
+              </div>
+            </motion.div>
+          </div>
+        </SectionShell>
       </div>
-
-      
 
       {/* S2: Cómo funciona */}
       <HowSection />
@@ -195,10 +197,7 @@ const SoporteHubspot = () => {
         <GradientMesh variant="muted" />
         <NoiseOverlay />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
-          <SectionHeading
-            title="Elige tu plan y contrata ahora"
-            subtitle="Sin reuniones de venta. Sin propuestas. Elige, contrata y asignamos tu especialista en 24 horas hábiles."
-          />
+          <SectionHeading title="Elige tu plan y contrata ahora" subtitle="Sin reuniones de venta. Sin propuestas. Elige, contrata y asignamos tu especialista en 24 horas hábiles." />
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {plans.map((p, i) => (
               <PlanCard key={p.key} plan={p} i={i} />
@@ -219,12 +218,7 @@ const SoporteHubspot = () => {
 
       {/* S5: Para quién es */}
       <ForWhomSection
-        yesItems={[
-          "HubSpot implementado y funcionando bien",
-          "No necesitas consultoría — solo mantención puntual",
-          "Tu equipo usa HubSpot activamente",
-          "Terminaste una implementación y quieres mantener el portal en buenas manos",
-        ]}
+        yesItems={["HubSpot implementado y funcionando bien", "No necesitas consultoría — solo mantención puntual", "Tu equipo usa HubSpot activamente", "Terminaste una implementación y quieres mantener el portal en buenas manos"]}
         noItems={[
           { text: "Necesitas mejorar estratégicamente tu operación", chip: "RevOps as a Service →", chipTo: "/revops-as-a-service" },
           { text: "Tu portal tiene problemas estructurales", chip: "Conoce tu pista →", chipTo: "/conoce-tu-pista" },
@@ -237,19 +231,9 @@ const SoporteHubspot = () => {
       <section className="relative overflow-hidden" style={{ background: DARK, padding: "100px 0" }}>
         <BackgroundOrbs variant="section" />
         <div className="relative z-10 mx-auto max-w-[560px] px-6 text-center">
-          <h2 className="text-white font-bold mb-4" style={{ fontSize: "clamp(24px, 3.5vw, 32px)" }}>
-            Contrátalo ahora. Operando en 24 horas.
-          </h2>
-          <p className="text-base leading-relaxed mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>
-            Sin reuniones de venta. Sin propuestas. Elige tu plan, y asignamos tu especialista en 24 horas hábiles.
-          </p>
-          <button
-            onClick={() => scrollTo("planes")}
-            className="text-base font-semibold text-white px-9 py-4 rounded-full transition-all hover:scale-[1.03]"
-            style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}
-          >
-            Ver planes →
-          </button>
+          <h2 className="text-white font-bold mb-4" style={{ fontSize: "clamp(24px, 3.5vw, 32px)" }}>Contrátalo ahora. Operando en 24 horas.</h2>
+          <p className="text-base leading-relaxed mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>Sin reuniones de venta. Sin propuestas. Elige tu plan, y asignamos tu especialista en 24 horas hábiles.</p>
+          <button onClick={() => scrollTo("planes")} className="text-base font-semibold text-white px-9 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>Ver planes →</button>
         </div>
       </section>
 
@@ -313,15 +297,7 @@ const CoverageSection = () => {
         <SectionHeading title="Lo que cubre el soporte" />
         <motion.div className="flex flex-wrap justify-center gap-3" initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ duration: 0.5 }}>
           {coverageTags.map((tag, i) => (
-            <motion.span
-              key={tag}
-              className="text-[15px] px-5 py-2.5 rounded-full border cursor-default transition-all duration-300"
-              style={{ background: "#F9FAFB", borderColor: "#E5E7EB", color: DARK }}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ delay: i * 0.05, duration: 0.3 }}
-              whileHover={{ borderColor: "#BE1869", color: "#fff", background: "linear-gradient(135deg, #BE1869, #6224BE)" }}
-            >
+            <motion.span key={tag} className="text-[15px] px-5 py-2.5 rounded-full border cursor-default transition-all duration-300" style={{ background: "#F9FAFB", borderColor: "#E5E7EB", color: DARK }} initial={{ opacity: 0, scale: 0.9 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: i * 0.05, duration: 0.3 }} whileHover={{ borderColor: "#BE1869", color: "#fff", background: "linear-gradient(135deg, #BE1869, #6224BE)" }}>
               {tag}
             </motion.span>
           ))}
