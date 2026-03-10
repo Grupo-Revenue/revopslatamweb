@@ -302,7 +302,7 @@ const DisenaYConstruye = () => {
             </motion.p>
             <motion.div {...fadeUp(0.45)} className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <button className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-shadow hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
-                style={{ background: GRADIENT }}
+                style={{ background: (hm.cta_bg as string) || GRADIENT }}
                 onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })}>
                 {heroCta}
               </button>
