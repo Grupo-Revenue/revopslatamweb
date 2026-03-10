@@ -227,7 +227,7 @@ const ConoceTuPista = () => {
       {/* ─── SECTION 1: HERO ─── */}
       <SectionShell section={hero} className="pt-28 sm:pt-36 pb-16 sm:pb-24 px-6" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 max-w-[1100px] mx-auto text-center">
+        <div className="relative z-10 max-w-[1400px] mx-auto text-center">
           <motion.span
             {...fadeUp(0)}
             className="inline-block text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6"
