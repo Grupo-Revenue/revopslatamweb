@@ -8,11 +8,6 @@ interface ResponsiveHeroImageProps {
   className?: string;
 }
 
-/**
- * Renders a hero image with responsive max-width controlled via CMS metadata.
- * Metadata keys: image_max_width (desktop/laptop 13"), image_max_width_md (laptop 15"),
- * image_max_width_mobile (mobile).
- */
 const ResponsiveHeroImage = ({
   src,
   alt,
@@ -24,13 +19,15 @@ const ResponsiveHeroImage = ({
 
   const desktop = (metadata.image_max_width as string) || defaultMaxWidth;
   const md = (metadata.image_max_width_md as string) || desktop;
+  const tablet = (metadata.image_max_width_tablet as string) || md;
   const mobile = (metadata.image_max_width_mobile as string) || "100%";
 
   return (
     <>
       <style>{`
         #${id} { max-width: ${mobile}; }
-        @media (min-width: 768px) { #${id} { max-width: ${md}; } }
+        @media (min-width: 768px) { #${id} { max-width: ${tablet}; } }
+        @media (min-width: 1024px) { #${id} { max-width: ${md}; } }
         @media (min-width: 1280px) { #${id} { max-width: ${desktop}; } }
       `}</style>
       <img
