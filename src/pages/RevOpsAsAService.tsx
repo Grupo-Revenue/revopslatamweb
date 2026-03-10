@@ -13,7 +13,7 @@ import DotPattern from "@/components/services/DotPattern";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
-import WaveDivider from "@/components/services/WaveDivider";
+
 import GradientIcon from "@/components/services/GradientIcon";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
