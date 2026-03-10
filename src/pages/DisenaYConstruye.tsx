@@ -288,8 +288,8 @@ const DisenaYConstruye = () => {
           {/* Text */}
           <div className="lg:w-[55%]">
             <motion.div {...fadeUp(0)}>
-              <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.1em] text-white"
-                style={{ background: GRADIENT }}>
+              <span className="inline-block px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-[0.1em]"
+                style={{ background: (hm.badge_bg as string) || GRADIENT, color: (hm.badge_color as string) || "#fff" }}>
                 {heroEyebrow}
               </span>
             </motion.div>
