@@ -253,8 +253,7 @@ const ConoceTuPista = () => {
             <DynamicCTA
               styleKey={hm.cta_style_key as string}
               onClick={() => h.cta_url && (window.location.href = h.cta_url)}
-              className="inline-flex items-center text-[15px] sm:text-base font-semibold transition-all duration-200 hover:scale-[1.03]"
-              style={{ borderRadius: 9999, padding: "14px 32px" }}
+              className="inline-flex items-center text-[15px] sm:text-base font-semibold transition-all duration-200 hover:scale-[1.03] rounded-full px-8 py-3.5"
             >
               {h.cta_text}
             </DynamicCTA>
