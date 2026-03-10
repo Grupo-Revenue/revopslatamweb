@@ -29,7 +29,7 @@ const ResponsiveHeroImage = ({
     img[data-rhi="${safeId}"] { max-width: ${mobile} !important; }
     @media (min-width: 768px) { img[data-rhi="${safeId}"] { max-width: ${tablet} !important; } }
     @media (min-width: 1024px) { img[data-rhi="${safeId}"] { max-width: ${laptop15} !important; } }
-    @media (min-width: 1440px) { img[data-rhi="${safeId}"] { max-width: ${desktop} !important; } }
+    @media (min-width: 1920px) { img[data-rhi="${safeId}"] { max-width: ${desktop} !important; } }
   `;
 
   return (
