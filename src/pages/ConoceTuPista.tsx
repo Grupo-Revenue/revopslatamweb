@@ -323,7 +323,7 @@ const ConoceTuPista = () => {
       </SectionShell>
 
       {/* ─── SECTION 4: POR QUÉ DIAGNOSTICAR PRIMERO ─── */}
-      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
+      
       <SectionShell section={porQue} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
