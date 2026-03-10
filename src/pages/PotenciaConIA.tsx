@@ -206,7 +206,7 @@ const PotenciaConIA = () => {
             </div>
           </motion.div>
           <motion.div className="hidden lg:block" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
-            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[460px] rounded-2xl" /> : <AgentFeed />}
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="rounded-2xl" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "460px" }} /> : <AgentFeed />}
           </motion.div>
         </div>
       </SectionShell>

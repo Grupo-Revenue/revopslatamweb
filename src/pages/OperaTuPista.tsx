@@ -258,7 +258,7 @@ const OperaTuPista = () => {
             </div>
           </motion.div>
           <div className="hidden lg:block">
-            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[460px] rounded-2xl" /> : <DashboardHero />}
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="rounded-2xl" style={{ width: "100%", maxWidth: (hm.image_max_width as string) || "460px" }} /> : <DashboardHero />}
           </div>
         </div>
       </SectionShell>
