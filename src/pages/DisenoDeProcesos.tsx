@@ -304,7 +304,7 @@ export default function DisenoDeProcesos() {
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
-            <FlowchartVisual steps={heroData.steps} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <FlowchartVisual steps={heroData.steps} />}
           </motion.div>
         </div>
       </SectionShell>

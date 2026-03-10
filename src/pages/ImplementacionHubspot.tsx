@@ -268,7 +268,7 @@ export default function ImplementacionHubspot() {
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
-            <BeforeAfterToggle before={h.before} after={h.after} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <BeforeAfterToggle before={h.before} after={h.after} />}
           </motion.div>
         </div>
       </SectionShell>

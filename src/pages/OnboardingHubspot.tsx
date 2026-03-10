@@ -308,7 +308,7 @@ export default function OnboardingHubspot() {
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
-            <WeekCards weeks={h.weeks} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <WeekCards weeks={h.weeks} />}
           </motion.div>
         </div>
       </SectionShell>

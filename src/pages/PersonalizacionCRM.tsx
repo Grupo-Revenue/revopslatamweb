@@ -250,7 +250,7 @@ export default function PersonalizacionCRM() {
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
-            <CRMMockup panels={h.panels} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <CRMMockup panels={h.panels} />}
           </motion.div>
         </div>
       </SectionShell>

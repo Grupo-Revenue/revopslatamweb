@@ -289,7 +289,7 @@ const MotorDeIngresos = () => {
             </motion.div>
           </div>
           <div className="flex-1 lg:max-w-[45%] flex justify-center">
-            <RevOpsScorecard score={scorecard.score} bars={scorecard.bars} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <RevOpsScorecard score={scorecard.score} bars={scorecard.bars} />}
           </div>
         </div>
       </SectionShell>

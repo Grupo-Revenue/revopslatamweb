@@ -314,7 +314,7 @@ const DisenaYConstruye = () => {
 
           {/* Visual */}
           <div className="lg:w-[45%]">
-            <ProcessSteps steps={heroSteps} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <ProcessSteps steps={heroSteps} />}
           </div>
         </div>
       </SectionShell>
