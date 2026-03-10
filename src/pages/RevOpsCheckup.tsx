@@ -223,7 +223,7 @@ const RevOpsCheckup = () => {
               <span>→</span>
               <span className="text-white/60">{breadcrumbCurrent}</span>
             </motion.nav>
-            <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: "rgba(255,255,255,0.1)", color: "#fff" }}>{badge}</motion.span>
+            <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.1)", color: (hm.badge_color as string) || "#fff" }}>{badge}</motion.span>
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold leading-[1.08] tracking-tight" style={{ color: "#ffffff", fontSize: "clamp(40px, 5.5vw, 60px)", ...heroStyle("title") }}>
               {hero?.title ?? DEF.hero.title}
             </motion.h1>
