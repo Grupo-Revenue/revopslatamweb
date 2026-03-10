@@ -225,7 +225,7 @@ const ConoceTuPista = () => {
       <Navbar />
 
       {/* ─── SECTION 1: HERO ─── */}
-      <SectionShell section={hero} className="min-h-[85vh] pt-32 sm:pt-40 pb-20 sm:pb-28 px-6" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={hero} className="min-h-screen pt-32 sm:pt-40 pb-20 sm:pb-28 px-6 flex items-center" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[1400px] mx-auto text-center">
           <motion.span

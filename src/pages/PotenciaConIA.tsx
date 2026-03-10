@@ -180,7 +180,7 @@ const PotenciaConIA = () => {
       <Navbar />
 
       {/* Hero */}
-      <SectionShell section={hero} className="min-h-[90vh]" defaultBg={{ background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 100%)" }}>
+      <SectionShell section={hero} className="min-h-screen" defaultBg={{ background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 100%)" }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-[90vh]">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
