@@ -364,7 +364,6 @@ export default function DisenoDeProcesos() {
       </SectionShell>
 
       {/* ── PROCESO ── */}
-      <WaveDivider fromColor="#F9FAFB" toColor="#1A1A2E" />
       <SectionShell section={proceso} className="py-24 md:py-[100px]" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
