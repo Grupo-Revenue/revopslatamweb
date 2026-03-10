@@ -8,6 +8,7 @@ import SectionHeading from "@/components/services/SectionHeading";
 import ServiceCard from "@/components/services/ServiceCard";
 import ForWhomSection from "@/components/services/ForWhomSection";
 import SectionDivider from "@/components/services/SectionDivider";
+import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
 import DotPattern from "@/components/services/DotPattern";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import ChipLink from "@/components/services/ChipLink";
