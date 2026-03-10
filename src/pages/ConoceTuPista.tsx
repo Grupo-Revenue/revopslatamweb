@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import DynamicCTA from "@/components/DynamicCTA";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
