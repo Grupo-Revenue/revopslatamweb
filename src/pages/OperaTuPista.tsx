@@ -224,7 +224,7 @@ const OperaTuPista = () => {
       <Navbar />
 
       {/* ── S1: HERO ── */}
-      <SectionShell section={hero} className="min-h-screen pt-28 sm:pt-32 pb-20 sm:pb-28 px-6" defaultBg={{ background: DARK }}>
+      <SectionShell section={hero} className="h-screen pt-28 sm:pt-32 pb-16 px-6" defaultBg={{ background: DARK }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 max-w-[1400px] mx-auto text-center">
           <motion.span
