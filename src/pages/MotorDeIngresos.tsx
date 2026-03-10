@@ -284,7 +284,7 @@ const MotorDeIngresos = () => {
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold leading-[1.08] tracking-tight max-w-[700px]" style={{ color: "#ffffff", fontSize: "clamp(40px, 5.5vw, 64px)", ...heroStyle("title") }}>{hero?.title ?? DEF.hero.title}</motion.h1>
             <motion.p {...fadeUp(0.18)} className="mt-5 text-[17px] sm:text-[18px] leading-[1.7] max-w-[560px]" style={{ color: "rgba(255,255,255,0.7)", ...heroStyle("body") }}>{hero?.subtitle ?? DEF.hero.subtitle}</motion.p>
             <motion.div {...fadeUp(0.26)} className="mt-8 flex flex-wrap items-center gap-5">
-              <Link to={hero?.cta_url ?? "#"} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]" style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px" }}>{hero?.cta_text ?? DEF.hero.cta_text}</Link>
+              <Link to={hero?.cta_url ?? "#"} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff", borderRadius: 9999, padding: "14px 32px" }}>{hero?.cta_text ?? DEF.hero.cta_text}</Link>
               <button onClick={() => scrollToSection(cta2Target)} className="text-[15px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>{cta2Text}</button>
             </motion.div>
           </div>
