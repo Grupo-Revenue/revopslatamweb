@@ -750,6 +750,18 @@ export default function AdminPageSections() {
                     />
                   </div>
 
+                  {/* Image max width control */}
+                  <div className="p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
+                    <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Ancho máximo de imagen principal</Label>
+                    <Input
+                      value={(meta.image_max_width as string) ?? ""}
+                      onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, image_max_width: e.target.value || undefined })}
+                      className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm w-48"
+                      placeholder="Ej: 600px, 80%, 920px"
+                    />
+                    <p className="text-zinc-600 text-[10px] mt-0.5">Controla el tamaño máximo de la imagen del hero (px o %)</p>
+                  </div>
+
                   {/* Row 5b: Second image for split hero */}
                   <ImageField
                     label="Imagen 2 (fila inferior del hero — para efecto de scroll opuesto)"
@@ -858,7 +870,7 @@ export default function AdminPageSections() {
                         placeholder="Parte del título que lleva gradiente"
                       />
                     </div>
-                    <div>
+                     <div>
                       <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Badge / Etiqueta</Label>
                       <Input
                         value={(meta.badge as string) ?? ""}
@@ -866,6 +878,37 @@ export default function AdminPageSections() {
                         className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
                         placeholder="Ej: Quiénes somos"
                       />
+                    </div>
+                  </div>
+
+                  {/* Badge color controls */}
+                  <div className="grid grid-cols-2 gap-3 p-3 bg-zinc-800/50 rounded-xl border border-zinc-700/50">
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Color / Gradiente del Badge</Label>
+                      <Input
+                        value={(meta.badge_bg as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, badge_bg: e.target.value || undefined })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Ej: #BE1869 o linear-gradient(90deg, #BE1869, #6224BE)"
+                      />
+                      <p className="text-zinc-600 text-[10px] mt-0.5">Fondo del badge. Acepta color sólido o gradiente CSS</p>
+                    </div>
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Color del texto del Badge</Label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Input
+                          value={(meta.badge_color as string) ?? ""}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, badge_color: e.target.value || undefined })}
+                          className="bg-zinc-800 border-zinc-700 text-white text-sm flex-1"
+                          placeholder="Ej: #ffffff"
+                        />
+                        <input
+                          type="color"
+                          value={(meta.badge_color as string) || "#ffffff"}
+                          onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, badge_color: e.target.value })}
+                          className="h-8 w-8 rounded border border-zinc-700 cursor-pointer bg-transparent"
+                        />
+                      </div>
                     </div>
                   </div>
 
