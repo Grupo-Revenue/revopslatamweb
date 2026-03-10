@@ -245,7 +245,7 @@ const ConoceTuPista = () => {
           <motion.p
             {...fadeUp(0.2)}
             className="mt-6 text-[17px] sm:text-[18px] leading-[1.7] mx-auto"
-            style={{ color: "rgba(255,255,255,0.7)", maxWidth: 560, ...heroStyle("body") }}
+            style={{ color: "rgba(255,255,255,0.7)", maxWidth: 900, ...heroStyle("body") }}
           >
             {h.subtitle}
           </motion.p>
