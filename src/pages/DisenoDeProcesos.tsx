@@ -295,7 +295,7 @@ export default function DisenoDeProcesos() {
               {heroData.subtitle}
             </motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
-              <button className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: GRADIENT }}>
+              <button className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>
                 {heroData.cta}
               </button>
               <button onClick={scrollToParaQuien} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">
