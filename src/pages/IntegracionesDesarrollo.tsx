@@ -268,7 +268,7 @@ export default function IntegracionesDesarrollo() {
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
-            <EcosystemDiagram />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <EcosystemDiagram />}
           </motion.div>
         </div>
       </SectionShell>

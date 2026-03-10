@@ -240,7 +240,7 @@ const RevOpsCheckup = () => {
             </motion.div>
           </div>
           <div className="flex-1 lg:max-w-[45%] flex justify-center">
-            <DeliverableCard data={delivCard} />
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <DeliverableCard data={delivCard} />}
           </div>
         </div>
       </SectionShell>
