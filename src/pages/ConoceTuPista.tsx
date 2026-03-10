@@ -240,7 +240,14 @@ const ConoceTuPista = () => {
             className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
             style={{ color: "#ffffff", fontSize: "clamp(40px, 6vw, 64px)", ...heroStyle("title") }}
           >
-            {h.title}
+            {(() => {
+              const lineBreak = hm.title_line_break as string;
+              if (lineBreak && h.title.includes(lineBreak)) {
+                const idx = h.title.indexOf(lineBreak) + lineBreak.length;
+                return h.title.slice(0, idx) + "\n" + h.title.slice(idx).trimStart();
+              }
+              return h.title;
+            })()}
           </motion.h1>
           <motion.p
             {...fadeUp(0.2)}
