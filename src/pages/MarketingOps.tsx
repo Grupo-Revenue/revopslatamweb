@@ -110,6 +110,11 @@ const MarketingOps = () => {
   const { getSection, loading } = usePageSections("marketing-ops");
 
   const hero = getSection("hero");
+  const problemaSection = getSection("problema");
+  const operamosSection = getSection("operamos");
+  const comoFuncionaSection = getSection("como-funciona");
+  const paraQuienSection = getSection("para-quien");
+  const ctaFinalSection = getSection("cta-final");
   const hm = mt(hero);
 
   const h = {
