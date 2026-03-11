@@ -48,53 +48,56 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <LoadingScreen />
-        <DynamicStylesLoader />
-        <CustomCursor />
-        <BrowserRouter>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/nosotros" element={<Nosotros />} />
-            <Route path="/para-ceos-y-gerentes-generales" element={<ParaCeos />} />
-            <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
-            <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
-            <Route path="/para-customer-success-y-servicio-al-cliente" element={<ParaCustomerSuccess />} />
-            <Route path="/para-los-que-operan-el-negocio-sin-el-titulo" element={<ParaOperaciones />} />
-            <Route path="/conoce-tu-pista" element={<ConoceTuPista />} />
-            <Route path="/revops-checkup" element={<RevOpsCheckup />} />
-            <Route path="/diagnostico-revops" element={<DiagnosticoRevOps />} />
-            <Route path="/motor-de-ingresos" element={<MotorDeIngresos />} />
-            <Route path="/diseña-y-construye-tu-pista" element={<DisenaYConstruye />} />
-            <Route path="/diseño-de-procesos" element={<DisenoDeProcesos />} />
-            <Route path="/onboarding-hubspot" element={<OnboardingHubspot />} />
-            <Route path="/implementacion-hubspot" element={<ImplementacionHubspot />} />
-            <Route path="/personalizacion-crm" element={<PersonalizacionCRM />} />
-            <Route path="/integraciones-desarrollo" element={<IntegracionesDesarrollo />} />
-            <Route path="/opera-tu-pista" element={<OperaTuPista />} />
-            <Route path="/revops-as-a-service" element={<RevOpsAsAService />} />
-            <Route path="/marketing-ops" element={<MarketingOps />} />
-            <Route path="/soporte-hubspot" element={<SoporteHubspot />} />
-            <Route path="/potencia-con-ia" element={<PotenciaConIA />} />
-            {/* Admin routes */}
-            <Route path="/admin/setup" element={<AdminSetup />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
-              <Route path="pages" element={<AdminPages />} />
-              <Route path="pages/:pageId" element={<AdminPageSections />} />
-              <Route path="styles" element={<AdminStyles />} />
-              <Route path="cta-styles" element={<AdminCTAStyles />} />
-              <Route path="media" element={<AdminMedia />} />
-              <Route path="users" element={<AdminUsers />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <LeadFormProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <LoadingScreen />
+          <DynamicStylesLoader />
+          <CustomCursor />
+          <LeadFormModal />
+          <BrowserRouter>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/nosotros" element={<Nosotros />} />
+              <Route path="/para-ceos-y-gerentes-generales" element={<ParaCeos />} />
+              <Route path="/para-directores-comerciales" element={<ParaDirectoresComerciales />} />
+              <Route path="/para-directores-y-gerentes-de-marketing" element={<ParaMarketingDirectors />} />
+              <Route path="/para-customer-success-y-servicio-al-cliente" element={<ParaCustomerSuccess />} />
+              <Route path="/para-los-que-operan-el-negocio-sin-el-titulo" element={<ParaOperaciones />} />
+              <Route path="/conoce-tu-pista" element={<ConoceTuPista />} />
+              <Route path="/revops-checkup" element={<RevOpsCheckup />} />
+              <Route path="/diagnostico-revops" element={<DiagnosticoRevOps />} />
+              <Route path="/motor-de-ingresos" element={<MotorDeIngresos />} />
+              <Route path="/diseña-y-construye-tu-pista" element={<DisenaYConstruye />} />
+              <Route path="/diseño-de-procesos" element={<DisenoDeProcesos />} />
+              <Route path="/onboarding-hubspot" element={<OnboardingHubspot />} />
+              <Route path="/implementacion-hubspot" element={<ImplementacionHubspot />} />
+              <Route path="/personalizacion-crm" element={<PersonalizacionCRM />} />
+              <Route path="/integraciones-desarrollo" element={<IntegracionesDesarrollo />} />
+              <Route path="/opera-tu-pista" element={<OperaTuPista />} />
+              <Route path="/revops-as-a-service" element={<RevOpsAsAService />} />
+              <Route path="/marketing-ops" element={<MarketingOps />} />
+              <Route path="/soporte-hubspot" element={<SoporteHubspot />} />
+              <Route path="/potencia-con-ia" element={<PotenciaConIA />} />
+              {/* Admin routes */}
+              <Route path="/admin/setup" element={<AdminSetup />} />
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="pages" element={<AdminPages />} />
+                <Route path="pages/:pageId" element={<AdminPageSections />} />
+                <Route path="styles" element={<AdminStyles />} />
+                <Route path="cta-styles" element={<AdminCTAStyles />} />
+                <Route path="media" element={<AdminMedia />} />
+                <Route path="users" element={<AdminUsers />} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </LeadFormProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
