@@ -209,23 +209,26 @@ const MarketingOps = () => {
             ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S5: Para quién es */}
-      <ForWhomSection
-        yesItems={["Tienes Marketing Hub pero no lo operas con su potencial", "Nadie tiene tiempo de gestionar campañas con criterio", "El handoff marketing-ventas es caótico o inexistente", "Quieres pauta gestionada por alguien que entiende el CRM"]}
-        noItems={[
-          { text: "Buscas agencia creativa, contenido o branding", note: "Ese no es nuestro foco" },
-          { text: "No tienes Marketing Hub", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
-        ]}
-      />
+      <SectionShell section={paraQuienSection} className="relative" defaultBg={{ background: "#F9FAFB" }}>
+        <ForWhomSection
+          background="transparent"
+          yesItems={["Tienes Marketing Hub pero no lo operas con su potencial", "Nadie tiene tiempo de gestionar campañas con criterio", "El handoff marketing-ventas es caótico o inexistente", "Quieres pauta gestionada por alguien que entiende el CRM"]}
+          noItems={[
+            { text: "Buscas agencia creativa, contenido o branding", note: "Ese no es nuestro foco" },
+            { text: "No tienes Marketing Hub", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
+          ]}
+        />
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S6: CTA Final */}
-      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "100px 0" }}>
+      <SectionShell section={ctaFinalSection} className="relative" defaultBg={{ background: "#1A1A2E", padding: "100px 0" }}>
         <BackgroundOrbs variant="section" />
         <div className="relative z-10 mx-auto max-w-[480px] px-6">
           <div className="text-center rounded-[20px] p-10" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}>
@@ -237,7 +240,7 @@ const MarketingOps = () => {
             </DynamicCTA>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <Footer />
     </div>
