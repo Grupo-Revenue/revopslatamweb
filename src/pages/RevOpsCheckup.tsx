@@ -117,8 +117,8 @@ const CheckupGauge = () => {
             transition={{ duration: 0.4, delay: 0.8 + i * 0.12 }}
           >
             <div className="flex items-center justify-between mb-1">
-              <span className="text-[13px] text-white/60">{area.label}</span>
-              <span className="text-[13px] font-mono" style={{ color: area.color }}>{area.score}%</span>
+              <span className="text-[13px] font-medium text-white/80">{area.label}</span>
+              <span className="text-[14px] font-bold font-mono" style={{ color: area.color, textShadow: `0 0 8px ${area.color}40` }}>{area.score}%</span>
             </div>
             <div className="h-[6px] rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
               <motion.div
