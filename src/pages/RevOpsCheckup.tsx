@@ -73,7 +73,7 @@ const CheckupGauge = () => {
             <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
             <motion.circle
               cx="60" cy="60" r="54" fill="none" strokeWidth="8" strokeLinecap="round"
-              stroke="url(#gaugeGrad)"
+              stroke="#5b28b5"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset: dashOffset }}
