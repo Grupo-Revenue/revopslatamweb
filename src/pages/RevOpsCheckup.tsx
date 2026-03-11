@@ -44,11 +44,11 @@ function SectionShell({ section, className, defaultBg, children }: {
 /* ─── Checkup Gauge Visual ─── */
 const CheckupGauge = () => {
   const areas = [
-    { label: "Pipeline", score: 42, color: "#E53E3E" },
+    { label: "Pipeline", score: 42, color: "#0079D7" },
     { label: "CRM & Tools", score: 68, color: "#ECC94B" },
-    { label: "Procesos", score: 35, color: "#E53E3E" },
+    { label: "Procesos", score: 35, color: "#0079D7" },
     { label: "Data & Reporting", score: 55, color: "#ECC94B" },
-    { label: "Alineamiento", score: 28, color: "#E53E3E" },
+    { label: "Alineamiento", score: 28, color: "#0079D7" },
   ];
   const overall = 45;
   const circumference = 2 * Math.PI * 54;
