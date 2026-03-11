@@ -508,9 +508,9 @@ function SelectField({ label, value, options, onChange, error }: {
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground outline-none transition-all appearance-none cursor-pointer border-2 bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30"
+        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground outline-none transition-all appearance-none cursor-pointer border bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30 border-border"
         style={{
-          borderColor: error ? "hsl(0 84% 60%)" : "transparent",
+          borderColor: error ? "hsl(0 84% 60%)" : undefined,
         }}
       >
         <option value="" disabled className="text-muted-foreground">Seleccionar...</option>
