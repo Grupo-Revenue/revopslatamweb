@@ -186,12 +186,12 @@ const MarketingOps = () => {
             })}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S4: Cómo funciona */}
-      <section style={{ padding: "120px 0" }}>
+      <SectionShell section={comoFuncionaSection} className="relative" defaultBg={{ padding: "120px 0", background: "#fff" }}>
         <div className="mx-auto max-w-[900px] px-6">
           <SectionHeading title="Integrado a tu operación, no en paralelo" />
           <div className="grid md:grid-cols-2 gap-8">
