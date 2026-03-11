@@ -302,7 +302,7 @@ export default function LeadFormModal() {
                       <Field label="Apellido" value={form.last_name} onChange={v => set("last_name", v)} error={errors.last_name} />
                     </div>
                     <Field label="Correo corporativo" value={form.email} onChange={v => set("email", v)} error={errors.email} type="email" />
-                    <Field label="Teléfono" value={form.phone} onChange={v => set("phone", v)} error={errors.phone} type="tel" />
+                    <PhoneField label="Teléfono" value={form.phone} onChange={v => set("phone", v)} error={errors.phone} />
                   </StepWrapper>
                 )}
 
