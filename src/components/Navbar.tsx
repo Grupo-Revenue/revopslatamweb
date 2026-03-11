@@ -433,8 +433,10 @@ const Navbar = () => {
             </Link>
 
             <div className="mt-auto pt-8 flex flex-col gap-4">
-              <Link
-                to="#"
+              <a
+                href="https://pulso.revopslatam.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center text-base font-semibold"
                 style={{ color: "#7c3aed", gap: 6 }}
               >
