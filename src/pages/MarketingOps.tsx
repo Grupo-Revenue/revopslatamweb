@@ -162,12 +162,12 @@ const MarketingOps = () => {
       </SectionShell>
 
       {/* S2: El Problema */}
-      <ProblemSection />
+      <ProblemSection section={problemaSection} />
 
       <SectionDivider />
 
       {/* S3: Lo que operamos */}
-      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "120px 0" }}>
+      <SectionShell section={operamosSection} className="relative" defaultBg={{ background: "#1A1A2E", padding: "120px 0" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
