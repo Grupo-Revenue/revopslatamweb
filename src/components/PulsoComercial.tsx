@@ -76,7 +76,7 @@ const PulsoComercial = ({ section }: { section?: HomeSection }) => {
 
         <motion.div {...fadeUp(0.4)} className="mt-10">
           {(meta.cta_style_key as string) ? (
-            <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+            <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => window.open(section?.cta_url || "https://pulso.revopslatam.com/", "_blank")}>
               {cta}
             </DynamicCTA>
           ) : (
