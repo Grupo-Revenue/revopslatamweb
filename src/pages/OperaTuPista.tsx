@@ -269,12 +269,13 @@ const OperaTuPista = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <button
+            <DynamicCTA
+              styleKey={hm.cta_style_key as string}
+              onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)}
               className="text-sm font-semibold text-white px-8 py-3.5 rounded-full transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
-              style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff" }}
             >
               {h.cta_text}
-            </button>
+            </DynamicCTA>
             <Link to="/conoce-tu-pista" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
               {h.cta2_text}
             </Link>
