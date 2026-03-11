@@ -24,6 +24,7 @@ const defaults = {
 const Hero = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { openLeadForm } = useLeadForm();
   const title = section?.title ?? `${defaults.headline1}\n${defaults.headline2}`;
   const titleParts = title.split("\n");
   const pill = (section?.subtitle ?? defaults.pill) as string;
