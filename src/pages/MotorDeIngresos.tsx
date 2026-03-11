@@ -68,7 +68,7 @@ const RevOpsScorecard = ({ score: targetScore, bars }: { score: number; bars: Ar
   return (
     <motion.div ref={ref} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
       className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-[20px] p-7"
-      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+      style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)" }}>
       <p className="text-[13px] uppercase tracking-[0.1em] mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>RevOps Score™</p>
       <p className="text-[72px] font-extrabold tracking-tight leading-none" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{score}</p>
       <div className="mt-8 space-y-4">
