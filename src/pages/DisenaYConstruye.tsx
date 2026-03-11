@@ -82,7 +82,7 @@ const DEF = {
     credential: "HubSpot Platinum Partner · +10 años",
     comparison: {
       left: { header: "Agencia de Marketing", items: ["Implementa sin diseñar proceso", "Configura por Hub, no por negocio", "Entrega el portal y desaparece"] },
-      right: { header: "RevOps LATAM", items: ["Proceso diseñado antes de construir", "Implementamos según tu operación", "Acompañamos hasta que funciona"] },
+      right: { header: "Revops LATAM", items: ["Proceso diseñado antes de construir", "Implementamos según tu operación", "Acompañamos hasta que funciona"] },
     },
   },
   ctaFinal: {
