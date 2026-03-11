@@ -60,7 +60,7 @@ const CheckupGauge = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.3 }}
       className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-[20px] p-7"
-      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+      style={{ background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.04)" }}
     >
       <p className="text-[13px] uppercase tracking-[0.1em] mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>
         RevOps Checkup™
@@ -73,7 +73,7 @@ const CheckupGauge = () => {
             <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
             <motion.circle
               cx="60" cy="60" r="54" fill="none" strokeWidth="8" strokeLinecap="round"
-              stroke="url(#gaugeGrad)"
+              stroke="#5b28b5"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset: dashOffset }}
@@ -122,7 +122,7 @@ const CheckupGauge = () => {
             <div className="h-[6px] rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
               <motion.div
                 className="h-full rounded-full"
-                style={{ background: area.score >= 60 ? GRADIENT : area.color }}
+                style={{ background: area.color }}
                 initial={{ width: 0 }}
                 animate={{ width: `${area.score}%` }}
                 transition={{ duration: 0.8, delay: 1 + i * 0.12, ease: "easeOut" }}
