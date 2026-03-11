@@ -207,9 +207,13 @@ const PotenciaConIA = () => {
             </h1>
             <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4">
-              <button onClick={scrollToPlans} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || gradient, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
-                {h.cta_text}
-              </button>
+              {(hm.cta_style_key as string) ? (
+                <DynamicCTA styleKey={hm.cta_style_key as string} onClick={scrollToPlans}>{h.cta_text}</DynamicCTA>
+              ) : (
+                <button onClick={scrollToPlans} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || gradient, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
+                  {h.cta_text}
+                </button>
+              )}
               <button onClick={() => document.getElementById("ia-problema")?.scrollIntoView({ behavior: "smooth" })} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer">
                 {h.cta2_text}
               </button>
