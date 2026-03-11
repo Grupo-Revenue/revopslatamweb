@@ -19,7 +19,7 @@ const NosotrosCTA = ({ section }: { section?: HomeSection }) => {
   const title = section?.title ?? "Si esto resuena contigo, probablemente trabajemos bien juntos.";
   const body = section?.body ?? "No trabajamos con todos. Trabajamos con empresas que quieren crecer de forma real, sana y sostenible — y con personas que valoran la honestidad por encima del discurso bonito.";
   const ctaText = section?.cta_text ?? "Hacer el Pulso Comercial";
-  const ctaUrl = section?.cta_url ?? "#";
+  const ctaUrl = section?.cta_url || "https://pulso.revopslatam.com/";
   const cta2Text = (meta.cta2_text as string) ?? "Prefiero hablar directo → Agendar conversación";
   const cta2Url = (meta.cta2_url as string) ?? "#";
 

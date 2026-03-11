@@ -50,11 +50,11 @@ const FinalCTA = ({ section }: { section?: HomeSection }) => {
               </Button>
             )}
             {(meta.cta2_style_key as string) ? (
-              <DynamicCTA styleKey={meta.cta2_style_key as string}>
+              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => window.open((meta.cta2_url as string) || "https://pulso.revopslatam.com/", "_blank")}>
                 {cta2}
               </DynamicCTA>
             ) : (
-              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent">
+              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent" onClick={() => window.open((meta.cta2_url as string) || "https://pulso.revopslatam.com/", "_blank")}>
                 {cta2}
               </Button>
             )}

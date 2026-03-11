@@ -77,11 +77,14 @@ const Footer = () => {
           <div>
             <h4 className="text-[14px] font-semibold mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>Revops LATAM</h4>
             <ul className="space-y-2.5">
-              {footerLinks.empresa.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l}</a>
-                </li>
-              ))}
+              {footerLinks.empresa.map((l) => {
+                const isPulso = l === "Pulso Comercial";
+                return (
+                  <li key={l}>
+                    <a href={isPulso ? "https://pulso.revopslatam.com/" : "#"} target={isPulso ? "_blank" : undefined} rel={isPulso ? "noopener noreferrer" : undefined} className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l}</a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
