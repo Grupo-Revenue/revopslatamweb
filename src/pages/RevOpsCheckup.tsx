@@ -41,30 +41,110 @@ function SectionShell({ section, className, defaultBg, children }: {
   );
 }
 
-/* ─── Floating deliverable card ─── */
-const DeliverableCard = ({ data }: { data: { title: string; items: string[]; footer: string } }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, delay: 0.4 }}
-    className="w-full max-w-[340px] mx-auto lg:mx-0"
-    style={{ animation: "floatCard 3s ease-in-out infinite" }}
-  >
-    <style>{`@keyframes floatCard { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }`}</style>
-    <div className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-      <p className="text-[15px] font-bold text-white mb-4">{data.title}</p>
-      <div className="space-y-3">
-        {data.items.map((item) => (
-          <div key={item} className="flex items-start gap-3">
-            <span className="mt-0.5 text-sm font-bold flex-shrink-0" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span>
-            <span className="text-[15px] text-white/80">{item}</span>
+/* ─── Checkup Gauge Visual ─── */
+const CheckupGauge = () => {
+  const areas = [
+    { label: "Pipeline", score: 42, color: "#E53E3E" },
+    { label: "CRM & Tools", score: 68, color: "#ECC94B" },
+    { label: "Procesos", score: 35, color: "#E53E3E" },
+    { label: "Data & Reporting", score: 55, color: "#ECC94B" },
+    { label: "Alineamiento", score: 28, color: "#E53E3E" },
+  ];
+  const overall = 45;
+  const circumference = 2 * Math.PI * 54;
+  const dashOffset = circumference - (overall / 100) * circumference;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: 0.3 }}
+      className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-[20px] p-7"
+      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+    >
+      <p className="text-[13px] uppercase tracking-[0.1em] mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>
+        RevOps Checkup™
+      </p>
+
+      {/* Circular gauge */}
+      <div className="flex items-center gap-6 mb-8">
+        <div className="relative w-[130px] h-[130px] flex-shrink-0">
+          <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
+            <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
+            <motion.circle
+              cx="60" cy="60" r="54" fill="none" strokeWidth="8" strokeLinecap="round"
+              stroke="url(#gaugeGrad)"
+              strokeDasharray={circumference}
+              initial={{ strokeDashoffset: circumference }}
+              animate={{ strokeDashoffset: dashOffset }}
+              transition={{ duration: 1.5, delay: 0.6, ease: "easeOut" }}
+            />
+            <defs>
+              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#BE1869" />
+                <stop offset="100%" stopColor="#6224BE" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <motion.span
+              className="text-[36px] font-extrabold leading-none text-white"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+            >
+              {overall}
+            </motion.span>
+            <span className="text-[11px] text-white/40 mt-1">/100</span>
           </div>
+        </div>
+        <div>
+          <p className="text-[14px] font-semibold text-white mb-1">Estado general</p>
+          <p className="text-[12px] leading-[1.5]" style={{ color: "rgba(255,255,255,0.45)" }}>
+            Tu operación tiene potencial, pero hay fugas críticas que atender.
+          </p>
+        </div>
+      </div>
+
+      {/* Scanning bars */}
+      <div className="space-y-3">
+        {areas.map((area, i) => (
+          <motion.div
+            key={area.label}
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.8 + i * 0.12 }}
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[13px] text-white/60">{area.label}</span>
+              <span className="text-[13px] font-mono" style={{ color: area.color }}>{area.score}%</span>
+            </div>
+            <div className="h-[6px] rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: area.score >= 60 ? GRADIENT : area.color }}
+                initial={{ width: 0 }}
+                animate={{ width: `${area.score}%` }}
+                transition={{ duration: 0.8, delay: 1 + i * 0.12, ease: "easeOut" }}
+              />
+            </div>
+          </motion.div>
         ))}
       </div>
-      <p className="mt-5 text-[14px]" style={{ color: "rgba(255,255,255,0.5)" }}>{data.footer}</p>
-    </div>
-  </motion.div>
-);
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+        className="mt-5 flex items-center gap-2 text-[11px]"
+        style={{ color: "rgba(255,255,255,0.3)" }}
+      >
+        <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#BE1869" }} />
+        Ejemplo ilustrativo — tu score real en 2 semanas
+      </motion.div>
+    </motion.div>
+  );
+};
 
 /* ─── Deliverable Card (Section 3) ─── */
 const BigDeliverableCard = ({ num, title, description, tag, delay }: {
@@ -241,7 +321,7 @@ const RevOpsCheckup = () => {
             </motion.div>
           </div>
           <div className="flex-1 lg:max-w-[45%] flex justify-center">
-            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <DeliverableCard data={delivCard} />}
+            {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <CheckupGauge />}
           </div>
         </div>
       </SectionShell>
