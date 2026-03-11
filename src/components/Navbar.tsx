@@ -331,8 +331,10 @@ const Navbar = () => {
 
             <div className="ml-auto flex items-center" style={{ gap: 16 }}>
               {/* Pulso Comercial */}
-              <Link
-                to="#"
+              <a
+                href="https://pulso.revopslatam.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center text-sm transition-colors duration-200"
                 style={{ color: "#7c3aed", fontWeight: 600, gap: 6 }}
               >
