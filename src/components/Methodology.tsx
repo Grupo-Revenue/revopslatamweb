@@ -472,13 +472,14 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
                     transition={{ delay: 0.4 }}
                     className="mt-8"
                   >
-                    <button
+                    <a
+                      href={(selectedState as any).ctaUrl || "#"}
                       className={`inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-[15px] sm:text-[16px] font-bold transition-all duration-300 hover:scale-[1.03] ${selectedState.ctaStyle}`}
                       style={{ backgroundColor: selectedState.color, color: "white" }}
                     >
                       {selectedState.ctaText}
                       <ArrowRight size={18} />
-                    </button>
+                    </a>
                   </motion.div>
                 </div>
               </motion.div>

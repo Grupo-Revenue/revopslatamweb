@@ -430,14 +430,25 @@ export default function MethodologyEditor({ metadata, onChange }: MethodologyEdi
                     />
                   </div>
 
-                  {/* CTA text */}
-                  <div>
-                    <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto del CTA</Label>
-                    <Input
-                      value={track.ctaText}
-                      onChange={(e) => updateTrack(ti, "ctaText", e.target.value)}
-                      className="bg-zinc-900 border-zinc-700 text-white mt-1 text-sm"
-                    />
+                  {/* CTA text + URL */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto del CTA</Label>
+                      <Input
+                        value={track.ctaText}
+                        onChange={(e) => updateTrack(ti, "ctaText", e.target.value)}
+                        className="bg-zinc-900 border-zinc-700 text-white mt-1 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">URL del CTA</Label>
+                      <Input
+                        value={(track as any).ctaUrl ?? ""}
+                        onChange={(e) => updateTrack(ti, "ctaUrl" as any, e.target.value)}
+                        className="bg-zinc-900 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="/diagnostico-revops"
+                      />
+                    </div>
                   </div>
 
                   {/* Delete track */}
