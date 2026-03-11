@@ -139,7 +139,7 @@ const NavDropdown = ({
   );
 };
 
-/* ─── Servicios Grouped Dropdown ─── */
+/* ─── Servicios Grouped Dropdown (Webflow-style) ─── */
 const ServiciosDropdown = () => {
   const [open, setOpen] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>();
@@ -175,66 +175,82 @@ const ServiciosDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 rounded-xl shadow-2xl p-5"
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 rounded-xl shadow-2xl"
             style={{
-              width: 480,
+              width: 720,
               background: "#ffffff",
               border: "1.5px solid rgba(0,0,0,0.08)",
             }}
           >
-            {serviciosGroups.map((group, gi) => (
-              <div key={group.label}>
-                {gi > 0 && (
-                  <div className="my-2 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
-                )}
-                {group.link ? (
-                  <Link
-                    to={group.link}
-                    onClick={() => setOpen(false)}
-                    className="block px-4 pt-2 pb-1 transition-opacity hover:opacity-70"
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.12em",
-                      color: group.color,
-                    }}
-                  >
-                    {group.label}
-                  </Link>
-                ) : (
-                  <p
-                    className="px-4 pt-2 pb-1 select-none"
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.12em",
-                      color: group.color,
-                    }}
-                  >
-                    {group.label}
-                  </p>
-                )}
-                {group.items.map((item) => (
-                  <Link
-                    key={item.label}
-                    to={item.to}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg text-[14px] transition-colors duration-150"
-                    style={{ padding: "10px 16px", color: "#1a1a2e" }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = `${group.color}14`;
-                      e.currentTarget.style.color = group.color;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.color = "#1a1a2e";
-                    }}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
+            <div className="p-6 space-y-5">
+              {serviciosGroups.map((group, gi) => {
+                const GroupIcon = group.icon;
+                return (
+                  <div key={group.label}>
+                    {gi > 0 && (
+                      <div className="mb-5 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
+                    )}
+                    {/* Category header */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <GroupIcon size={14} style={{ color: group.color }} />
+                      {group.link ? (
+                        <Link
+                          to={group.link}
+                          onClick={() => setOpen(false)}
+                          className="transition-opacity hover:opacity-70"
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.14em",
+                            color: group.color,
+                          }}
+                        >
+                          {group.label}
+                        </Link>
+                      ) : (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.14em",
+                            color: group.color,
+                          }}
+                        >
+                          {group.label}
+                        </span>
+                      )}
+                    </div>
+                    {/* Items grid */}
+                    <div className="grid grid-cols-3 gap-1">
+                      {group.items.map((item) => (
+                        <Link
+                          key={item.label}
+                          to={item.to}
+                          onClick={() => setOpen(false)}
+                          className="group rounded-lg p-3 transition-colors duration-150"
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = `${group.color}08`;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "transparent";
+                          }}
+                        >
+                          <span
+                            className="block text-[13px] font-semibold transition-colors duration-150 group-hover:text-[var(--hover-color)]"
+                            style={{ color: "#1a1a2e", "--hover-color": group.color } as React.CSSProperties}
+                          >
+                            {item.label}
+                          </span>
+                          <span className="block text-[11px] mt-0.5 leading-snug" style={{ color: "#6B7280" }}>
+                            {item.desc}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
