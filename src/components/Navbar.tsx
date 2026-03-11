@@ -349,7 +349,7 @@ const Navbar = () => {
                 />
                 Pulso Comercial
                 <ArrowUpRight size={14} style={{ flexShrink: 0 }} />
-              </Link>
+              </a>
 
               {/* CTA Button */}
               <button
