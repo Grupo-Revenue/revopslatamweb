@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, FileText, Database, Map, Search, Pencil, CheckCircle, Package } from "lucide-react";
+import DynamicCTA from "@/components/DynamicCTA";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -295,12 +296,12 @@ export default function DisenoDeProcesos() {
               {heroData.subtitle}
             </motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
-              <button className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>
-                {heroData.cta}
-              </button>
-              <button onClick={scrollToParaQuien} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">
-                {heroData.cta2_text}
-              </button>
+              {(hm.cta_style_key as string) ? (
+                <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")}>{heroData.cta}</DynamicCTA>
+              ) : (
+                <button onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{heroData.cta}</button>
+              )}
+              <button onClick={scrollToParaQuien} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{heroData.cta2_text}</button>
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
@@ -427,9 +428,11 @@ export default function DisenoDeProcesos() {
             <h3 className="text-[42px] font-extrabold leading-tight mb-4" style={{ color: "#1A1A2E" }}>{precioData.price}</h3>
             <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
             <p className="text-[13px] italic mb-6" style={{ color: "#6B7280" }}>{precioData.note}</p>
-            <button className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>
-              {precioData.cta}
-            </button>
+            {(mt(precio).cta_style_key as string) ? (
+              <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full">{precioData.cta}</DynamicCTA>
+            ) : (
+              <button onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{precioData.cta}</button>
+            )}
             <a href="#" className="text-sm font-medium hover:underline" style={{ color: "#BE1869" }}>{precioData.link}</a>
           </motion.div>
         </div>

@@ -4,6 +4,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import DynamicCTA from "@/components/DynamicCTA";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
@@ -263,7 +264,11 @@ export default function IntegracionesDesarrollo() {
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5" style={{ fontSize: "clamp(40px, 5vw, 62px)", maxWidth: 580 }}>{h.title}</motion.h1>
             <motion.p {...fadeUp(0.15)} className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
-              <button className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</button>
+              {(hm.cta_style_key as string) ? (
+                <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")}>{h.cta}</DynamicCTA>
+              ) : (
+                <button onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</button>
+              )}
               <button onClick={scrollToFit} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{h.cta2}</button>
             </motion.div>
           </div>
@@ -382,7 +387,11 @@ export default function IntegracionesDesarrollo() {
               </AnimatePresence>
             </div>
             <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
-            <button className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</button>
+            {(mt(precio).cta_style_key as string) ? (
+              <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full">{pr.cta}</DynamicCTA>
+            ) : (
+              <button onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</button>
+            )}
             <a href="#" className="text-sm font-medium hover:underline" style={{ color: "#BE1869" }}>{pr.link}</a>
           </motion.div>
         </div>
