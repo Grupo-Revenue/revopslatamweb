@@ -419,7 +419,11 @@ export default function OnboardingHubspot() {
             <h3 className="text-[42px] font-extrabold leading-tight mb-4" style={{ color: "#1A1A2E" }}>{pr.price}</h3>
             <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
             <p className="text-[13px] italic mb-6" style={{ color: "#6B7280" }}>{pr.note}</p>
-            <button className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</button>
+            {(mt(precio).cta_style_key as string) ? (
+              <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full">{pr.cta}</DynamicCTA>
+            ) : (
+              <button onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</button>
+            )}
             <Link to={pr.link_href} className="text-sm font-medium hover:underline" style={{ color: "#BE1869" }}>{pr.link}</Link>
           </motion.div>
         </div>
