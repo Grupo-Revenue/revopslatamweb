@@ -4,6 +4,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronDown, FileText, Layers, Settings, Users, BookOpen, HeartHandshake } from "lucide-react";
+import DynamicCTA from "@/components/DynamicCTA";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
