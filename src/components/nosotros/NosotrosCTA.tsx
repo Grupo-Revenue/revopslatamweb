@@ -17,6 +17,7 @@ const NosotrosCTA = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const { openLeadForm } = useLeadForm();
   const title = section?.title ?? "Si esto resuena contigo, probablemente trabajemos bien juntos.";
   const body = section?.body ?? "No trabajamos con todos. Trabajamos con empresas que quieren crecer de forma real, sana y sostenible — y con personas que valoran la honestidad por encima del discurso bonito.";
   const ctaText = section?.cta_text ?? "Hacer el Pulso Comercial";
