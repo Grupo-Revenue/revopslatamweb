@@ -70,7 +70,7 @@ const RevOpsScorecard = ({ score: targetScore, bars }: { score: number; bars: Ar
       className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-[20px] p-7"
       style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)" }}>
       <p className="text-[13px] uppercase tracking-[0.1em] mb-6" style={{ color: "rgba(255,255,255,0.5)" }}>RevOps Score™</p>
-      <p className="text-[72px] font-extrabold tracking-tight leading-none" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{score}</p>
+      <p className="text-[72px] font-extrabold tracking-tight leading-none text-white">{score}</p>
       <div className="mt-8 space-y-4">
         {bars.map((bar, i) => (
           <div key={bar.label}>
