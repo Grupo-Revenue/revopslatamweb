@@ -88,7 +88,8 @@ const CheckupGauge = () => {
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <motion.span
-              className="text-[36px] font-extrabold leading-none text-white"
+              className="text-[40px] font-extrabold leading-none"
+              style={{ color: "#ffffff", textShadow: "0 0 20px rgba(255,255,255,0.3)" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1 }}
