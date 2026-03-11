@@ -14,16 +14,9 @@ serve(async (req) => {
     const body = await req.json();
     const { first_name, last_name, email, phone, job_title, company_name, industry, team_size, has_crm } = body;
 
-    // HubSpot Forms API submission (portal ID & form GUID set via secrets)
-    const portalId = Deno.env.get("HUBSPOT_PORTAL_ID");
-    const formGuid = Deno.env.get("HUBSPOT_FORM_GUID");
-
-    if (!portalId || !formGuid) {
-      console.warn("HubSpot portal/form not configured, skipping HubSpot submission");
-      return new Response(JSON.stringify({ success: true, hubspot: false }), {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
+    // HubSpot Forms API submission (secrets opcionales; fallback público para evitar bloqueo de configuración)
+    const portalId = Deno.env.get("HUBSPOT_PORTAL_ID") ?? "1537563";
+    const formGuid = Deno.env.get("HUBSPOT_FORM_GUID") ?? "853c8d2a-091e-4dc3-ada7-6fdabf48ef8e";
 
     const hubspotUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
 
