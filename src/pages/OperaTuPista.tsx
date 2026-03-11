@@ -399,15 +399,18 @@ const ProblemSection = ({ section }: { section?: HomeSection }) => {
 };
 
 /* ─── Why Us Section ─── */
-const WhyUsSection = () => {
+const WhyUsSection = ({ section }: { section?: HomeSection }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  const { getBgStyle } = useSectionStyles(section);
 
   return (
-    <section ref={ref} style={{ background: DARK, padding: "100px 0" }}>
-      <div className="mx-auto max-w-[1100px] px-6 grid lg:grid-cols-2 gap-14 items-start">
+    <section ref={ref} className="relative overflow-hidden" style={{ background: DARK, padding: "100px 0", ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10 mx-auto max-w-[1100px] px-6 grid lg:grid-cols-2 gap-14 items-start">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}>
-          <h2 className="text-white text-2xl md:text-[40px] font-bold leading-tight mb-6">No mandamos informes. Trabajamos.</h2>
+          <h2 className="text-white text-2xl md:text-[40px] font-bold leading-tight mb-6">{section?.title ?? "No mandamos informes. Trabajamos."}</h2>
           <div className="space-y-4 mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>
             <p className="text-base leading-relaxed">La diferencia entre un consultor tradicional y RevOps as a Service es simple: nos quedamos a ejecutar.</p>
             <p className="text-base leading-relaxed">Cada sprint definimos prioridades contigo. Cada sprint entregamos resultados. Cada mes tienes visibilidad completa de qué se hizo, qué mejoró y qué sigue.</p>
