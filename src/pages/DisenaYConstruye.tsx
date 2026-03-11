@@ -153,7 +153,7 @@ const ServiceCard = ({ svc, index }: { svc: typeof DEF.servicios.services[0]; in
       : "#1A1A2E";
 
   return (
-    <motion.div {...fadeUp(0.1 + index * 0.08)} className="group rounded-[20px] p-9 bg-white border border-[#E5E7EB] hover:border-[#BE1869] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(0,0,0,0.10)] flex flex-col">
+    <motion.div {...fadeUp(0.1 + index * 0.08)} className="group rounded-[20px] p-9 bg-white border border-[#5B28B5]/30 hover:border-[#5B28B5] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(0,0,0,0.10)] flex flex-col">
       {/* Badge */}
       <span className="inline-block self-start px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.08em] font-bold mb-4"
         style={{ background: badgeBg, color: badgeColor }}>
@@ -343,8 +343,8 @@ const DisenaYConstruye = () => {
           </motion.h2>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             {probCards.map((card, i) => (
-              <motion.div key={card.title} {...fadeUp(0.1 + i * 0.1)}
-                className="group rounded-2xl p-7 bg-white border border-[#E5E7EB] hover:border-[#FF7A59]/40 transition-all duration-300 hover:shadow-lg text-left">
+            <motion.div key={card.title} {...fadeUp(0.1 + i * 0.1)}
+              className="group rounded-2xl p-7 bg-white border border-[#5B28B5]/30 hover:border-[#5B28B5] transition-all duration-300 hover:shadow-lg text-left">
                 <span className="text-3xl block mb-4" style={{ color: HUBSPOT }}>{card.icon}</span>
                 <h3 className="text-base font-bold text-[#1A1A2E] mb-2">{card.title}</h3>
                 <p className="text-sm text-[#6B7280]">{card.text}</p>
