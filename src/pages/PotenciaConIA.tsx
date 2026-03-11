@@ -12,6 +12,7 @@ import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
 import DotPattern from "@/components/services/DotPattern";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import ChipLink from "@/components/services/ChipLink";
+import DynamicCTA from "@/components/DynamicCTA";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 import { usePageSections } from "@/hooks/usePageSections";
