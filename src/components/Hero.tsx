@@ -77,21 +77,21 @@ const Hero = ({ section }: { section?: HomeSection }) => {
 
           <motion.div {...fadeUp(0.6)} className="mt-6 sm:mt-8 flex flex-col gap-3 sm:gap-4 w-full sm:w-fit">
             {(meta.cta_style_key as string) ? (
-              <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+              <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => meta.cta1_opens_lead_form ? openLeadForm("hero-cta1") : section?.cta_url && window.open(section.cta_url, "_blank")}>
                 {cta}
               </DynamicCTA>
             ) : (
-              <Button size="lg" className="gap-2 whitespace-nowrap" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+              <Button size="lg" className="gap-2 whitespace-nowrap" onClick={() => meta.cta1_opens_lead_form ? openLeadForm("hero-cta1") : section?.cta_url && window.open(section.cta_url, "_blank")}>
                 {cta}
                 <ArrowRight size={18} />
               </Button>
             )}
             {(meta.cta2_style_key as string) ? (
-              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => openLeadForm("hero")}>
+              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => meta.cta2_opens_lead_form ? openLeadForm("hero-cta2") : (meta.cta2_url as string) ? window.open(meta.cta2_url as string, "_blank") : openLeadForm("hero")}>
                 {cta2}
               </DynamicCTA>
             ) : (
-              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => openLeadForm("hero")}>
+              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => meta.cta2_opens_lead_form ? openLeadForm("hero-cta2") : (meta.cta2_url as string) ? window.open(meta.cta2_url as string, "_blank") : openLeadForm("hero")}>
                 {cta2}
               </Button>
             )}
