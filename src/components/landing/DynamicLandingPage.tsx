@@ -471,7 +471,7 @@ export default function DynamicLandingPage({ slug }: { slug: string }) {
     <div className="min-h-screen bg-dark-bg text-primary-foreground">
       <Navbar />
       <HeroSection section={getSection("hero")} />
-      <PistaStorySticky section={getSection("challenge")} />
+      {getSection("challenge") && <PistaStorySticky section={getSection("challenge")} />}
       <PainsSection section={getSection("pains")} />
       <TextBlockSection section={getSection("bridge")} defaultBg="hsl(240 33% 6%)" />
       <SolutionsSection section={getSection("solutions")} />
