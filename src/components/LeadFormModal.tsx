@@ -556,6 +556,7 @@ function PhoneField({ label, value, onChange, error }: {
       {error && <p className="text-xs mt-1 text-destructive font-medium">{error}</p>}
     </div>
   );
+}
 
 function SelectField({ label, value, options, onChange, error }: {
   label: string; value: string; options: string[];
