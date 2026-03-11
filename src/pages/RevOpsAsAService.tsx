@@ -280,11 +280,11 @@ const RevOpsAsAService = () => {
       <SectionDivider />
 
       {/* S3: Planes */}
-      <section id="planes" className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+      <SectionShell section={planesSection} className="relative" defaultBg={{ background: "#F9FAFB", padding: "120px 0" }}>
         <DotPattern opacity={0.3} />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
-        <div className="relative z-10 mx-auto max-w-[1100px] px-6">
+        <div id="planes" className="relative z-10 mx-auto max-w-[1100px] px-6">
           <SectionHeading title="Elige el nivel de operación que necesitas" highlightWord={3} />
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {plans.map((p, i) => (
@@ -295,7 +295,7 @@ const RevOpsAsAService = () => {
             Todos los planes incluyen onboarding sin costo. Compromiso mínimo 3 meses. Precios en UF + IVA.
           </p>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
