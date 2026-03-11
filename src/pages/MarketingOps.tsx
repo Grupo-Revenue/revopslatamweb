@@ -248,9 +248,11 @@ const MarketingOps = () => {
 };
 
 /* ─── Problem Section ─── */
-const ProblemSection = () => {
+const ProblemSection = ({ section }: { section?: HomeSection }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  const { getBgStyle } = useSectionStyles(section);
 
   const cards = [
     { emoji: "😓", title: "Tienen herramienta, falta operación", desc: "Marketing Hub comprado, automatizaciones a medias, campañas que nadie optimiza. La inversión existe — el retorno, no." },
@@ -258,8 +260,9 @@ const ProblemSection = () => {
   ];
 
   return (
-    <section id="problema" ref={ref} style={{ padding: "120px 0" }}>
-      <div className="mx-auto max-w-[900px] px-6">
+    <section id="problema" ref={ref} className="relative overflow-hidden" style={{ padding: "120px 0", ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10 mx-auto max-w-[900px] px-6">
         <SectionHeading title={<>La brecha entre "tenemos marketing" y<br />"el marketing funciona"</>} />
         <div className="grid md:grid-cols-2 gap-8">
           {cards.map((c, i) => (
