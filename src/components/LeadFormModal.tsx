@@ -488,9 +488,9 @@ function Field({ label, value, onChange, error, type = "text", autoFocus }: {
         value={value}
         onChange={e => onChange(e.target.value)}
         autoFocus={autoFocus}
-        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground/50 outline-none transition-all border-2 bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30"
+        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground/50 outline-none transition-all border bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30 border-border"
         style={{
-          borderColor: error ? "hsl(0 84% 60%)" : "transparent",
+          borderColor: error ? "hsl(0 84% 60%)" : undefined,
         }}
       />
       {error && <p className="text-xs mt-1 text-destructive font-medium">{error}</p>}
