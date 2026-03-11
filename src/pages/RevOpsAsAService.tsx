@@ -300,17 +300,17 @@ const RevOpsAsAService = () => {
       <SectionDivider />
 
       {/* S4: Así se ve tu mes */}
-      <section id="tu-mes" style={{ padding: "120px 0" }}>
-        <div className="mx-auto max-w-[1100px] px-6">
+      <SectionShell section={tuMesSection} className="relative" defaultBg={{ padding: "120px 0", background: "#fff" }}>
+        <div id="tu-mes" className="mx-auto max-w-[1100px] px-6">
           <SectionHeading title="Así se ve tu mes con RevOps LATAM" subtitle="Sin sorpresas. Sabes qué esperar antes de empezar." />
           <MonthlyFlow />
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S5: El equipo */}
-      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "120px 0" }}>
+      <SectionShell section={equipoSection} className="relative" defaultBg={{ background: "#1A1A2E", padding: "120px 0" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
@@ -332,7 +332,7 @@ const RevOpsAsAService = () => {
             <strong>Claridad:</strong> roles 1+2 · <strong>Momentum:</strong> roles 1+2+3+4 · <strong>Escala:</strong> equipo completo
           </p>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
