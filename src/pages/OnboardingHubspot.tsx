@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Settings, Users, FileText, RefreshCw, CheckCircle, CalendarDays } from "lucide-react";
+import DynamicCTA from "@/components/DynamicCTA";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
