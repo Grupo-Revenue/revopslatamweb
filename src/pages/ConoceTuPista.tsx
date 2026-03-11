@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useLeadForm } from "@/hooks/useLeadForm";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
@@ -160,6 +161,38 @@ const DEFAULTS = {
   porQueDiagnosticar: { title: "El diagnóstico no es un gasto.\nEs el inicio de una relación.", body: "El 70% de nuestros clientes que pasan por un diagnóstico continúan con un proyecto de implementación o un retainer. No porque los convenzamos — sino porque el diagnóstico revela oportunidades concretas que no querían dejar pasar.\n\nUn buen diagnóstico no te dice que tienes problemas. Te dice cuánto te están costando — y qué pasa si los resuelves.", stats: [{ value: "14 años", label: "de experiencia" }, { value: "Platinum", label: "HubSpot Partners" }, { value: "Cientos", label: "de equipos alineados" }] },
   ctaFinal: { title: "¿No sabes cuál diagnóstico necesitas?", subtitle: "En 15 minutos de conversación te ayudamos a identificar el nivel correcto — sin compromiso.", cta_text: "Agendar conversación gratuita →", cta_url: "#" },
 };
+
+/* ─── CTA Final Button with lead form support ─── */
+function CTAFinalButton({ section, cta_text, cta_url, cfStyle }: {
+  section?: HomeSection; cta_text: string; cta_url: string;
+  cfStyle: (key: string) => React.CSSProperties;
+}) {
+  const { openLeadForm } = useLeadForm();
+  const m = meta(section);
+  const opensForm = m.cta1_opens_lead_form === true;
+
+  if (opensForm) {
+    return (
+      <button
+        onClick={() => openLeadForm("conoce-tu-pista-cta-final")}
+        className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
+        style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
+      >
+        {cta_text}
+      </button>
+    );
+  }
+
+  return (
+    <Link
+      to={cta_url}
+      className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
+      style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
+    >
+      {cta_text}
+    </Link>
+  );
+}
 
 /* ═══════════════ PAGE ═══════════════ */
 const ConoceTuPista = () => {
@@ -384,13 +417,7 @@ const ConoceTuPista = () => {
             {cf.subtitle}
           </motion.p>
           <motion.div {...fadeUp(0.2)} className="mt-8">
-            <Link
-              to={cf.cta_url}
-              className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
-              style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
-            >
-              {cf.cta_text}
-            </Link>
+            <CTAFinalButton section={ctaFinal} cta_text={cf.cta_text} cta_url={cf.cta_url} cfStyle={cfStyle} />
           </motion.div>
         </div>
       </SectionShell>
