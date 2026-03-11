@@ -131,6 +131,9 @@ const SoporteHubspot = () => {
   const { getSection, loading } = usePageSections("soporte-hubspot");
 
   const hero = getSection("hero");
+  const planesSection = getSection("planes");
+  const paraQuienSection = getSection("para-quien");
+  const ctaFinalSection = getSection("cta-final");
   const hm = mt(hero);
 
   const h = {
