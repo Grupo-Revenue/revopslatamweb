@@ -235,6 +235,7 @@ const DEF = {
 /* ═══════════════ PAGE ═══════════════ */
 const RevOpsCheckup = () => {
   const { getSection, loading } = usePageSections("revops-checkup");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
   const problema = getSection("problema");
