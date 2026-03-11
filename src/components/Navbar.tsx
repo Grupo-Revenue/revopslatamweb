@@ -182,70 +182,58 @@ const ServiciosDropdown = () => {
               border: "1.5px solid rgba(0,0,0,0.08)",
             }}
           >
-            <div className="p-6 space-y-5">
+            <div className="p-5 space-y-4">
               {serviciosGroups.map((group, gi) => {
                 const GroupIcon = group.icon;
                 return (
                   <div key={group.label}>
                     {gi > 0 && (
-                      <div className="mb-5 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
+                      <div className="mb-4 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
                     )}
-                    {/* Category header */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <GroupIcon size={14} style={{ color: group.color }} />
-                      {group.link ? (
-                        <Link
-                          to={group.link}
-                          onClick={() => setOpen(false)}
-                          className="transition-opacity hover:opacity-70"
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 700,
-                            letterSpacing: "0.14em",
-                            color: group.color,
-                          }}
-                        >
-                          {group.label}
-                        </Link>
-                      ) : (
-                        <span
-                          style={{
-                            fontSize: 11,
-                            fontWeight: 700,
-                            letterSpacing: "0.14em",
-                            color: group.color,
-                          }}
-                        >
-                          {group.label}
-                        </span>
-                      )}
-                    </div>
-                    {/* Items grid */}
-                    <div className="grid grid-cols-3 gap-1">
-                      {group.items.map((item) => (
-                        <Link
-                          key={item.label}
-                          to={item.to}
-                          onClick={() => setOpen(false)}
-                          className="group rounded-lg p-3 transition-colors duration-150"
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = `${group.color}08`;
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "transparent";
-                          }}
-                        >
-                          <span
-                            className="block text-[13px] font-semibold transition-colors duration-150 group-hover:text-[var(--hover-color)]"
-                            style={{ color: "#1a1a2e", "--hover-color": group.color } as React.CSSProperties}
+                    <div className="flex gap-5">
+                      {/* Left: Category label */}
+                      <div className="w-[140px] shrink-0 pt-1">
+                        <div className="flex items-center gap-2">
+                          <GroupIcon size={13} style={{ color: group.color }} />
+                          {group.link ? (
+                            <Link
+                              to={group.link}
+                              onClick={() => setOpen(false)}
+                              className="transition-opacity hover:opacity-70"
+                              style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.13em", color: group.color }}
+                            >
+                              {group.label}
+                            </Link>
+                          ) : (
+                            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.13em", color: group.color }}>
+                              {group.label}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      {/* Right: Items grid */}
+                      <div className="flex-1 grid grid-cols-2 gap-x-1 gap-y-0.5">
+                        {group.items.map((item) => (
+                          <Link
+                            key={item.label}
+                            to={item.to}
+                            onClick={() => setOpen(false)}
+                            className="group rounded-lg px-3 py-2 transition-colors duration-150"
+                            onMouseEnter={(e) => { e.currentTarget.style.background = `${group.color}08`; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
                           >
-                            {item.label}
-                          </span>
-                          <span className="block text-[11px] mt-0.5 leading-snug" style={{ color: "#6B7280" }}>
-                            {item.desc}
-                          </span>
-                        </Link>
-                      ))}
+                            <span
+                              className="block text-[13px] font-semibold transition-colors duration-150 group-hover:text-[var(--hover-color)]"
+                              style={{ color: "#1a1a2e", "--hover-color": group.color } as React.CSSProperties}
+                            >
+                              {item.label}
+                            </span>
+                            <span className="block text-[11px] mt-0.5 leading-snug" style={{ color: "#6B7280" }}>
+                              {item.desc}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 );
