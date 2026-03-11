@@ -56,6 +56,8 @@ export type Database = {
           is_qualified: boolean
           job_title: string
           last_name: string
+          lead_score: number | null
+          main_pain: string | null
           phone: string | null
           source_page: string | null
           team_size: string
@@ -71,6 +73,8 @@ export type Database = {
           is_qualified?: boolean
           job_title: string
           last_name: string
+          lead_score?: number | null
+          main_pain?: string | null
           phone?: string | null
           source_page?: string | null
           team_size: string
@@ -86,6 +90,8 @@ export type Database = {
           is_qualified?: boolean
           job_title?: string
           last_name?: string
+          lead_score?: number | null
+          main_pain?: string | null
           phone?: string | null
           source_page?: string | null
           team_size?: string
