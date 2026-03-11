@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Layers, Rocket, Settings, LayoutDashboard, Cable } from "lucide-react";
+import hubspotPlatinumLogo from "@/assets/logos/hubspot-platinum.webp";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
