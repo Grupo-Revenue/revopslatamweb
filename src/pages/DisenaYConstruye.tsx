@@ -14,6 +14,7 @@ import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
+import DynamicCTA from "@/components/DynamicCTA";
 
 
 /* ─── constants ─── */
@@ -315,11 +316,9 @@ const DisenaYConstruye = () => {
             {heroSubtitle}
           </motion.p>
           <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
-              style={{ background: (hm.cta_bg as string) || GRADIENT }}
-              onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })}>
+            <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })} className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]">
               {heroCta}
-            </button>
+            </DynamicCTA>
             <Link to={heroCta2Url} className="text-white/80 hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">
               {heroCta2}
             </Link>
@@ -424,11 +423,9 @@ const DisenaYConstruye = () => {
           </motion.h2>
           <motion.p {...fadeUp(0.1)} className="mt-4 text-[#6B7280] text-lg">{ctaBody}</motion.p>
           <motion.div {...fadeUp(0.2)} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-shadow hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
-              style={{ background: GRADIENT }}
-              onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })}>
+            <DynamicCTA styleKey={(mt(ctaFinal).cta_style_key as string)} onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })} className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-shadow hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]">
               {ctaCta}
-            </button>
+            </DynamicCTA>
             <Link to={ctaCta2Url}
               className="px-6 py-3 rounded-full text-sm font-semibold border-2 border-[#BE1869]/30 hover:border-[#BE1869] transition-colors"
               style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
