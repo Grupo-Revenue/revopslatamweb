@@ -110,6 +110,11 @@ const MarketingOps = () => {
   const { getSection, loading } = usePageSections("marketing-ops");
 
   const hero = getSection("hero");
+  const problemaSection = getSection("problema");
+  const operamosSection = getSection("operamos");
+  const comoFuncionaSection = getSection("como-funciona");
+  const paraQuienSection = getSection("para-quien");
+  const ctaFinalSection = getSection("cta-final");
   const hm = mt(hero);
 
   const h = {
@@ -157,12 +162,12 @@ const MarketingOps = () => {
       </SectionShell>
 
       {/* S2: El Problema */}
-      <ProblemSection />
+      <ProblemSection section={problemaSection} />
 
       <SectionDivider />
 
       {/* S3: Lo que operamos */}
-      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "120px 0" }}>
+      <SectionShell section={operamosSection} className="relative" defaultBg={{ background: "#1A1A2E", padding: "120px 0" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
@@ -181,12 +186,12 @@ const MarketingOps = () => {
             })}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S4: Cómo funciona */}
-      <section style={{ padding: "120px 0" }}>
+      <SectionShell section={comoFuncionaSection} className="relative" defaultBg={{ padding: "120px 0", background: "#fff" }}>
         <div className="mx-auto max-w-[900px] px-6">
           <SectionHeading title="Integrado a tu operación, no en paralelo" />
           <div className="grid md:grid-cols-2 gap-8">
@@ -204,23 +209,26 @@ const MarketingOps = () => {
             ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S5: Para quién es */}
-      <ForWhomSection
-        yesItems={["Tienes Marketing Hub pero no lo operas con su potencial", "Nadie tiene tiempo de gestionar campañas con criterio", "El handoff marketing-ventas es caótico o inexistente", "Quieres pauta gestionada por alguien que entiende el CRM"]}
-        noItems={[
-          { text: "Buscas agencia creativa, contenido o branding", note: "Ese no es nuestro foco" },
-          { text: "No tienes Marketing Hub", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
-        ]}
-      />
+      <SectionShell section={paraQuienSection} className="relative" defaultBg={{ background: "#F9FAFB" }}>
+        <ForWhomSection
+          background="transparent"
+          yesItems={["Tienes Marketing Hub pero no lo operas con su potencial", "Nadie tiene tiempo de gestionar campañas con criterio", "El handoff marketing-ventas es caótico o inexistente", "Quieres pauta gestionada por alguien que entiende el CRM"]}
+          noItems={[
+            { text: "Buscas agencia creativa, contenido o branding", note: "Ese no es nuestro foco" },
+            { text: "No tienes Marketing Hub", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
+          ]}
+        />
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S6: CTA Final */}
-      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "100px 0" }}>
+      <SectionShell section={ctaFinalSection} className="relative" defaultBg={{ background: "#1A1A2E", padding: "100px 0" }}>
         <BackgroundOrbs variant="section" />
         <div className="relative z-10 mx-auto max-w-[480px] px-6">
           <div className="text-center rounded-[20px] p-10" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", backdropFilter: "blur(12px)" }}>
@@ -232,7 +240,7 @@ const MarketingOps = () => {
             </DynamicCTA>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <Footer />
     </div>
@@ -240,9 +248,11 @@ const MarketingOps = () => {
 };
 
 /* ─── Problem Section ─── */
-const ProblemSection = () => {
+const ProblemSection = ({ section }: { section?: HomeSection }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  const { getBgStyle } = useSectionStyles(section);
 
   const cards = [
     { emoji: "😓", title: "Tienen herramienta, falta operación", desc: "Marketing Hub comprado, automatizaciones a medias, campañas que nadie optimiza. La inversión existe — el retorno, no." },
@@ -250,8 +260,9 @@ const ProblemSection = () => {
   ];
 
   return (
-    <section id="problema" ref={ref} style={{ padding: "120px 0" }}>
-      <div className="mx-auto max-w-[900px] px-6">
+    <section id="problema" ref={ref} className="relative overflow-hidden" style={{ padding: "120px 0", ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10 mx-auto max-w-[900px] px-6">
         <SectionHeading title={<>La brecha entre "tenemos marketing" y<br />"el marketing funciona"</>} />
         <div className="grid md:grid-cols-2 gap-8">
           {cards.map((c, i) => (

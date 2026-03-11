@@ -222,6 +222,12 @@ const RevOpsAsAService = () => {
   const { getSection, loading } = usePageSections("revops-as-a-service");
 
   const hero = getSection("hero");
+  const planesSection = getSection("planes");
+  const tuMesSection = getSection("tu-mes");
+  const equipoSection = getSection("equipo");
+  const paraQuienSection = getSection("para-quien");
+  const argumentoPrecioSection = getSection("argumento-precio");
+  const ctaFinalSection = getSection("cta-final");
   const hm = mt(hero);
 
   const h = {
@@ -274,11 +280,11 @@ const RevOpsAsAService = () => {
       <SectionDivider />
 
       {/* S3: Planes */}
-      <section id="planes" className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+      <SectionShell section={planesSection} className="relative" defaultBg={{ background: "#F9FAFB", padding: "120px 0" }}>
         <DotPattern opacity={0.3} />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
-        <div className="relative z-10 mx-auto max-w-[1100px] px-6">
+        <div id="planes" className="relative z-10 mx-auto max-w-[1100px] px-6">
           <SectionHeading title="Elige el nivel de operación que necesitas" highlightWord={3} />
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {plans.map((p, i) => (
@@ -289,22 +295,22 @@ const RevOpsAsAService = () => {
             Todos los planes incluyen onboarding sin costo. Compromiso mínimo 3 meses. Precios en UF + IVA.
           </p>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S4: Así se ve tu mes */}
-      <section id="tu-mes" style={{ padding: "120px 0" }}>
-        <div className="mx-auto max-w-[1100px] px-6">
+      <SectionShell section={tuMesSection} className="relative" defaultBg={{ padding: "120px 0", background: "#fff" }}>
+        <div id="tu-mes" className="mx-auto max-w-[1100px] px-6">
           <SectionHeading title="Así se ve tu mes con RevOps LATAM" subtitle="Sin sorpresas. Sabes qué esperar antes de empezar." />
           <MonthlyFlow />
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S5: El equipo */}
-      <section className="relative overflow-hidden" style={{ background: "#1A1A2E", padding: "120px 0" }}>
+      <SectionShell section={equipoSection} className="relative" defaultBg={{ background: "#1A1A2E", padding: "120px 0" }}>
         <BackgroundOrbs variant="section" />
         <NoiseOverlay opacity={0.03} />
         <div className="relative z-10 mx-auto max-w-[1100px] px-6">
@@ -326,25 +332,27 @@ const RevOpsAsAService = () => {
             <strong>Claridad:</strong> roles 1+2 · <strong>Momentum:</strong> roles 1+2+3+4 · <strong>Escala:</strong> equipo completo
           </p>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S6: Para quién es */}
-      <ForWhomSection
-        background="#fff"
-        yesItems={["Tienes HubSpot pero nadie lo opera estratégicamente", "Tu equipo apaga incendios en lugar de mejorar procesos", "Quieres decisiones respaldadas por datos, no intuición", "Estás creciendo y no quieres construir equipo interno"]}
-        noItems={[
-          { text: "Aún no tienes HubSpot", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
-          { text: "No sabes dónde está el problema", chip: "Conoce tu pista →", chipTo: "/conoce-tu-pista" },
-          { text: "Solo necesitas soporte técnico", chip: "Soporte HubSpot →", chipTo: "/soporte-hubspot" },
-        ]}
-      />
+      <SectionShell section={paraQuienSection} className="relative" defaultBg={{ background: "#fff" }}>
+        <ForWhomSection
+          background="transparent"
+          yesItems={["Tienes HubSpot pero nadie lo opera estratégicamente", "Tu equipo apaga incendios en lugar de mejorar procesos", "Quieres decisiones respaldadas por datos, no intuición", "Estás creciendo y no quieres construir equipo interno"]}
+          noItems={[
+            { text: "Aún no tienes HubSpot", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
+            { text: "No sabes dónde está el problema", chip: "Conoce tu pista →", chipTo: "/conoce-tu-pista" },
+            { text: "Solo necesitas soporte técnico", chip: "Soporte HubSpot →", chipTo: "/soporte-hubspot" },
+          ]}
+        />
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S7: Argumento precio */}
-      <section className="relative overflow-hidden" style={{ background: DARK, padding: "100px 0" }}>
+      <SectionShell section={argumentoPrecioSection} className="relative" defaultBg={{ background: DARK, padding: "100px 0" }}>
         <BackgroundOrbs variant="section" />
         <div className="relative z-10 mx-auto max-w-[700px] px-6 text-center">
           <SectionHeading title="Lo que cuesta no tenerlo" light />
@@ -353,12 +361,12 @@ const RevOpsAsAService = () => {
             Estimación basada en rangos salariales de mercado en Chile para perfiles RevOps senior, 2025.
           </p>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S8: CTA Final */}
-      <section className="relative overflow-hidden" style={{ padding: "100px 0", background: "#fff" }}>
+      <SectionShell section={ctaFinalSection} className="relative" defaultBg={{ padding: "100px 0", background: "#fff" }}>
         <GradientMesh variant="center" />
         <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center">
           <h2 className="font-bold mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)", color: DARK }}>El primer sprint empieza cuando tú quieras</h2>
@@ -367,7 +375,7 @@ const RevOpsAsAService = () => {
             <button className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>Conversemos primero →</button>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <Footer />
     </div>
