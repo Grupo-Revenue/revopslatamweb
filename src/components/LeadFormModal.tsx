@@ -124,7 +124,7 @@ const step1Schema = z.object({
   first_name: z.string().trim().min(1, "Requerido").max(80),
   last_name: z.string().trim().min(1, "Requerido").max(80),
   email: z.string().trim().email("Correo inválido").max(200),
-  phone: z.string().trim().min(1, "Requerido").max(30),
+  phone: z.string().trim().min(7, "Mínimo 7 dígitos").max(20).regex(/^\+?\d[\d\s\-()]*$/, "Solo números válidos"),
 });
 
 interface FormData {
