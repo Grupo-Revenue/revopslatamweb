@@ -124,7 +124,8 @@ const step1Schema = z.object({
   first_name: z.string().trim().min(1, "Requerido").max(80),
   last_name: z.string().trim().min(1, "Requerido").max(80),
   email: z.string().trim().email("Correo inválido").max(200),
-  phone: z.string().trim().max(30).optional(),
+  phone: z.string().trim().min(1, "Requerido").max(30),
+  consent: z.literal(true, { errorMap: () => ({ message: "Debes aceptar para continuar" }) }),
 });
 
 interface FormData {
