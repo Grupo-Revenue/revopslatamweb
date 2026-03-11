@@ -498,6 +498,65 @@ function Field({ label, value, onChange, error, type = "text", autoFocus }: {
   );
 }
 
+const COUNTRY_CODES = [
+  { code: "+56", flag: "🇨🇱", label: "CL" },
+  { code: "+52", flag: "🇲🇽", label: "MX" },
+  { code: "+57", flag: "🇨🇴", label: "CO" },
+  { code: "+54", flag: "🇦🇷", label: "AR" },
+  { code: "+51", flag: "🇵🇪", label: "PE" },
+  { code: "+1", flag: "🇺🇸", label: "US" },
+  { code: "+55", flag: "🇧🇷", label: "BR" },
+  { code: "+593", flag: "🇪🇨", label: "EC" },
+  { code: "+58", flag: "🇻🇪", label: "VE" },
+  { code: "+34", flag: "🇪🇸", label: "ES" },
+];
+
+function PhoneField({ label, value, onChange, error }: {
+  label: string; value: string; onChange: (v: string) => void; error?: string;
+}) {
+  const [countryCode, setCountryCode] = useState(COUNTRY_CODES[0].code);
+
+  // Extract just the number part (without country code)
+  const numberPart = value.startsWith("+") ? value.replace(/^\+\d{1,3}\s?/, "") : value;
+
+  const handleNumberChange = (raw: string) => {
+    // Only allow digits, spaces, dashes
+    const cleaned = raw.replace(/[^\d\s\-]/g, "");
+    onChange(cleaned ? `${countryCode} ${cleaned}` : "");
+  };
+
+  const handleCodeChange = (newCode: string) => {
+    setCountryCode(newCode);
+    if (numberPart) onChange(`${newCode} ${numberPart}`);
+  };
+
+  return (
+    <div className="mt-4">
+      <label className="block text-sm font-semibold text-foreground mb-1.5">{label}</label>
+      <div className="flex gap-2">
+        <select
+          value={countryCode}
+          onChange={e => handleCodeChange(e.target.value)}
+          className="px-2 py-3 rounded-xl text-[14px] text-foreground outline-none border bg-muted/40 focus:border-pink border-border cursor-pointer appearance-none text-center w-[90px] shrink-0"
+          style={{ borderColor: error ? "hsl(0 84% 60%)" : undefined }}
+        >
+          {COUNTRY_CODES.map(c => (
+            <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+          ))}
+        </select>
+        <input
+          type="tel"
+          value={numberPart}
+          onChange={e => handleNumberChange(e.target.value)}
+          placeholder="9 1234 5678"
+          className="flex-1 px-4 py-3 rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground/40 outline-none transition-all border bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30 border-border"
+          style={{ borderColor: error ? "hsl(0 84% 60%)" : undefined }}
+        />
+      </div>
+      {error && <p className="text-xs mt-1 text-destructive font-medium">{error}</p>}
+    </div>
+  );
+
 function SelectField({ label, value, options, onChange, error }: {
   label: string; value: string; options: string[];
   onChange: (v: string) => void; error?: string;
