@@ -77,7 +77,7 @@ const initial: FormData = {
 };
 
 // ── HubSpot Meetings URL (placeholder – user will provide) ──
-const HUBSPOT_MEETINGS_URL = "https://meetings.hubspot.com/revopslatam";
+const HUBSPOT_MEETINGS_URL = "https://meetings.hubspot.com/febe-moena/reuniones-landing-revops-usan-hubspot";
 
 // ── Component ────────────────────────────────────────────────
 export default function LeadFormModal() {
