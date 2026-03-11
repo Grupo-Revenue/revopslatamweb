@@ -133,6 +133,7 @@ interface FormData {
   last_name: string;
   email: string;
   phone: string;
+  consent: boolean;
   job_title: string;
   company_name: string;
   industry: string;
@@ -142,7 +143,7 @@ interface FormData {
 }
 
 const initial: FormData = {
-  first_name: "", last_name: "", email: "", phone: "",
+  first_name: "", last_name: "", email: "", phone: "", consent: false,
   job_title: "", company_name: "", industry: "", team_size: "",
   has_crm: "", main_pain: "",
 };
