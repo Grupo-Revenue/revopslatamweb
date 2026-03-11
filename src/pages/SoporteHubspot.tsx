@@ -196,11 +196,11 @@ const SoporteHubspot = () => {
       <SectionDivider />
 
       {/* S3: Planes */}
-      <section id="planes" className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+      <SectionShell section={planesSection} className="relative" defaultBg={{ background: "#F9FAFB", padding: "120px 0" }}>
         <DotPattern opacity={0.3} />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
-        <div className="relative z-10 mx-auto max-w-[1100px] px-6">
+        <div id="planes" className="relative z-10 mx-auto max-w-[1100px] px-6">
           <SectionHeading title="Elige tu plan y contrata ahora" subtitle="Sin reuniones de venta. Sin propuestas. Elige, contrata y asignamos tu especialista en 24 horas hábiles." />
           <div className="grid md:grid-cols-3 gap-8 items-start">
             {plans.map((p, i) => (
@@ -211,7 +211,7 @@ const SoporteHubspot = () => {
             Todos los planes requieren portal HubSpot activo. Servicio reactivo — se activa vía ticket. No incluye consultoría estratégica.
           </p>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
