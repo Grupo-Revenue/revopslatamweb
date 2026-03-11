@@ -254,9 +254,9 @@ const RevOpsAsAService = () => {
             <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>{h.title}</h1>
             <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4">
-              <button onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || GRADIENT, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]">
                 {h.cta_text}
-              </button>
+              </DynamicCTA>
               <button onClick={() => scrollTo("tu-mes")} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer">
                 {h.cta2_text}
               </button>
