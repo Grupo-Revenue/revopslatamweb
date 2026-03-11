@@ -142,15 +142,15 @@ const ServiceCard = ({ svc, index }: { svc: typeof DEF.servicios.services[0]; in
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const Icon = SERVICE_ICONS[index] || Layers;
   const badgeBg = svc.badgeType === "hubspot"
-    ? `rgba(255,122,89,0.1)`
+    ? `rgba(91,40,181,0.1)`
     : svc.badgeType === "brand"
       ? GRADIENT
-      : "rgba(26,26,46,0.06)";
+      : `rgba(91,40,181,0.1)`;
   const badgeColor = svc.badgeType === "hubspot"
-    ? HUBSPOT
+    ? `#5B28B5`
     : svc.badgeType === "brand"
       ? "#fff"
-      : "#1A1A2E";
+      : `#5B28B5`;
 
   return (
     <motion.div {...fadeUp(0.1 + index * 0.08)} className="group rounded-[20px] p-9 bg-white border border-[#5B28B5]/30 hover:border-[#5B28B5] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(0,0,0,0.10)] flex flex-col">
