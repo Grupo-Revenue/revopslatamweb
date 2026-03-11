@@ -177,7 +177,7 @@ const ServiciosDropdown = () => {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 rounded-xl shadow-2xl"
             style={{
-              width: 720,
+              width: 920,
               background: "#ffffff",
               border: "1.5px solid rgba(0,0,0,0.08)",
             }}
