@@ -36,19 +36,87 @@ const CRM_OPTIONS = [
   "Sí, usamos otro CRM",
 ];
 
-// ── Qualification ────────────────────────────────────────────
-const DECISION_MAKERS = new Set([
-  "Dueño / Socio / Founder",
-  "CEO / Gerente General",
-  "Gerente Comercial / Ventas",
-  "Gerente Marketing / Growth / RevOps",
-  "Jefe de Ventas / Supervisor Comercial",
-]);
+// ── Pain options per CRM type ────────────────────────────────
+const PAIN_NO_CRM = [
+  "Llevamos clientes en Excel/WhatsApp y está desordenado",
+  "Queremos comenzar con HubSpot como nuestro CRM",
+  "Queremos profesionalizar el proceso comercial",
+  "No tenemos visibilidad del funnel",
+  "Perdemos oportunidades por falta de seguimiento",
+  "Solo estoy explorando, no es prioridad",
+];
 
-const GOOD_TEAM_SIZES = new Set(["2–3 vendedores", "4–10 vendedores", "10+ vendedores"]);
+const PAIN_HUBSPOT = [
+  "Automatizaciones mal diseñadas",
+  "Reporting / pipelines desordenados",
+  "No estamos aprovechando la herramienta",
+  "Necesitamos mejores prácticas de RevOps",
+  "HubSpot no está bien configurado",
+  "Problemas de integraciones",
+  "Solo estoy explorando, no es prioridad",
+];
 
-function isQualified(data: FormData): boolean {
-  return DECISION_MAKERS.has(data.job_title) && GOOD_TEAM_SIZES.has(data.team_size);
+const PAIN_OTHER_CRM = [
+  "No se integra con nuestras herramientas",
+  "No tenemos reporting ni visibilidad",
+  "Queremos migrarnos a HubSpot",
+  "El CRM no se adapta al proceso comercial",
+  "El CRM actual es limitado o difícil de usar",
+  "Solo estoy explorando, no es prioridad",
+];
+
+// ── Scoring tables ───────────────────────────────────────────
+const CARGO_SCORE: Record<string, number> = {
+  "Dueño / Socio / Founder": 5,
+  "CEO / Gerente General": 10,
+  "Gerente Comercial / Ventas": 10,
+  "Gerente Marketing / Growth / RevOps": 10,
+  "Jefe de Ventas / Supervisor Comercial": 5,
+  "Vendedor / Ejecutivo Comercial": 0,
+  "Otro": 0,
+};
+
+const RUBRO_SCORE: Record<string, number> = {
+  "SaaS B2B": 20,
+  "Servicios B2C": 20,
+  "Servicios B2B": 20,
+  "Venta de productos B2B": 20,
+  "Educación Superior": 20,
+  "Inmobiliaria": 20,
+  "Broker Inmobiliario": -20,
+  "Retail": -10,
+  "E-commerce": -10,
+  "Salud": 10,
+  "Colegios": -10,
+  "Otros": 15,
+};
+
+const EQUIPO_SCORE: Record<string, number> = {
+  "Solo el dueño vende": -20,
+  "1 vendedor": -10,
+  "2–3 vendedores": 10,
+  "4–10 vendedores": 20,
+  "10+ vendedores": 25,
+};
+
+function getPainOptions(crm: string): string[] {
+  if (crm.includes("HubSpot")) return PAIN_HUBSPOT;
+  if (crm.includes("otro CRM")) return PAIN_OTHER_CRM;
+  return PAIN_NO_CRM;
+}
+
+function calculateScore(data: FormData): number {
+  let score = 0;
+  score += CARGO_SCORE[data.job_title] ?? 0;
+  score += RUBRO_SCORE[data.industry] ?? 0;
+  score += EQUIPO_SCORE[data.team_size] ?? 0;
+  // Pain scoring
+  if (data.main_pain === "Solo estoy explorando, no es prioridad") {
+    score -= 10;
+  } else if (data.main_pain) {
+    score += 10;
+  }
+  return score;
 }
 
 // ── Validation ───────────────────────────────────────────────
@@ -69,35 +137,35 @@ interface FormData {
   industry: string;
   team_size: string;
   has_crm: string;
+  main_pain: string;
 }
 
 const initial: FormData = {
   first_name: "", last_name: "", email: "", phone: "",
-  job_title: "", company_name: "", industry: "", team_size: "", has_crm: "",
+  job_title: "", company_name: "", industry: "", team_size: "",
+  has_crm: "", main_pain: "",
 };
 
-// ── HubSpot Meetings URL (placeholder – user will provide) ──
+// ── HubSpot Meetings embed URL ──
 const HUBSPOT_MEETINGS_URL = "https://meetings.hubspot.com/febe-moena/reuniones-landing-revops-usan-hubspot";
 
 // ── Component ────────────────────────────────────────────────
 export default function LeadFormModal() {
   const { isOpen, closeLeadForm, sourcePage } = useLeadForm();
-  const [step, setStep] = useState(0); // 0-2 = form steps, 3 = result
+  const [step, setStep] = useState(0); // 0-3 = form, 4 = result
   const [form, setForm] = useState<FormData>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [qualified, setQualified] = useState(false);
+  const [score, setScore] = useState(0);
 
   const set = (key: keyof FormData, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
     setErrors(prev => { const n = { ...prev }; delete n[key]; return n; });
   };
 
-  const reset = () => { setStep(0); setForm(initial); setErrors({}); setQualified(false); };
-
+  const reset = () => { setStep(0); setForm(initial); setErrors({}); setScore(0); };
   const handleClose = () => { closeLeadForm(); setTimeout(reset, 300); };
 
-  // ── Step validation ──
   const validateStep = (): boolean => {
     if (step === 0) {
       const result = step1Schema.safeParse(form);
@@ -119,16 +187,22 @@ export default function LeadFormModal() {
     if (step === 2) {
       if (!form.has_crm) { setErrors({ has_crm: "Selecciona una opción" }); return false; }
     }
+    if (step === 3) {
+      if (!form.main_pain) { setErrors({ main_pain: "Selecciona tu principal desafío" }); return false; }
+    }
     return true;
   };
 
   const next = async () => {
     if (!validateStep()) return;
-    if (step < 2) { setStep(step + 1); return; }
-    // Submit
+    if (step < 3) { setStep(step + 1); return; }
+
+    // Submit on step 3
     setSubmitting(true);
-    const q = isQualified(form);
-    setQualified(q);
+    const finalScore = calculateScore(form);
+    setScore(finalScore);
+    const qualified = finalScore >= 40;
+
     try {
       const leadData = {
         first_name: form.first_name.trim(),
@@ -140,22 +214,26 @@ export default function LeadFormModal() {
         industry: form.industry,
         team_size: form.team_size,
         has_crm: form.has_crm,
-        is_qualified: q,
+        main_pain: form.main_pain,
+        lead_score: finalScore,
+        is_qualified: qualified,
         source_page: sourcePage,
       };
-      // Save to DB + submit to HubSpot in parallel
+
       await Promise.allSettled([
         (supabase as any).from("leads").insert(leadData),
         supabase.functions.invoke("submit-lead-hubspot", { body: leadData }),
       ]);
     } catch (_) { /* best effort */ }
+
     setSubmitting(false);
-    setStep(3);
+    setStep(4);
   };
 
   if (!isOpen) return null;
 
-  const stepLabels = ["Tus datos", "Tu empresa", "Tu CRM"];
+  const stepLabels = ["Tus datos", "Tu empresa", "Tu CRM", "Tu desafío"];
+  const qualified = score >= 40;
 
   return (
     <AnimatePresence>
@@ -175,17 +253,22 @@ export default function LeadFormModal() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-lg rounded-2xl overflow-hidden"
-            style={{ background: "hsl(240 33% 10%)", border: "1px solid rgba(255,255,255,0.1)" }}
+            className="relative w-full overflow-hidden rounded-2xl"
+            style={{
+              background: "hsl(240 33% 10%)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              maxWidth: step === 4 && qualified ? "720px" : "512px",
+              maxHeight: "90vh",
+              transition: "max-width 0.3s ease",
+            }}
             onClick={e => e.stopPropagation()}
           >
-            {/* Close */}
             <button onClick={handleClose} className="absolute top-4 right-4 z-10 text-white/50 hover:text-white transition-colors">
               <X size={20} />
             </button>
 
             {/* Progress bar */}
-            {step < 3 && (
+            {step < 4 && (
               <div className="px-6 pt-6">
                 <div className="flex gap-2 mb-1">
                   {stepLabels.map((label, i) => (
@@ -208,7 +291,7 @@ export default function LeadFormModal() {
               </div>
             )}
 
-            <div className="px-6 pb-6 pt-4">
+            <div className="px-6 pb-6 pt-4 overflow-y-auto" style={{ maxHeight: step === 4 && qualified ? "80vh" : undefined }}>
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <StepWrapper key="s0">
@@ -236,14 +319,14 @@ export default function LeadFormModal() {
 
                 {step === 2 && (
                   <StepWrapper key="s2">
-                    <h3 className="text-xl font-bold text-white mb-1">Último paso 🎯</h3>
+                    <h3 className="text-xl font-bold text-white mb-1">Tu CRM 💻</h3>
                     <p className="text-sm text-white/50 mb-5">¿Cuentas con CRM?</p>
                     <div className="flex flex-col gap-2">
                       {CRM_OPTIONS.map(opt => (
                         <button
                           key={opt}
                           type="button"
-                          onClick={() => set("has_crm", opt)}
+                          onClick={() => { set("has_crm", opt); set("main_pain", ""); }}
                           className="text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
                           style={{
                             background: form.has_crm === opt ? "rgba(190,24,105,0.2)" : "rgba(255,255,255,0.05)",
@@ -259,32 +342,57 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 3 && qualified && (
+                {step === 3 && (
+                  <StepWrapper key="s3">
+                    <h3 className="text-xl font-bold text-white mb-1">Tu principal desafío 🎯</h3>
+                    <p className="text-sm text-white/50 mb-5">¿Cuál es el problema que más te resuena?</p>
+                    <div className="flex flex-col gap-2">
+                      {getPainOptions(form.has_crm).map(opt => (
+                        <button
+                          key={opt}
+                          type="button"
+                          onClick={() => set("main_pain", opt)}
+                          className="text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+                          style={{
+                            background: form.main_pain === opt ? "rgba(190,24,105,0.2)" : "rgba(255,255,255,0.05)",
+                            border: `1.5px solid ${form.main_pain === opt ? "hsl(337 74% 44%)" : "rgba(255,255,255,0.1)"}`,
+                            color: form.main_pain === opt ? "white" : "rgba(255,255,255,0.7)",
+                          }}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                    {errors.main_pain && <p className="text-xs mt-1" style={{ color: "hsl(0 84% 60%)" }}>{errors.main_pain}</p>}
+                  </StepWrapper>
+                )}
+
+                {step === 4 && qualified && (
                   <StepWrapper key="qualified">
-                    <div className="text-center py-4">
+                    <div className="text-center py-2">
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 15 }}>
-                        <CheckCircle2 size={56} className="mx-auto mb-4" style={{ color: "hsl(175 73% 37%)" }} />
+                        <CheckCircle2 size={48} className="mx-auto mb-3" style={{ color: "hsl(175 73% 37%)" }} />
                       </motion.div>
-                      <h3 className="text-xl font-bold text-white mb-2">¡Genial, {form.first_name}! 🎉</h3>
-                      <p className="text-sm text-white/60 mb-6">
-                        Tu perfil encaja perfecto con lo que hacemos.<br />
-                        Elige un horario para conversar:
+                      <h3 className="text-xl font-bold text-white mb-1">¡Genial, {form.first_name}! 🎉</h3>
+                      <p className="text-sm text-white/60 mb-4">
+                        Tu perfil encaja perfecto con lo que hacemos. Elige un horario para conversar:
                       </p>
-                      <a
-                        href={HUBSPOT_MEETINGS_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-8 py-3 rounded-full font-semibold text-white transition-all hover:scale-[1.03]"
-                        style={{ background: "var(--gradient-brand)" }}
-                      >
-                        Agendar reunión
-                        <ArrowRight size={18} />
-                      </a>
+                      <div className="rounded-xl overflow-hidden" style={{ background: "white" }}>
+                        <iframe
+                          src={`${HUBSPOT_MEETINGS_URL}?embed=true&firstname=${encodeURIComponent(form.first_name)}&lastname=${encodeURIComponent(form.last_name)}&email=${encodeURIComponent(form.email)}&phone=${encodeURIComponent(form.phone || "")}&company=${encodeURIComponent(form.company_name)}`}
+                          width="100%"
+                          height="580"
+                          frameBorder="0"
+                          title="Agendar reunión"
+                          className="w-full"
+                          style={{ border: "none", minHeight: "580px" }}
+                        />
+                      </div>
                     </div>
                   </StepWrapper>
                 )}
 
-                {step === 3 && !qualified && (
+                {step === 4 && !qualified && (
                   <StepWrapper key="not-qualified">
                     <div className="text-center py-4">
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 15 }}>
@@ -313,8 +421,8 @@ export default function LeadFormModal() {
                 )}
               </AnimatePresence>
 
-              {/* Navigation buttons */}
-              {step < 3 && (
+              {/* Navigation */}
+              {step < 4 && (
                 <div className="flex items-center justify-between mt-6">
                   {step > 0 ? (
                     <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-white/50 hover:text-white transition-colors">
@@ -327,7 +435,7 @@ export default function LeadFormModal() {
                     className="flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-50"
                     style={{ background: "var(--gradient-brand)" }}
                   >
-                    {submitting ? <Loader2 size={18} className="animate-spin" /> : step === 2 ? "Enviar" : "Siguiente"}
+                    {submitting ? <Loader2 size={18} className="animate-spin" /> : step === 3 ? "Enviar" : "Siguiente"}
                     {!submitting && <ArrowRight size={16} />}
                   </button>
                 </div>

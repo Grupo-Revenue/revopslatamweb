@@ -12,13 +12,20 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { first_name, last_name, email, phone, job_title, company_name, industry, team_size, has_crm } = body;
+    const { first_name, last_name, email, phone, job_title, company_name, industry, team_size, has_crm, main_pain, lead_score } = body;
 
-    // HubSpot Forms API submission (secrets opcionales; fallback público para evitar bloqueo de configuración)
     const portalId = Deno.env.get("HUBSPOT_PORTAL_ID") ?? "1537563";
     const formGuid = Deno.env.get("HUBSPOT_FORM_GUID") ?? "853c8d2a-091e-4dc3-ada7-6fdabf48ef8e";
 
     const hubspotUrl = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formGuid}`;
+
+    // Determine pain field name based on CRM type
+    let painFieldName = "problema_principal__no_usan_crm_";
+    if (has_crm?.includes("HubSpot")) {
+      painFieldName = "problema_principal__usan_hubspot_";
+    } else if (has_crm?.includes("otro CRM")) {
+      painFieldName = "problema_principal__usan_otro_crm_";
+    }
 
     const hsPayload = {
       fields: [
@@ -34,6 +41,7 @@ serve(async (req) => {
         { name: "equipo_comercial", value: team_size },
         { name: "cantidad_de_vendedores", value: team_size },
         { name: "cuenta_con_crm", value: has_crm },
+        { name: painFieldName, value: main_pain || "" },
       ],
       context: {
         pageUri: body.source_page || "",
