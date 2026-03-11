@@ -53,9 +53,9 @@ const FunnelVisual = ({ stages }: { stages: Array<{ label: string; conv: string;
     <p className="text-[14px] font-bold text-white/50 uppercase tracking-[0.1em] mb-5">Funnel de ventas</p>
     <div className="space-y-2">
       {stages.map((s, i) => (
-        <motion.div key={s.label} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: 0.5 + i * 0.15 }} className="flex items-center gap-3 min-w-0">
-          <div className="h-8 rounded-md flex items-center justify-center text-[12px] font-semibold text-white flex-shrink min-w-0" style={{ width: `${s.width}%`, background: GRADIENT, opacity: 1 - i * 0.12 }}>{s.label}</div>
-          <span className="text-[14px] font-mono text-white/40 flex-shrink-0 w-10 text-right">{s.conv}</span>
+        <motion.div key={s.label} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: 0.5 + i * 0.15 }} className="flex items-center gap-3 min-w-0 group cursor-default">
+          <div className="h-8 rounded-md flex items-center justify-center text-[12px] font-semibold text-white flex-shrink min-w-0 transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_0_16px_rgba(190,24,105,0.4)]" style={{ width: `${s.width}%`, background: GRADIENT, opacity: 1 - i * 0.12 }}>{s.label}</div>
+          <span className="text-[14px] font-mono text-white/40 flex-shrink-0 w-10 text-right transition-colors duration-300 group-hover:text-white/80">{s.conv}</span>
         </motion.div>
       ))}
     </div>
