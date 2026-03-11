@@ -41,12 +41,12 @@ const NosotrosCTA = ({ section }: { section?: HomeSection }) => {
         </motion.p>
 
         <motion.div {...fadeUp(0.22)} className="mt-10 flex flex-col items-center gap-4">
-          <Button size="lg" className="gap-2 text-[16px] px-8" onClick={() => window.open(ctaUrl, "_blank")}>
+          <Button size="lg" className="gap-2 text-[16px] px-8" onClick={() => (meta.cta1_opens_lead_form) ? openLeadForm("nosotros-cta1") : window.open(ctaUrl, "_blank")}>
             {ctaText}
             <ArrowRight size={18} />
           </Button>
 
-          <button onClick={() => openLeadForm("nosotros-cta")} className="text-[15px] font-medium transition-colors duration-200 cursor-pointer hover:underline" style={{ color: "hsl(var(--pink))", ...getStyle("cta") }}>
+          <button onClick={() => (meta.cta2_opens_lead_form) ? openLeadForm("nosotros-cta2") : (cta2Url !== "#" ? window.open(cta2Url, "_blank") : openLeadForm("nosotros-cta"))} className="text-[15px] font-medium transition-colors duration-200 cursor-pointer hover:underline" style={{ color: "hsl(var(--pink))", ...getStyle("cta") }}>
             {cta2Text}
           </button>
         </motion.div>
