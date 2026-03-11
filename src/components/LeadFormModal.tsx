@@ -124,7 +124,8 @@ const step1Schema = z.object({
   first_name: z.string().trim().min(1, "Requerido").max(80),
   last_name: z.string().trim().min(1, "Requerido").max(80),
   email: z.string().trim().email("Correo inválido").max(200),
-  phone: z.string().trim().max(30).optional(),
+  phone: z.string().trim().min(1, "Requerido").max(30),
+  consent: z.literal(true, { errorMap: () => ({ message: "Debes aceptar para continuar" }) }),
 });
 
 interface FormData {
@@ -132,6 +133,7 @@ interface FormData {
   last_name: string;
   email: string;
   phone: string;
+  consent: boolean;
   job_title: string;
   company_name: string;
   industry: string;
@@ -141,7 +143,7 @@ interface FormData {
 }
 
 const initial: FormData = {
-  first_name: "", last_name: "", email: "", phone: "",
+  first_name: "", last_name: "", email: "", phone: "", consent: false,
   job_title: "", company_name: "", industry: "", team_size: "",
   has_crm: "", main_pain: "",
 };
@@ -300,7 +302,21 @@ export default function LeadFormModal() {
                       <Field label="Apellido" value={form.last_name} onChange={v => set("last_name", v)} error={errors.last_name} />
                     </div>
                     <Field label="Correo corporativo" value={form.email} onChange={v => set("email", v)} error={errors.email} type="email" />
-                    <Field label="Teléfono (opcional)" value={form.phone} onChange={v => set("phone", v)} error={errors.phone} type="tel" />
+                    <Field label="Teléfono" value={form.phone} onChange={v => set("phone", v)} error={errors.phone} type="tel" />
+                    <div className="mt-4">
+                      <label className="flex items-start gap-2.5 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={form.consent}
+                          onChange={e => { setForm(prev => ({ ...prev, consent: e.target.checked })); setErrors(prev => { const n = { ...prev }; delete n.consent; return n; }); }}
+                          className="mt-0.5 w-4 h-4 rounded border-2 border-border accent-pink cursor-pointer"
+                        />
+                        <span className="text-xs text-muted-foreground leading-relaxed">
+                          Acepto recibir información y comunicaciones comerciales de RevOps LATAM. Puedo darme de baja en cualquier momento.
+                        </span>
+                      </label>
+                      {errors.consent && <p className="text-xs mt-1 text-destructive font-medium ml-6">{errors.consent}</p>}
+                    </div>
                   </StepWrapper>
                 )}
 
@@ -472,9 +488,9 @@ function Field({ label, value, onChange, error, type = "text", autoFocus }: {
         value={value}
         onChange={e => onChange(e.target.value)}
         autoFocus={autoFocus}
-        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground/50 outline-none transition-all border-2 bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30"
+        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground/50 outline-none transition-all border bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30 border-border"
         style={{
-          borderColor: error ? "hsl(0 84% 60%)" : "transparent",
+          borderColor: error ? "hsl(0 84% 60%)" : undefined,
         }}
       />
       {error && <p className="text-xs mt-1 text-destructive font-medium">{error}</p>}
@@ -492,9 +508,9 @@ function SelectField({ label, value, options, onChange, error }: {
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground outline-none transition-all appearance-none cursor-pointer border-2 bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30"
+        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground outline-none transition-all appearance-none cursor-pointer border bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30 border-border"
         style={{
-          borderColor: error ? "hsl(0 84% 60%)" : "transparent",
+          borderColor: error ? "hsl(0 84% 60%)" : undefined,
         }}
       >
         <option value="" disabled className="text-muted-foreground">Seleccionar...</option>
