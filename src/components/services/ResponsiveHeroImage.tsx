@@ -18,18 +18,19 @@ const ResponsiveHeroImage = ({
   const reactId = useId();
   const safeId = `rhi-${reactId.replace(/:/g, "")}`;
 
-  const desktop = (metadata.image_max_width as string) || defaultMaxWidth;
-  const laptop15 = (metadata.image_max_width_md as string) || desktop;
-  const tablet = (metadata.image_max_width_tablet as string) || laptop15;
+  // Breakpoints: Monitor Grande (1920+) → Desktop (1440+) → Laptop (1024+) → Tablet (768+) → Mobile
+  const monitorGrande = (metadata.image_max_width_xl as string) || defaultMaxWidth;
+  const desktop = (metadata.image_max_width as string) || monitorGrande;
+  const laptop = (metadata.image_max_width_md as string) || desktop;
+  const tablet = (metadata.image_max_width_tablet as string) || laptop;
   const mobile = (metadata.image_max_width_mobile as string) || tablet;
-
-  console.log("[ResponsiveHeroImage] breakpoints:", { mobile, tablet, laptop15, desktop, safeId });
 
   const css = `
     img[data-rhi="${safeId}"] { max-width: ${mobile} !important; }
     @media (min-width: 768px) { img[data-rhi="${safeId}"] { max-width: ${tablet} !important; } }
-    @media (min-width: 1024px) { img[data-rhi="${safeId}"] { max-width: ${laptop15} !important; } }
-    @media (min-width: 1920px) { img[data-rhi="${safeId}"] { max-width: ${desktop} !important; } }
+    @media (min-width: 1024px) { img[data-rhi="${safeId}"] { max-width: ${laptop} !important; } }
+    @media (min-width: 1440px) { img[data-rhi="${safeId}"] { max-width: ${desktop} !important; } }
+    @media (min-width: 1920px) { img[data-rhi="${safeId}"] { max-width: ${monitorGrande} !important; } }
   `;
 
   return (
