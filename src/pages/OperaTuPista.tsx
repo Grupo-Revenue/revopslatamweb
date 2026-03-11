@@ -210,6 +210,10 @@ const OperaTuPista = () => {
 
   const hero = getSection("hero");
   const hm = mt(hero);
+  const problemaSection = getSection("problema");
+  const serviciosSection = getSection("servicios");
+  const whyUsSection = getSection("por-que-nosotros");
+  const ctaFinalSection = getSection("cta-final");
 
   const h = {
     badge: (hm.badge as string) ?? DEF.hero.badge,
@@ -294,18 +298,18 @@ const OperaTuPista = () => {
       </SectionShell>
 
       {/* ── S2: EL PROBLEMA ── */}
-      <ProblemSection />
+      <ProblemSection section={problemaSection} />
 
       {/* ── S3: SERVICIOS ── */}
       <SectionDivider />
 
-      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0" }}>
+      <SectionShell section={serviciosSection} className="relative" defaultBg={{ background: "#F9FAFB", padding: "120px 0" }}>
         <DotPattern />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
-        <div className="mx-auto max-w-[1100px] px-6 relative z-10">
+        <div className="mx-auto max-w-[1100px] px-6 relative z-10" style={{ padding: serviciosSection ? undefined : "120px 0" }}>
           <h2 className="text-center text-3xl md:text-4xl font-bold mb-14" style={{ color: DARK }}>
-            Tres formas de operar tu pista con nosotros
+            {serviciosSection?.title ?? "Tres formas de operar tu pista con nosotros"}
           </h2>
           <div className="grid md:grid-cols-3 gap-7">
             {serviceCards.map((c, i) => (
@@ -313,34 +317,34 @@ const OperaTuPista = () => {
             ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       {/* ── S4: POR QUÉ CON NOSOTROS ── */}
-      <WhyUsSection />
+      <WhyUsSection section={whyUsSection} />
 
       {/* ── S5: CTA FINAL ── */}
-      <section className="relative overflow-hidden" style={{ padding: "80px 0", background: DARK }}>
+      <SectionShell section={ctaFinalSection} className="relative" defaultBg={{ padding: "80px 0", background: DARK }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />
-        <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-white">¿No sabes por dónde partir?</h2>
+        <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center" style={{ padding: "80px 0" }}>
+          <h2 className="text-3xl font-bold mb-4 text-white">{ctaFinalSection?.title ?? "¿No sabes por dónde partir?"}</h2>
           <p className="text-base mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>
-            Si aún no tienes claridad de qué necesita tu operación, el primer paso es un diagnóstico.
+            {ctaFinalSection?.subtitle ?? "Si aún no tienes claridad de qué necesita tu operación, el primer paso es un diagnóstico."}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <DynamicCTA
-              styleKey={hm.cta_style_key as string}
-              onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)}
+              styleKey={(mt(ctaFinalSection).cta_style_key as string) || (hm.cta_style_key as string)}
+              onClick={() => (ctaFinalSection?.cta_url || hero?.cta_url) && (window.location.href = (ctaFinalSection?.cta_url || hero?.cta_url)!)}
               className="text-sm font-semibold text-white px-7 py-3.5 rounded-xl hover:scale-[1.03] hover:shadow-xl transition-all"
             >
-              {h.cta_text}
+              {ctaFinalSection?.cta_text ?? h.cta_text}
             </DynamicCTA>
             <Link to="/conoce-tu-pista" className="text-sm font-semibold px-7 py-3.5 rounded-xl transition-all hover:scale-[1.03]" style={{ border: "1.5px solid rgba(255,255,255,0.2)", color: "#fff" }}>
               Primero quiero un diagnóstico →
             </Link>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <Footer />
 
