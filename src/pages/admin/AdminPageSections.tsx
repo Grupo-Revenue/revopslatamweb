@@ -725,6 +725,7 @@ export default function AdminPageSections() {
                           onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, cta2_url: e.target.value })}
                           className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
                           placeholder="https://..."
+                          disabled={!!(meta.cta2_opens_lead_form)}
                         />
                       </div>
                       <div>
@@ -740,6 +741,16 @@ export default function AdminPageSections() {
                           ))}
                         </select>
                       </div>
+                    </div>
+                    <div className="flex flex-col items-center gap-1 pt-5">
+                      <label className="flex items-center gap-1.5 cursor-pointer" title="Abre el formulario de calificación en vez de ir a una URL">
+                        <Switch
+                          checked={!!(meta.cta2_opens_lead_form)}
+                          onCheckedChange={(v) => updateSectionLocal(section.id, "metadata", { ...meta, cta2_opens_lead_form: v })}
+                          className="scale-75"
+                        />
+                        <span className="text-[10px] text-zinc-400 whitespace-nowrap">Form</span>
+                      </label>
                     </div>
                   </div>
 
