@@ -130,7 +130,7 @@ export default function LeadFormModal() {
     const q = isQualified(form);
     setQualified(q);
     try {
-      await (supabase as any).from("leads").insert({
+      const leadData = {
         first_name: form.first_name.trim(),
         last_name: form.last_name.trim(),
         email: form.email.trim(),
@@ -142,7 +142,12 @@ export default function LeadFormModal() {
         has_crm: form.has_crm,
         is_qualified: q,
         source_page: sourcePage,
-      });
+      };
+      // Save to DB + submit to HubSpot in parallel
+      await Promise.allSettled([
+        (supabase as any).from("leads").insert(leadData),
+        supabase.functions.invoke("submit-lead-hubspot", { body: leadData }),
+      ]);
     } catch (_) { /* best effort */ }
     setSubmitting(false);
     setStep(3);
