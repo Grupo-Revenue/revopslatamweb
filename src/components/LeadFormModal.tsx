@@ -244,7 +244,7 @@ export default function LeadFormModal() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-          style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)" }}
+          style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(10px)" }}
           onClick={handleClose}
         >
           <motion.div
@@ -253,17 +253,15 @@ export default function LeadFormModal() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full overflow-hidden rounded-2xl"
+            className="relative w-full overflow-hidden rounded-2xl bg-white shadow-2xl"
             style={{
-              background: "hsl(240 33% 10%)",
-              border: "1px solid rgba(255,255,255,0.1)",
-              maxWidth: step === 4 && qualified ? "720px" : "512px",
+              maxWidth: step === 4 && qualified ? "720px" : "520px",
               maxHeight: "90vh",
               transition: "max-width 0.3s ease",
             }}
             onClick={e => e.stopPropagation()}
           >
-            <button onClick={handleClose} className="absolute top-4 right-4 z-10 text-white/50 hover:text-white transition-colors">
+            <button onClick={handleClose} className="absolute top-4 right-4 z-10 text-muted-foreground hover:text-foreground transition-colors">
               <X size={20} />
             </button>
 
@@ -273,7 +271,7 @@ export default function LeadFormModal() {
                 <div className="flex gap-2 mb-1">
                   {stepLabels.map((label, i) => (
                     <div key={i} className="flex-1">
-                      <div className="h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+                      <div className="h-1.5 rounded-full overflow-hidden bg-muted">
                         <motion.div
                           className="h-full rounded-full"
                           style={{ background: "var(--gradient-brand)" }}
@@ -282,7 +280,7 @@ export default function LeadFormModal() {
                           transition={{ duration: 0.4 }}
                         />
                       </div>
-                      <p className="text-[11px] mt-1 text-center" style={{ color: i <= step ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.3)" }}>
+                      <p className={`text-[11px] mt-1.5 text-center font-medium ${i <= step ? "text-foreground" : "text-muted-foreground/50"}`}>
                         {label}
                       </p>
                     </div>
@@ -295,8 +293,8 @@ export default function LeadFormModal() {
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <StepWrapper key="s0">
-                    <h3 className="text-xl font-bold text-white mb-1">Conversemos 👋</h3>
-                    <p className="text-sm text-white/50 mb-5">Cuéntanos un poco sobre ti</p>
+                    <h3 className="text-2xl font-bold text-foreground mb-1">Conversemos 👋</h3>
+                    <p className="text-sm text-muted-foreground mb-6">Cuéntanos un poco sobre ti</p>
                     <div className="grid grid-cols-2 gap-3">
                       <Field label="Nombre" value={form.first_name} onChange={v => set("first_name", v)} error={errors.first_name} autoFocus />
                       <Field label="Apellido" value={form.last_name} onChange={v => set("last_name", v)} error={errors.last_name} />
@@ -308,62 +306,62 @@ export default function LeadFormModal() {
 
                 {step === 1 && (
                   <StepWrapper key="s1">
-                    <h3 className="text-xl font-bold text-white mb-1">Tu empresa 🏢</h3>
-                    <p className="text-sm text-white/50 mb-5">Para entender mejor tu contexto</p>
-                    <SelectField label="Cargo" value={form.job_title} options={CARGOS} onChange={v => set("job_title", v)} error={errors.job_title} />
-                    <Field label="Nombre de la empresa" value={form.company_name} onChange={v => set("company_name", v)} error={errors.company_name} />
-                    <SelectField label="Rubro" value={form.industry} options={RUBROS} onChange={v => set("industry", v)} error={errors.industry} />
-                    <SelectField label="Equipo comercial" value={form.team_size} options={EQUIPO} onChange={v => set("team_size", v)} error={errors.team_size} />
+                    <h3 className="text-2xl font-bold text-foreground mb-1">Tu empresa 🏢</h3>
+                    <p className="text-sm text-muted-foreground mb-6">Para entender mejor tu contexto</p>
+                    <SelectField label="¿Cuál es tu cargo?" value={form.job_title} options={CARGOS} onChange={v => set("job_title", v)} error={errors.job_title} />
+                    <Field label="¿En qué empresa trabajas?" value={form.company_name} onChange={v => set("company_name", v)} error={errors.company_name} />
+                    <SelectField label="¿A qué rubro pertenecen?" value={form.industry} options={RUBROS} onChange={v => set("industry", v)} error={errors.industry} />
+                    <SelectField label="¿Qué tamaño tiene tu equipo comercial?" value={form.team_size} options={EQUIPO} onChange={v => set("team_size", v)} error={errors.team_size} />
                   </StepWrapper>
                 )}
 
                 {step === 2 && (
                   <StepWrapper key="s2">
-                    <h3 className="text-xl font-bold text-white mb-1">Tu CRM 💻</h3>
-                    <p className="text-sm text-white/50 mb-5">¿Cuentas con CRM?</p>
-                    <div className="flex flex-col gap-2">
+                    <h3 className="text-2xl font-bold text-foreground mb-1">Tu CRM 💻</h3>
+                    <p className="text-sm text-muted-foreground mb-6">¿Cuentas con un CRM actualmente?</p>
+                    <div className="flex flex-col gap-2.5">
                       {CRM_OPTIONS.map(opt => (
                         <button
                           key={opt}
                           type="button"
                           onClick={() => { set("has_crm", opt); set("main_pain", ""); }}
-                          className="text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+                          className="text-left px-5 py-3.5 rounded-xl text-[15px] font-medium transition-all duration-200 border-2"
                           style={{
-                            background: form.has_crm === opt ? "rgba(190,24,105,0.2)" : "rgba(255,255,255,0.05)",
-                            border: `1.5px solid ${form.has_crm === opt ? "hsl(337 74% 44%)" : "rgba(255,255,255,0.1)"}`,
-                            color: form.has_crm === opt ? "white" : "rgba(255,255,255,0.7)",
+                            background: form.has_crm === opt ? "hsl(337 74% 44% / 0.08)" : "hsl(var(--muted) / 0.4)",
+                            borderColor: form.has_crm === opt ? "hsl(337 74% 44%)" : "transparent",
+                            color: "hsl(var(--foreground))",
                           }}
                         >
                           {opt}
                         </button>
                       ))}
                     </div>
-                    {errors.has_crm && <p className="text-xs mt-1" style={{ color: "hsl(0 84% 60%)" }}>{errors.has_crm}</p>}
+                    {errors.has_crm && <p className="text-xs mt-1.5 text-destructive font-medium">{errors.has_crm}</p>}
                   </StepWrapper>
                 )}
 
                 {step === 3 && (
                   <StepWrapper key="s3">
-                    <h3 className="text-xl font-bold text-white mb-1">Tu principal desafío 🎯</h3>
-                    <p className="text-sm text-white/50 mb-5">¿Cuál es el problema que más te resuena?</p>
-                    <div className="flex flex-col gap-2">
+                    <h3 className="text-2xl font-bold text-foreground mb-1">Tu principal desafío 🎯</h3>
+                    <p className="text-sm text-muted-foreground mb-6">¿Cuál es el problema que más te resuena?</p>
+                    <div className="flex flex-col gap-2.5">
                       {getPainOptions(form.has_crm).map(opt => (
                         <button
                           key={opt}
                           type="button"
                           onClick={() => set("main_pain", opt)}
-                          className="text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200"
+                          className="text-left px-5 py-3.5 rounded-xl text-[15px] font-medium transition-all duration-200 border-2"
                           style={{
-                            background: form.main_pain === opt ? "rgba(190,24,105,0.2)" : "rgba(255,255,255,0.05)",
-                            border: `1.5px solid ${form.main_pain === opt ? "hsl(337 74% 44%)" : "rgba(255,255,255,0.1)"}`,
-                            color: form.main_pain === opt ? "white" : "rgba(255,255,255,0.7)",
+                            background: form.main_pain === opt ? "hsl(337 74% 44% / 0.08)" : "hsl(var(--muted) / 0.4)",
+                            borderColor: form.main_pain === opt ? "hsl(337 74% 44%)" : "transparent",
+                            color: "hsl(var(--foreground))",
                           }}
                         >
                           {opt}
                         </button>
                       ))}
                     </div>
-                    {errors.main_pain && <p className="text-xs mt-1" style={{ color: "hsl(0 84% 60%)" }}>{errors.main_pain}</p>}
+                    {errors.main_pain && <p className="text-xs mt-1.5 text-destructive font-medium">{errors.main_pain}</p>}
                   </StepWrapper>
                 )}
 
@@ -373,11 +371,11 @@ export default function LeadFormModal() {
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 15 }}>
                         <CheckCircle2 size={48} className="mx-auto mb-3" style={{ color: "hsl(175 73% 37%)" }} />
                       </motion.div>
-                      <h3 className="text-xl font-bold text-white mb-1">¡Genial, {form.first_name}! 🎉</h3>
-                      <p className="text-sm text-white/60 mb-4">
+                      <h3 className="text-xl font-bold text-foreground mb-1">¡Genial, {form.first_name}! 🎉</h3>
+                      <p className="text-sm text-muted-foreground mb-4">
                         Tu perfil encaja perfecto con lo que hacemos. Elige un horario para conversar:
                       </p>
-                      <div className="rounded-xl overflow-hidden" style={{ background: "white" }}>
+                      <div className="rounded-xl overflow-hidden border border-border">
                         <iframe
                           src={`${HUBSPOT_MEETINGS_URL}?embed=true&firstname=${encodeURIComponent(form.first_name)}&lastname=${encodeURIComponent(form.last_name)}&email=${encodeURIComponent(form.email)}&phone=${encodeURIComponent(form.phone || "")}&company=${encodeURIComponent(form.company_name)}`}
                           width="100%"
@@ -398,10 +396,10 @@ export default function LeadFormModal() {
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 15 }}>
                         <XCircle size={56} className="mx-auto mb-4" style={{ color: "hsl(42 93% 54%)" }} />
                       </motion.div>
-                      <h3 className="text-xl font-bold text-white mb-2">¡Gracias, {form.first_name}! 🙌</h3>
-                      <p className="text-sm text-white/60 mb-4 leading-relaxed">
+                      <h3 className="text-xl font-bold text-foreground mb-2">¡Gracias, {form.first_name}! 🙌</h3>
+                      <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                         Recibimos tu información. En este momento, nuestras soluciones están enfocadas en equipos comerciales con más de 2 personas.<br /><br />
-                        Pero no te vayas con las manos vacías — te recomendamos hacer nuestro <strong className="text-white">Pulso Comercial</strong> gratuito para entender el estado de tu motor de ingresos.
+                        Pero no te vayas con las manos vacías — te recomendamos hacer nuestro <strong className="text-foreground">Pulso Comercial</strong> gratuito para entender el estado de tu motor de ingresos.
                       </p>
                       <a
                         href="https://pulso.revopslatam.com/"
@@ -413,7 +411,7 @@ export default function LeadFormModal() {
                         Hacer el Pulso Comercial
                         <ArrowRight size={18} />
                       </a>
-                      <button onClick={handleClose} className="block mx-auto mt-3 text-sm text-white/40 hover:text-white/60 transition-colors">
+                      <button onClick={handleClose} className="block mx-auto mt-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
                         Cerrar
                       </button>
                     </div>
@@ -423,16 +421,16 @@ export default function LeadFormModal() {
 
               {/* Navigation */}
               {step < 4 && (
-                <div className="flex items-center justify-between mt-6">
+                <div className="flex items-center justify-between mt-8">
                   {step > 0 ? (
-                    <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-white/50 hover:text-white transition-colors">
+                    <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">
                       <ArrowLeft size={16} /> Atrás
                     </button>
                   ) : <div />}
                   <button
                     onClick={next}
                     disabled={submitting}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-full font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-50"
+                    className="flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-50 text-[15px]"
                     style={{ background: "var(--gradient-brand)" }}
                   >
                     {submitting ? <Loader2 size={18} className="animate-spin" /> : step === 3 ? "Enviar" : "Siguiente"}
@@ -467,20 +465,19 @@ function Field({ label, value, onChange, error, type = "text", autoFocus }: {
   error?: string; type?: string; autoFocus?: boolean;
 }) {
   return (
-    <div className="mt-3">
-      <label className="block text-xs font-medium text-white/60 mb-1">{label}</label>
+    <div className="mt-4">
+      <label className="block text-sm font-semibold text-foreground mb-1.5">{label}</label>
       <input
         type={type}
         value={value}
         onChange={e => onChange(e.target.value)}
         autoFocus={autoFocus}
-        className="w-full px-3 py-2.5 rounded-xl text-sm text-white placeholder:text-white/30 outline-none transition-all focus:ring-2"
+        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground placeholder:text-muted-foreground/50 outline-none transition-all border-2 bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30"
         style={{
-          background: "rgba(255,255,255,0.06)",
-          border: `1.5px solid ${error ? "hsl(0 84% 60%)" : "rgba(255,255,255,0.1)"}`,
+          borderColor: error ? "hsl(0 84% 60%)" : "transparent",
         }}
       />
-      {error && <p className="text-xs mt-0.5" style={{ color: "hsl(0 84% 60%)" }}>{error}</p>}
+      {error && <p className="text-xs mt-1 text-destructive font-medium">{error}</p>}
     </div>
   );
 }
@@ -490,23 +487,22 @@ function SelectField({ label, value, options, onChange, error }: {
   onChange: (v: string) => void; error?: string;
 }) {
   return (
-    <div className="mt-3">
-      <label className="block text-xs font-medium text-white/60 mb-1">{label}</label>
+    <div className="mt-4">
+      <label className="block text-sm font-semibold text-foreground mb-1.5">{label}</label>
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full px-3 py-2.5 rounded-xl text-sm text-white outline-none transition-all appearance-none cursor-pointer"
+        className="w-full px-4 py-3 rounded-xl text-[15px] text-foreground outline-none transition-all appearance-none cursor-pointer border-2 bg-muted/40 focus:border-pink focus:ring-1 focus:ring-pink/30"
         style={{
-          background: "rgba(255,255,255,0.06)",
-          border: `1.5px solid ${error ? "hsl(0 84% 60%)" : "rgba(255,255,255,0.1)"}`,
+          borderColor: error ? "hsl(0 84% 60%)" : "transparent",
         }}
       >
-        <option value="" disabled style={{ background: "hsl(240 33% 10%)" }}>Seleccionar...</option>
+        <option value="" disabled className="text-muted-foreground">Seleccionar...</option>
         {options.map(opt => (
-          <option key={opt} value={opt} style={{ background: "hsl(240 33% 10%)" }}>{opt}</option>
+          <option key={opt} value={opt}>{opt}</option>
         ))}
       </select>
-      {error && <p className="text-xs mt-0.5" style={{ color: "hsl(0 84% 60%)" }}>{error}</p>}
+      {error && <p className="text-xs mt-1 text-destructive font-medium">{error}</p>}
     </div>
   );
 }
