@@ -328,9 +328,13 @@ const OperaTuPista = () => {
             Si aún no tienes claridad de qué necesita tu operación, el primer paso es un diagnóstico.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="text-sm font-semibold text-white px-7 py-3.5 rounded-xl hover:scale-[1.03] hover:shadow-xl transition-all" style={{ background: GRADIENT }}>
-              Quiero que operen mi pista →
-            </button>
+            <DynamicCTA
+              styleKey={hm.cta_style_key as string}
+              onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)}
+              className="text-sm font-semibold text-white px-7 py-3.5 rounded-xl hover:scale-[1.03] hover:shadow-xl transition-all"
+            >
+              {h.cta_text}
+            </DynamicCTA>
             <Link to="/conoce-tu-pista" className="text-sm font-semibold px-7 py-3.5 rounded-xl transition-all hover:scale-[1.03]" style={{ border: "1.5px solid rgba(255,255,255,0.2)", color: "#fff" }}>
               Primero quiero un diagnóstico →
             </Link>

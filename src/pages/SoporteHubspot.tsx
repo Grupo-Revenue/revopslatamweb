@@ -234,7 +234,7 @@ const SoporteHubspot = () => {
         <div className="relative z-10 mx-auto max-w-[560px] px-6 text-center">
           <h2 className="text-white font-bold mb-4" style={{ fontSize: "clamp(24px, 3.5vw, 32px)" }}>Contrátalo ahora. Operando en 24 horas.</h2>
           <p className="text-base leading-relaxed mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>Sin reuniones de venta. Sin propuestas. Elige tu plan, y asignamos tu especialista en 24 horas hábiles.</p>
-          <button onClick={() => scrollTo("planes")} className="text-base font-semibold text-white px-9 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>Ver planes →</button>
+          <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => scrollTo("planes")} className="text-base font-semibold text-white px-9 py-4 rounded-full transition-all hover:scale-[1.03]">{h.cta_text}</DynamicCTA>
         </div>
       </section>
 

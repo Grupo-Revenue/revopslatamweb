@@ -227,9 +227,9 @@ const MarketingOps = () => {
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>Este servicio empieza con una conversación</span>
             <h2 className="text-lg font-bold mb-3 text-white">Cuéntanos cómo está operando tu marketing hoy.</h2>
             <p className="text-sm mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>En 30 minutos evaluamos qué tiene más impacto en tu operación.</p>
-            <button className="w-full text-sm font-semibold text-white py-3.5 rounded-full transition-all hover:scale-[1.02]" style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
-              Cuéntanos cómo está tu marketing →
-            </button>
+            <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)} className="w-full text-sm font-semibold text-white py-3.5 rounded-full transition-all hover:scale-[1.02]">
+              {h.cta_text}
+            </DynamicCTA>
           </div>
         </div>
       </section>

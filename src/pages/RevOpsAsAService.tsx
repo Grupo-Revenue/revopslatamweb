@@ -363,7 +363,7 @@ const RevOpsAsAService = () => {
         <div className="relative z-10 mx-auto max-w-[600px] px-6 text-center">
           <h2 className="font-bold mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)", color: DARK }}>El primer sprint empieza cuando tú quieras</h2>
           <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <button onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all" style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>Ver los planes →</button>
+            <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all">{h.cta_text}</DynamicCTA>
             <button className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>Conversemos primero →</button>
           </div>
         </div>
