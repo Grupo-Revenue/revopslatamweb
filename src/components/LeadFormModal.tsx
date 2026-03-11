@@ -190,6 +190,7 @@ export default function LeadFormModal() {
     }
     if (step === 3) {
       if (!form.main_pain) { setErrors({ main_pain: "Selecciona tu principal desafío" }); return false; }
+      if (!form.consent) { setErrors(prev => ({ ...prev, consent: "Debes aceptar para continuar" })); return false; }
     }
     return true;
   };
