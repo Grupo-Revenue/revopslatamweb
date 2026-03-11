@@ -222,6 +222,12 @@ const RevOpsAsAService = () => {
   const { getSection, loading } = usePageSections("revops-as-a-service");
 
   const hero = getSection("hero");
+  const planesSection = getSection("planes");
+  const tuMesSection = getSection("tu-mes");
+  const equipoSection = getSection("equipo");
+  const paraQuienSection = getSection("para-quien");
+  const argumentoPrecioSection = getSection("argumento-precio");
+  const ctaFinalSection = getSection("cta-final");
   const hm = mt(hero);
 
   const h = {
