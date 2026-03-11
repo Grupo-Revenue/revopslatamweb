@@ -162,6 +162,38 @@ const DEFAULTS = {
   ctaFinal: { title: "¿No sabes cuál diagnóstico necesitas?", subtitle: "En 15 minutos de conversación te ayudamos a identificar el nivel correcto — sin compromiso.", cta_text: "Agendar conversación gratuita →", cta_url: "#" },
 };
 
+/* ─── CTA Final Button with lead form support ─── */
+function CTAFinalButton({ section, cta_text, cta_url, cfStyle }: {
+  section?: HomeSection; cta_text: string; cta_url: string;
+  cfStyle: (key: string) => React.CSSProperties;
+}) {
+  const { openLeadForm } = useLeadForm();
+  const m = meta(section);
+  const opensForm = m.cta1_opens_lead_form === true;
+
+  if (opensForm) {
+    return (
+      <button
+        onClick={() => openLeadForm("conoce-tu-pista-cta-final")}
+        className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
+        style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
+      >
+        {cta_text}
+      </button>
+    );
+  }
+
+  return (
+    <Link
+      to={cta_url}
+      className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
+      style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
+    >
+      {cta_text}
+    </Link>
+  );
+}
+
 /* ═══════════════ PAGE ═══════════════ */
 const ConoceTuPista = () => {
   const { getSection, loading } = usePageSections("conoce-tu-pista");
