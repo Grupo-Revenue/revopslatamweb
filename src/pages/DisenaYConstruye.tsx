@@ -402,10 +402,13 @@ const DisenaYConstruye = () => {
                 {p}
               </motion.p>
             ))}
-            <motion.div {...fadeUp(0.3)} className="mt-8 inline-flex items-center gap-3 px-5 py-4 rounded-2xl"
-              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}>
-              <span className="text-2xl" style={{ color: HUBSPOT }}>🟠</span>
-              <span className="text-white text-sm font-semibold">{difCredential}</span>
+            <motion.div {...fadeUp(0.3)} className="mt-10 inline-flex items-center gap-5 px-6 py-5 rounded-2xl"
+              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(12px)" }}>
+              <img src={hubspotPlatinumLogo} alt="HubSpot Platinum Partner" className="h-14 w-auto flex-shrink-0" />
+              <div className="flex flex-col">
+                <span className="text-white text-base font-bold leading-tight">{difCredential}</span>
+                <span className="text-white/50 text-xs mt-1">Solutions Partner Program</span>
+              </div>
             </motion.div>
           </div>
 
