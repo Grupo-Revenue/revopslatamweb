@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
+import { ChevronDown, Menu, X, ArrowUpRight, Search, Wrench, Headphones, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
 import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
@@ -21,39 +21,43 @@ const serviciosGroups = [
   {
     label: "CONOCE TU PISTA",
     color: "#BE1869",
+    icon: Search,
     link: "/conoce-tu-pista",
     items: [
-      { label: "RevOps Checkup", to: "/revops-checkup" },
-      { label: "Diagnóstico RevOps", to: "/diagnostico-revops" },
-      { label: "Diagnóstico Motor de Ingresos", to: "/motor-de-ingresos" },
+      { label: "RevOps Checkup", desc: "Evaluación rápida del estado de tu operación", to: "/revops-checkup" },
+      { label: "Diagnóstico RevOps", desc: "Análisis profundo de procesos, datos y tecnología", to: "/diagnostico-revops" },
+      { label: "Motor de Ingresos", desc: "Diagnóstico integral de tu sistema de revenue", to: "/motor-de-ingresos" },
     ],
   },
   {
     label: "DISEÑA Y CONSTRUYE TU PISTA",
     color: "#6224BE",
+    icon: Wrench,
     link: "/diseña-y-construye-tu-pista",
     items: [
-      { label: "Diseño de Procesos", to: "/diseño-de-procesos" },
-      { label: "Onboarding HubSpot", to: "/onboarding-hubspot" },
-      { label: "Implementación HubSpot", to: "/implementacion-hubspot" },
-      { label: "Personalización CRM", to: "/personalizacion-crm" },
-      { label: "Integraciones y Desarrollo", to: "/integraciones-desarrollo" },
+      { label: "Diseño de Procesos", desc: "Flujos comerciales alineados a tu estrategia", to: "/diseño-de-procesos" },
+      { label: "Onboarding HubSpot", desc: "Puesta en marcha guiada de tu CRM", to: "/onboarding-hubspot" },
+      { label: "Implementación HubSpot", desc: "Configuración avanzada y personalizada", to: "/implementacion-hubspot" },
+      { label: "Personalización CRM", desc: "Adapta HubSpot a tus procesos únicos", to: "/personalizacion-crm" },
+      { label: "Integraciones y Desarrollo", desc: "Conecta tus herramientas y sistemas", to: "/integraciones-desarrollo" },
     ],
   },
   {
     label: "OPERA TU PISTA",
     color: "#1CA398",
+    icon: Headphones,
     link: "/opera-tu-pista",
     items: [
-      { label: "RevOps as a Service", to: "/revops-as-a-service" },
-      { label: "Marketing Ops", to: "/marketing-ops" },
-      { label: "Soporte HubSpot", to: "/soporte-hubspot" },
+      { label: "RevOps as a Service", desc: "Equipo dedicado de operaciones de revenue", to: "/revops-as-a-service" },
+      { label: "Marketing Ops", desc: "Operación y optimización de marketing", to: "/marketing-ops" },
+      { label: "Soporte HubSpot", desc: "Asistencia técnica continua para tu CRM", to: "/soporte-hubspot" },
     ],
   },
   {
     label: "POTENCIA CON IA",
     color: "#0779D7",
-    items: [{ label: "IA para tu Motor de Ingresos", to: "#" }],
+    icon: Sparkles,
+    items: [{ label: "IA para tu Motor de Ingresos", desc: "Automatización inteligente y predicción", to: "#" }],
   },
 ];
 
@@ -135,7 +139,7 @@ const NavDropdown = ({
   );
 };
 
-/* ─── Servicios Grouped Dropdown ─── */
+/* ─── Servicios Grouped Dropdown (Webflow-style) ─── */
 const ServiciosDropdown = () => {
   const [open, setOpen] = useState(false);
   const timeout = useRef<ReturnType<typeof setTimeout>>();
@@ -171,66 +175,82 @@ const ServiciosDropdown = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 rounded-xl shadow-2xl p-5"
+            className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 rounded-xl shadow-2xl"
             style={{
-              width: 480,
+              width: 720,
               background: "#ffffff",
               border: "1.5px solid rgba(0,0,0,0.08)",
             }}
           >
-            {serviciosGroups.map((group, gi) => (
-              <div key={group.label}>
-                {gi > 0 && (
-                  <div className="my-2 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
-                )}
-                {group.link ? (
-                  <Link
-                    to={group.link}
-                    onClick={() => setOpen(false)}
-                    className="block px-4 pt-2 pb-1 transition-opacity hover:opacity-70"
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.12em",
-                      color: group.color,
-                    }}
-                  >
-                    {group.label}
-                  </Link>
-                ) : (
-                  <p
-                    className="px-4 pt-2 pb-1 select-none"
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.12em",
-                      color: group.color,
-                    }}
-                  >
-                    {group.label}
-                  </p>
-                )}
-                {group.items.map((item) => (
-                  <Link
-                    key={item.label}
-                    to={item.to}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg text-[14px] transition-colors duration-150"
-                    style={{ padding: "10px 16px", color: "#1a1a2e" }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = `${group.color}14`;
-                      e.currentTarget.style.color = group.color;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = "transparent";
-                      e.currentTarget.style.color = "#1a1a2e";
-                    }}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
+            <div className="p-6 space-y-5">
+              {serviciosGroups.map((group, gi) => {
+                const GroupIcon = group.icon;
+                return (
+                  <div key={group.label}>
+                    {gi > 0 && (
+                      <div className="mb-5 h-px" style={{ background: "rgba(0,0,0,0.06)" }} />
+                    )}
+                    {/* Category header */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <GroupIcon size={14} style={{ color: group.color }} />
+                      {group.link ? (
+                        <Link
+                          to={group.link}
+                          onClick={() => setOpen(false)}
+                          className="transition-opacity hover:opacity-70"
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.14em",
+                            color: group.color,
+                          }}
+                        >
+                          {group.label}
+                        </Link>
+                      ) : (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.14em",
+                            color: group.color,
+                          }}
+                        >
+                          {group.label}
+                        </span>
+                      )}
+                    </div>
+                    {/* Items grid */}
+                    <div className="grid grid-cols-3 gap-1">
+                      {group.items.map((item) => (
+                        <Link
+                          key={item.label}
+                          to={item.to}
+                          onClick={() => setOpen(false)}
+                          className="group rounded-lg p-3 transition-colors duration-150"
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = `${group.color}08`;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = "transparent";
+                          }}
+                        >
+                          <span
+                            className="block text-[13px] font-semibold transition-colors duration-150 group-hover:text-[var(--hover-color)]"
+                            style={{ color: "#1a1a2e", "--hover-color": group.color } as React.CSSProperties}
+                          >
+                            {item.label}
+                          </span>
+                          <span className="block text-[11px] mt-0.5 leading-snug" style={{ color: "#6B7280" }}>
+                            {item.desc}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
