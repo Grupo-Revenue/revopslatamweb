@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
+import { useLeadForm } from "@/hooks/useLeadForm";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
