@@ -45,7 +45,7 @@ function SectionShell({ section, className, defaultBg, children }: {
 const CheckupGauge = () => {
   const areas = [
     { label: "Pipeline", score: 42, color: "#be1869" },
-    { label: "CRM & Tools", score: 68, color: "#5b28b5" },
+    { label: "CRM & Tools", score: 68, color: "#4d9f96" },
     { label: "Procesos", score: 35, color: "#be1869" },
     { label: "Data & Reporting", score: 55, color: "#ECC94B" },
     { label: "Alineamiento", score: 28, color: "#be1869" },
