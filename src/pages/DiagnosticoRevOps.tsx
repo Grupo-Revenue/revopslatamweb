@@ -319,7 +319,7 @@ const DiagnosticoRevOps = () => {
       {/* ─── PRECIO ─── */}
       <SectionShell section={precio} className="py-16 sm:py-20 px-6" defaultBg={{ background: "#ffffff" }}>
         <div className="relative z-10 max-w-[480px] mx-auto">
-          <motion.div {...fadeUp(0)} className="relative rounded-[20px] p-[2px]" style={{ background: GRADIENT, boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
+          <motion.div {...fadeUp(0)} className="relative rounded-[20px] p-[2px] -mt-16" style={{ background: GRADIENT, boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
             <div className="rounded-[18px] bg-white p-10 sm:p-12 text-center">
               <p className="text-[13px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: "#6B7280" }}>Inversión</p>
               <p className="text-[40px] font-extrabold tracking-tight" style={{ color: "#1A1A2E" }}>{priceData.price}</p>
