@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
+import { ChevronDown, Menu, X, ArrowUpRight, Search, Wrench, Headphones, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
 import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
