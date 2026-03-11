@@ -316,11 +316,9 @@ const DisenaYConstruye = () => {
             {heroSubtitle}
           </motion.p>
           <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
-              style={{ background: (hm.cta_bg as string) || GRADIENT }}
-              onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })}>
+            <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })} className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]">
               {heroCta}
-            </button>
+            </DynamicCTA>
             <Link to={heroCta2Url} className="text-white/80 hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">
               {heroCta2}
             </Link>
