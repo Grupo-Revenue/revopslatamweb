@@ -18,6 +18,7 @@ const FinalCTA = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  const { openLeadForm } = useLeadForm();
   const title = section?.title ?? "¿Listo para armar tu pista?";
   const subtitle = section?.subtitle ?? "El primer paso es entender cómo fluye tu revenue hoy.";
   const cta = section?.cta_text ?? "Agenda una conversación";
