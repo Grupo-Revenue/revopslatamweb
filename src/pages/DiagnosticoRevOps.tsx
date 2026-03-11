@@ -47,8 +47,8 @@ const FunnelVisual = ({ stages }: { stages: Array<{ label: string; conv: string;
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.7, delay: 0.3 }}
-    className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-2xl p-6"
-    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
+    className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-[20px] p-7"
+    style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)" }}
   >
     <p className="text-[14px] font-bold text-white/50 uppercase tracking-[0.1em] mb-5">Funnel de ventas</p>
     <div className="space-y-2">
