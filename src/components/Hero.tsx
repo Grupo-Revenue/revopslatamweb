@@ -87,11 +87,11 @@ const Hero = ({ section }: { section?: HomeSection }) => {
               </Button>
             )}
             {(meta.cta2_style_key as string) ? (
-              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
+              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => openLeadForm("hero")}>
                 {cta2}
               </DynamicCTA>
             ) : (
-              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
+              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => openLeadForm("hero")}>
                 {cta2}
               </Button>
             )}

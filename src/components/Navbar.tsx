@@ -243,6 +243,7 @@ const Navbar = () => {
   const scrolled = useScrolled(50);
   const hidden = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { openLeadForm } = useLeadForm();
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";

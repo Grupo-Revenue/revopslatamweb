@@ -46,9 +46,9 @@ const NosotrosCTA = ({ section }: { section?: HomeSection }) => {
             <ArrowRight size={18} />
           </Button>
 
-          <a href={cta2Url} target="_blank" rel="noopener noreferrer" className="text-[15px] font-medium transition-colors duration-200" style={{ color: "hsl(var(--pink))", ...getStyle("cta") }}>
+          <button onClick={() => openLeadForm("nosotros-cta")} className="text-[15px] font-medium transition-colors duration-200 cursor-pointer hover:underline" style={{ color: "hsl(var(--pink))", ...getStyle("cta") }}>
             {cta2Text}
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>

@@ -42,11 +42,11 @@ const FinalCTA = ({ section }: { section?: HomeSection }) => {
         <motion.div {...fadeUp(0.25)} className="mt-10 flex flex-col items-center gap-4">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">
             {(meta.cta_style_key as string) ? (
-              <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+              <DynamicCTA styleKey={meta.cta_style_key as string} onClick={() => openLeadForm("final-cta")}>
                 {cta}
               </DynamicCTA>
             ) : (
-              <Button size="lg" className="gap-2" onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}>
+              <Button size="lg" className="gap-2" onClick={() => openLeadForm("final-cta")}>
                 {cta}
                 <ArrowRight size={18} />
               </Button>
