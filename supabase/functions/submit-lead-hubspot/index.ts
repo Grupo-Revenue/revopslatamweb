@@ -27,9 +27,12 @@ serve(async (req) => {
         { name: "email", value: email },
         { name: "phone", value: phone || "" },
         { name: "jobtitle", value: job_title },
+        { name: "nivel_del_cargo", value: job_title },
         { name: "company", value: company_name },
         { name: "industry", value: industry },
+        { name: "rubro", value: industry },
         { name: "equipo_comercial", value: team_size },
+        { name: "cantidad_de_vendedores", value: team_size },
         { name: "cuenta_con_crm", value: has_crm },
       ],
       context: {
