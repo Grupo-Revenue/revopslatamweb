@@ -450,6 +450,7 @@ const Navbar = () => {
                 <ArrowUpRight size={16} />
               </a>
               <button
+                onClick={() => { openLeadForm("navbar-mobile"); setMobileOpen(false); }}
                 className="w-full text-base font-semibold text-white"
                 style={{
                   background: "linear-gradient(135deg, #d946a8, #7c3aed)",
