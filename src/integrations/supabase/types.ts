@@ -44,6 +44,54 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          company_name: string
+          created_at: string
+          email: string
+          first_name: string
+          has_crm: string
+          id: string
+          industry: string
+          is_qualified: boolean
+          job_title: string
+          last_name: string
+          phone: string | null
+          source_page: string | null
+          team_size: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string
+          email: string
+          first_name: string
+          has_crm: string
+          id?: string
+          industry: string
+          is_qualified?: boolean
+          job_title: string
+          last_name: string
+          phone?: string | null
+          source_page?: string | null
+          team_size: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string
+          email?: string
+          first_name?: string
+          has_crm?: string
+          id?: string
+          industry?: string
+          is_qualified?: boolean
+          job_title?: string
+          last_name?: string
+          phone?: string | null
+          source_page?: string | null
+          team_size?: string
+        }
+        Relationships: []
+      }
       media_library: {
         Row: {
           alt_text: string | null
