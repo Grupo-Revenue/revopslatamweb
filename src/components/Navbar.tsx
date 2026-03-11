@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLeadForm } from "@/hooks/useLeadForm";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Menu, X, ArrowUpRight } from "lucide-react";
@@ -242,6 +243,7 @@ const Navbar = () => {
   const scrolled = useScrolled(50);
   const hidden = useScrollDirection();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { openLeadForm } = useLeadForm();
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
@@ -353,6 +355,7 @@ const Navbar = () => {
 
               {/* CTA Button */}
               <button
+                onClick={() => openLeadForm("navbar")}
                 className="text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] hover:shadow-lg"
                 style={{
                   background: "linear-gradient(135deg, #d946a8, #7c3aed)",
@@ -448,6 +451,7 @@ const Navbar = () => {
                 <ArrowUpRight size={16} />
               </a>
               <button
+                onClick={() => { openLeadForm("navbar-mobile"); setMobileOpen(false); }}
                 className="w-full text-base font-semibold text-white"
                 style={{
                   background: "linear-gradient(135deg, #d946a8, #7c3aed)",

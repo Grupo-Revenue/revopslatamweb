@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import DynamicCTA from "@/components/DynamicCTA";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useLeadForm } from "@/hooks/useLeadForm";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -23,6 +24,7 @@ const defaults = {
 const Hero = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
   const { getStyle, getBgStyle } = useSectionStyles(section);
+  const { openLeadForm } = useLeadForm();
   const title = section?.title ?? `${defaults.headline1}\n${defaults.headline2}`;
   const titleParts = title.split("\n");
   const pill = (section?.subtitle ?? defaults.pill) as string;
@@ -85,11 +87,11 @@ const Hero = ({ section }: { section?: HomeSection }) => {
               </Button>
             )}
             {(meta.cta2_style_key as string) ? (
-              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
+              <DynamicCTA styleKey={meta.cta2_style_key as string} onClick={() => openLeadForm("hero")}>
                 {cta2}
               </DynamicCTA>
             ) : (
-              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => { const url = meta.cta2_url as string; if (url) window.open(url, "_blank"); }}>
+              <Button size="lg" variant="outline" className="border-2 border-[rgba(255,255,255,0.3)] text-primary-foreground hover:border-primary-foreground bg-transparent whitespace-nowrap" onClick={() => openLeadForm("hero")}>
                 {cta2}
               </Button>
             )}

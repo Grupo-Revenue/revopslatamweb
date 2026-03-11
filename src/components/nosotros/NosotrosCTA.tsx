@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
+import { useLeadForm } from "@/hooks/useLeadForm";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -16,6 +17,7 @@ const NosotrosCTA = ({ section }: { section?: HomeSection }) => {
   const { getStyle, getBgStyle } = useSectionStyles(section);
   const { hasBg, bgLayerStyle } = useSectionBackground(section);
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const { openLeadForm } = useLeadForm();
   const title = section?.title ?? "Si esto resuena contigo, probablemente trabajemos bien juntos.";
   const body = section?.body ?? "No trabajamos con todos. Trabajamos con empresas que quieren crecer de forma real, sana y sostenible — y con personas que valoran la honestidad por encima del discurso bonito.";
   const ctaText = section?.cta_text ?? "Hacer el Pulso Comercial";
@@ -44,9 +46,9 @@ const NosotrosCTA = ({ section }: { section?: HomeSection }) => {
             <ArrowRight size={18} />
           </Button>
 
-          <a href={cta2Url} target="_blank" rel="noopener noreferrer" className="text-[15px] font-medium transition-colors duration-200" style={{ color: "hsl(var(--pink))", ...getStyle("cta") }}>
+          <button onClick={() => openLeadForm("nosotros-cta")} className="text-[15px] font-medium transition-colors duration-200 cursor-pointer hover:underline" style={{ color: "hsl(var(--pink))", ...getStyle("cta") }}>
             {cta2Text}
-          </a>
+          </button>
         </motion.div>
       </div>
     </section>
