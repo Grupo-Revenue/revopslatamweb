@@ -193,6 +193,7 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
       if (mt.validation) merged.validation = mt.validation;
       if (mt.approach) merged.approach = mt.approach;
       if (mt.ctaText) merged.ctaText = mt.ctaText;
+      if ((mt as any).ctaUrl) (merged as any).ctaUrl = (mt as any).ctaUrl;
       if (mt.popular !== undefined) merged.popular = mt.popular;
       if (Array.isArray(mt.signals) && mt.signals.length > 0) merged.signals = mt.signals;
       if (Array.isArray(mt.consequences) && mt.consequences.length > 0) merged.consequences = mt.consequences;
