@@ -359,9 +359,11 @@ const OperaTuPista = () => {
 };
 
 /* ─── Problem Section ─── */
-const ProblemSection = () => {
+const ProblemSection = ({ section }: { section?: HomeSection }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  const { getBgStyle } = useSectionStyles(section);
 
   const cols = [
     { icon: "⏱️", title: "El día a día se come todo", desc: "Nadie tiene tiempo de mejorar procesos mientras el negocio avanza." },
@@ -370,13 +372,14 @@ const ProblemSection = () => {
   ];
 
   return (
-    <section ref={ref} style={{ padding: "100px 0" }}>
-      <div className="mx-auto max-w-[960px] px-6">
+    <section ref={ref} className="relative overflow-hidden" style={{ padding: "100px 0", ...getBgStyle() }}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10 mx-auto max-w-[960px] px-6">
         <h2 className="text-center text-2xl md:text-[36px] font-bold leading-tight mb-4" style={{ color: DARK }}>
-          La mayoría de los CRM bien implementados igual terminan subutilizados
+          {section?.title ?? "La mayoría de los CRM bien implementados igual terminan subutilizados"}
         </h2>
         <p className="text-center text-base mb-14 mx-auto" style={{ color: "#6B7280", maxWidth: 600 }}>
-          No por la herramienta. Por lo que pasa después de implementar.
+          {section?.subtitle ?? "No por la herramienta. Por lo que pasa después de implementar."}
         </p>
         <div className="grid md:grid-cols-3 gap-10">
           {cols.map((c, i) => (
