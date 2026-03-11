@@ -83,7 +83,7 @@ const PulsoComercial = ({ section }: { section?: HomeSection }) => {
             <button
               className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-[18px] rounded-full text-base sm:text-[18px] font-bold transition-all duration-300 hover:scale-[1.03]"
               style={{ background: "white", color: "hsl(337 74% 44%)", boxShadow: "0 8px 32px rgba(0,0,0,0.2)" }}
-              onClick={() => section?.cta_url && window.open(section.cta_url, "_blank")}
+              onClick={() => window.open(section?.cta_url || "https://pulso.revopslatam.com/", "_blank")}
             >
               {cta}
             </button>

@@ -249,7 +249,7 @@ const Services = () => {
             <p className="text-[15px] mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>
               ¿No sabes en qué fase estás?
             </p>
-            <Button size="lg" className="gap-2">
+            <Button size="lg" className="gap-2" onClick={() => window.open("https://pulso.revopslatam.com/", "_blank")}>
               Haz el Pulso Comercial gratis
               <ArrowRight size={18} />
             </Button>

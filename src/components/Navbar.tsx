@@ -446,7 +446,7 @@ const Navbar = () => {
                 />
                 Pulso Comercial
                 <ArrowUpRight size={16} />
-              </Link>
+              </a>
               <button
                 className="w-full text-base font-semibold text-white"
                 style={{
