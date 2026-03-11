@@ -365,7 +365,6 @@ function Field({ label, value, onChange, error, type = "text", autoFocus }: {
         style={{
           background: "rgba(255,255,255,0.06)",
           border: `1.5px solid ${error ? "hsl(0 84% 60%)" : "rgba(255,255,255,0.1)"}`,
-          focusRing: "hsl(337 74% 44%)",
         }}
       />
       {error && <p className="text-xs mt-0.5" style={{ color: "hsl(0 84% 60%)" }}>{error}</p>}
