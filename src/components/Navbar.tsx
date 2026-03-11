@@ -354,6 +354,7 @@ const Navbar = () => {
 
               {/* CTA Button */}
               <button
+                onClick={() => openLeadForm("navbar")}
                 className="text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.03] hover:shadow-lg"
                 style={{
                   background: "linear-gradient(135deg, #d946a8, #7c3aed)",
