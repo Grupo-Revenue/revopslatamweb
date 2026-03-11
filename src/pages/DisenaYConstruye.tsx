@@ -153,7 +153,7 @@ const ServiceCard = ({ svc, index }: { svc: typeof DEF.servicios.services[0]; in
       : "#1A1A2E";
 
   return (
-    <motion.div {...fadeUp(0.1 + index * 0.08)} className="group rounded-[20px] p-9 bg-white border border-[#E5E7EB] hover:border-[#BE1869] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(0,0,0,0.10)] flex flex-col">
+    <motion.div {...fadeUp(0.1 + index * 0.08)} className="group rounded-[20px] p-9 bg-white border border-[#5B28B5]/30 hover:border-[#5B28B5] transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(0,0,0,0.10)] flex flex-col">
       {/* Badge */}
       <span className="inline-block self-start px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.08em] font-bold mb-4"
         style={{ background: badgeBg, color: badgeColor }}>
