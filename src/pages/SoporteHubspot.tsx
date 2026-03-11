@@ -221,25 +221,28 @@ const SoporteHubspot = () => {
       <SectionDivider />
 
       {/* S5: Para quién es */}
-      <ForWhomSection
-        yesItems={["HubSpot implementado y funcionando bien", "No necesitas consultoría — solo mantención puntual", "Tu equipo usa HubSpot activamente", "Terminaste una implementación y quieres mantener el portal en buenas manos"]}
-        noItems={[
-          { text: "Necesitas mejorar estratégicamente tu operación", chip: "RevOps as a Service →", chipTo: "/revops-as-a-service" },
-          { text: "Tu portal tiene problemas estructurales", chip: "Conoce tu pista →", chipTo: "/conoce-tu-pista" },
-        ]}
-      />
+      <SectionShell section={paraQuienSection} className="relative" defaultBg={{ background: "#F9FAFB" }}>
+        <ForWhomSection
+          background="transparent"
+          yesItems={["HubSpot implementado y funcionando bien", "No necesitas consultoría — solo mantención puntual", "Tu equipo usa HubSpot activamente", "Terminaste una implementación y quieres mantener el portal en buenas manos"]}
+          noItems={[
+            { text: "Necesitas mejorar estratégicamente tu operación", chip: "RevOps as a Service →", chipTo: "/revops-as-a-service" },
+            { text: "Tu portal tiene problemas estructurales", chip: "Conoce tu pista →", chipTo: "/conoce-tu-pista" },
+          ]}
+        />
+      </SectionShell>
 
       <SectionDivider />
 
       {/* S6: CTA Final */}
-      <section className="relative overflow-hidden" style={{ background: DARK, padding: "100px 0" }}>
+      <SectionShell section={ctaFinalSection} className="relative" defaultBg={{ background: DARK, padding: "100px 0" }}>
         <BackgroundOrbs variant="section" />
         <div className="relative z-10 mx-auto max-w-[560px] px-6 text-center">
           <h2 className="text-white font-bold mb-4" style={{ fontSize: "clamp(24px, 3.5vw, 32px)" }}>Contrátalo ahora. Operando en 24 horas.</h2>
           <p className="text-base leading-relaxed mb-8" style={{ color: "rgba(255,255,255,0.7)" }}>Sin reuniones de venta. Sin propuestas. Elige tu plan, y asignamos tu especialista en 24 horas hábiles.</p>
           <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => scrollTo("planes")} className="text-base font-semibold text-white px-9 py-4 rounded-full transition-all hover:scale-[1.03]">{h.cta_text}</DynamicCTA>
         </div>
-      </section>
+      </SectionShell>
 
       <Footer />
     </div>
