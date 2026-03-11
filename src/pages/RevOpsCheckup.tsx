@@ -454,9 +454,9 @@ const RevOpsCheckup = () => {
                   {priceData.cta2_text}
                 </button>
               ) : (
-                <Link to={priceData.cta2_url} className="block mt-4 text-[15px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                <a href={priceData.cta2_url} target="_blank" rel="noopener noreferrer" className="block mt-4 text-[15px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>
                   {priceData.cta2_text}
-                </Link>
+                </a>
               )}
             </div>
           </motion.div>
