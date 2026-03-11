@@ -385,13 +385,7 @@ const ConoceTuPista = () => {
             {cf.subtitle}
           </motion.p>
           <motion.div {...fadeUp(0.2)} className="mt-8">
-            <Link
-              to={cf.cta_url}
-              className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
-              style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
-            >
-              {cf.cta_text}
-            </Link>
+            <CTAFinalButton section={ctaFinal} cta_text={cf.cta_text} cta_url={cf.cta_url} cfStyle={cfStyle} />
           </motion.div>
         </div>
       </SectionShell>
