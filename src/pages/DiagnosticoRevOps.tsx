@@ -47,14 +47,14 @@ const FunnelVisual = ({ stages }: { stages: Array<{ label: string; conv: string;
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.7, delay: 0.3 }}
-    className="w-full max-w-[380px] mx-auto lg:mx-0 rounded-[20px] p-7"
+    className="w-full max-w-[420px] mx-auto lg:mx-0 rounded-[20px] p-7"
     style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)" }}
   >
     <p className="text-[14px] font-bold text-white/50 uppercase tracking-[0.1em] mb-5">Funnel de ventas</p>
     <div className="space-y-2">
       {stages.map((s, i) => (
-        <motion.div key={s.label} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: 0.5 + i * 0.15 }} className="flex items-center gap-3">
-          <div className="h-8 rounded-md flex items-center justify-center text-[12px] font-semibold text-white flex-shrink-0" style={{ width: `${s.width}%`, background: GRADIENT, opacity: 1 - i * 0.12 }}>{s.label}</div>
+        <motion.div key={s.label} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4, delay: 0.5 + i * 0.15 }} className="flex items-center gap-3 min-w-0">
+          <div className="h-8 rounded-md flex items-center justify-center text-[12px] font-semibold text-white flex-shrink min-w-0" style={{ width: `${s.width}%`, background: GRADIENT, opacity: 1 - i * 0.12 }}>{s.label}</div>
           <span className="text-[14px] font-mono text-white/40 flex-shrink-0 w-10 text-right">{s.conv}</span>
         </motion.div>
       ))}
