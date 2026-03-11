@@ -96,7 +96,7 @@ const CheckupGauge = () => {
             >
               {overall}
             </motion.span>
-            <span className="text-[11px] text-white/40 mt-1">/100</span>
+            <span className="text-[12px] text-white/60 mt-1 font-semibold">/100</span>
           </div>
         </div>
         <div>
