@@ -122,7 +122,7 @@ const CheckupGauge = () => {
             <div className="h-[6px] rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
               <motion.div
                 className="h-full rounded-full"
-                style={{ background: area.score >= 60 ? GRADIENT : area.color }}
+                style={{ background: area.color }}
                 initial={{ width: 0 }}
                 animate={{ width: `${area.score}%` }}
                 transition={{ duration: 0.8, delay: 1 + i * 0.12, ease: "easeOut" }}
