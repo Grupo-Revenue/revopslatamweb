@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
+import { LeadFormProvider } from "@/hooks/useLeadForm";
+import LeadFormModal from "@/components/LeadFormModal";
 import Index from "./pages/Index";
 import Nosotros from "./pages/Nosotros";
 import ParaCeos from "./pages/ParaCeos";
