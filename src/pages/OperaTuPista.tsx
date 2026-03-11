@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ChevronRight, ArrowRight, Zap, TrendingDown, GitBranch, Cog, Megaphone, Headphones } from "lucide-react";
+import DynamicCTA from "@/components/DynamicCTA";
 import BackgroundOrbs from "@/components/services/BackgroundOrbs";
 import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
