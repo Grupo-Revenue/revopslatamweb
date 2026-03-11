@@ -444,12 +444,18 @@ const RevOpsCheckup = () => {
               <p className="text-[15px] mt-1" style={{ color: "#6B7280" }}>{priceData.price_sub}</p>
               <div className="my-6 h-px" style={{ background: "#E5E7EB" }} />
               <p className="text-[14px] italic leading-[1.6]" style={{ color: "#6B7280" }}>{priceData.note}</p>
-              <DynamicCTA styleKey={(m(precio).cta_style_key as string)} onClick={() => { if (priceData.cta_url) window.location.href = priceData.cta_url; }} className="mt-8 w-full inline-flex items-center justify-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.02] rounded-full px-8 py-3.5">
+              <DynamicCTA styleKey={(pcm.cta_style_key as string)} onClick={() => { if (pcm.cta1_opens_lead_form) { openLeadForm("revops-checkup-precio"); } else if (priceData.cta_url) { window.location.href = priceData.cta_url; } }} className="mt-8 w-full inline-flex items-center justify-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.02] rounded-full px-8 py-3.5">
                 {priceData.cta_text}
               </DynamicCTA>
-              <Link to={priceData.cta2_url} className="block mt-4 text-[15px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>
-                {priceData.cta2_text}
-              </Link>
+              {pcm.cta2_opens_lead_form ? (
+                <button onClick={() => openLeadForm("revops-checkup-precio-cta2")} className="block mt-4 text-[15px] font-medium transition-colors duration-200 hover:opacity-80 mx-auto" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px", background: "none", border: "none", cursor: "pointer" }}>
+                  {priceData.cta2_text}
+                </button>
+              ) : (
+                <Link to={priceData.cta2_url} className="block mt-4 text-[15px] font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  {priceData.cta2_text}
+                </Link>
+              )}
             </div>
           </motion.div>
         </div>
