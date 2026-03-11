@@ -45,7 +45,7 @@ function SectionShell({ section, className, defaultBg, children }: {
 const CheckupGauge = () => {
   const areas = [
     { label: "Pipeline", score: 42, color: "#be1869" },
-    { label: "CRM & Tools", score: 68, color: "#5b28b5" },
+    { label: "CRM & Tools", score: 68, color: "#4d9f96" },
     { label: "Procesos", score: 35, color: "#be1869" },
     { label: "Data & Reporting", score: 55, color: "#ECC94B" },
     { label: "Alineamiento", score: 28, color: "#be1869" },
@@ -73,7 +73,7 @@ const CheckupGauge = () => {
             <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
             <motion.circle
               cx="60" cy="60" r="54" fill="none" strokeWidth="8" strokeLinecap="round"
-              stroke="#5b28b5"
+              stroke="#4d9f96"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset: dashOffset }}
