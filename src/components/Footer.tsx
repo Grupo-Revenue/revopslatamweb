@@ -40,15 +40,26 @@ const Footer = () => {
             <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
               Ordenamos para crecer. Diseñamos, construimos y operamos sistemas de revenue para empresas latinoamericanas.
             </p>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 hover:!bg-[#0779D7] hover:!border-[#0779D7]"
-              style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}
-            >
-              <Linkedin size={18} color="#FFFFFF" />
-            </a>
+            <div className="mt-4 flex items-center gap-3">
+              <a
+                href="https://www.linkedin.com/company/revops-latam/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 hover:!bg-[#0779D7] hover:!border-[#0779D7]"
+                style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}
+              >
+                <Linkedin size={18} color="#FFFFFF" />
+              </a>
+              <a
+                href="https://www.instagram.com/revopslatam"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300 hover:!bg-[#E1306C] hover:!border-[#E1306C]"
+                style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)" }}
+              >
+                <Instagram size={18} color="#FFFFFF" />
+              </a>
+            </div>
           </div>
 
           {/* Servicios — solo hubs + top services */}
