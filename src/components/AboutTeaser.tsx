@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Stethoscope, TrendingUp, Heart, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
