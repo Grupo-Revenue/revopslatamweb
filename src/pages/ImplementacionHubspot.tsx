@@ -300,22 +300,7 @@ export default function ImplementacionHubspot() {
         <DotPattern />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
-        <div className="relative z-10 max-w-[900px] mx-auto px-6">
-          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{inc.title}</motion.h2>
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-0">
-            {inc.items.map((item, i) => (
-              <motion.div key={i} {...fadeUp(0.1 + i * 0.06)} className="py-6" style={{ borderBottom: "1px solid #E5E7EB" }}>
-                <div className="flex items-start gap-4">
-                  <div className="shrink-0 bg-clip-text text-transparent" style={{ color: "#1A1A2E" }}><FIcon type={item.icon} /></div>
-                  <div>
-                    <h3 className="font-bold text-[15px] mb-1" style={{ color: "#1A1A2E" }}>{item.title}</h3>
-                    <p className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>{item.text}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <IncludeGrid section={incluye} title={inc.title} items={inc.items} />
       </SectionShell>
 
       {/* ── FASES ── */}

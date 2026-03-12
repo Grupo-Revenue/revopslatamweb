@@ -288,12 +288,7 @@ export default function PersonalizacionCRM() {
         <DotPattern />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
-        <div className="relative z-10 max-w-[900px] mx-auto px-6">
-          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{con.title}</motion.h2>
-          <motion.div {...fadeUp(0.1)}>
-            <TechAccordion items={con.items} />
-          </motion.div>
-        </div>
+        <ConstruimosGrid section={construimos} title={con.title} items={con.items} />
       </SectionShell>
 
       {/* ── PROCESO ── */}
