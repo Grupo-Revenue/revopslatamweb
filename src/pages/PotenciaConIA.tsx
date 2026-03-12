@@ -364,7 +364,8 @@ const PotenciaConIA = () => {
                 <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ color: "#EF4444" }}>✗</span> {t}</p>
               ))}
             </motion.div>
-            <motion.div {...fadeUp(0.25)} className="rounded-[20px] p-7" style={{ border: "1px solid transparent", borderImage: `${gradient} 1`, background: "#fff" }}>
+            <motion.div {...fadeUp(0.25)} className="rounded-[20px] p-7 relative overflow-hidden" style={{ background: "#fff" }}>
+              <div className="absolute inset-0 rounded-[20px] pointer-events-none" style={{ padding: 1, background: gradient, WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude" }} />
               <p className="text-[14px] font-semibold uppercase mb-3" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IA con RevOps LATAM</p>
               {prob.good_items.map((t) => (
                 <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span> {t}</p>
