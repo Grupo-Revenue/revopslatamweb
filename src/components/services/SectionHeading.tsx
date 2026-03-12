@@ -10,6 +10,10 @@ interface SectionHeadingProps {
   light?: boolean;
   /** Index of word in title to highlight with brand gradient (0-based). Only works with string titles. */
   highlightWord?: number;
+  /** Extra CSSProperties to merge onto the h2 (e.g. CMS overrides) */
+  titleStyle?: React.CSSProperties;
+  /** Extra CSSProperties to merge onto the subtitle */
+  subtitleStyle?: React.CSSProperties;
 }
 
 const fadeUp = (d = 0) => ({
