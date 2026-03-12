@@ -443,7 +443,6 @@ const PotenciaConIA = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
 
       {/* ─── S6 — Cómo se contrata ─── */}
       <SectionShell section={contratacion} className="py-[100px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
