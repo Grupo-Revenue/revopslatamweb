@@ -381,7 +381,7 @@ const PotenciaConIA = () => {
       <SectionShell section={capacidades} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern opacity={0.3} />
         <div id="ia-capacidades" className="relative z-10 max-w-[1100px] mx-auto">
-          <SectionHeading title={cap.title} />
+          <SectionHeading title={cap.title} titleStyle={capStyle("title")} />
           <div className="grid sm:grid-cols-2 gap-8">
             {capabilities.map((c, i) => (
               <ServiceCard key={c.title} delay={0.1 + i * 0.08} hoverBorder={c.hoverBorder}>
