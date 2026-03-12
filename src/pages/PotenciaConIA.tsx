@@ -261,8 +261,10 @@ const PotenciaConIA = () => {
   const { getStyle: probStyle } = useSectionStyles(problema);
   const { getStyle: capStyle } = useSectionStyles(capacidades);
   const { getStyle: conStyle } = useSectionStyles(consultoria);
-  const { getStyle: procStyle } = useSectionStyles(proceso);
+  const { getStyle: procStyle, getBgStyle: procBgStyle } = useSectionStyles(proceso);
   const { getStyle: contStyle } = useSectionStyles(contratacion);
+  const { getStyle: pqStyle, getBgStyle: pqBgStyle } = useSectionStyles(paraQuien);
+  const { hasBg: pqHasBg, bgLayerStyle: pqBgLayerStyle } = useSectionBackground(paraQuien);
   const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
 
   const scrollToPlans = useCallback(() => {
@@ -348,7 +350,7 @@ const PotenciaConIA = () => {
       {/* ─── S2 — El Problema ─── */}
       <SectionShell section={problema} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
         <div id="ia-problema" className="relative z-10 max-w-[700px] mx-auto text-center">
-          <SectionHeading title={prob.title} />
+          <SectionHeading title={prob.title} titleStyle={probStyle("title")} />
           <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed max-w-[620px] mx-auto -mt-8" style={{ color: "#6B7280", ...probStyle("body") }}>
             {prob.body}
           </motion.p>
@@ -362,7 +364,8 @@ const PotenciaConIA = () => {
                 <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ color: "#EF4444" }}>✗</span> {t}</p>
               ))}
             </motion.div>
-            <motion.div {...fadeUp(0.25)} className="rounded-[20px] p-7" style={{ border: "1px solid transparent", borderImage: `${gradient} 1`, background: "#fff" }}>
+            <motion.div {...fadeUp(0.25)} className="rounded-[20px] p-7 relative overflow-hidden" style={{ background: "#fff" }}>
+              <div className="absolute inset-0 rounded-[20px] pointer-events-none" style={{ padding: 1, background: gradient, WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude" }} />
               <p className="text-[14px] font-semibold uppercase mb-3" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IA con RevOps LATAM</p>
               {prob.good_items.map((t) => (
                 <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span> {t}</p>
@@ -378,7 +381,7 @@ const PotenciaConIA = () => {
       <SectionShell section={capacidades} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern opacity={0.3} />
         <div id="ia-capacidades" className="relative z-10 max-w-[1100px] mx-auto">
-          <SectionHeading title={cap.title} />
+          <SectionHeading title={cap.title} titleStyle={capStyle("title")} />
           <div className="grid sm:grid-cols-2 gap-8">
             {capabilities.map((c, i) => (
               <ServiceCard key={c.title} delay={0.1 + i * 0.08} hoverBorder={c.hoverBorder}>
@@ -398,7 +401,7 @@ const PotenciaConIA = () => {
       {/* ─── S4 — Consultoría Estratégica ─── */}
       <SectionShell section={consultoria} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[640px] mx-auto text-center">
-          <SectionHeading badge={con.badge} title={con.title} />
+          <SectionHeading badge={con.badge} title={con.title} titleStyle={conStyle("title")} />
           <motion.div {...fadeUp(0.1)} className="text-[15px] leading-relaxed space-y-4 -mt-8" style={{ color: "#6B7280", ...conStyle("body") }}>
             {con.body.split("\n\n").filter(Boolean).map((p, i) => (
               <p key={i}>{p}</p>
@@ -410,7 +413,7 @@ const PotenciaConIA = () => {
               { icon: <TrendingDown size={14} />, text: "¿En qué punto se caen los leads?" },
               { icon: <Lightbulb size={14} />, text: "¿Qué decisiones se toman hoy sin datos?" },
             ].map((q) => (
-              <span key={q.text} className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl text-[14px] transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", color: "#6B7280" }}>
+              <span key={q.text} className="inline-flex items-center gap-2 px-5 py-3.5 rounded-[16px] text-[14px] transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", color: "#6B7280" }}>
                 {q.icon} {q.text}
               </span>
             ))}
@@ -424,7 +427,7 @@ const PotenciaConIA = () => {
       <SectionShell section={proceso} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern opacity={0.3} />
         <div className="relative z-10 max-w-[660px] mx-auto">
-          <SectionHeading title={proc.title} />
+          <SectionHeading title={proc.title} titleStyle={procStyle("title")} />
           <div className="relative">
             <div className="absolute left-[15px] sm:left-[19px] top-0 bottom-0 w-[3px] rounded-full" style={{ background: `linear-gradient(180deg, #BE1869 0%, #6224BE 100%)`, opacity: 0.25, boxShadow: "0 0 8px rgba(190,24,105,0.15)" }} />
             {phases.map((p, i) => (
@@ -440,12 +443,11 @@ const PotenciaConIA = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
 
       {/* ─── S6 — Cómo se contrata ─── */}
       <SectionShell section={contratacion} className="py-[100px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[760px] mx-auto">
-          <SectionHeading title={cont.title} />
+          <SectionHeading title={cont.title} titleStyle={contStyle("title")} />
           <div className="grid sm:grid-cols-2 gap-8">
             <ServiceCard delay={0.1} style={{ borderLeft: "3px solid", borderImage: `${gradient} 1` }}>
               <span className="text-2xl mb-3 block">🎯</span>
@@ -467,10 +469,14 @@ const PotenciaConIA = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
 
       {/* ─── S7 — Para quién es ─── */}
-      <ForWhomSection yesItems={pq.yes_items} noItems={pq.no_items} />
+      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", ...pqBgStyle() }}>
+        {pqHasBg && <div style={pqBgLayerStyle} />}
+        <div className="relative z-10">
+          <ForWhomSection yesItems={pq.yes_items} noItems={pq.no_items} background="transparent" />
+        </div>
+      </section>
 
       <SectionDivider />
 

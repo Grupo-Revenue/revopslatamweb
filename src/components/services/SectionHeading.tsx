@@ -10,6 +10,10 @@ interface SectionHeadingProps {
   light?: boolean;
   /** Index of word in title to highlight with brand gradient (0-based). Only works with string titles. */
   highlightWord?: number;
+  /** Extra CSSProperties to merge onto the h2 (e.g. CMS overrides) */
+  titleStyle?: React.CSSProperties;
+  /** Extra CSSProperties to merge onto the subtitle */
+  subtitleStyle?: React.CSSProperties;
 }
 
 const fadeUp = (d = 0) => ({
@@ -28,6 +32,8 @@ const SectionHeading = ({
   align = "center",
   light = false,
   highlightWord,
+  titleStyle = {},
+  subtitleStyle = {},
 }: SectionHeadingProps) => {
   const textAlign = align === "center" ? "text-center" : "text-left";
   const mx = align === "center" ? "mx-auto" : "";
@@ -73,6 +79,7 @@ const SectionHeading = ({
           fontSize: "clamp(28px, 4vw, 42px)",
           color: light ? "#fff" : "#1A1A2E",
           maxWidth: align === "center" ? 700 : undefined,
+          ...titleStyle,
         }}
       >
         {renderTitle()}
@@ -84,6 +91,7 @@ const SectionHeading = ({
           style={{
             color: light ? "rgba(255,255,255,0.65)" : "#6B7280",
             maxWidth: 620,
+            ...subtitleStyle,
           }}
         >
           {subtitle}
