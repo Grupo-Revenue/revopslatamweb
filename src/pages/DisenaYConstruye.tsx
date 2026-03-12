@@ -236,6 +236,7 @@ const ComparisonColumns = ({ left, right }: { left: { header: string; items: str
 /* ═══════════════════ PAGE ═══════════════════ */
 const DisenaYConstruye = () => {
   const { getSection, loading } = usePageSections("diseña-y-construye-tu-pista");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
   const hm = mt(hero);
