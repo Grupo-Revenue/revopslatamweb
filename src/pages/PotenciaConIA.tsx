@@ -421,7 +421,6 @@ const PotenciaConIA = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
 
       {/* ─── S5 — Timeline / Proceso ─── */}
       <SectionShell section={proceso} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
