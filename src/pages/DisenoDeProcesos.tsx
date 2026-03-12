@@ -297,11 +297,7 @@ export default function DisenoDeProcesos() {
               {heroData.subtitle}
             </motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
-              {(hm.cta_style_key as string) ? (
-                <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")}>{heroData.cta}</DynamicCTA>
-              ) : (
-                <button onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{heroData.cta}</button>
-              )}
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("diseno-procesos-hero"); } else if (hero?.cta_url) { window.open(hero.cta_url, "_blank"); } }} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{heroData.cta}</DynamicCTA>
               <button onClick={scrollToParaQuien} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{heroData.cta2_text}</button>
             </motion.div>
           </div>

@@ -265,11 +265,7 @@ export default function ImplementacionHubspot() {
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5" style={{ fontSize: "clamp(40px, 5vw, 62px)", maxWidth: 580 }}>{h.title}</motion.h1>
             <motion.p {...fadeUp(0.15)} className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
-              {(hm.cta_style_key as string) ? (
-                <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")}>{h.cta}</DynamicCTA>
-              ) : (
-                <button onClick={() => hero?.cta_url && window.open(hero.cta_url, "_blank")} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</button>
-              )}
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("implementacion-hero"); } else if (hero?.cta_url) { window.open(hero.cta_url, "_blank"); } }} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
               <button onClick={scrollToFit} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{h.cta2}</button>
             </motion.div>
           </div>

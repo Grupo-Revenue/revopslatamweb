@@ -229,6 +229,7 @@ const RevOpsAsAService = () => {
   const paraQuienSection = getSection("para-quien");
   const argumentoPrecioSection = getSection("argumento-precio");
   const ctaFinalSection = getSection("cta-final");
+  const { openLeadForm } = useLeadForm();
   const hm = mt(hero);
 
   const h = {
