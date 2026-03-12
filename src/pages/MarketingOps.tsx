@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLeadForm } from "@/hooks/useLeadForm";
-import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3 } from "lucide-react";
+import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3, Inbox, RefreshCw, Star, CheckCircle2, ArrowRightLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
