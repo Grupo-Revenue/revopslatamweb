@@ -187,7 +187,7 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
               style={{
                 width: nodeSize, height: nodeSize,
                 background: "#ffffff",
-                border: `2px solid ${isActive ? n.color : isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.08)"}`,
+                border: `2px solid ${isActive ? n.color : isDark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.1)"}`,
                 boxShadow: isActive
                   ? `0 0 0 4px ${n.color}22, 0 0 24px ${n.color}33, 0 8px 24px rgba(0,0,0,0.15)`
                   : isDark
@@ -197,14 +197,12 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
               }}
             >
               <img src={n.logo} alt={n.label} className="object-contain transition-transform duration-300"
-                style={{ width: nodeSize * 0.52, height: nodeSize * 0.52, transform: isActive ? "scale(1.1)" : "scale(1)" }} />
+                style={{ width: nodeSize * 0.6, height: nodeSize * 0.6, transform: isActive ? "scale(1.1)" : "scale(1)" }} />
             </div>
             <span className="mt-2 text-[11px] font-bold whitespace-nowrap transition-all duration-300 tracking-wide"
               style={{
-                color: isActive
-                  ? (isDark ? "#fff" : n.color)
-                  : (isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.45)"),
-                textShadow: isActive && isDark ? `0 0 12px ${n.color}66` : "none",
+                color: "#ffffff",
+                textShadow: isActive ? `0 0 12px ${n.color}66` : "0 1px 3px rgba(0,0,0,0.3)",
               }}>
               {n.label}
             </span>
