@@ -44,11 +44,11 @@ function SectionShell({ section, className, defaultBg, children }: {
 
 /* ═══ Hero Workflow Visual ═══ */
 const workflowSteps = [
-  { label: "Lead entra", Icon: Inbox, color: "rgba(190,24,105,0.3)" },
-  { label: "Nurturing", Icon: RefreshCw, color: "rgba(190,24,105,0.5)" },
-  { label: "Lead Score", Icon: Star, color: "rgba(140,30,147,0.6)" },
-  { label: "MQL", Icon: CheckCircle2, color: "rgba(98,36,190,0.7)" },
-  { label: "Ventas", Icon: ArrowRightLeft, color: "rgba(98,36,190,0.9)" },
+  { label: "Lead entra", Icon: Inbox, color: "hsl(328 78% 42%)" },
+  { label: "Nurturing", Icon: RefreshCw, color: "hsl(320 70% 41%)" },
+  { label: "Lead Score", Icon: Star, color: "hsl(286 66% 39%)" },
+  { label: "MQL", Icon: CheckCircle2, color: "hsl(258 62% 45%)" },
+  { label: "Ventas", Icon: ArrowRightLeft, color: "hsl(261 66% 48%)" },
 ];
 
 const STEP_DELAY = 800;
@@ -163,7 +163,7 @@ const HeroWorkflow = () => {
               <motion.div
                 className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
                 animate={{
-                  background: isActive ? step.color : "#1e1e34",
+                  background: isActive ? step.color : "hsl(239 29% 17%)",
                   scale: isCurrent ? 1.08 : 1,
                   borderColor: isActive ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.08)",
                 }}
