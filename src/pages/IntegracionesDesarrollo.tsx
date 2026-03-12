@@ -372,26 +372,22 @@ export default function IntegracionesDesarrollo() {
         <div className="relative z-10 max-w-[480px] mx-auto px-6">
           <motion.div {...fadeUp()} className="relative rounded-[20px] p-12 text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
             <span className="block text-[11px] uppercase tracking-wider font-semibold mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>{pr.label}</span>
-            <h3 className="text-xl font-extrabold leading-tight mb-3" style={{ color: "#1A1A2E" }}>{pr.headline}</h3>
-            <p className="text-sm mb-5" style={{ color: "#6B7280" }}>{pr.subtext}</p>
-            <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
+            <h3 className="text-xl font-extrabold leading-tight mb-3" style={{ color: "#fff" }}>{pr.headline}</h3>
+            <p className="text-sm mb-5" style={{ color: "rgba(255,255,255,0.6)" }}>{pr.subtext}</p>
+            <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.1)" }} />
             <div className="relative inline-block mb-5"
               onMouseEnter={() => setTooltipVisible(true)} onMouseLeave={() => setTooltipVisible(false)}>
-              <span className="inline-block text-sm px-5 py-2.5 rounded-xl cursor-default" style={{ background: "#F9FAFB", border: "1px dashed #E5E7EB", color: "#6B7280" }}>{pr.calcChip}</span>
+              <span className="inline-block text-sm px-5 py-2.5 rounded-xl cursor-default" style={{ background: "rgba(255,255,255,0.06)", border: "1px dashed rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.5)" }}>{pr.calcChip}</span>
               <AnimatePresence>
                 {tooltipVisible && (
                   <motion.span initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 4 }}
                     className="absolute -top-8 left-1/2 -translate-x-1/2 text-[11px] px-3 py-1 rounded-full whitespace-nowrap"
-                    style={{ background: "#1A1A2E", color: "#fff" }}>Próximamente</motion.span>
+                    style={{ background: "#fff", color: "#1A1A2E" }}>Próximamente</motion.span>
                 )}
               </AnimatePresence>
             </div>
-            <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
-            {(mt(precio).cta_style_key as string) ? (
-              <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full">{pr.cta}</DynamicCTA>
-            ) : (
-              <button onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</button>
-            )}
+            <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.1)" }} />
+            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { if (mt(precio).cta1_opens_lead_form) { openLeadForm("integraciones-precio"); } else if (precio?.cta_url) { window.open(precio.cta_url, "_blank"); } }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
             <a href="#" className="text-sm font-medium hover:underline" style={{ color: "#BE1869" }}>{pr.link}</a>
           </motion.div>
         </div>
