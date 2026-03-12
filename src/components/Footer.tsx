@@ -5,18 +5,11 @@ import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 const footerLinks = {
   servicios: [
     { label: "Conoce tu Pista", to: "/conoce-tu-pista" },
-    { label: "RevOps Checkup", to: "/revops-checkup" },
-    { label: "Diagnóstico RevOps", to: "/diagnostico-revops" },
-    { label: "Motor de Ingresos", to: "/motor-de-ingresos" },
-    { label: "Diseño de Procesos", to: "/diseño-de-procesos" },
-    { label: "Onboarding HubSpot", to: "/onboarding-hubspot" },
-    { label: "Implementación HubSpot", to: "/implementacion-hubspot" },
-    { label: "Personalización CRM", to: "/personalizacion-crm" },
-    { label: "Integraciones y Desarrollo", to: "/integraciones-desarrollo" },
-    { label: "RevOps as a Service", to: "/revops-as-a-service" },
-    { label: "Marketing Ops", to: "/marketing-ops" },
-    { label: "Soporte HubSpot", to: "/soporte-hubspot" },
+    { label: "Diseña y Construye", to: "/diseña-y-construye-tu-pista" },
+    { label: "Opera tu Pista", to: "/opera-tu-pista" },
     { label: "Potencia con IA", to: "/potencia-con-ia" },
+    { label: "Implementación HubSpot", to: "/implementacion-hubspot" },
+    { label: "RevOps as a Service", to: "/revops-as-a-service" },
   ],
   roles: [
     { label: "CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
@@ -58,7 +51,7 @@ const Footer = () => {
             </a>
           </div>
 
-          {/* Servicios */}
+          {/* Servicios — solo hubs + top services */}
           <div>
             <h4 className="text-[14px] font-semibold mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>Servicios</h4>
             <ul className="space-y-2.5">
