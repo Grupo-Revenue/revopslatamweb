@@ -213,6 +213,7 @@ function PhasesTimeline({ phases }: { phases: typeof DEF.proceso.phases }) {
 
 /* ─── Main Page ─── */
 export default function PersonalizacionCRM() {
+  const { openLeadForm } = useLeadForm();
   const { getSection } = usePageSections("personalizacion-crm");
   const hero = getSection("hero");
   const problema = getSection("problema");

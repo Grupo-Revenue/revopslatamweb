@@ -228,6 +228,7 @@ function PhasesTimeline({ phases }: { phases: typeof DEF.proceso.phases }) {
 
 /* ─── Main Page ─── */
 export default function IntegracionesDesarrollo() {
+  const { openLeadForm } = useLeadForm();
   const { getSection } = usePageSections("integraciones-desarrollo");
   const hero = getSection("hero");
   const problema = getSection("problema");

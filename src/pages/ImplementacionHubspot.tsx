@@ -231,6 +231,7 @@ function PhasesTimeline({ phases }: { phases: typeof DEF.fases.phases }) {
 
 /* ─── Main Page ─── */
 export default function ImplementacionHubspot() {
+  const { openLeadForm } = useLeadForm();
   const { getSection } = usePageSections("implementacion-hubspot");
   const hero = getSection("hero");
   const problema = getSection("problema");

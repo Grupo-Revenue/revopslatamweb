@@ -217,6 +217,7 @@ function DeliverableIcon({ type }: { type: string }) {
 
 /* ─── Main Page ─── */
 export default function DisenoDeProcesos() {
+  const { openLeadForm } = useLeadForm();
   const { getSection } = usePageSections("diseño-de-procesos");
   const hero = getSection("hero");
   const problema = getSection("problema");
