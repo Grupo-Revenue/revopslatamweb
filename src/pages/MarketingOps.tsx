@@ -78,7 +78,7 @@ const FunnelLevel = ({ lvl, i, inView, isLast }: { lvl: (typeof funnelLevels)[0]
         <span className="text-white text-lg font-bold tabular-nums">{Number(count).toLocaleString()}</span>
       </div>
       {isLast && (
-        <motion.span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-white px-3 py-1 rounded-full whitespace-nowrap" style={{ background: GRADIENT }} initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 1.6, duration: 0.4 }}>
+        <motion.span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-white px-3 py-1 rounded-full whitespace-nowrap" style={{ background: GRADIENT }} initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 1.6, duration: 0.4 }}>
           Alineado con ventas ✓
         </motion.span>
       )}
