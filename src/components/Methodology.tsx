@@ -409,70 +409,94 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
               const isDeemphasized = hasSelection && !isSelected;
 
               return (
-                <motion.button
+                <motion.div
                   key={s.id}
                   {...fadeUp(0.25 + i * 0.08)}
-                  onClick={() => handleSelect(s.id)}
-                  className="relative text-left rounded-2xl p-5 sm:p-6 transition-all duration-500 cursor-pointer group"
-                  style={{
-                    background: isSelected ? s.bgSubtle : "white",
-                    border: `1.5px solid ${isSelected ? s.color : "hsl(220 13% 91%)"}`,
-                    borderTop: `4px solid ${isSelected ? s.color : isDeemphasized ? "hsl(220 13% 91%)" : s.color}`,
-                    opacity: isDeemphasized ? 0.45 : 1,
-                    transform: isSelected ? "scale(1.02)" : isDeemphasized ? "scale(0.97)" : "scale(1)",
-                    filter: isDeemphasized ? "grayscale(0.3)" : "none",
-                  }}
-                  whileHover={!isSelected ? { scale: 1.02 } : {}}
-                  transition={{ duration: 0.3 }}
+                  className="relative"
                 >
-                  {s.popular && !isDeemphasized && (
-                    <span
-                      className="absolute -top-3 right-4 px-3 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold text-white tracking-wide"
-                      style={{ background: s.color }}
-                    >
-                      MÁS COMÚN
-                    </span>
-                  )}
-
-                  <div className="flex items-start justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-2.5">
+                  <motion.button
+                    onClick={() => handleSelect(s.id)}
+                    type="button"
+                    className="relative w-full text-left rounded-2xl p-5 sm:p-6 transition-all duration-500 cursor-pointer group"
+                    style={{
+                      background: isSelected ? s.bgSubtle : "white",
+                      border: `1.5px solid ${isSelected ? s.color : "hsl(220 13% 91%)"}`,
+                      borderTop: `4px solid ${isSelected ? s.color : isDeemphasized ? "hsl(220 13% 91%)" : s.color}`,
+                      opacity: isDeemphasized ? 0.45 : 1,
+                      transform: isSelected ? "scale(1.02)" : isDeemphasized ? "scale(0.97)" : "scale(1)",
+                      filter: isDeemphasized ? "grayscale(0.3)" : "none",
+                    }}
+                    whileHover={!isSelected ? { scale: 1.02 } : {}}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {s.popular && !isDeemphasized && (
                       <span
-                        className="flex items-center justify-center w-9 h-9 rounded-xl transition-colors"
-                        style={{ background: `${s.color}15` }}
+                        className="absolute -top-3 right-4 px-3 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold text-white tracking-wide"
+                        style={{ background: s.color }}
                       >
-                        <Icon size={20} style={{ color: s.color }} />
+                        MÁS COMÚN
                       </span>
-                      <div>
+                    )}
+
+                    <div className="flex items-start justify-between gap-3 mb-4">
+                      <div className="flex items-center gap-2.5">
                         <span
-                          className="block text-[13px] sm:text-[14px] font-bold tracking-wide uppercase"
-                          style={{ color: s.color }}
+                          className="flex items-center justify-center w-9 h-9 rounded-xl transition-colors"
+                          style={{ background: `${s.color}15` }}
                         >
-                          {s.label}
+                          <Icon size={20} style={{ color: s.color }} />
                         </span>
-                        <span className="block text-[12px] mt-0.5" style={{ color: "hsl(var(--muted-foreground))" }}>
-                          {s.tagline}
-                        </span>
+                        <div>
+                          <span
+                            className="block text-[13px] sm:text-[14px] font-bold tracking-wide uppercase"
+                            style={{ color: s.color }}
+                          >
+                            {s.label}
+                          </span>
+                          <span className="block text-[12px] mt-0.5" style={{ color: "hsl(var(--muted-foreground))" }}>
+                            {s.tagline}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Mini illustration */}
-                  <div className="mb-3 opacity-60 group-hover:opacity-80 transition-opacity px-2">
-                    <Illust />
-                  </div>
+                    {/* Mini illustration */}
+                    <div className="mb-3 opacity-60 group-hover:opacity-80 transition-opacity px-2">
+                      <Illust />
+                    </div>
 
-                  <p className="text-[14px] sm:text-[15px] leading-snug font-medium" style={{ color: "hsl(var(--foreground))" }}>
-                    {(s.headline ?? "").split(".")[0]}.
-                  </p>
+                    <p className="text-[14px] sm:text-[15px] leading-snug font-medium" style={{ color: "hsl(var(--foreground))" }}>
+                      {(s.headline ?? "").split(".")[0]}.
+                    </p>
 
-                  <div
-                    className="mt-3 flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
-                    style={{ color: s.color }}
-                  >
-                    {isSelected ? "Seleccionado" : "Seleccionar"}
-                    <ArrowRight size={14} className={`transition-transform duration-300 ${isSelected ? "rotate-90" : "group-hover:translate-x-1"}`} />
-                  </div>
-                </motion.button>
+                    <div
+                      className="mt-3 flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
+                      style={{ color: s.color }}
+                    >
+                      {isSelected ? "Seleccionado" : "Seleccionar"}
+                      <ArrowRight size={14} className={`transition-transform duration-300 ${isSelected ? "rotate-90" : "group-hover:translate-x-1"}`} />
+                    </div>
+                  </motion.button>
+
+                  {/* Mobile: expanded content directly below selected card */}
+                  <AnimatePresence>
+                    {isSelected && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0, y: 8 }}
+                        animate={{ opacity: 1, height: "auto", y: 0 }}
+                        exit={{ opacity: 0, height: 0, y: -6 }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        className="md:hidden overflow-hidden"
+                      >
+                        <TrackExpandedContent
+                          state={s}
+                          cardBg={(meta.card_bg as string) || undefined}
+                          compact
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
               );
             })}
           </div>
