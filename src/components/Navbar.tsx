@@ -542,4 +542,88 @@ const MobileSection = ({
   );
 };
 
+/* ─── Mobile grouped services section ─── */
+const MobileSectionGrouped = ({ onClose }: { onClose: () => void }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div style={{ borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center justify-between py-4 text-lg font-semibold"
+        style={{ color: "#1a1a2e" }}
+      >
+        Servicios
+        <ChevronDown size={18} className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden"
+          >
+            <div className="pb-4 space-y-5">
+              {serviciosGroups.map((group) => {
+                const GroupIcon = group.icon;
+                return (
+                  <div key={group.label}>
+                    {/* Category header */}
+                    <div className="flex items-center gap-2 mb-2 pl-2">
+                      <GroupIcon size={14} style={{ color: group.color }} />
+                      {group.link ? (
+                        <Link
+                          to={group.link}
+                          onClick={onClose}
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.14em",
+                            color: group.color,
+                          }}
+                        >
+                          {group.label}
+                        </Link>
+                      ) : (
+                        <span
+                          style={{
+                            fontSize: 11,
+                            fontWeight: 700,
+                            letterSpacing: "0.14em",
+                            color: group.color,
+                          }}
+                        >
+                          {group.label}
+                        </span>
+                      )}
+                    </div>
+                    {/* Items */}
+                    <div className="pl-8 space-y-0.5">
+                      {group.items.map((item) => (
+                        <Link
+                          key={item.label}
+                          to={item.to}
+                          onClick={onClose}
+                          className="block py-2 text-sm transition-colors"
+                          style={{ color: "#555" }}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = group.color)}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = "#555")}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 export default Navbar;
