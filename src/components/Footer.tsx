@@ -1,4 +1,4 @@
-import { Linkedin } from "lucide-react";
+import { Linkedin, Instagram } from "lucide-react";
 import { Link } from "react-router-dom";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
