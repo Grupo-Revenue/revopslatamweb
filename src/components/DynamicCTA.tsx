@@ -6,6 +6,7 @@ type Props = {
   children: React.ReactNode;
   onClick?: () => void;
   className?: string;
+  style?: React.CSSProperties;
 };
 
 /**
