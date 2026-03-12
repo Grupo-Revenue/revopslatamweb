@@ -15,6 +15,7 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { useLeadForm } from "@/hooks/useLeadForm";
 
 /* ─── constants ─── */
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";

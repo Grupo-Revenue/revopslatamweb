@@ -16,6 +16,7 @@ import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
 import DynamicCTA from "@/components/DynamicCTA";
+import { useLeadForm } from "@/hooks/useLeadForm";
 
 
 /* ─── constants ─── */

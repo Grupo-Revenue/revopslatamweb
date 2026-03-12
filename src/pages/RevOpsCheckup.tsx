@@ -315,12 +315,18 @@ const RevOpsCheckup = () => {
               {hero?.subtitle ?? DEF.hero.subtitle}
             </motion.p>
             <motion.div {...fadeUp(0.26)} className="mt-8 flex flex-wrap items-center gap-5">
-              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { const url = hero?.cta_url ?? "#"; if (url) window.location.href = url; }} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03] rounded-full px-8 py-3.5">
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("revops-checkup-hero"); } else { const url = hero?.cta_url ?? "#"; if (url) window.location.href = url; } }} className="inline-flex items-center text-[15px] font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03] rounded-full px-8 py-3.5">
                 {hero?.cta_text ?? DEF.hero.cta_text}
               </DynamicCTA>
-              <button onClick={() => scrollToSection(cta2Target)} className="text-[15px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
-                {cta2Text}
-              </button>
+              {hm.cta2_opens_lead_form ? (
+                <button onClick={() => openLeadForm("revops-checkup-hero-cta2")} className="text-[15px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  {cta2Text}
+                </button>
+              ) : (
+                <button onClick={() => scrollToSection(cta2Target)} className="text-[15px] font-medium transition-colors duration-200 hover:text-white" style={{ color: "rgba(255,255,255,0.6)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  {cta2Text}
+                </button>
+              )}
             </motion.div>
           </div>
           <div className="flex-1 lg:max-w-[45%] flex justify-center">
