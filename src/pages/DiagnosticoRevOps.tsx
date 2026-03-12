@@ -136,6 +136,7 @@ const DEF = {
 
 const DiagnosticoRevOps = () => {
   const { getSection, loading } = usePageSections("diagnostico-revops");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
   const problema = getSection("problema");
