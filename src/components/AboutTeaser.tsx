@@ -50,9 +50,11 @@ const AboutTeaser = ({ section }: { section?: HomeSection }) => {
               <motion.p key={i} {...fadeUp(0.2 + i * 0.05)}>{p}</motion.p>
             ))}
           </div>
-          <motion.button {...fadeUp(0.3)} className="mt-8 inline-flex items-center gap-2 text-[16px] font-medium transition-opacity hover:opacity-80" style={{ color: "#1CA398" }}>
-            {ctaText} <ArrowRight size={18} />
-          </motion.button>
+          <motion.div {...fadeUp(0.3)}>
+            <Link to="/nosotros" className="mt-8 inline-flex items-center gap-2 text-[16px] font-medium transition-opacity hover:opacity-80" style={{ color: "#1CA398" }}>
+              {ctaText} <ArrowRight size={18} />
+            </Link>
+          </motion.div>
         </div>
 
         <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-5 sm:p-8" style={{ background: (meta.card_bg as string) || "#13132A", border: "1px solid rgba(255,255,255,0.06)" }}>
