@@ -206,6 +206,7 @@ const DEF = {
 const MotorDeIngresos = () => {
   const [openAccordion, setOpenAccordion] = useState(0);
   const { getSection, loading } = usePageSections("motor-de-ingresos");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
   const problema = getSection("problema");
