@@ -32,6 +32,8 @@ const SectionHeading = ({
   align = "center",
   light = false,
   highlightWord,
+  titleStyle = {},
+  subtitleStyle = {},
 }: SectionHeadingProps) => {
   const textAlign = align === "center" ? "text-center" : "text-left";
   const mx = align === "center" ? "mx-auto" : "";
