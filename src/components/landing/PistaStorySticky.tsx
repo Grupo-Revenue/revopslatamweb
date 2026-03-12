@@ -66,6 +66,8 @@ const STEPS = [
 
 export default function PistaStorySticky({ section }: { section?: HomeSection }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [mobileActive, setMobileActive] = useState<number | null>(null);
+  const [mobileTab, setMobileTab] = useState<"situacion" | "senales">("situacion");
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
