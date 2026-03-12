@@ -109,6 +109,7 @@ const DEF = {
 /* ═══ PAGE ═══ */
 const MarketingOps = () => {
   const { getSection, loading } = usePageSections("marketing-ops");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
   const problemaSection = getSection("problema");
