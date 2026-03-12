@@ -54,13 +54,13 @@ const HeroFunnel = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   return (
-    <motion.div ref={ref} className="relative backdrop-blur-sm w-full max-w-[460px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
-      <div className="space-y-3">
+    <motion.div ref={ref} className="relative backdrop-blur-sm w-full max-w-[460px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px 48px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
+      <div className="space-y-4">
         {funnelLevels.map((lvl, i) => (
           <FunnelLevel key={lvl.label} lvl={lvl} i={i} inView={inView} isLast={i === 3} />
         ))}
       </div>
-      <motion.div className="flex items-center gap-2 justify-end mt-1 mr-2" initial={{ opacity: 0, x: 10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
+      <motion.div className="flex items-center gap-2 mt-10 text-right justify-end mr-2" initial={{ opacity: 0, x: 10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
         <span className="text-[11px] text-red-400/70 italic whitespace-nowrap">Sin nurturing → se pierden</span>
         <X size={14} style={{ color: "rgba(239,68,68,0.5)" }} />
       </motion.div>
