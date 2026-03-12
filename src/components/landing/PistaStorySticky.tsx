@@ -321,7 +321,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
               >
                 {/* Header */}
                 <button
-                  onClick={() => setMobileActive(isOpen ? null : i)}
+                  onClick={() => { setMobileActive(isOpen ? null : i); setMobileTab("situacion"); }}
                   className="w-full flex items-center justify-between px-5 py-4"
                 >
                   <div className="flex items-center gap-3">
