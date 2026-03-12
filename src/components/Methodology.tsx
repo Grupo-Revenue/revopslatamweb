@@ -501,125 +501,26 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
             })}
           </div>
 
-          {/* ── Expanded content ── */}
-          <AnimatePresence mode="wait">
-            {selectedState && (
-              <motion.div
-                key={selectedState.id}
-                initial={{ opacity: 0, y: 30, height: 0 }}
-                animate={{ opacity: 1, y: 0, height: "auto" }}
-                exit={{ opacity: 0, y: -20, height: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="overflow-hidden"
-              >
-                <div
-                  className="mt-6 rounded-3xl p-6 sm:p-10 md:p-12"
-                  style={{
-                    background: (meta.card_bg as string) || "hsl(var(--dark-bg))",
-                    border: `1px solid ${selectedState.color}20`,
-                  }}
+          {/* ── Expanded content (desktop/tablet) ── */}
+          <div className="hidden md:block">
+            <AnimatePresence mode="wait">
+              {selectedState && (
+                <motion.div
+                  key={selectedState.id}
+                  initial={{ opacity: 0, y: 30, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                  exit={{ opacity: 0, y: -20, height: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="overflow-hidden"
                 >
-                  {/* Accent line */}
-                  <div className="w-16 h-1 rounded-full mb-6" style={{ background: selectedState.color }} />
-
-                  {/* Headline */}
-                  <h3
-                    className="text-[20px] sm:text-[24px] md:text-[28px] font-bold leading-[1.2] max-w-[600px]"
-                    style={{ color: "white" }}
-                  >
-                    {selectedState.headline}
-                  </h3>
-
-                  {/* Validation */}
-                  <p
-                    className="mt-3 text-[14px] sm:text-[16px] leading-relaxed max-w-[550px]"
-                    style={{ color: `${selectedState.color}` }}
-                  >
-                    {selectedState.validation}
-                  </p>
-
-                  {/* Two columns: Signals + Consequences */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mt-8">
-                    {/* Signals */}
-                    <div>
-                      <h4 className="text-[13px] font-bold tracking-wider uppercase mb-4" style={{ color: "hsl(0 0% 100% / 0.5)" }}>
-                        Señales de que estás aquí
-                      </h4>
-                      <ul className="space-y-3">
-                        {selectedState.signals.map((sig, i) => (
-                          <motion.li
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.15 + i * 0.08 }}
-                            className="flex items-start gap-3"
-                          >
-                            <span
-                              className="mt-1.5 w-2 h-2 rounded-full shrink-0"
-                              style={{ background: selectedState.color }}
-                            />
-                            <span className="text-[14px] sm:text-[15px] leading-relaxed" style={{ color: "hsl(0 0% 100% / 0.8)" }}>
-                              {sig}
-                            </span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Consequences */}
-                    <div>
-                      <h4 className="text-[13px] font-bold tracking-wider uppercase mb-4" style={{ color: "hsl(0 0% 100% / 0.5)" }}>
-                        Si no lo resuelves
-                      </h4>
-                      <ul className="space-y-3">
-                        {selectedState.consequences.map((con, i) => (
-                          <motion.li
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.2 + i * 0.08 }}
-                            className="flex items-start gap-3"
-                          >
-                            <span className="mt-1.5 w-2 h-2 rounded-full shrink-0 bg-white/20" />
-                            <span className="text-[14px] sm:text-[15px] leading-relaxed" style={{ color: "hsl(0 0% 100% / 0.65)" }}>
-                              {con}
-                            </span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Approach */}
-                  <div className="mt-8 pt-6" style={{ borderTop: "1px solid hsl(0 0% 100% / 0.08)" }}>
-                    <h4 className="text-[13px] font-bold tracking-wider uppercase mb-3" style={{ color: "hsl(0 0% 100% / 0.5)" }}>
-                      El enfoque
-                    </h4>
-                    <p className="text-[15px] sm:text-[17px] leading-relaxed max-w-[650px]" style={{ color: "hsl(0 0% 100% / 0.85)" }}>
-                      {selectedState.approach}
-                    </p>
-                  </div>
-
-                  {/* CTA */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="mt-8"
-                  >
-                    <a
-                      href={(selectedState as any).ctaUrl || "#"}
-                      className={`inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-[15px] sm:text-[16px] font-bold transition-all duration-300 hover:scale-[1.03] ${selectedState.ctaStyle}`}
-                      style={{ backgroundColor: selectedState.color, color: "white" }}
-                    >
-                      {selectedState.ctaText}
-                      <ArrowRight size={18} />
-                    </a>
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                  <TrackExpandedContent
+                    state={selectedState}
+                    cardBg={(meta.card_bg as string) || undefined}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
         </div>
       </div>
