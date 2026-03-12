@@ -261,8 +261,10 @@ const PotenciaConIA = () => {
   const { getStyle: probStyle } = useSectionStyles(problema);
   const { getStyle: capStyle } = useSectionStyles(capacidades);
   const { getStyle: conStyle } = useSectionStyles(consultoria);
-  const { getStyle: procStyle } = useSectionStyles(proceso);
+  const { getStyle: procStyle, getBgStyle: procBgStyle } = useSectionStyles(proceso);
   const { getStyle: contStyle } = useSectionStyles(contratacion);
+  const { getStyle: pqStyle, getBgStyle: pqBgStyle } = useSectionStyles(paraQuien);
+  const { hasBg: pqHasBg, bgLayerStyle: pqBgLayerStyle } = useSectionBackground(paraQuien);
   const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
 
   const scrollToPlans = useCallback(() => {
