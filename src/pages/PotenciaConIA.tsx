@@ -427,7 +427,7 @@ const PotenciaConIA = () => {
       <SectionShell section={proceso} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern opacity={0.3} />
         <div className="relative z-10 max-w-[660px] mx-auto">
-          <SectionHeading title={proc.title} />
+          <SectionHeading title={proc.title} titleStyle={procStyle("title")} />
           <div className="relative">
             <div className="absolute left-[15px] sm:left-[19px] top-0 bottom-0 w-[3px] rounded-full" style={{ background: `linear-gradient(180deg, #BE1869 0%, #6224BE 100%)`, opacity: 0.25, boxShadow: "0 0 8px rgba(190,24,105,0.15)" }} />
             {phases.map((p, i) => (
