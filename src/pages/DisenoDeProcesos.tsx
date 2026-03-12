@@ -425,14 +425,10 @@ export default function DisenoDeProcesos() {
         <div className="relative z-10 max-w-[440px] mx-auto px-6">
           <motion.div {...fadeUp()} className="relative rounded-[20px] p-12 text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
             <span className="block text-[11px] uppercase tracking-wider font-semibold mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>{precioData.label}</span>
-            <h3 className="text-[42px] font-extrabold leading-tight mb-4" style={{ color: "#1A1A2E" }}>{precioData.price}</h3>
-            <div className="h-px mb-5" style={{ background: "#E5E7EB" }} />
-            <p className="text-[13px] italic mb-6" style={{ color: "#6B7280" }}>{precioData.note}</p>
-            {(mt(precio).cta_style_key as string) ? (
-              <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full">{precioData.cta}</DynamicCTA>
-            ) : (
-              <button onClick={() => precio?.cta_url && window.open(precio.cta_url, "_blank")} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{precioData.cta}</button>
-            )}
+            <h3 className="text-[42px] font-extrabold leading-tight mb-4" style={{ color: "#fff" }}>{precioData.price}</h3>
+            <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.1)" }} />
+            <p className="text-[13px] italic mb-6" style={{ color: "rgba(255,255,255,0.6)" }}>{precioData.note}</p>
+            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { if (mt(precio).cta1_opens_lead_form) { openLeadForm("diseno-procesos-precio"); } else if (precio?.cta_url) { window.open(precio.cta_url, "_blank"); } }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{precioData.cta}</DynamicCTA>
             <a href="#" className="text-sm font-medium hover:underline" style={{ color: "#BE1869" }}>{precioData.link}</a>
           </motion.div>
         </div>
