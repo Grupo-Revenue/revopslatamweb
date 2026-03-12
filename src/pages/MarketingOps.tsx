@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3, Inbox, RefreshCw, Star, CheckCircle2, ArrowRightLeft } from "lucide-react";
