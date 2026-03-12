@@ -277,14 +277,20 @@ const OperaTuPista = () => {
           >
             <DynamicCTA
               styleKey={hm.cta_style_key as string}
-              onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)}
+              onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("opera-tu-pista-hero"); } else if (hero?.cta_url) { window.location.href = hero.cta_url; } }}
               className="text-sm font-semibold text-white px-8 py-3.5 rounded-full transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]"
             >
               {h.cta_text}
             </DynamicCTA>
-            <Link to="/conoce-tu-pista" className="text-sm font-medium text-white/60 hover:text-white transition-colors">
-              {h.cta2_text}
-            </Link>
+            {hm.cta2_opens_lead_form ? (
+              <button onClick={() => openLeadForm("opera-tu-pista-hero-cta2")} className="text-sm font-medium text-white/60 hover:text-white transition-colors" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                {h.cta2_text}
+              </button>
+            ) : (
+              <a href={(hm.cta2_url as string) || "/conoce-tu-pista"} className="text-sm font-medium text-white/60 hover:text-white transition-colors" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                {h.cta2_text}
+              </a>
+            )}
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
