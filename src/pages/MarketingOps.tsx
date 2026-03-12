@@ -53,16 +53,23 @@ const funnelLevels = [
 const HeroFunnel = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
+  const captured = funnelLevels[0]?.count ?? 0;
+  const nurtured = funnelLevels[1]?.count ?? 0;
+  const lostWithoutNurturing = Math.max(captured - nurtured, 0);
+  const leakagePct = captured > 0 ? Math.round((lostWithoutNurturing / captured) * 100) : 0;
+
   return (
-    <motion.div ref={ref} className="relative backdrop-blur-sm w-full max-w-[460px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px 48px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
+    <motion.div ref={ref} className="relative backdrop-blur-sm w-full max-w-[460px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px 56px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
       <div className="space-y-4">
         {funnelLevels.map((lvl, i) => (
           <FunnelLevel key={lvl.label} lvl={lvl} i={i} inView={inView} isLast={i === 3} />
         ))}
       </div>
-      <motion.div className="flex items-center gap-2 mt-10 text-right justify-end mr-2" initial={{ opacity: 0, x: 10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
-        <span className="text-[11px] text-red-400/70 italic whitespace-nowrap">Sin nurturing → se pierden</span>
-        <X size={14} style={{ color: "rgba(239,68,68,0.5)" }} />
+      <motion.div className="mt-12 rounded-lg px-4 py-3 flex items-start gap-2" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.28)" }} initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
+        <X size={14} className="mt-0.5 flex-shrink-0" style={{ color: "rgba(252,165,165,0.95)" }} />
+        <p className="text-[12px] leading-relaxed" style={{ color: "rgba(254,202,202,0.95)" }}>
+          <span className="font-semibold">Sin nurturing, {lostWithoutNurturing.toLocaleString()} leads ({leakagePct}%) se enfrían antes de llegar a ventas.</span>
+        </p>
       </motion.div>
     </motion.div>
   );
