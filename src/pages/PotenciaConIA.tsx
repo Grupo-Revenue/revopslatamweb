@@ -350,7 +350,7 @@ const PotenciaConIA = () => {
       {/* ─── S2 — El Problema ─── */}
       <SectionShell section={problema} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
         <div id="ia-problema" className="relative z-10 max-w-[700px] mx-auto text-center">
-          <SectionHeading title={prob.title} />
+          <SectionHeading title={prob.title} titleStyle={probStyle("title")} />
           <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed max-w-[620px] mx-auto -mt-8" style={{ color: "#6B7280", ...probStyle("body") }}>
             {prob.body}
           </motion.p>
