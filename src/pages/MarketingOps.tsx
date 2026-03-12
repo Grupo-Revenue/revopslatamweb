@@ -149,12 +149,18 @@ const MarketingOps = () => {
             <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>{h.title}</h1>
             <p className="text-lg sm:text-[19px] leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4">
-              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]">
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("marketing-ops-hero"); } else if (hero?.cta_url) { window.location.href = hero.cta_url; } }} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]">
                 {h.cta_text}
               </DynamicCTA>
-              <button onClick={() => document.getElementById("problema")?.scrollIntoView({ behavior: "smooth" })} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer">
-                {h.cta2_text}
-              </button>
+              {hm.cta2_opens_lead_form ? (
+                <button onClick={() => openLeadForm("marketing-ops-hero-cta2")} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  {h.cta2_text}
+                </button>
+              ) : (
+                <button onClick={() => document.getElementById("problema")?.scrollIntoView({ behavior: "smooth" })} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  {h.cta2_text}
+                </button>
+              )}
             </div>
           </motion.div>
           <motion.div className="hidden lg:block" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
