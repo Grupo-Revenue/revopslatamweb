@@ -437,7 +437,7 @@ const Navbar = () => {
             style={{ background: "#ffffff" }}
           >
             <MobileSection title="Soluciones" items={solucionesItems} onClose={() => setMobileOpen(false)} />
-            <MobileSection title="Servicios" items={serviciosItemsFlat} onClose={() => setMobileOpen(false)} />
+            <MobileSectionGrouped onClose={() => setMobileOpen(false)} />
             <Link
               to="#"
               onClick={() => setMobileOpen(false)}

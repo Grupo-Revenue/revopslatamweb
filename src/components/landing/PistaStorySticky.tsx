@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import pistaInicio from "@/assets/pista-inicio.svg";
 import pistaMarketing from "@/assets/pista-marketing.svg";
 import pistaVentas from "@/assets/pista-ventas.svg";
