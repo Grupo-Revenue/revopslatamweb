@@ -26,7 +26,7 @@ const NODES: IntegrationNode[] = [
   { label: "Slack", logo: slackLogo, angle: -38, color: "#E01E5A", data: "Alertas y notificaciones en tiempo real" },
   { label: "Zoom", logo: zoomLogo, angle: 15, color: "#2D8CFF", data: "Reuniones y grabaciones sincronizadas" },
   { label: "Google Calendar", logo: googleCalendarLogo, angle: 62, color: "#4285F4", data: "Eventos y disponibilidad" },
-  { label: "Gmail", logo: mailLogo, angle: 118, color: "#EA4335", data: "Tracking de emails y secuencias" },
+  { label: "Correo", logo: mailLogo, angle: 118, color: "#EA4335", data: "Tracking de emails y secuencias" },
   { label: "Defontana", logo: defontanaLogo, angle: 168, color: "#1565C0", data: "Facturación y contabilidad" },
   { label: "SAP", logo: sapLogo, angle: -142, color: "#0070B8", data: "ERP: clientes, pedidos, inventario" },
 ];
@@ -96,13 +96,13 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
       {/* Glassmorphism container */}
       <div className="absolute inset-6 rounded-[28px]" style={{
         background: isDark
-          ? "linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))"
-          : "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6))",
-        border: `1px solid ${isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)"}`,
+          ? "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05))"
+          : "linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))",
+        border: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)"}`,
         backdropFilter: "blur(16px)",
         boxShadow: isDark
-          ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 60px rgba(0,0,0,0.3)"
-          : "0 20px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
+          ? "inset 0 1px 0 rgba(255,255,255,0.08), 0 20px 60px rgba(0,0,0,0.3)"
+          : "0 20px 60px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
       }} />
 
       {/* SVG connection lines */}
@@ -187,7 +187,7 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
               style={{
                 width: nodeSize, height: nodeSize,
                 background: "#ffffff",
-                border: `2px solid ${isActive ? n.color : isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.08)"}`,
+                border: `2px solid ${isActive ? n.color : isDark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.1)"}`,
                 boxShadow: isActive
                   ? `0 0 0 4px ${n.color}22, 0 0 24px ${n.color}33, 0 8px 24px rgba(0,0,0,0.15)`
                   : isDark
@@ -197,14 +197,12 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
               }}
             >
               <img src={n.logo} alt={n.label} className="object-contain transition-transform duration-300"
-                style={{ width: nodeSize * 0.52, height: nodeSize * 0.52, transform: isActive ? "scale(1.1)" : "scale(1)" }} />
+                style={{ width: nodeSize * 0.6, height: nodeSize * 0.6, transform: isActive ? "scale(1.1)" : "scale(1)" }} />
             </div>
             <span className="mt-2 text-[11px] font-bold whitespace-nowrap transition-all duration-300 tracking-wide"
               style={{
-                color: isActive
-                  ? (isDark ? "#fff" : n.color)
-                  : (isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.45)"),
-                textShadow: isActive && isDark ? `0 0 12px ${n.color}66` : "none",
+                color: "#ffffff",
+                textShadow: isActive ? `0 0 12px ${n.color}66` : "0 1px 3px rgba(0,0,0,0.3)",
               }}>
               {n.label}
             </span>
