@@ -469,7 +469,6 @@ const PotenciaConIA = () => {
         </div>
       </SectionShell>
 
-      <SectionDivider />
 
       {/* ─── S7 — Para quién es ─── */}
       <ForWhomSection yesItems={pq.yes_items} noItems={pq.no_items} />
