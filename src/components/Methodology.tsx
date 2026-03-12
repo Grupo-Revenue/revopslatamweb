@@ -223,15 +223,18 @@ const TrackExpandedContent = ({
       </div>
     </div>
 
-    <div className={compact ? "mt-6 pt-5" : "mt-8 pt-6"} style={{ borderTop: "1px solid hsl(0 0% 100% / 0.08)" }}>
-      <h4 className="text-[13px] font-bold tracking-wider uppercase mb-3" style={{ color: "hsl(0 0% 100% / 0.5)" }}>
-        El enfoque
-      </h4>
-      <p className={compact ? "text-[14px] leading-relaxed" : "text-[15px] sm:text-[17px] leading-relaxed max-w-[650px]"} style={{ color: "hsl(0 0% 100% / 0.85)" }}>
-        {state.approach}
-      </p>
-    </div>
-
+    {/* El Enfoque - hidden on mobile */}
+    {!compact && (
+      <div className="mt-8 pt-6" style={{ borderTop: "1px solid hsl(0 0% 100% / 0.08)" }}>
+        <h4 className="text-[13px] font-bold tracking-wider uppercase mb-3" style={{ color: "hsl(0 0% 100% / 0.5)" }}>
+          El enfoque
+        </h4>
+        <p className="text-[15px] sm:text-[17px] leading-relaxed max-w-[650px]" style={{ color: "hsl(0 0% 100% / 0.85)" }}>
+          {state.approach}
+        </p>
+      </div>
+    )}
+    {/* CTA Button - always show */}
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
