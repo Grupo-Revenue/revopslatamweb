@@ -153,23 +153,27 @@ function CRMMockup({ panels }: { panels: typeof DEF.hero.panels }) {
   );
 }
 
-/* ─── Accordion ─── */
-function TechAccordion({ items }: { items: typeof DEF.construimos.items }) {
+/* ─── Accordion (dark-bg aware) ─── */
+function TechAccordion({ items, isDark }: { items: typeof DEF.construimos.items; isDark?: boolean }) {
   const [open, setOpen] = useState(0);
+  const titleColor = isDark ? "#fff" : "#1A1A2E";
+  const textColor = isDark ? "rgba(255,255,255,0.7)" : "#6B7280";
+  const borderColor = isDark ? "rgba(255,255,255,0.08)" : "#E5E7EB";
+  const chevronColor = isDark ? "rgba(255,255,255,0.4)" : "#6B7280";
   return (
     <div className="max-w-[700px] mx-auto">
       {items.map((item, i) => (
-        <div key={i} style={{ borderBottom: "1px solid #E5E7EB" }}>
+        <div key={i} style={{ borderBottom: `1px solid ${borderColor}` }}>
           <button onClick={() => setOpen(open === i ? -1 : i)} className="w-full flex items-center gap-4 py-5 text-left">
             <span className="text-2xl font-extrabold bg-clip-text text-transparent shrink-0" style={{ backgroundImage: GRADIENT }}>{item.num}</span>
-            <span className="font-bold text-base flex-1" style={{ color: "#1A1A2E" }}>{item.title}</span>
-            <ChevronDown size={18} className="transition-transform duration-200 shrink-0" style={{ color: "#6B7280", transform: open === i ? "rotate(180deg)" : "rotate(0)" }} />
+            <span className="font-bold text-base flex-1" style={{ color: titleColor }}>{item.title}</span>
+            <ChevronDown size={18} className="transition-transform duration-200 shrink-0" style={{ color: chevronColor, transform: open === i ? "rotate(180deg)" : "rotate(0)" }} />
           </button>
           <AnimatePresence>
             {open === i && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
                 <div className="pb-5 pl-12">
-                  <p className="text-sm leading-relaxed mb-3" style={{ color: "#6B7280" }}>{item.text}</p>
+                  <p className="text-sm leading-relaxed mb-3" style={{ color: textColor }}>{item.text}</p>
                   <span className="inline-block text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full"
                     style={{ background: item.tagType === "hubspot" ? `${HUBSPOT}1a` : "linear-gradient(90deg, rgba(190,24,105,0.1), rgba(98,36,190,0.1))", color: item.tagType === "hubspot" ? HUBSPOT : "#BE1869" }}>
                     {item.tag}
@@ -183,6 +187,29 @@ function TechAccordion({ items }: { items: typeof DEF.construimos.items }) {
     </div>
   );
 }
+
+/* ─── Construimos Grid (dark-bg aware) ─── */
+function ConstruimosGrid({ section, title, items }: { section?: HomeSection; title: string; items: typeof DEF.construimos.items }) {
+  const { getStyle } = useSectionStyles(section);
+  const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const styles = (meta.styles as Record<string, unknown>) ?? {};
+  const bgColor = (styles.background as Record<string, string>)?.color ?? "";
+  const bgGradient = (styles.background as Record<string, string>)?.gradient ?? "";
+  const isDark = bgColor.includes("#1A1A2E") || bgColor.includes("#0D0D1A") || bgGradient.includes("#1A1A2E") || bgGradient.includes("#0D0D1A") || section?.background_image_url != null;
+
+  const titleStyle = getStyle("title");
+  const defaultTitleColor = isDark ? "#fff" : "#1A1A2E";
+
+  return (
+    <div className="relative z-10 max-w-[900px] mx-auto px-6">
+      <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: defaultTitleColor, fontSize: "clamp(28px, 4vw, 36px)", ...titleStyle }}>{title}</motion.h2>
+      <motion.div {...fadeUp(0.1)}>
+        <TechAccordion items={items} isDark={isDark} />
+      </motion.div>
+    </div>
+  );
+}
+
 
 /* ─── Vertical Timeline ─── */
 function PhasesTimeline({ phases }: { phases: typeof DEF.proceso.phases }) {
