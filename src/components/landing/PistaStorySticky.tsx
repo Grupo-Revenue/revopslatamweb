@@ -302,14 +302,140 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
           </div>
         </div>
 
-        {/* Mobile: inline track */}
-        <div className="lg:hidden flex justify-center py-8">
-          <img
-            src={pistaCompleta}
-            alt="Pista modular completa"
-            style={{ maxWidth: 300, width: "100%", opacity: 0.5 }}
-            draggable={false}
-          />
+        {/* Mobile: accordion with tabs */}
+        <div className="lg:hidden flex flex-col gap-3 px-2 py-8">
+          {STEPS.map((step, i) => {
+            const isOpen = mobileActive === i;
+            return (
+              <div
+                key={step.id}
+                style={{
+                  borderRadius: 16,
+                  border: `1.5px solid ${isOpen ? step.accent : "rgba(0,0,0,0.08)"}`,
+                  background: isOpen ? "#fff" : "#fafafa",
+                  overflow: "hidden",
+                  transition: "border-color 0.3s ease, background 0.3s ease",
+                }}
+              >
+                {/* Header */}
+                <button
+                  onClick={() => setMobileActive(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between px-5 py-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: step.accent,
+                        flexShrink: 0,
+                      }}
+                    />
+                    <div className="text-left">
+                      <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: step.accent, marginBottom: 2 }}>
+                        {step.eyebrow}
+                      </p>
+                      <p style={{ fontSize: 16, fontWeight: 700, color: "#1d1d1f", lineHeight: 1.2 }}>
+                        {step.title}
+                      </p>
+                    </div>
+                  </div>
+                  <ChevronDown
+                    size={18}
+                    style={{
+                      color: step.accent,
+                      transition: "transform 0.3s ease",
+                      transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      flexShrink: 0,
+                    }}
+                  />
+                </button>
+
+                {/* Expanded content */}
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-5">
+                        {/* Track image */}
+                        <div
+                          style={{
+                            borderRadius: 12,
+                            background: "#F5F5F7",
+                            padding: 16,
+                            marginBottom: 16,
+                          }}
+                        >
+                          <img
+                            src={TRACK_LAYERS[i]}
+                            alt=""
+                            style={{ width: "100%", maxWidth: 240, margin: "0 auto", display: "block" }}
+                            draggable={false}
+                          />
+                        </div>
+
+                        {/* Tabs */}
+                        <div className="flex gap-1 mb-3" style={{ borderRadius: 10, background: "#f0f0f2", padding: 3 }}>
+                          {(["situacion", "senales"] as const).map((tab) => {
+                            const hasContent = tab === "situacion" || step.highlight;
+                            if (!hasContent) return null;
+                            const label = tab === "situacion" ? "Situación" : "Señales";
+                            const active = mobileTab === tab;
+                            return (
+                              <button
+                                key={tab}
+                                onClick={() => setMobileTab(tab)}
+                                className="flex-1 text-center py-2 text-xs font-semibold transition-all duration-200"
+                                style={{
+                                  borderRadius: 8,
+                                  background: active ? "#fff" : "transparent",
+                                  color: active ? step.accent : "#86868b",
+                                  boxShadow: active ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
+                                }}
+                              >
+                                {label}
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {/* Tab content */}
+                        <div style={{ minHeight: 60 }}>
+                          {mobileTab === "situacion" && (
+                            <p style={{ fontSize: 15, lineHeight: 1.65, color: "#6e6e73" }}>
+                              {step.body}
+                            </p>
+                          )}
+                          {mobileTab === "senales" && step.highlight && (
+                            <p
+                              style={{
+                                fontSize: 14,
+                                fontWeight: 600,
+                                lineHeight: 1.5,
+                                color: step.accent,
+                                padding: "12px 14px",
+                                borderRadius: 10,
+                                background: `${step.accent.replace(")", " / 0.06)")}`,
+                                border: `1px solid ${step.accent.replace(")", " / 0.12)")}`,
+                              }}
+                            >
+                              {step.highlight}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       </div>
 
