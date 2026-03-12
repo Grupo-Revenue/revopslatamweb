@@ -23,7 +23,7 @@ const Index = () => {
       <Methodology section={getSection("methodology")} />
       <PulsoComercial section={getSection("pulso-comercial")} />
       <Testimonials section={getSection("testimonials")} />
-      <Credibility section={getSection("credibility")} />
+      {/* <Credibility section={getSection("credibility")} /> */}
       <AboutTeaser section={getSection("about-teaser")} />
       <FinalCTA section={getSection("final-cta")} />
       <Footer />
