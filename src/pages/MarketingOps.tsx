@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3, Inbox, RefreshCw, Star, CheckCircle2, ArrowRightLeft } from "lucide-react";
@@ -51,9 +51,37 @@ const workflowSteps = [
   { label: "Ventas", Icon: ArrowRightLeft, color: "rgba(98,36,190,0.9)" },
 ];
 
+const LOOP_DURATION = 4000; // ms for full cycle
+const STEP_DELAY = 600; // ms between each step lighting up
+const PAUSE_AT_END = 1200; // ms pause when all lit
+
 const HeroWorkflow = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
+  const [activeStep, setActiveStep] = useState(-1);
+
+  useEffect(() => {
+    if (!inView) return;
+    let timeout: ReturnType<typeof setTimeout>;
+    let step = -1;
+    const totalSteps = workflowSteps.length;
+
+    const tick = () => {
+      step++;
+      if (step <= totalSteps) {
+        setActiveStep(step);
+        timeout = setTimeout(tick, step === totalSteps ? PAUSE_AT_END : STEP_DELAY);
+      } else {
+        // Reset and loop
+        step = -1;
+        setActiveStep(-1);
+        timeout = setTimeout(tick, 600);
+      }
+    };
+
+    timeout = setTimeout(tick, 500);
+    return () => clearTimeout(timeout);
+  }, [inView]);
 
   return (
     <motion.div
@@ -69,57 +97,102 @@ const HeroWorkflow = () => {
       </p>
 
       <div className="relative flex flex-col items-center">
-        {/* Connecting line */}
-        <svg className="absolute left-1/2 -translate-x-1/2 top-0 w-[2px] h-full pointer-events-none" style={{ zIndex: 0 }}>
-          <defs>
-            <linearGradient id="workflowLine" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#BE1869" />
-              <stop offset="100%" stopColor="#6224BE" />
-            </linearGradient>
-          </defs>
-          <motion.line
-            x1="1" y1="0" x2="1" y2="100%"
-            stroke="url(#workflowLine)" strokeWidth="2"
-            strokeDasharray="300"
-            initial={{ strokeDashoffset: 300 }}
-            animate={inView ? { strokeDashoffset: 0 } : {}}
-            transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
-          />
-        </svg>
+        {/* Connecting line background */}
+        <div className="absolute left-[24px] top-[24px] bottom-[24px] w-[2px] pointer-events-none" style={{ zIndex: 0, background: "rgba(255,255,255,0.08)" }} />
 
-        {workflowSteps.map((step, i) => (
-          <motion.div
-            key={step.label}
-            className="relative z-10 flex items-center gap-4 w-full"
-            style={{ marginBottom: i < workflowSteps.length - 1 ? 8 : 0 }}
-            initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.4 + i * 0.25, duration: 0.5 }}
-          >
-            {/* Node */}
-            <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: step.color, border: "1px solid rgba(255,255,255,0.12)" }}>
-              <step.Icon size={20} color="#fff" strokeWidth={1.8} />
+        {/* Animated progress line */}
+        <motion.div
+          className="absolute left-[24px] top-[24px] w-[2px] pointer-events-none origin-top"
+          style={{
+            zIndex: 1,
+            background: GRADIENT,
+            borderRadius: 1,
+          }}
+          animate={{
+            height: activeStep < 0 ? "0%" : `${Math.min((activeStep / (workflowSteps.length - 1)) * 100, 100)}%`,
+          }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        />
+
+        {workflowSteps.map((step, i) => {
+          const isActive = i <= activeStep;
+          const isCurrent = i === activeStep;
+          const descriptions = [
+            "Formulario, pauta, orgánico",
+            "Emails, secuencias, contenido",
+            "Comportamiento + fit = puntaje",
+            "Calificado y listo para contactar",
+            "Handoff automático al pipeline",
+          ];
+
+          return (
+            <div
+              key={step.label}
+              className="relative z-10 flex items-center gap-4 w-full"
+              style={{ marginBottom: i < workflowSteps.length - 1 ? 8 : 0 }}
+            >
+              {/* Node */}
+              <motion.div
+                className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+                animate={{
+                  background: isActive ? step.color : "rgba(255,255,255,0.04)",
+                  scale: isCurrent ? 1.1 : 1,
+                }}
+                transition={{ duration: 0.35, ease: "easeOut" }}
+              >
+                <step.Icon size={20} color={isActive ? "#fff" : "rgba(255,255,255,0.25)"} strokeWidth={1.8} />
+              </motion.div>
+
+              {/* Label */}
+              <motion.div
+                className="flex-1 rounded-lg px-4 py-3"
+                animate={{
+                  background: isActive
+                    ? i === workflowSteps.length - 1 ? "rgba(98,36,190,0.15)" : "rgba(255,255,255,0.08)"
+                    : "rgba(255,255,255,0.02)",
+                  borderColor: isActive
+                    ? i === workflowSteps.length - 1 ? "rgba(98,36,190,0.3)" : "rgba(255,255,255,0.12)"
+                    : "rgba(255,255,255,0.04)",
+                }}
+                style={{ border: "1px solid rgba(255,255,255,0.04)" }}
+                transition={{ duration: 0.35 }}
+              >
+                <motion.span
+                  className="text-sm font-semibold block"
+                  animate={{ color: isActive ? "#fff" : "rgba(255,255,255,0.3)" }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {step.label}
+                </motion.span>
+                <motion.span
+                  className="block text-[11px] mt-0.5"
+                  animate={{
+                    color: isActive ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.15)",
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {descriptions[i]}
+                </motion.span>
+              </motion.div>
+
+              {/* Glow on current step */}
+              {isCurrent && (
+                <motion.div
+                  className="absolute -left-1 top-1/2 -translate-y-1/2 w-14 h-14 rounded-xl pointer-events-none"
+                  style={{ background: step.color, filter: "blur(16px)", zIndex: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.4 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
             </div>
-            {/* Label */}
-            <div className={`flex-1 rounded-lg px-4 py-3 ${i === workflowSteps.length - 1 ? "" : ""}`} style={{ background: i === workflowSteps.length - 1 ? "rgba(98,36,190,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${i === workflowSteps.length - 1 ? "rgba(98,36,190,0.3)" : "rgba(255,255,255,0.06)"}` }}>
-              <span className="text-sm font-semibold text-white">{step.label}</span>
-              {i === 0 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Formulario, pauta, orgánico</span>}
-              {i === 1 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Emails, secuencias, contenido</span>}
-              {i === 2 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Comportamiento + fit = puntaje</span>}
-              {i === 3 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Calificado y listo para contactar</span>}
-              {i === 4 && <span className="block text-[11px] mt-0.5 font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>Handoff automático al pipeline</span>}
-            </div>
-          </motion.div>
-        ))}
+          );
+        })}
       </div>
-
-      {/* Animated pulse on last node */}
-      <motion.div
-        className="absolute bottom-[52px] left-1/2 -translate-x-1/2 w-14 h-14 rounded-xl"
-        style={{ background: GRADIENT, opacity: 0.15, filter: "blur(12px)" }}
-        animate={{ scale: [1, 1.4, 1], opacity: [0.15, 0.25, 0.15] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-      />
     </motion.div>
   );
 };
