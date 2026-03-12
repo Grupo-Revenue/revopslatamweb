@@ -319,12 +319,18 @@ const DisenaYConstruye = () => {
             {heroSubtitle}
           </motion.p>
           <motion.div {...fadeUp(0.3)} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })} className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]">
+            <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("disena-y-construye-hero"); } else { const url = hero?.cta_url; if (url) window.location.href = url; else document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" }); } }} className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-all hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]">
               {heroCta}
             </DynamicCTA>
-            <Link to={heroCta2Url} className="text-white/80 hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">
-              {heroCta2}
-            </Link>
+            {hm.cta2_opens_lead_form ? (
+              <button onClick={() => openLeadForm("disena-y-construye-hero-cta2")} className="text-white/80 hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">
+                {heroCta2}
+              </button>
+            ) : (
+              <Link to={heroCta2Url} className="text-white/80 hover:text-white underline underline-offset-4 text-sm font-medium transition-colors">
+                {heroCta2}
+              </Link>
+            )}
           </motion.div>
           <motion.div {...fadeUp(0.5)} className="mt-14">
             {hero?.image_url && (
