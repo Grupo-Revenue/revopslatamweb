@@ -96,13 +96,13 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
       {/* Glassmorphism container */}
       <div className="absolute inset-6 rounded-[28px]" style={{
         background: isDark
-          ? "linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))"
-          : "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6))",
-        border: `1px solid ${isDark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)"}`,
+          ? "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05))"
+          : "linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))",
+        border: `1px solid ${isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.08)"}`,
         backdropFilter: "blur(16px)",
         boxShadow: isDark
-          ? "inset 0 1px 0 rgba(255,255,255,0.05), 0 20px 60px rgba(0,0,0,0.3)"
-          : "0 20px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)",
+          ? "inset 0 1px 0 rgba(255,255,255,0.08), 0 20px 60px rgba(0,0,0,0.3)"
+          : "0 20px 60px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
       }} />
 
       {/* SVG connection lines */}
