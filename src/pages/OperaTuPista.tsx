@@ -342,14 +342,20 @@ const OperaTuPista = () => {
           <div className="flex flex-wrap justify-center gap-4">
             <DynamicCTA
               styleKey={(mt(ctaFinalSection).cta_style_key as string) || (hm.cta_style_key as string)}
-              onClick={() => (ctaFinalSection?.cta_url || hero?.cta_url) && (window.location.href = (ctaFinalSection?.cta_url || hero?.cta_url)!)}
+              onClick={() => { if (mt(ctaFinalSection).cta1_opens_lead_form) { openLeadForm("opera-tu-pista-cta-final"); } else if (ctaFinalSection?.cta_url || hero?.cta_url) { window.location.href = (ctaFinalSection?.cta_url || hero?.cta_url)!; } }}
               className="text-sm font-semibold text-white px-7 py-3.5 rounded-xl hover:scale-[1.03] hover:shadow-xl transition-all"
             >
               {ctaFinalSection?.cta_text ?? h.cta_text}
             </DynamicCTA>
-            <Link to="/conoce-tu-pista" className="text-sm font-semibold px-7 py-3.5 rounded-xl transition-all hover:scale-[1.03]" style={{ border: "1.5px solid rgba(255,255,255,0.2)", color: "#fff" }}>
-              Primero quiero un diagnóstico →
-            </Link>
+            {mt(ctaFinalSection).cta2_opens_lead_form ? (
+              <button onClick={() => openLeadForm("opera-tu-pista-cta-final-cta2")} className="text-sm font-medium text-white transition-colors" style={{ textDecoration: "underline", textUnderlineOffset: "3px", background: "none", border: "none", cursor: "pointer" }}>
+                {(mt(ctaFinalSection).cta2_text as string) || "Primero quiero un diagnóstico →"}
+              </button>
+            ) : (
+              <a href={(mt(ctaFinalSection).cta2_url as string) || "/conoce-tu-pista"} className="text-sm font-medium text-white transition-colors" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                {(mt(ctaFinalSection).cta2_text as string) || "Primero quiero un diagnóstico →"}
+              </a>
+            )}
           </div>
         </div>
       </SectionShell>

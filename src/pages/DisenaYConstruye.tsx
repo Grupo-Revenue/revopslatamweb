@@ -473,14 +473,18 @@ const DisenaYConstruye = () => {
           </motion.h2>
           <motion.p {...fadeUp(0.1)} className="mt-4 text-[#6B7280] text-lg">{ctaBody}</motion.p>
           <motion.div {...fadeUp(0.2)} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <DynamicCTA styleKey={(mt(ctaFinal).cta_style_key as string)} onClick={() => document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" })} className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-shadow hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]">
+            <DynamicCTA styleKey={(mt(ctaFinal).cta_style_key as string)} onClick={() => { if (mt(ctaFinal).cta1_opens_lead_form) { openLeadForm("disena-y-construye-cta-final"); } else { const url = ctaFinal?.cta_url; if (url) window.location.href = url; else document.getElementById("servicios")?.scrollIntoView({ behavior: "smooth" }); } }} className="px-8 py-3.5 rounded-full text-white font-semibold text-base transition-shadow hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]">
               {ctaCta}
             </DynamicCTA>
-            <Link to={ctaCta2Url}
-              className="px-6 py-3 rounded-full text-sm font-semibold border-2 border-[#BE1869]/30 hover:border-[#BE1869] transition-colors"
-              style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              {ctaCta2}
-            </Link>
+            {mt(ctaFinal).cta2_opens_lead_form ? (
+              <button onClick={() => openLeadForm("disena-y-construye-cta-final-cta2")} className="text-sm font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px", background: "none", border: "none", cursor: "pointer" }}>
+                {ctaCta2}
+              </button>
+            ) : (
+              <Link to={ctaCta2Url} className="text-sm font-medium transition-colors duration-200 hover:opacity-80" style={{ color: "#BE1869", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                {ctaCta2}
+              </Link>
+            )}
           </motion.div>
         </div>
       </SectionShell>
