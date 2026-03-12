@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLeadForm } from "@/hooks/useLeadForm";
 import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -53,13 +54,13 @@ const HeroFunnel = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   return (
-    <motion.div ref={ref} className="relative backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
+    <motion.div ref={ref} className="relative backdrop-blur-sm w-full max-w-[460px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
       <div className="space-y-3">
         {funnelLevels.map((lvl, i) => (
           <FunnelLevel key={lvl.label} lvl={lvl} i={i} inView={inView} isLast={i === 3} />
         ))}
       </div>
-      <motion.div className="absolute right-4 flex items-center gap-2" style={{ top: "22%" }} initial={{ opacity: 0, x: 10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
+      <motion.div className="flex items-center gap-2 justify-end mt-1 mr-2" initial={{ opacity: 0, x: 10 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
         <span className="text-[11px] text-red-400/70 italic whitespace-nowrap">Sin nurturing → se pierden</span>
         <X size={14} style={{ color: "rgba(239,68,68,0.5)" }} />
       </motion.div>
@@ -71,13 +72,13 @@ const FunnelLevel = ({ lvl, i, inView, isLast }: { lvl: (typeof funnelLevels)[0]
   const count = useAnimatedCounter(lvl.count, 1500, inView);
   const opacities = [0.35, 0.5, 0.65, 1];
   return (
-    <motion.div className="mx-auto relative" style={{ width: lvl.width }} initial={{ opacity: 0, y: -16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.3, duration: 0.5 }}>
+    <motion.div className="relative" style={{ width: lvl.width }} initial={{ opacity: 0, y: -16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.3, duration: 0.5 }}>
       <div className="relative rounded-xl px-5 py-4 flex items-center justify-between" style={{ background: `linear-gradient(135deg, rgba(190,24,105,${opacities[i]}), rgba(98,36,190,${opacities[i]}))` }}>
         <span className="text-white text-sm font-medium">{lvl.label}</span>
         <span className="text-white text-lg font-bold tabular-nums">{Number(count).toLocaleString()}</span>
       </div>
       {isLast && (
-        <motion.span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-white px-3 py-1 rounded-full whitespace-nowrap" style={{ background: GRADIENT }} initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 1.6, duration: 0.4 }}>
+        <motion.span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-white px-3 py-1 rounded-full whitespace-nowrap" style={{ background: GRADIENT }} initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 1.6, duration: 0.4 }}>
           Alineado con ventas ✓
         </motion.span>
       )}
@@ -108,6 +109,7 @@ const DEF = {
 /* ═══ PAGE ═══ */
 const MarketingOps = () => {
   const { getSection, loading } = usePageSections("marketing-ops");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
   const problemaSection = getSection("problema");
@@ -147,12 +149,18 @@ const MarketingOps = () => {
             <h1 className="font-bold text-white leading-[1.08] mb-6" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>{h.title}</h1>
             <p className="text-lg sm:text-[19px] leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4">
-              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]">
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("marketing-ops-hero"); } else if (hero?.cta_url) { window.location.href = hero.cta_url; } }} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]">
                 {h.cta_text}
               </DynamicCTA>
-              <button onClick={() => document.getElementById("problema")?.scrollIntoView({ behavior: "smooth" })} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer">
-                {h.cta2_text}
-              </button>
+              {hm.cta2_opens_lead_form ? (
+                <button onClick={() => openLeadForm("marketing-ops-hero-cta2")} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  {h.cta2_text}
+                </button>
+              ) : (
+                <button onClick={() => document.getElementById("problema")?.scrollIntoView({ behavior: "smooth" })} className="text-[15px] font-medium text-white/60 hover:text-white transition-colors bg-transparent border-none cursor-pointer" style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}>
+                  {h.cta2_text}
+                </button>
+              )}
             </div>
           </motion.div>
           <motion.div className="hidden lg:block" initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.2 }}>
@@ -235,8 +243,8 @@ const MarketingOps = () => {
             <span className="text-[11px] font-bold uppercase tracking-[0.14em] block mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>Este servicio empieza con una conversación</span>
             <h2 className="text-lg font-bold mb-3 text-white">Cuéntanos cómo está operando tu marketing hoy.</h2>
             <p className="text-sm mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>En 30 minutos evaluamos qué tiene más impacto en tu operación.</p>
-            <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => hero?.cta_url && (window.location.href = hero.cta_url)} className="w-full text-sm font-semibold text-white py-3.5 rounded-full transition-all hover:scale-[1.02]">
-              {h.cta_text}
+            <DynamicCTA styleKey={(mt(ctaFinalSection).cta_style_key as string) || (hm.cta_style_key as string)} onClick={() => { if (mt(ctaFinalSection).cta1_opens_lead_form || hm.cta1_opens_lead_form) { openLeadForm("marketing-ops-cta-final"); } else if (ctaFinalSection?.cta_url || hero?.cta_url) { window.location.href = (ctaFinalSection?.cta_url || hero?.cta_url)!; } }} className="w-full text-sm font-semibold text-white py-3.5 rounded-full transition-all hover:scale-[1.02]">
+              {ctaFinalSection?.cta_text ?? h.cta_text}
             </DynamicCTA>
           </div>
         </div>
