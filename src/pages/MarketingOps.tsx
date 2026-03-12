@@ -59,7 +59,7 @@ const HeroWorkflow = () => {
     <motion.div
       ref={ref}
       className="relative backdrop-blur-sm w-full max-w-[420px]"
-      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 24px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}
+      style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 20, padding: "32px 24px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}
       initial={{ opacity: 0, x: 40 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.7 }}
