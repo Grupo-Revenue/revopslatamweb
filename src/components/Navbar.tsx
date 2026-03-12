@@ -57,7 +57,8 @@ const serviciosGroups = [
     label: "POTENCIA CON IA",
     color: "#0779D7",
     icon: Sparkles,
-    items: [{ label: "IA para tu Motor de Ingresos", desc: "Automatización inteligente y predicción", to: "#" }],
+    link: "/potencia-con-ia",
+    items: [{ label: "IA para tu Motor de Ingresos", desc: "Automatización inteligente y predicción", to: "/potencia-con-ia" }],
   },
 ];
 
