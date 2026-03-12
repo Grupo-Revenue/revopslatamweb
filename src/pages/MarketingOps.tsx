@@ -163,7 +163,7 @@ const HeroWorkflow = () => {
               <motion.div
                 className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
                 animate={{
-                  background: isActive ? step.color : "#1e1e34",
+                  background: isActive ? step.color : "hsl(239 29% 17%)",
                   scale: isCurrent ? 1.08 : 1,
                   borderColor: isActive ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.08)",
                 }}
