@@ -79,6 +79,7 @@ const SectionHeading = ({
           fontSize: "clamp(28px, 4vw, 42px)",
           color: light ? "#fff" : "#1A1A2E",
           maxWidth: align === "center" ? 700 : undefined,
+          ...titleStyle,
         }}
       >
         {renderTitle()}
