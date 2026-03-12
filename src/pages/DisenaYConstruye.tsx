@@ -390,32 +390,70 @@ const DisenaYConstruye = () => {
       </SectionShell>
 
       {/* ──── DIFERENCIA ──── */}
-      <SectionShell section={diferencia} className="py-24 px-4 sm:px-6" defaultBg={{ background: "#1A1A2E" }}>
-        <div className="relative z-10 container max-w-[1100px] mx-auto flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
-          {/* Text */}
-          <div className="lg:w-1/2">
-            <motion.h2 {...fadeUp()} className="font-bold text-white tracking-[-0.02em]" style={{ fontSize: "clamp(32px, 4vw, 40px)", ...difStyle("title") }}>
-              {difTitle}
-            </motion.h2>
-            {difBody.split("\n\n").map((p, i) => (
-              <motion.p key={i} {...fadeUp(0.1 + i * 0.1)} className="mt-5 text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
-                {p}
-              </motion.p>
-            ))}
-            <motion.div {...fadeUp(0.3)} className="mt-10 inline-flex items-center gap-5 px-6 py-5 rounded-2xl"
-              style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", backdropFilter: "blur(12px)" }}>
-              <img src={hubspotPlatinumLogo} alt="HubSpot Platinum Partner" className="h-14 w-auto flex-shrink-0" />
-              <div className="flex flex-col">
-                <span className="text-white text-base font-bold leading-tight">{difCredential}</span>
-                <span className="text-white/50 text-xs mt-1">Solutions Partner Program</span>
+      <SectionShell section={diferencia} className="py-24 sm:py-[120px] px-4 sm:px-6" defaultBg={{ background: "#1A1A2E" }}>
+        <div className="relative z-10 container max-w-[1100px] mx-auto">
+          {/* ── Bloque 1: Comparativa ── */}
+          <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
+            {/* Text */}
+            <div className="lg:w-[45%]">
+              <motion.h2 {...fadeUp()} className="font-bold text-white tracking-[-0.02em]" style={{ fontSize: "clamp(32px, 4vw, 44px)", ...difStyle("title") }}>
+                {difTitle}
+              </motion.h2>
+              {difBody.split("\n\n").map((p, i) => (
+                <motion.p key={i} {...fadeUp(0.1 + i * 0.1)} className="mt-5 text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
+                  {p}
+                </motion.p>
+              ))}
+            </div>
+
+            {/* Comparison - más grande y prominente */}
+            <div className="lg:w-[55%] flex justify-center">
+              <div className="w-full max-w-[560px] rounded-2xl overflow-hidden" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <div className="grid grid-cols-2">
+                  {/* Header izq */}
+                  <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                    className="px-6 py-4 text-sm font-semibold text-white/40 border-b border-r" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                    {difComparison.left.header}
+                  </motion.div>
+                  {/* Header der */}
+                  <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+                    className="px-6 py-4 text-sm font-bold border-b" style={{ borderColor: "rgba(255,255,255,0.08)", background: "linear-gradient(90deg, rgba(190,24,105,0.12), rgba(98,36,190,0.12))", color: "#BE1869" }}>
+                    {difComparison.right.header}
+                  </motion.div>
+                </div>
+                {/* Rows */}
+                {difComparison.left.items.map((leftItem, i) => (
+                  <motion.div key={i} {...fadeUp(0.15 + i * 0.1)} className="grid grid-cols-2" style={{ borderBottom: i < difComparison.left.items.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
+                    <div className="px-6 py-5 flex items-start gap-3 border-r" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                      <span className="text-red-400/60 mt-0.5 font-bold text-sm flex-shrink-0">✗</span>
+                      <span className="text-sm text-white/50 leading-relaxed">{leftItem}</span>
+                    </div>
+                    <div className="px-6 py-5 flex items-start gap-3">
+                      <span className="mt-0.5 font-bold text-sm flex-shrink-0" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span>
+                      <span className="text-sm text-white/90 font-medium leading-relaxed">{difComparison.right.items[i]}</span>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* Comparison */}
-          <div className="lg:w-1/2 flex justify-center">
-            <ComparisonColumns left={difComparison.left} right={difComparison.right} />
-          </div>
+          {/* ── Bloque 2: Credencial HubSpot ── separado visualmente */}
+          <motion.div {...fadeUp(0.4)} className="mt-16 pt-16" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 justify-center">
+              <div className="flex items-center gap-5 px-8 py-6 rounded-2xl"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.10)", backdropFilter: "blur(12px)" }}>
+                <img src={hubspotPlatinumLogo} alt="HubSpot Platinum Partner" className="h-16 w-auto flex-shrink-0" />
+                <div className="flex flex-col">
+                  <span className="text-white text-lg font-bold leading-tight">{difCredential}</span>
+                  <span className="text-white/40 text-sm mt-1">Solutions Partner Program</span>
+                </div>
+              </div>
+              <p className="text-white/50 text-sm max-w-[320px] text-center sm:text-left leading-relaxed">
+                No somos una agencia que también vende HubSpot. Somos especialistas certificados en operaciones de revenue.
+              </p>
+            </div>
+          </motion.div>
         </div>
       </SectionShell>
 
