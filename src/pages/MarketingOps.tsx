@@ -321,7 +321,7 @@ const MarketingOps = () => {
               const Icon = icons[i] || Cog;
               return (
                 <ServiceCard key={item.title} delay={i * 0.1} variant="glass" hoverBorder={ACCENT}>
-                  <GradientIcon icon={Icon} size={44} iconSize={20} gradient={`linear-gradient(135deg, ${ACCENT}, #BE1869)`} className="mb-4" />
+                  <GradientIcon icon={Icon} size={44} iconSize={20} gradient={GRADIENT} className="mb-4" />
                   <h4 className="font-bold text-[15px] mb-2 text-white">{item.title}</h4>
                   <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{item.desc}</p>
                 </ServiceCard>
