@@ -26,7 +26,7 @@ const NODES: IntegrationNode[] = [
   { label: "Slack", logo: slackLogo, angle: -38, color: "#E01E5A", data: "Alertas y notificaciones en tiempo real" },
   { label: "Zoom", logo: zoomLogo, angle: 15, color: "#2D8CFF", data: "Reuniones y grabaciones sincronizadas" },
   { label: "Google Calendar", logo: googleCalendarLogo, angle: 62, color: "#4285F4", data: "Eventos y disponibilidad" },
-  { label: "Gmail", logo: mailLogo, angle: 118, color: "#EA4335", data: "Tracking de emails y secuencias" },
+  { label: "Correo", logo: mailLogo, angle: 118, color: "#EA4335", data: "Tracking de emails y secuencias" },
   { label: "Defontana", logo: defontanaLogo, angle: 168, color: "#1565C0", data: "Facturación y contabilidad" },
   { label: "SAP", logo: sapLogo, angle: -142, color: "#0070B8", data: "ERP: clientes, pedidos, inventario" },
 ];
