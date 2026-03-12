@@ -413,7 +413,7 @@ const PotenciaConIA = () => {
               { icon: <TrendingDown size={14} />, text: "¿En qué punto se caen los leads?" },
               { icon: <Lightbulb size={14} />, text: "¿Qué decisiones se toman hoy sin datos?" },
             ].map((q) => (
-              <span key={q.text} className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl text-[14px] transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", color: "#6B7280" }}>
+              <span key={q.text} className="inline-flex items-center gap-2 px-5 py-3.5 rounded-[16px] text-[14px] transition-all duration-300 hover:shadow-md hover:-translate-y-1" style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", color: "#6B7280" }}>
                 {q.icon} {q.text}
               </span>
             ))}
