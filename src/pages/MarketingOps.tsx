@@ -107,7 +107,7 @@ const HeroWorkflow = () => {
               {i === 1 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Emails, secuencias, contenido</span>}
               {i === 2 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Comportamiento + fit = puntaje</span>}
               {i === 3 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Calificado y listo para contactar</span>}
-              {i === 4 && <span className="block text-[11px] mt-0.5 font-medium" style={{ color: "rgba(190,24,105,0.9)" }}>Handoff automático al pipeline</span>}
+              {i === 4 && <span className="block text-[11px] mt-0.5 font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>Handoff automático al pipeline</span>}
             </div>
           </motion.div>
         ))}
