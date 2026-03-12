@@ -24,6 +24,7 @@ export default function DynamicCTA({ styleKey, children, onClick, className = ""
       <button
         onClick={onClick}
         className={`inline-flex items-center gap-2 font-semibold transition-all duration-300 ${className}`}
+        style={inlineStyle}
       >
         {children}
       </button>
