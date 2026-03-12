@@ -18,6 +18,7 @@ import NoiseOverlay from "@/components/services/NoiseOverlay";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
+import { useLeadForm } from "@/hooks/useLeadForm";
 import type { HomeSection } from "@/hooks/useHomeSections";
 
 const AI_BLUE = "#6366F1";
@@ -136,52 +137,165 @@ const AgentFeed = () => {
 const DEF = {
   hero: {
     badge: "VANGUARDIA OPERATIVA",
-    title_text: "La ventaja que tus competidores aún no tienen",
+    title: "La ventaja que tus competidores aún no tienen",
     subtitle: "No implementamos IA por implementar. Mapeamos tu operación, identificamos dónde genera más impacto y construimos la solución correcta — integrada a HubSpot desde el primer día.",
     cta_text: "Quiero saber dónde la IA impacta mi operación →",
     cta2_text: "¿Es este el servicio correcto? ↓",
+  },
+  problema: {
+    title: "El problema no es la IA.\nEs cómo se está implementando.",
+    body: "La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas — no los resolvió.",
+    highlight: "La IA que genera ventaja real no se instala. Se diseña.",
+    bad_items: ["Herramienta comprada, proceso sin ordenar", "Solución genérica, sin integración al CRM", "El equipo no la entiende, nadie la usa"],
+    good_items: ["Proceso diseñado antes de implementar", "Integrada a HubSpot, sin silos", "El equipo la opera desde el día 1"],
+  },
+  capacidades: {
+    title: "Cuatro capacidades.\nUna sola lógica: IA integrada a tu operación.",
+  },
+  consultoria: {
+    badge: "SIEMPRE EL PRIMER PASO",
+    title: "Antes de implementar: el mapa.",
+    body: "Todo proyecto de IA en RevOps LATAM parte con una pregunta: ¿dónde está el mayor impacto en tu motor de ingresos?\n\nMapeamos tu operación e identificamos los 3-5 puntos donde la IA genera más resultado. Ese mapa es lo que separa una implementación que funciona de una que se abandona en 60 días.",
+  },
+  proceso: {
+    title: "El proceso",
+  },
+  contratacion: {
+    title: "Dos formas de incorporar IA a tu operación",
+  },
+  paraQuien: {
+    yes_items: [
+      "Tienes HubSpot funcionando y quieres dar el siguiente paso",
+      "Tu equipo pierde tiempo en tareas repetitivas",
+      "Quieres calificar más leads sin contratar más personas",
+      "Intentaste implementar IA antes y no funcionó",
+    ],
+    no_items: [
+      { text: "Tu proceso no está ordenado", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
+      { text: "Buscas una demo sin aplicación real", note: "eso no hacemos" },
+      { text: "No tienes HubSpot", note: "nuestras soluciones viven en ese ecosistema" },
+    ],
+  },
+  ctaFinal: {
+    title: "El primer paso es el mapa,\nno la herramienta",
+    subtitle: "En 30 minutos identificamos dónde la IA tiene más impacto en tu operación — antes de hablar de soluciones.",
+    cta_text: "Quiero saber dónde la IA impacta mi operación",
+    cta2_text: "Primero necesito ordenar mi operación →",
+    cta2_url: "/conoce-tu-pista",
   },
 };
 
 /* ── Page ── */
 const PotenciaConIA = () => {
   const { getSection, loading } = usePageSections("potencia-con-ia");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
-  const hm = mt(hero);
+  const problema = getSection("problema");
+  const capacidades = getSection("capacidades");
+  const consultoria = getSection("consultoria");
+  const proceso = getSection("proceso");
+  const contratacion = getSection("contratacion");
+  const paraQuien = getSection("para-quien");
+  const ctaFinal = getSection("cta-final");
 
+  const hm = mt(hero);
+  const pm = mt(problema);
+  const cm = mt(capacidades);
+  const conm = mt(consultoria);
+  const prm = mt(proceso);
+  const ctm = mt(contratacion);
+  const pqm = mt(paraQuien);
+  const cfm = mt(ctaFinal);
+
+  // Resolved values with CMS fallbacks
   const h = {
     badge: (hm.badge as string) ?? DEF.hero.badge,
+    title: hero?.title ?? DEF.hero.title,
     subtitle: hero?.subtitle ?? DEF.hero.subtitle,
     cta_text: hero?.cta_text ?? DEF.hero.cta_text,
     cta2_text: (hm.cta2_text as string) ?? DEF.hero.cta2_text,
   };
 
+  const prob = {
+    title: problema?.title ?? DEF.problema.title,
+    body: problema?.body ?? DEF.problema.body,
+    highlight: (pm.highlight as string) ?? DEF.problema.highlight,
+    bad_items: (pm.bad_items as string[]) ?? DEF.problema.bad_items,
+    good_items: (pm.good_items as string[]) ?? DEF.problema.good_items,
+  };
+
+  const cap = {
+    title: capacidades?.title ?? DEF.capacidades.title,
+  };
+
+  const con = {
+    badge: (conm.badge as string) ?? DEF.consultoria.badge,
+    title: consultoria?.title ?? DEF.consultoria.title,
+    body: consultoria?.body ?? DEF.consultoria.body,
+  };
+
+  const proc = {
+    title: proceso?.title ?? DEF.proceso.title,
+  };
+
+  const cont = {
+    title: contratacion?.title ?? DEF.contratacion.title,
+  };
+
+  const pq = {
+    yes_items: (pqm.yes_items as string[]) ?? DEF.paraQuien.yes_items,
+    no_items: (pqm.no_items as Array<{ text: string; chip?: string; chipTo?: string; note?: string }>) ?? DEF.paraQuien.no_items,
+  };
+
+  const cf = {
+    title: ctaFinal?.title ?? DEF.ctaFinal.title,
+    subtitle: ctaFinal?.subtitle ?? DEF.ctaFinal.subtitle,
+    cta_text: ctaFinal?.cta_text ?? DEF.ctaFinal.cta_text,
+    cta_url: ctaFinal?.cta_url ?? "#",
+    cta2_text: (cfm.cta2_text as string) ?? DEF.ctaFinal.cta2_text,
+    cta2_url: (cfm.cta2_url as string) ?? DEF.ctaFinal.cta2_url,
+  };
+
+  const { getStyle: heroStyle } = useSectionStyles(hero);
+  const { getStyle: probStyle } = useSectionStyles(problema);
+  const { getStyle: capStyle } = useSectionStyles(capacidades);
+  const { getStyle: conStyle } = useSectionStyles(consultoria);
+  const { getStyle: procStyle } = useSectionStyles(proceso);
+  const { getStyle: contStyle } = useSectionStyles(contratacion);
+  const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
+
   const scrollToPlans = useCallback(() => {
     document.getElementById("ia-capacidades")?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  const capabilities = [
+  const defaultCapabilities = [
     { icon: <Bot size={40} style={{ color: "#BE1869" }} />, badge: "HubSpot Breeze AI", badgeBg: "rgba(255,122,89,0.1)", badgeColor: "#FF7A59", title: "Agentes IA en HubSpot", desc: "Asistentes de ventas y chatbots de calificación operando dentro del ecosistema HubSpot. Configurados para tu proceso — no en modo demo.", tag: "Breeze AI · Agentes nativos", hoverBorder: "#FF7A59" },
     { icon: <Zap size={40} style={{ color: AI_BLUE }} />, badge: "HubSpot Workflows", badgeBg: "rgba(99,102,241,0.1)", badgeColor: AI_BLUE, title: "Automatizaciones Inteligentes", desc: "Lead scoring predictivo, asignación automática y seguimientos contextuales. HubSpot tomando decisiones simples para que tu equipo se concentre en las complejas.", tag: "Operations Hub · IA nativa", hoverBorder: AI_BLUE },
     { icon: <MessageSquare size={40} style={{ color: "#BE1869" }} />, badge: "Herramientas especializadas", badgeBg: "rgba(190,24,105,0.08)", badgeColor: "#BE1869", title: "Agentes IA de Terceros", desc: "Implementación de Vambe — agentes WhatsApp que califican, responden y agendan — integrados con HubSpot. Todo en un solo sistema.", tag: "Vambe · WhatsApp Business", hoverBorder: "#BE1869" },
     { icon: <Code2 size={40} style={{ color: AI_BLUE }} />, badge: "DESARROLLO CUSTOM", badgeBg: "rgba(99,102,241,0.1)", badgeColor: AI_BLUE, title: "Agentes a Medida", desc: "Cuando el mercado no tiene lo que necesitas. Construimos el agente sobre tu proceso, integrado a tu stack, documentado para que tu equipo lo opere.", tag: "Custom · API · HubSpot integrado", hoverBorder: AI_BLUE },
   ];
 
-  const phases = [
+  const defaultPhases = [
     { chip: "El primer paso", chipColor: AI_BLUE, title: "Diagnóstico de oportunidades", desc: "Mapeamos tu operación e identificamos los 3-5 puntos de mayor impacto. Antes de hablar de herramientas.", tag: "30-60 min", tagBg: `rgba(99,102,241,0.12)`, tagColor: AI_BLUE },
     { title: "Diseño de la solución", desc: "Qué se implementa, con qué herramienta y en qué orden. Documentado antes de construir.", tag: "Sin sorpresas", tagBg: "rgba(190,24,105,0.08)", tagColor: "#BE1869" },
     { title: "Implementación", desc: "Construcción, integración con HubSpot y pruebas. El equipo participa desde el inicio." },
     { chip: "Siempre incluido", chipColor: "#BE1869", title: "Activación y acompañamiento", desc: "No entregamos y desaparecemos. Acompañamos, medimos y ajustamos hasta que funcione como debe.", tag: "Siempre incluido", tagBg: "rgba(190,24,105,0.08)", tagColor: "#BE1869" },
   ];
 
+  const capabilities = (cm.cards as typeof defaultCapabilities) ?? defaultCapabilities;
+  const phases = (prm.phases as typeof defaultPhases) ?? defaultPhases;
+
   if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
+
+  const opensHeroForm = hm.cta1_opens_lead_form === true;
+  const opensCtaForm = cfm.cta1_opens_lead_form === true;
 
   return (
     <div className="min-h-screen" style={{ background: "#0D0D1A" }}>
       <Navbar />
 
-      {/* Hero */}
+      {/* ─── HERO ─── */}
       <SectionShell section={hero} className="min-h-screen" defaultBg={{ background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 100%)" }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 mx-auto max-w-[1200px] px-6 pt-36 pb-24 grid lg:grid-cols-[55%_45%] gap-12 items-center min-h-screen">
@@ -194,23 +308,27 @@ const PotenciaConIA = () => {
             <span className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(99,102,241,0.15)", color: (hm.badge_color as string) || AI_BLUE }}>
               {h.badge}
             </span>
-            <h1 className="font-bold text-white leading-[1.08] mb-6 whitespace-pre-line" style={{ fontSize: "clamp(40px, 5vw, 62px)" }}>
+            <h1 className="font-bold text-white leading-[1.08] mb-6 whitespace-pre-line" style={{ fontSize: "clamp(40px, 5vw, 62px)", ...heroStyle("title") }}>
               {(() => {
-                const title = hero?.title || DEF.hero.title_text;
                 const lineBreak = hm.title_line_break as string;
-                if (lineBreak && title.includes(lineBreak)) {
-                  const idx = title.indexOf(lineBreak);
-                  return title.slice(0, idx).trimEnd() + "\n" + title.slice(idx);
+                if (lineBreak && h.title.includes(lineBreak)) {
+                  const idx = h.title.indexOf(lineBreak);
+                  return h.title.slice(0, idx).trimEnd() + "\n" + h.title.slice(idx);
                 }
-                return hero?.title || <>{DEF.hero.title_text.split("aún no tienen")[0]}<span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>aún no tienen</span></>;
+                return h.title;
               })()}
             </h1>
-            <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</p>
+            <p className="text-lg leading-relaxed mb-10" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500, ...heroStyle("body") }}>{h.subtitle}</p>
             <div className="flex flex-wrap items-center gap-4">
               {(hm.cta_style_key as string) ? (
-                <DynamicCTA styleKey={hm.cta_style_key as string} onClick={scrollToPlans}>{h.cta_text}</DynamicCTA>
+                <DynamicCTA
+                  styleKey={hm.cta_style_key as string}
+                  onClick={opensHeroForm ? () => openLeadForm("potencia-con-ia-hero") : scrollToPlans}
+                >
+                  {h.cta_text}
+                </DynamicCTA>
               ) : (
-                <button onClick={scrollToPlans} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || gradient, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
+                <button onClick={opensHeroForm ? () => openLeadForm("potencia-con-ia-hero") : scrollToPlans} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ background: (hm.cta_bg as string) || gradient, color: (hm.cta_color as string) || "#fff", boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
                   {h.cta_text}
                 </button>
               )}
@@ -227,44 +345,44 @@ const PotenciaConIA = () => {
 
       <SectionDivider />
 
-      {/* S2 — El Problema */}
-      <section id="ia-problema" className="py-[120px] px-4 sm:px-6" style={{ background: "#fff" }}>
-        <div className="max-w-[700px] mx-auto text-center">
-          <SectionHeading title={<>El problema no es la IA.<br />Es cómo se está implementando.</>} />
-          <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed max-w-[620px] mx-auto -mt-8" style={{ color: "#6B7280" }}>
-            La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas — no los resolvió.
+      {/* ─── S2 — El Problema ─── */}
+      <SectionShell section={problema} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#fff" }} id="ia-problema">
+        <div className="relative z-10 max-w-[700px] mx-auto text-center">
+          <SectionHeading title={prob.title} style={probStyle("title")} />
+          <motion.p {...fadeUp(0.1)} className="text-base leading-relaxed max-w-[620px] mx-auto -mt-8" style={{ color: "#6B7280", ...probStyle("body") }}>
+            {prob.body}
           </motion.p>
           <motion.div {...fadeUp(0.15)} className="mt-6 inline-block px-5 py-2.5 rounded-full text-[15px] font-bold" style={{ background: "rgba(190,24,105,0.06)", color: "#BE1869" }}>
-            La IA que genera ventaja real no se instala. Se diseña.
+            {prob.highlight}
           </motion.div>
           <div className="grid sm:grid-cols-2 gap-6 mt-10 text-left">
             <motion.div {...fadeUp(0.2)} className="rounded-[20px] p-7" style={{ background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.12)" }}>
               <p className="text-[14px] font-semibold uppercase mb-3" style={{ color: "#EF4444" }}>IA mal implementada</p>
-              {["Herramienta comprada, proceso sin ordenar", "Solución genérica, sin integración al CRM", "El equipo no la entiende, nadie la usa"].map((t) => (
+              {prob.bad_items.map((t) => (
                 <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ color: "#EF4444" }}>✗</span> {t}</p>
               ))}
             </motion.div>
             <motion.div {...fadeUp(0.25)} className="rounded-[20px] p-7" style={{ border: "1px solid transparent", borderImage: `${gradient} 1`, background: "#fff" }}>
               <p className="text-[14px] font-semibold uppercase mb-3" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>IA con RevOps LATAM</p>
-              {["Proceso diseñado antes de implementar", "Integrada a HubSpot, sin silos", "El equipo la opera desde el día 1"].map((t) => (
+              {prob.good_items.map((t) => (
                 <p key={t} className="flex items-start gap-2 text-[15px] mb-2" style={{ color: "#6B7280" }}><span style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>✓</span> {t}</p>
               ))}
             </motion.div>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
-      {/* S3 — Capacidades */}
-      <section id="ia-capacidades" className="relative overflow-hidden py-[120px] px-4 sm:px-6" style={{ background: "#F9FAFB" }}>
+      {/* ─── S3 — Capacidades ─── */}
+      <SectionShell section={capacidades} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }} id="ia-capacidades">
         <DotPattern opacity={0.3} />
         <div className="relative z-10 max-w-[1100px] mx-auto">
-          <SectionHeading title={<>Cuatro capacidades.<br />Una sola lógica: IA integrada a tu operación.</>} />
+          <SectionHeading title={cap.title} style={capStyle("title")} />
           <div className="grid sm:grid-cols-2 gap-8">
             {capabilities.map((c, i) => (
               <ServiceCard key={c.title} delay={0.1 + i * 0.08} hoverBorder={c.hoverBorder}>
-                <div className="mb-4">{c.icon}</div>
+                <div className="mb-4">{typeof c.icon === "string" ? <span className="text-[40px]">{c.icon}</span> : c.icon}</div>
                 <span className="inline-block text-[11px] font-semibold px-2.5 py-1 rounded-full mb-3" style={{ background: c.badgeBg, color: c.badgeColor }}>{c.badge}</span>
                 <h3 className="text-[17px] font-bold mb-2" style={{ color: DARK }}>{c.title}</h3>
                 <p className="text-[14px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>{c.desc}</p>
@@ -273,17 +391,18 @@ const PotenciaConIA = () => {
             ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
-      {/* S4 — Consultoría Estratégica */}
-      <section className="py-[120px] px-4 sm:px-6" style={{ background: "#fff" }}>
-        <div className="max-w-[640px] mx-auto text-center">
-          <SectionHeading badge="SIEMPRE EL PRIMER PASO" title="Antes de implementar: el mapa." />
-          <motion.div {...fadeUp(0.1)} className="text-[15px] leading-relaxed space-y-4 -mt-8" style={{ color: "#6B7280" }}>
-            <p>Todo proyecto de IA en RevOps LATAM parte con una pregunta: ¿dónde está el mayor impacto en tu motor de ingresos?</p>
-            <p>Mapeamos tu operación e identificamos los 3-5 puntos donde la IA genera más resultado. Ese mapa es lo que separa una implementación que funciona de una que se abandona en 60 días.</p>
+      {/* ─── S4 — Consultoría Estratégica ─── */}
+      <SectionShell section={consultoria} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
+        <div className="relative z-10 max-w-[640px] mx-auto text-center">
+          <SectionHeading badge={con.badge} title={con.title} style={conStyle("title")} />
+          <motion.div {...fadeUp(0.1)} className="text-[15px] leading-relaxed space-y-4 -mt-8" style={{ color: "#6B7280", ...conStyle("body") }}>
+            {con.body.split("\n\n").filter(Boolean).map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </motion.div>
           <motion.div {...fadeUp(0.15)} className="flex flex-wrap justify-center gap-3 mt-8">
             {[
@@ -297,15 +416,15 @@ const PotenciaConIA = () => {
             ))}
           </motion.div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
-      {/* S5 — Timeline */}
-      <section className="relative overflow-hidden py-[120px] px-4 sm:px-6" style={{ background: "#F9FAFB" }}>
+      {/* ─── S5 — Timeline / Proceso ─── */}
+      <SectionShell section={proceso} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern opacity={0.3} />
         <div className="relative z-10 max-w-[660px] mx-auto">
-          <SectionHeading title="El proceso" />
+          <SectionHeading title={proc.title} style={procStyle("title")} />
           <div className="relative">
             <div className="absolute left-[15px] sm:left-[19px] top-0 bottom-0 w-[3px] rounded-full" style={{ background: `linear-gradient(180deg, #BE1869 0%, #6224BE 100%)`, opacity: 0.25, boxShadow: "0 0 8px rgba(190,24,105,0.15)" }} />
             {phases.map((p, i) => (
@@ -319,20 +438,20 @@ const PotenciaConIA = () => {
             ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
-      {/* S6 — Cómo se contrata */}
-      <section className="py-[100px] px-4 sm:px-6" style={{ background: "#fff" }}>
-        <div className="max-w-[760px] mx-auto">
-          <SectionHeading title="Dos formas de incorporar IA a tu operación" />
+      {/* ─── S6 — Cómo se contrata ─── */}
+      <SectionShell section={contratacion} className="py-[100px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
+        <div className="relative z-10 max-w-[760px] mx-auto">
+          <SectionHeading title={cont.title} style={contStyle("title")} />
           <div className="grid sm:grid-cols-2 gap-8">
             <ServiceCard delay={0.1} style={{ borderLeft: "3px solid", borderImage: `${gradient} 1` }}>
               <span className="text-2xl mb-3 block">🎯</span>
               <h3 className="text-[17px] font-bold mb-2" style={{ color: DARK }}>Como proyecto independiente</h3>
               <p className="text-[15px] leading-relaxed mb-4" style={{ color: "#6B7280" }}>Fases definidas, alcance claro, entrega. Para empresas que quieren implementar una capacidad de IA específica.</p>
-              <button className="text-[15px] font-semibold inline-flex items-center gap-1" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <button onClick={() => openLeadForm("potencia-con-ia-proyecto")} className="text-[15px] font-semibold inline-flex items-center gap-1" style={{ background: gradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Conversemos <ArrowRight size={14} style={{ color: "#BE1869" }} />
               </button>
             </ServiceCard>
@@ -346,48 +465,51 @@ const PotenciaConIA = () => {
             </ServiceCard>
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       <SectionDivider />
 
-      {/* S7 — Para quién es */}
-      <ForWhomSection
-        yesItems={[
-          "Tienes HubSpot funcionando y quieres dar el siguiente paso",
-          "Tu equipo pierde tiempo en tareas repetitivas",
-          "Quieres calificar más leads sin contratar más personas",
-          "Intentaste implementar IA antes y no funcionó",
-        ]}
-        noItems={[
-          { text: "Tu proceso no está ordenado", chip: "Diseña y Construye →", chipTo: "/diseña-y-construye-tu-pista" },
-          { text: "Buscas una demo sin aplicación real", note: "eso no hacemos" },
-          { text: "No tienes HubSpot", note: "nuestras soluciones viven en ese ecosistema" },
-        ]}
-      />
+      {/* ─── S7 — Para quién es ─── */}
+      <ForWhomSection yesItems={pq.yes_items} noItems={pq.no_items} />
 
       <SectionDivider />
 
-      {/* S8 — CTA Final */}
-      <section className="relative py-[100px] px-4 sm:px-6 overflow-hidden" style={{ background: "#0D0D1A" }}>
+      {/* ─── S8 — CTA Final ─── */}
+      <SectionShell section={ctaFinal} className="py-[100px] px-4 sm:px-6" defaultBg={{ background: "#0D0D1A" }}>
         <Particles />
         <BackgroundOrbs variant="section" />
         <div className="relative z-10 max-w-[600px] mx-auto text-center">
-          <motion.h2 {...fadeUp()} className="font-bold leading-tight" style={{ fontSize: "clamp(26px, 4vw, 34px)", color: "#fff" }}>
-            El primer paso es el mapa,<br />no la herramienta
+          <motion.h2 {...fadeUp()} className="font-bold leading-tight whitespace-pre-line" style={{ fontSize: "clamp(26px, 4vw, 34px)", color: "#fff", ...cfStyle("title") }}>
+            {cf.title}
           </motion.h2>
-          <motion.p {...fadeUp(0.1)} className="mt-5 text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>
-            En 30 minutos identificamos dónde la IA tiene más impacto en tu operación — antes de hablar de soluciones.
+          <motion.p {...fadeUp(0.1)} className="mt-5 text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.65)", ...cfStyle("body") }}>
+            {cf.subtitle}
           </motion.p>
           <motion.div {...fadeUp(0.2)} className="mt-8 flex flex-col items-center gap-4">
-            <button className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-semibold text-white transition-transform hover:scale-[1.02]" style={{ background: gradient, boxShadow: "0 4px 20px rgba(190,24,105,0.35)" }}>
-              Quiero saber dónde la IA impacta mi operación <ArrowRight size={18} />
-            </button>
-            <Link to="/conoce-tu-pista" className="text-sm underline underline-offset-4" style={{ color: "rgba(255,255,255,0.6)" }}>
-              Primero necesito ordenar mi operación →
+            {(cfm.cta_style_key as string) ? (
+              <DynamicCTA
+                styleKey={cfm.cta_style_key as string}
+                onClick={opensCtaForm ? () => openLeadForm("potencia-con-ia-cta-final") : undefined}
+              >
+                {cf.cta_text}
+              </DynamicCTA>
+            ) : (
+              opensCtaForm ? (
+                <button onClick={() => openLeadForm("potencia-con-ia-cta-final")} className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-semibold text-white transition-transform hover:scale-[1.02]" style={{ background: gradient, boxShadow: "0 4px 20px rgba(190,24,105,0.35)", ...cfStyle("cta") }}>
+                  {cf.cta_text} <ArrowRight size={18} />
+                </button>
+              ) : (
+                <Link to={cf.cta_url} className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-base font-semibold text-white transition-transform hover:scale-[1.02]" style={{ background: gradient, boxShadow: "0 4px 20px rgba(190,24,105,0.35)", ...cfStyle("cta") }}>
+                  {cf.cta_text} <ArrowRight size={18} />
+                </Link>
+              )
+            )}
+            <Link to={cf.cta2_url} className="text-sm underline underline-offset-4" style={{ color: "rgba(255,255,255,0.6)" }}>
+              {cf.cta2_text}
             </Link>
           </motion.div>
         </div>
-      </section>
+      </SectionShell>
 
       <Footer />
     </div>
