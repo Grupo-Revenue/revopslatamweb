@@ -447,7 +447,7 @@ const PotenciaConIA = () => {
       {/* ─── S6 — Cómo se contrata ─── */}
       <SectionShell section={contratacion} className="py-[100px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[760px] mx-auto">
-          <SectionHeading title={cont.title} />
+          <SectionHeading title={cont.title} titleStyle={contStyle("title")} />
           <div className="grid sm:grid-cols-2 gap-8">
             <ServiceCard delay={0.1} style={{ borderLeft: "3px solid", borderImage: `${gradient} 1` }}>
               <span className="text-2xl mb-3 block">🎯</span>
