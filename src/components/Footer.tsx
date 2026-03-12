@@ -1,26 +1,33 @@
 import { Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 const footerLinks = {
   servicios: [
-    "Diagnóstico del Motor de Ingresos",
-    "Implementación HubSpot",
-    "RevOps as a Service",
-    "Marketing Ops",
-    "IA para Revenue",
-    "Soporte",
+    { label: "Conoce tu Pista", to: "/conoce-tu-pista" },
+    { label: "RevOps Checkup", to: "/revops-checkup" },
+    { label: "Diagnóstico RevOps", to: "/diagnostico-revops" },
+    { label: "Motor de Ingresos", to: "/motor-de-ingresos" },
+    { label: "Diseño de Procesos", to: "/diseño-de-procesos" },
+    { label: "Onboarding HubSpot", to: "/onboarding-hubspot" },
+    { label: "Implementación HubSpot", to: "/implementacion-hubspot" },
+    { label: "Personalización CRM", to: "/personalizacion-crm" },
+    { label: "Integraciones y Desarrollo", to: "/integraciones-desarrollo" },
+    { label: "RevOps as a Service", to: "/revops-as-a-service" },
+    { label: "Marketing Ops", to: "/marketing-ops" },
+    { label: "Soporte HubSpot", to: "/soporte-hubspot" },
+    { label: "Potencia con IA", to: "/potencia-con-ia" },
   ],
   roles: [
-    "CEO / Gerente General",
-    "Equipo Comercial",
-    "Marketing",
-    "Operaciones",
+    { label: "CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
+    { label: "Directores Comerciales", to: "/para-directores-comerciales" },
+    { label: "Marketing", to: "/para-directores-y-gerentes-de-marketing" },
+    { label: "Customer Success", to: "/para-customer-success-y-servicio-al-cliente" },
+    { label: "Operaciones", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
   ],
   empresa: [
-    "Nosotros",
-    "Recursos",
-    "Pulso Comercial",
-    "Agenda una llamada",
+    { label: "Nosotros", to: "/nosotros", external: false },
+    { label: "Pulso Comercial", to: "https://pulso.revopslatam.com/", external: true },
   ],
 };
 
@@ -31,7 +38,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <img src={logoBlanco} alt="Revops LATAM" className="h-8" />
+            <Link to="/">
+              <img src={logoBlanco} alt="Revops LATAM" className="h-8" />
+            </Link>
             <p className="mt-4 text-[14px] font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>
               Arquitectos del Revenue
             </p>
@@ -54,8 +63,8 @@ const Footer = () => {
             <h4 className="text-[14px] font-semibold mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>Servicios</h4>
             <ul className="space-y-2.5">
               {footerLinks.servicios.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l}</a>
+                <li key={l.label}>
+                  <Link to={l.to} className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -66,8 +75,8 @@ const Footer = () => {
             <h4 className="text-[14px] font-semibold mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>Para tu rol</h4>
             <ul className="space-y-2.5">
               {footerLinks.roles.map((l) => (
-                <li key={l}>
-                  <a href="#" className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l}</a>
+                <li key={l.label}>
+                  <Link to={l.to} className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -77,14 +86,17 @@ const Footer = () => {
           <div>
             <h4 className="text-[14px] font-semibold mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>Revops LATAM</h4>
             <ul className="space-y-2.5">
-              {footerLinks.empresa.map((l) => {
-                const isPulso = l === "Pulso Comercial";
-                return (
-                  <li key={l}>
-                    <a href={isPulso ? "https://pulso.revopslatam.com/" : "#"} target={isPulso ? "_blank" : undefined} rel={isPulso ? "noopener noreferrer" : undefined} className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l}</a>
+              {footerLinks.empresa.map((l) =>
+                l.external ? (
+                  <li key={l.label}>
+                    <a href={l.to} target="_blank" rel="noopener noreferrer" className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l.label}</a>
                   </li>
-                );
-              })}
+                ) : (
+                  <li key={l.label}>
+                    <Link to={l.to} className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l.label}</Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
