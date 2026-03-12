@@ -93,8 +93,8 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
           : `radial-gradient(circle at 50% 50%, ${HUBSPOT_COLOR}0a 0%, transparent 60%)`,
       }} />
 
-      {/* Glassmorphism container */}
-      <div className="absolute inset-6 rounded-[28px]" style={{
+      {/* Glassmorphism container - removed to test without background */}
+      {/* <div className="absolute inset-6 rounded-[28px]" style={{
         background: isDark
           ? "linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05))"
           : "linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85))",
@@ -103,7 +103,7 @@ const EcosystemDiagram = ({ variant = "light" }: EcosystemDiagramProps) => {
         boxShadow: isDark
           ? "inset 0 1px 0 rgba(255,255,255,0.08), 0 20px 60px rgba(0,0,0,0.3)"
           : "0 20px 60px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9)",
-      }} />
+      }} /> */}
 
       {/* SVG connection lines */}
       <svg className="absolute inset-0 w-full h-full" viewBox="0 0 420 420">
