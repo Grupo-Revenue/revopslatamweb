@@ -420,7 +420,9 @@ const Methodology = ({ section }: { section?: HomeSection }) => {
                     className="relative w-full text-left rounded-2xl p-5 sm:p-6 transition-all duration-500 cursor-pointer group"
                     style={{
                       background: isSelected ? s.bgSubtle : "white",
-                      border: `1.5px solid ${isSelected ? s.color : "hsl(220 13% 91%)"}`,
+                      borderLeft: `1.5px solid ${isSelected ? s.color : "hsl(220 13% 91%)"}`,
+                      borderRight: `1.5px solid ${isSelected ? s.color : "hsl(220 13% 91%)"}`,
+                      borderBottom: `1.5px solid ${isSelected ? s.color : "hsl(220 13% 91%)"}`,
                       borderTop: `4px solid ${isSelected ? s.color : isDeemphasized ? "hsl(220 13% 91%)" : s.color}`,
                       opacity: isDeemphasized ? 0.45 : 1,
                       transform: isSelected ? "scale(1.02)" : isDeemphasized ? "scale(0.97)" : "scale(1)",
