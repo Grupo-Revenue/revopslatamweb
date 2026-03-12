@@ -42,53 +42,84 @@ function SectionShell({ section, className, defaultBg, children }: {
   );
 }
 
-/* ═══ Hero Funnel ═══ */
-const funnelLevels = [
-  { label: "Leads captados", count: 4200, width: "100%" },
-  { label: "Leads nutridos", count: 1860, width: "78%" },
-  { label: "MQLs calificados", count: 620, width: "52%" },
-  { label: "Entregados a ventas ✓", count: 310, width: "36%" },
+/* ═══ Hero Workflow Visual ═══ */
+const workflowSteps = [
+  { label: "Lead entra", icon: "📥", color: "rgba(190,24,105,0.3)" },
+  { label: "Nurturing", icon: "🔄", color: "rgba(190,24,105,0.5)" },
+  { label: "Lead Score", icon: "⭐", color: "rgba(140,30,147,0.6)" },
+  { label: "MQL", icon: "✅", color: "rgba(98,36,190,0.7)" },
+  { label: "Ventas", icon: "🤝", color: "rgba(98,36,190,0.9)" },
 ];
 
-const HeroFunnel = () => {
+const HeroWorkflow = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const captured = funnelLevels[0]?.count ?? 0;
-  const nurtured = funnelLevels[1]?.count ?? 0;
-  const lostWithoutNurturing = Math.max(captured - nurtured, 0);
-  const leakagePct = captured > 0 ? Math.round((lostWithoutNurturing / captured) * 100) : 0;
 
   return (
-    <motion.div ref={ref} className="relative backdrop-blur-sm w-full max-w-[460px]" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 28px 56px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }} initial={{ opacity: 0, x: 40 }} animate={inView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7 }}>
-      <div className="space-y-4">
-        {funnelLevels.map((lvl, i) => (
-          <FunnelLevel key={lvl.label} lvl={lvl} i={i} inView={inView} isLast={i === 3} />
+    <motion.div
+      ref={ref}
+      className="relative backdrop-blur-sm w-full max-w-[420px]"
+      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 24px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}
+      initial={{ opacity: 0, x: 40 }}
+      animate={inView ? { opacity: 1, x: 0 } : {}}
+      transition={{ duration: 0.7 }}
+    >
+      <p className="text-[11px] font-bold uppercase tracking-[0.12em] mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
+        Automatización activa
+      </p>
+
+      <div className="relative flex flex-col items-center">
+        {/* Connecting line */}
+        <svg className="absolute left-1/2 -translate-x-1/2 top-0 w-[2px] h-full pointer-events-none" style={{ zIndex: 0 }}>
+          <defs>
+            <linearGradient id="workflowLine" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#BE1869" />
+              <stop offset="100%" stopColor="#6224BE" />
+            </linearGradient>
+          </defs>
+          <motion.line
+            x1="1" y1="0" x2="1" y2="100%"
+            stroke="url(#workflowLine)" strokeWidth="2"
+            strokeDasharray="300"
+            initial={{ strokeDashoffset: 300 }}
+            animate={inView ? { strokeDashoffset: 0 } : {}}
+            transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
+          />
+        </svg>
+
+        {workflowSteps.map((step, i) => (
+          <motion.div
+            key={step.label}
+            className="relative z-10 flex items-center gap-4 w-full"
+            style={{ marginBottom: i < workflowSteps.length - 1 ? 8 : 0 }}
+            initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ delay: 0.4 + i * 0.25, duration: 0.5 }}
+          >
+            {/* Node */}
+            <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl mx-auto" style={{ background: step.color, border: "1px solid rgba(255,255,255,0.12)" }}>
+              {step.icon}
+            </div>
+            {/* Label */}
+            <div className={`flex-1 rounded-lg px-4 py-3 ${i === workflowSteps.length - 1 ? "" : ""}`} style={{ background: i === workflowSteps.length - 1 ? "rgba(98,36,190,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${i === workflowSteps.length - 1 ? "rgba(98,36,190,0.3)" : "rgba(255,255,255,0.06)"}` }}>
+              <span className="text-sm font-semibold text-white">{step.label}</span>
+              {i === 0 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Formulario, pauta, orgánico</span>}
+              {i === 1 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Emails, secuencias, contenido</span>}
+              {i === 2 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Comportamiento + fit = puntaje</span>}
+              {i === 3 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Calificado y listo para contactar</span>}
+              {i === 4 && <span className="block text-[11px] mt-0.5 font-medium" style={{ color: "rgba(190,24,105,0.9)" }}>Handoff automático al pipeline</span>}
+            </div>
+          </motion.div>
         ))}
       </div>
-      <motion.div className="mt-12 rounded-lg px-4 py-3 flex items-start gap-2" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.28)" }} initial={{ opacity: 0, y: 8 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 1.4, duration: 0.5 }}>
-        <X size={14} className="mt-0.5 flex-shrink-0" style={{ color: "rgba(252,165,165,0.95)" }} />
-        <p className="text-[12px] leading-relaxed" style={{ color: "rgba(254,202,202,0.95)" }}>
-          <span className="font-semibold">Sin nurturing, {lostWithoutNurturing.toLocaleString()} leads ({leakagePct}%) se enfrían antes de llegar a ventas.</span>
-        </p>
-      </motion.div>
-    </motion.div>
-  );
-};
 
-const FunnelLevel = ({ lvl, i, inView, isLast }: { lvl: (typeof funnelLevels)[0]; i: number; inView: boolean; isLast: boolean }) => {
-  const count = useAnimatedCounter(lvl.count, 1500, inView);
-  const opacities = [0.35, 0.5, 0.65, 1];
-  return (
-    <motion.div className="relative" style={{ width: lvl.width }} initial={{ opacity: 0, y: -16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.3, duration: 0.5 }}>
-      <div className="relative rounded-xl px-5 py-4 flex items-center justify-between" style={{ background: `linear-gradient(135deg, rgba(190,24,105,${opacities[i]}), rgba(98,36,190,${opacities[i]}))` }}>
-        <span className="text-white text-sm font-medium">{lvl.label}</span>
-        <span className="text-white text-lg font-bold tabular-nums">{Number(count).toLocaleString()}</span>
-      </div>
-      {isLast && (
-        <motion.span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-white px-3 py-1 rounded-full whitespace-nowrap" style={{ background: GRADIENT }} initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 1.6, duration: 0.4 }}>
-          Alineado con ventas ✓
-        </motion.span>
-      )}
+      {/* Animated pulse on last node */}
+      <motion.div
+        className="absolute bottom-[52px] left-1/2 -translate-x-1/2 w-14 h-14 rounded-xl"
+        style={{ background: GRADIENT, opacity: 0.15, filter: "blur(12px)" }}
+        animate={{ scale: [1, 1.4, 1], opacity: [0.15, 0.25, 0.15] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      />
     </motion.div>
   );
 };
