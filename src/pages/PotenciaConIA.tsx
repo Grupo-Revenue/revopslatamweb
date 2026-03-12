@@ -471,9 +471,11 @@ const PotenciaConIA = () => {
 
 
       {/* ─── S7 — Para quién es ─── */}
-      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", padding: "120px 0", ...pqBgStyle() }}>
+      <section className="relative overflow-hidden" style={{ background: "#F9FAFB", ...pqBgStyle() }}>
         {pqHasBg && <div style={pqBgLayerStyle} />}
-        <ForWhomSection yesItems={pq.yes_items} noItems={pq.no_items} background="transparent" />
+        <div className="relative z-10">
+          <ForWhomSection yesItems={pq.yes_items} noItems={pq.no_items} background="transparent" />
+        </div>
       </section>
 
       <SectionDivider />
