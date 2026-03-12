@@ -72,13 +72,13 @@ const FunnelLevel = ({ lvl, i, inView, isLast }: { lvl: (typeof funnelLevels)[0]
   const count = useAnimatedCounter(lvl.count, 1500, inView);
   const opacities = [0.35, 0.5, 0.65, 1];
   return (
-    <motion.div className="mx-auto relative" style={{ width: lvl.width }} initial={{ opacity: 0, y: -16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.3, duration: 0.5 }}>
+    <motion.div className="relative" style={{ width: lvl.width }} initial={{ opacity: 0, y: -16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.3 + i * 0.3, duration: 0.5 }}>
       <div className="relative rounded-xl px-5 py-4 flex items-center justify-between" style={{ background: `linear-gradient(135deg, rgba(190,24,105,${opacities[i]}), rgba(98,36,190,${opacities[i]}))` }}>
         <span className="text-white text-sm font-medium">{lvl.label}</span>
         <span className="text-white text-lg font-bold tabular-nums">{Number(count).toLocaleString()}</span>
       </div>
       {isLast && (
-        <motion.span className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-white px-3 py-1 rounded-full whitespace-nowrap" style={{ background: GRADIENT }} initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 1.6, duration: 0.4 }}>
+        <motion.span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wide text-white px-3 py-1 rounded-full whitespace-nowrap" style={{ background: GRADIENT }} initial={{ opacity: 0, scale: 0.8 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ delay: 1.6, duration: 0.4 }}>
           Alineado con ventas ✓
         </motion.span>
       )}
