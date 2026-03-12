@@ -91,6 +91,7 @@ const SectionHeading = ({
           style={{
             color: light ? "rgba(255,255,255,0.65)" : "#6B7280",
             maxWidth: 620,
+            ...subtitleStyle,
           }}
         >
           {subtitle}
