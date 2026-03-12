@@ -13,7 +13,7 @@ type Props = {
  * Renders a button using a CTA style from the DB.
  * Falls back to a default styled button if no styleKey or not found.
  */
-export default function DynamicCTA({ styleKey, children, onClick, className = "" }: Props) {
+export default function DynamicCTA({ styleKey, children, onClick, className = "", style: inlineStyle }: Props) {
   const { getStyleByKey } = useCTAStyles();
   const ctaStyle = getStyleByKey(styleKey);
   const styles = ctaStyle?.styles;
