@@ -276,7 +276,41 @@ export default function ImplementacionHubspot() {
         </div>
       </SectionShell>
 
-      
+/* ─── Include Grid (dark-bg aware) ─── */
+function IncludeGrid({ section, title, items }: { section?: HomeSection; title: string; items: typeof DEF.incluye.items }) {
+  const { getStyle } = useSectionStyles(section);
+  const meta = (section?.metadata ?? {}) as Record<string, unknown>;
+  const styles = (meta.styles as Record<string, unknown>) ?? {};
+  const bgColor = (styles.background as Record<string, string>)?.color ?? "";
+  const bgGradient = (styles.background as Record<string, string>)?.gradient ?? "";
+  const isDark = bgColor.includes("#1A1A2E") || bgColor.includes("#0D0D1A") || bgGradient.includes("#1A1A2E") || bgGradient.includes("#0D0D1A") || section?.background_image_url != null;
+
+  const titleStyle = getStyle("title");
+  const defaultTitleColor = isDark ? "#fff" : "#1A1A2E";
+  const subtitleColor = isDark ? "rgba(255,255,255,0.7)" : "#6B7280";
+  const borderColor = isDark ? "rgba(255,255,255,0.08)" : "#E5E7EB";
+
+  return (
+    <div className="relative z-10 max-w-[900px] mx-auto px-6">
+      <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: defaultTitleColor, fontSize: "clamp(28px, 4vw, 36px)", ...titleStyle }}>{title}</motion.h2>
+      <div className="grid md:grid-cols-2 gap-x-12 gap-y-0">
+        {items.map((item, i) => (
+          <motion.div key={i} {...fadeUp(0.1 + i * 0.06)} className="py-6" style={{ borderBottom: `1px solid ${borderColor}` }}>
+            <div className="flex items-start gap-4">
+              <div className="shrink-0" style={isDark ? { background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" } : { color: "#1A1A2E" }}><FIcon type={item.icon} /></div>
+              <div>
+                <h3 className="font-bold text-[15px] mb-1" style={{ color: isDark ? "#fff" : "#1A1A2E" }}>{item.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: subtitleColor }}>{item.text}</p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
 
       {/* ── PROBLEMA ── */}
       <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
