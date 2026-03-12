@@ -1,40 +1,85 @@
 
 
-## Plan: Animacion "scan/encendido" en la imagen del Hero
+## Plan: Mobile UX fixes — Pista Story + Navigation Menu
 
-Entiendo perfectamente lo que describes: un efecto donde la imagen aparece progresivamente de arriba hacia abajo, como si los colores se fueran "encendiendo" o revelando con un barrido vertical luminoso.
+### Problem 1: PistaStorySticky on Mobile
 
-### Enfoque tecnico
+Currently on mobile, the 5 steps render as tall scrolling text blocks (same as desktop but without the sticky track). When you tap a card, the dark detail panel expands far below — invisible without scrolling. The scroll-based IntersectionObserver approach doesn't translate well to mobile.
 
-Usar un **clip-path animado con Framer Motion** combinado con un **resplandor de borde (glow line)** que baja mientras revela la imagen:
+**Proposed solution — Card carousel with tabbed detail panel:**
 
-1. **Clip-path reveal**: La imagen inicia con `clipPath: inset(100% 0 0 0)` (completamente oculta) y anima hacia `inset(0% 0 0 0)` (completamente visible). Esto crea el efecto de revelado de arriba hacia abajo.
-
-2. **Linea de escaneo luminosa**: Un `div` superpuesto con un gradiente horizontal brillante (usando los colores de marca: rosa, morado, azul) que se desplaza de arriba hacia abajo al mismo ritmo que el clip-path. Esto simula el efecto de "encendido" de colores.
-
-3. **Glow post-reveal**: Una vez completada la animacion, un sutil resplandor de los colores de marca queda como halo alrededor de la imagen.
-
-### Cambios en archivos
-
-**`src/components/Hero.tsx`** (unico archivo a modificar):
-
-- Reemplazar el `motion.div` actual que envuelve la imagen del hero (lineas 87-98)
-- Agregar un contenedor con `overflow: hidden` y `position: relative`
-- La imagen usa `motion.img` con animacion de `clipPath` via Framer Motion
-- Superponer un `motion.div` como linea de escaneo con gradiente `linear-gradient(90deg, transparent, rgba(190,24,105,0.6), rgba(98,36,190,0.6), rgba(7,121,215,0.6), transparent)` que se mueve de `top: 0%` a `top: 100%`
-- Duracion total: ~1.5s con delay de 0.5s (sincronizado con la aparicion del texto)
-- La linea de escaneo desaparece con fade-out al llegar al final
+- On mobile (`lg:hidden`), replace the scrolling layout with a **vertical card selector** (compact cards showing just eyebrow + title)
+- When a card is tapped, it expands inline showing the body text, highlight, and the corresponding track image — all visible immediately below the tapped card
+- The detail content uses **internal tabs**: "Situación" (body) | "Señales" (highlight/signals) | "Enfoque" (solution approach) — keeping the dark panel compact
+- Track image shown small inside the expanded card, not separate
+- Desktop layout remains unchanged
 
 ```text
-Estructura visual:
-
-  ┌─────────────────┐
-  │ ═══ glow line ══│  ← baja progresivamente
-  │ ████ revealed ██│
-  │                 │  ← parte aun oculta (clip-path)
-  │                 │
-  └─────────────────┘
+┌─────────────────────────┐
+│ ▸ Las piezas            │  ← collapsed
+├─────────────────────────┤
+│ ▾ La realidad      ●    │  ← active
+│ ┌─────────────────────┐ │
+│ │ [track img small]   │ │
+│ │                     │ │
+│ │ Situación|Señales   │ │  ← tabs
+│ │ ─────────────────── │ │
+│ │ Tab content here... │ │
+│ └─────────────────────┘ │
+├─────────────────────────┤
+│ ▸ Pista rota            │  ← collapsed
+├─────────────────────────┤
+│ ▸ Pista incompleta      │
+├─────────────────────────┤
+│ ▸ Pista bien armada     │
+└─────────────────────────┘
 ```
 
-No se necesitan dependencias adicionales; Framer Motion ya soporta `clipPath` como propiedad animable.
+**File:** `src/components/landing/PistaStorySticky.tsx`
+- Add a mobile-only accordion component rendered inside the existing `lg:hidden` block
+- Each step becomes a collapsible card with the accent color border
+- Expanded card shows: small track image + 2-3 tab buttons + tab content
+- Only one card open at a time
+
+---
+
+### Problem 2: Mobile Menu Missing Service Categories
+
+Currently the mobile menu flattens all service items via `serviciosItemsFlat`, losing the category headers ("Conoce tu pista", "Diseña y construye", "Opera tu pista", "Potencia con IA").
+
+**Proposed solution — Grouped accordion:**
+
+- Replace the flat `MobileSection` for "Servicios" with a **grouped version** that renders each `serviciosGroups` entry as a sub-section with its colored header
+- Each group header shows the category icon + label in its brand color
+- Items are indented under each group
+- Groups are all visible when "Servicios" is expanded (no nested accordion needed — just visual grouping)
+
+```text
+Servicios                    ▾
+  ● CONOCE TU PISTA (pink)
+      RevOps Checkup
+      Diagnóstico RevOps
+      Motor de Ingresos
+  ● DISEÑA Y CONSTRUYE (purple)
+      Diseño de Procesos
+      Onboarding HubSpot
+      ...
+  ● OPERA TU PISTA (teal)
+      RevOps as a Service
+      ...
+  ● POTENCIA CON IA (blue)
+      IA para tu Motor de Ingresos
+```
+
+**File:** `src/components/Navbar.tsx`
+- Create a `MobileSectionGrouped` component that receives `serviciosGroups` directly
+- Renders category headers with icon + colored label
+- Items listed under each group with slight indent
+- Replace line 440's `MobileSection` call for Servicios with the new grouped version
+
+---
+
+### Files to modify
+1. `src/components/landing/PistaStorySticky.tsx` — mobile accordion with tabs
+2. `src/components/Navbar.tsx` — grouped mobile services menu
 
