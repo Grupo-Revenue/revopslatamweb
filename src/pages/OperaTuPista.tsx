@@ -208,6 +208,7 @@ const DEF = {
    ═══════════════════════════════════════════════════════════ */
 const OperaTuPista = () => {
   const { getSection, loading } = usePageSections("opera-tu-pista");
+  const { openLeadForm } = useLeadForm();
 
   const hero = getSection("hero");
   const hm = mt(hero);
