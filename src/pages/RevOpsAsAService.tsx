@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { ChevronRight, Check, X, Brain, Cog, HardHat, Megaphone, BarChart3 } from "lucide-react";
+import { useLeadForm } from "@/hooks/useLeadForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SectionHeading from "@/components/services/SectionHeading";
@@ -228,6 +229,7 @@ const RevOpsAsAService = () => {
   const paraQuienSection = getSection("para-quien");
   const argumentoPrecioSection = getSection("argumento-precio");
   const ctaFinalSection = getSection("cta-final");
+  const { openLeadForm } = useLeadForm();
   const hm = mt(hero);
 
   const h = {
@@ -372,7 +374,7 @@ const RevOpsAsAService = () => {
           <h2 className="font-bold mb-4" style={{ fontSize: "clamp(28px, 4vw, 42px)", color: DARK }}>El primer sprint empieza cuando tú quieras</h2>
           <div className="flex flex-wrap justify-center gap-4 mt-8">
             <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => scrollTo("planes")} className="text-[15px] font-semibold text-white px-8 py-4 rounded-full hover:scale-[1.03] transition-all">{h.cta_text}</DynamicCTA>
-            <button className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>Conversemos primero →</button>
+            <DynamicCTA styleKey={mt(ctaFinalSection).cta2_style_key as string} onClick={() => { if (mt(ctaFinalSection).cta2_opens_lead_form) { openLeadForm("revops-cta-final-2"); } else if (ctaFinalSection?.cta_url) { window.location.href = ctaFinalSection.cta_url; } }} className="text-[15px] font-semibold px-8 py-4 rounded-full transition-all hover:scale-[1.03]" style={{ border: "1.5px solid #E5E7EB", color: DARK }}>{(mt(ctaFinalSection).cta2_text as string) || "Conversemos primero →"}</DynamicCTA>
           </div>
         </div>
       </SectionShell>
