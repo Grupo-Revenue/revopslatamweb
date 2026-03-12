@@ -97,8 +97,8 @@ const HeroWorkflow = () => {
             transition={{ delay: 0.4 + i * 0.25, duration: 0.5 }}
           >
             {/* Node */}
-            <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl mx-auto" style={{ background: step.color, border: "1px solid rgba(255,255,255,0.12)" }}>
-              {step.icon}
+            <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: step.color, border: "1px solid rgba(255,255,255,0.12)" }}>
+              <step.Icon size={20} color="#fff" strokeWidth={1.8} />
             </div>
             {/* Label */}
             <div className={`flex-1 rounded-lg px-4 py-3 ${i === workflowSteps.length - 1 ? "" : ""}`} style={{ background: i === workflowSteps.length - 1 ? "rgba(98,36,190,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${i === workflowSteps.length - 1 ? "rgba(98,36,190,0.3)" : "rgba(255,255,255,0.06)"}` }}>
