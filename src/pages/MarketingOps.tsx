@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLeadForm } from "@/hooks/useLeadForm";
-import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3 } from "lucide-react";
+import { ChevronRight, X, Cog, Megaphone, Wrench, Handshake, BarChart3, Inbox, RefreshCw, Star, CheckCircle2, ArrowRightLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -44,11 +44,11 @@ function SectionShell({ section, className, defaultBg, children }: {
 
 /* ═══ Hero Workflow Visual ═══ */
 const workflowSteps = [
-  { label: "Lead entra", icon: "📥", color: "rgba(190,24,105,0.3)" },
-  { label: "Nurturing", icon: "🔄", color: "rgba(190,24,105,0.5)" },
-  { label: "Lead Score", icon: "⭐", color: "rgba(140,30,147,0.6)" },
-  { label: "MQL", icon: "✅", color: "rgba(98,36,190,0.7)" },
-  { label: "Ventas", icon: "🤝", color: "rgba(98,36,190,0.9)" },
+  { label: "Lead entra", Icon: Inbox, color: "rgba(190,24,105,0.3)" },
+  { label: "Nurturing", Icon: RefreshCw, color: "rgba(190,24,105,0.5)" },
+  { label: "Lead Score", Icon: Star, color: "rgba(140,30,147,0.6)" },
+  { label: "MQL", Icon: CheckCircle2, color: "rgba(98,36,190,0.7)" },
+  { label: "Ventas", Icon: ArrowRightLeft, color: "rgba(98,36,190,0.9)" },
 ];
 
 const HeroWorkflow = () => {
@@ -59,7 +59,7 @@ const HeroWorkflow = () => {
     <motion.div
       ref={ref}
       className="relative backdrop-blur-sm w-full max-w-[420px]"
-      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "32px 24px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}
+      style={{ background: "rgba(255,255,255,0.18)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 20, padding: "32px 24px", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}
       initial={{ opacity: 0, x: 40 }}
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.7 }}
@@ -97,8 +97,8 @@ const HeroWorkflow = () => {
             transition={{ delay: 0.4 + i * 0.25, duration: 0.5 }}
           >
             {/* Node */}
-            <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-xl mx-auto" style={{ background: step.color, border: "1px solid rgba(255,255,255,0.12)" }}>
-              {step.icon}
+            <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center mx-auto" style={{ background: step.color, border: "1px solid rgba(255,255,255,0.12)" }}>
+              <step.Icon size={20} color="#fff" strokeWidth={1.8} />
             </div>
             {/* Label */}
             <div className={`flex-1 rounded-lg px-4 py-3 ${i === workflowSteps.length - 1 ? "" : ""}`} style={{ background: i === workflowSteps.length - 1 ? "rgba(98,36,190,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${i === workflowSteps.length - 1 ? "rgba(98,36,190,0.3)" : "rgba(255,255,255,0.06)"}` }}>
@@ -107,7 +107,7 @@ const HeroWorkflow = () => {
               {i === 1 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Emails, secuencias, contenido</span>}
               {i === 2 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Comportamiento + fit = puntaje</span>}
               {i === 3 && <span className="block text-[11px] mt-0.5" style={{ color: "rgba(255,255,255,0.4)" }}>Calificado y listo para contactar</span>}
-              {i === 4 && <span className="block text-[11px] mt-0.5 font-medium" style={{ color: "rgba(190,24,105,0.9)" }}>Handoff automático al pipeline</span>}
+              {i === 4 && <span className="block text-[11px] mt-0.5 font-medium" style={{ color: "rgba(255,255,255,0.7)" }}>Handoff automático al pipeline</span>}
             </div>
           </motion.div>
         ))}
