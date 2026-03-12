@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { ChevronRight, Check, X, Brain, Cog, HardHat, Megaphone, BarChart3 } from "lucide-react";
+import { useLeadForm } from "@/hooks/useLeadForm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SectionHeading from "@/components/services/SectionHeading";
