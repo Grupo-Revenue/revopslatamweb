@@ -320,11 +320,11 @@ const MarketingOps = () => {
               const icons = [Cog, Megaphone, Wrench, Handshake, BarChart3];
               const Icon = icons[i] || Cog;
               return (
-                <ServiceCard key={item.title} delay={i * 0.1} variant="glass" hoverBorder={ACCENT}>
-                  <GradientIcon icon={Icon} size={44} iconSize={20} gradient={GRADIENT} className="mb-4" />
-                  <h4 className="font-bold text-[15px] mb-2 text-white">{item.title}</h4>
-                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{item.desc}</p>
-                </ServiceCard>
+            <ServiceCard key={item.title} delay={i * 0.1} variant="glass" hoverBorder="#6224BE">
+              <GradientIcon icon={Icon} size={44} iconSize={20} gradient={GRADIENT} className="mb-4" />
+              <h4 className="font-bold text-[15px] mb-2 text-white">{item.title}</h4>
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>{item.desc}</p>
+            </ServiceCard>
               );
             })}
           </div>
