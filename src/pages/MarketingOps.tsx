@@ -51,37 +51,63 @@ const workflowSteps = [
   { label: "Ventas", Icon: ArrowRightLeft, color: "rgba(98,36,190,0.9)" },
 ];
 
-const LOOP_DURATION = 4000; // ms for full cycle
-const STEP_DELAY = 600; // ms between each step lighting up
-const PAUSE_AT_END = 1200; // ms pause when all lit
+const STEP_DELAY = 800;
+const PAUSE_AT_END = 2000;
+const FADE_OUT = 800;
 
 const HeroWorkflow = () => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [activeStep, setActiveStep] = useState(-1);
+  const [fading, setFading] = useState(false);
+  const nodeRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (!inView) return;
     let timeout: ReturnType<typeof setTimeout>;
     let step = -1;
-    const totalSteps = workflowSteps.length;
+    const total = workflowSteps.length;
 
     const tick = () => {
       step++;
-      if (step <= totalSteps) {
+      if (step < total) {
+        setFading(false);
         setActiveStep(step);
-        timeout = setTimeout(tick, step === totalSteps ? PAUSE_AT_END : STEP_DELAY);
+        timeout = setTimeout(tick, STEP_DELAY);
+      } else if (step === total) {
+        // Pause at end with all lit
+        timeout = setTimeout(tick, PAUSE_AT_END);
       } else {
-        // Reset and loop
-        step = -1;
-        setActiveStep(-1);
-        timeout = setTimeout(tick, 600);
+        // Fade out then reset
+        setFading(true);
+        timeout = setTimeout(() => {
+          step = -1;
+          setActiveStep(-1);
+          setFading(false);
+          timeout = setTimeout(tick, 600);
+        }, FADE_OUT);
       }
     };
 
-    timeout = setTimeout(tick, 500);
+    timeout = setTimeout(tick, 700);
     return () => clearTimeout(timeout);
   }, [inView]);
+
+  // Calculate line height based on actual node positions
+  const getLineProgress = () => {
+    if (activeStep < 0) return 0;
+    // Line goes from center of first node to center of active node
+    const clampedStep = Math.min(activeStep, workflowSteps.length - 1);
+    return clampedStep / (workflowSteps.length - 1);
+  };
+
+  const descriptions = [
+    "Formulario, pauta, orgánico",
+    "Emails, secuencias, contenido",
+    "Comportamiento + fit = puntaje",
+    "Calificado y listo para contactar",
+    "Handoff automático al pipeline",
+  ];
 
   return (
     <motion.div
@@ -96,100 +122,98 @@ const HeroWorkflow = () => {
         Automatización activa
       </p>
 
-      <div className="relative flex flex-col items-center">
-        {/* Connecting line background */}
-        <div className="absolute left-[24px] top-[24px] bottom-[24px] w-[2px] pointer-events-none" style={{ zIndex: 0, background: "rgba(255,255,255,0.08)" }} />
-
-        {/* Animated progress line */}
-        <motion.div
-          className="absolute left-[24px] top-[24px] w-[2px] pointer-events-none origin-top"
+      <div className="relative flex flex-col gap-3">
+        {/* Line track (between icon centers) — sits behind icons via z-index */}
+        <div
+          className="absolute pointer-events-none"
           style={{
-            zIndex: 1,
-            background: GRADIENT,
-            borderRadius: 1,
+            left: 23, /* center of 48px icon */
+            top: 24,  /* center of first icon */
+            bottom: 24, /* center of last icon */
+            width: 2,
+            zIndex: 0,
           }}
-          animate={{
-            height: activeStep < 0 ? "0%" : `${Math.min((activeStep / (workflowSteps.length - 1)) * 100, 100)}%`,
-          }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        />
+        >
+          {/* Background track */}
+          <div className="absolute inset-0 rounded-full" style={{ background: "rgba(255,255,255,0.06)" }} />
+          {/* Animated fill */}
+          <motion.div
+            className="absolute top-0 left-0 w-full rounded-full"
+            style={{ background: GRADIENT }}
+            animate={{
+              height: `${getLineProgress() * 100}%`,
+              opacity: fading ? 0 : 1,
+            }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+          />
+        </div>
 
         {workflowSteps.map((step, i) => {
-          const isActive = i <= activeStep;
-          const isCurrent = i === activeStep;
-          const descriptions = [
-            "Formulario, pauta, orgánico",
-            "Emails, secuencias, contenido",
-            "Comportamiento + fit = puntaje",
-            "Calificado y listo para contactar",
-            "Handoff automático al pipeline",
-          ];
+          const isActive = !fading && i <= activeStep;
+          const isCurrent = !fading && i === activeStep;
 
           return (
-            <div
+            <motion.div
               key={step.label}
-              className="relative z-10 flex items-center gap-4 w-full"
-              style={{ marginBottom: i < workflowSteps.length - 1 ? 8 : 0 }}
+              ref={(el) => { nodeRefs.current[i] = el; }}
+              className="relative flex items-center gap-4 w-full"
+              style={{ zIndex: 2 }}
             >
-              {/* Node */}
+              {/* Node circle */}
               <motion.div
                 className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.12)",
-                }}
                 animate={{
-                  background: isActive ? step.color : "rgba(255,255,255,0.04)",
-                  scale: isCurrent ? 1.1 : 1,
+                  background: isActive ? step.color : "rgba(255,255,255,0.05)",
+                  scale: isCurrent ? 1.08 : 1,
+                  borderColor: isActive ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.08)",
                 }}
-                transition={{ duration: 0.35, ease: "easeOut" }}
+                style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               >
-                <step.Icon size={20} color={isActive ? "#fff" : "rgba(255,255,255,0.25)"} strokeWidth={1.8} />
+                <motion.div
+                  animate={{ opacity: isActive ? 1 : 0.2 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <step.Icon size={20} color="#fff" strokeWidth={1.8} />
+                </motion.div>
               </motion.div>
 
-              {/* Label */}
+              {/* Label card */}
               <motion.div
                 className="flex-1 rounded-lg px-4 py-3"
                 animate={{
                   background: isActive
-                    ? i === workflowSteps.length - 1 ? "rgba(98,36,190,0.15)" : "rgba(255,255,255,0.08)"
+                    ? i === workflowSteps.length - 1 ? "rgba(98,36,190,0.15)" : "rgba(255,255,255,0.07)"
                     : "rgba(255,255,255,0.02)",
-                  borderColor: isActive
-                    ? i === workflowSteps.length - 1 ? "rgba(98,36,190,0.3)" : "rgba(255,255,255,0.12)"
-                    : "rgba(255,255,255,0.04)",
+                  borderColor: isActive ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.04)",
                 }}
                 style={{ border: "1px solid rgba(255,255,255,0.04)" }}
-                transition={{ duration: 0.35 }}
+                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               >
                 <motion.span
                   className="text-sm font-semibold block"
-                  animate={{ color: isActive ? "#fff" : "rgba(255,255,255,0.3)" }}
-                  transition={{ duration: 0.3 }}
+                  animate={{ color: isActive ? "#fff" : "rgba(255,255,255,0.25)" }}
+                  transition={{ duration: 0.4 }}
                 >
                   {step.label}
                 </motion.span>
                 <motion.span
                   className="block text-[11px] mt-0.5"
-                  animate={{
-                    color: isActive ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.15)",
-                  }}
-                  transition={{ duration: 0.3 }}
+                  animate={{ color: isActive ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.12)" }}
+                  transition={{ duration: 0.4 }}
                 >
                   {descriptions[i]}
                 </motion.span>
               </motion.div>
 
-              {/* Glow on current step */}
-              {isCurrent && (
-                <motion.div
-                  className="absolute -left-1 top-1/2 -translate-y-1/2 w-14 h-14 rounded-xl pointer-events-none"
-                  style={{ background: step.color, filter: "blur(16px)", zIndex: 0 }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.4 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-              )}
-            </div>
+              {/* Soft glow behind current node */}
+              <motion.div
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 rounded-xl pointer-events-none"
+                style={{ background: step.color, filter: "blur(18px)", zIndex: -1 }}
+                animate={{ opacity: isCurrent ? 0.35 : 0 }}
+                transition={{ duration: 0.5 }}
+              />
+            </motion.div>
           );
         })}
       </div>
