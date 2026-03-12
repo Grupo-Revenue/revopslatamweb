@@ -401,7 +401,7 @@ const PotenciaConIA = () => {
       {/* ─── S4 — Consultoría Estratégica ─── */}
       <SectionShell section={consultoria} className="py-[120px] px-4 sm:px-6" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[640px] mx-auto text-center">
-          <SectionHeading badge={con.badge} title={con.title} />
+          <SectionHeading badge={con.badge} title={con.title} titleStyle={conStyle("title")} />
           <motion.div {...fadeUp(0.1)} className="text-[15px] leading-relaxed space-y-4 -mt-8" style={{ color: "#6B7280", ...conStyle("body") }}>
             {con.body.split("\n\n").filter(Boolean).map((p, i) => (
               <p key={i}>{p}</p>
