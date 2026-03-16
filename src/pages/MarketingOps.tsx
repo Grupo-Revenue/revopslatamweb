@@ -227,7 +227,7 @@ const opsItems = [
   { emoji: "📣", title: "Gestión de campañas", desc: "Pauta en buscadores y redes operada por alguien que entiende el CRM, no solo las plataformas." },
   { emoji: "🔧", title: "Marketing Hub activo", desc: "Formularios, emails, secuencias, listas y segmentación. Que la herramienta trabaje, no solo exista." },
   { emoji: "🤝", title: "Alineación marketing-ventas", desc: "Definición de MQL, protocolo de handoff y seguimiento de leads hasta el cierre." },
-  { emoji: "📊", title: "Reportería integrada", desc: "Métricas conectadas con pipeline. No solo impresiones — cuánto de lo invertido terminó en revenue." },
+  { emoji: "📊", title: "Reportería integrada", desc: "Métricas conectadas con pipeline. No solo impresiones, cuánto de lo invertido terminó en revenue." },
 ];
 
 /* ─── defaults ─── */
