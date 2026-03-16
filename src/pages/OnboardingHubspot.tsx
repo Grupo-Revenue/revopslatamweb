@@ -99,7 +99,7 @@ const DEF = {
       { num: 67, suffix: "%", label: "de implementaciones sin adopción real" },
       { num: 0, suffix: " UF", label: "de retorno si nadie lo usa" },
     ],
-    footnote: "Estimaciones basadas en nuestra experiencia de campo — no datos de estudios externos.",
+    footnote: "Estimaciones basadas en nuestra experiencia de campo, no datos de estudios externos.",
   },
   incluye: {
     title: "Lo que tienes al final de las 3 semanas",
