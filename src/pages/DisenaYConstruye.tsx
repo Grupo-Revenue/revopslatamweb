@@ -69,7 +69,7 @@ const DEF = {
   },
   servicios: {
     title: "Cinco servicios. Un principio.",
-    subtitle: "Proceso antes que tecnología — en cada proyecto, sin excepción.",
+    subtitle: "Proceso antes que tecnología, en cada proyecto, sin excepción.",
     services: [
       { badge: "EL FUNDAMENTO", badgeType: "hubspot", title: "Diseño de Procesos Comerciales", tagline: "El plano de tu operación comercial", description: "Diseñamos tu proceso completo antes de tocar cualquier herramienta.", price: "Desde 45 UF + IVA", href: "/diseño-de-procesos" },
       { badge: "MÁS RÁPIDO", badgeType: "hubspot", title: "Onboarding HubSpot", tagline: "En marcha en 3 semanas", description: "La forma más eficiente de arrancar con HubSpot. Con proceso, sin sobreingeniería.", price: "Desde 50 UF + IVA", href: "/onboarding-hubspot" },
