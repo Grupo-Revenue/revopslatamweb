@@ -81,7 +81,7 @@ const DEF = {
   hero: {
     badge: "EN MARCHA EN 3 SEMANAS",
     title: "En marcha rápido, con las bases correctas",
-    subtitle: "Acabas de comprar HubSpot y quieres empezar. En 3 semanas tienes el portal funcionando — con proceso, no solo con configuración.",
+    subtitle: "Acabas de comprar HubSpot y quieres empezar. En 3 semanas tienes el portal funcionando, con proceso, no solo con configuración.",
     cta: "Agendar mi Onboarding →",
     cta2_text: "¿Es este el servicio correcto? ↓",
     breadcrumb: "Diseña y Construye → Onboarding HubSpot",
