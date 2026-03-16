@@ -80,7 +80,7 @@ const DEF = {
       { icon: "📊", title: "Tienen CRM. No tienen proceso.", text: "Cada vendedor trabaja a su manera. El pipeline no refleja la realidad. Los datos no son confiables. La herramienta está, el proceso, no." },
       { icon: "🚀", title: "Quieren implementar bien desde el inicio.", text: "Están a punto de adquirir un CRM y no quieren repetir el error que vieron en otras empresas: tecnología sin dirección." },
     ],
-    pill: "El Diseño de Procesos resuelve el problema desde la raíz — sin importar el CRM que tengas.",
+    pill: "El Diseño de Procesos resuelve el problema desde la raíz, sin importar el CRM que tengas.",
   },
   entregables: {
     title: "Lo que tienes al final",
