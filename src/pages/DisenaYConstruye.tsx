@@ -80,7 +80,7 @@ const DEF = {
   },
   diferencia: {
     title: "Por qué una agencia de marketing no debería implementar tu CRM",
-    body: "El CRM es el corazón de tu operación comercial. Implementarlo bien requiere entender procesos de ventas, pipelines, automatizaciones de negocio y arquitectura de datos — no campañas ni creatividad.\n\nNosotros somos especialistas en operaciones de revenue. No hacemos marketing. Hacemos que tu operación comercial funcione.",
+    body: "El CRM es el corazón de tu operación comercial. Implementarlo bien requiere entender procesos de ventas, pipelines, automatizaciones de negocio y arquitectura de datos, no campañas ni creatividad.\n\nNosotros somos especialistas en operaciones de revenue. No hacemos marketing. Hacemos que tu operación comercial funcione.",
     credential: "HubSpot Platinum Partner · +10 años",
     comparison: {
       left: { header: "Agencia de Marketing", items: ["Implementa sin diseñar proceso", "Configura por Hub, no por negocio", "Entrega el portal y desaparece"] },

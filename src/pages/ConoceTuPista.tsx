@@ -159,7 +159,7 @@ const DEFAULTS = {
     { badge: "ENTERPRISE", title: "Diagnóstico Motor de Ingresos", tagline: "Transformación en 5 semanas", description: "Para operaciones complejas con múltiples equipos, herramientas y fuentes de datos. Análisis integral del motor de ingresos completo.", price: "Desde 250 UF", duration: "5 semanas", href: "/motor-de-ingresos", highlighted: false, badgeHighlight: false },
   ] },
   porQueDiagnosticar: { title: "El diagnóstico no es un gasto.\nEs el inicio de una relación.", body: "El 70% de nuestros clientes que pasan por un diagnóstico continúan con un proyecto de implementación o un retainer. No porque los convenzamos, sino porque el diagnóstico revela oportunidades concretas que no querían dejar pasar.\n\nUn buen diagnóstico no te dice que tienes problemas. Te dice cuánto te están costando, y qué pasa si los resuelves.", stats: [{ value: "14 años", label: "de experiencia" }, { value: "Platinum", label: "HubSpot Partners" }, { value: "Cientos", label: "de equipos alineados" }] },
-  ctaFinal: { title: "¿No sabes cuál diagnóstico necesitas?", subtitle: "En 15 minutos de conversación te ayudamos a identificar el nivel correcto — sin compromiso.", cta_text: "Agendar conversación gratuita →", cta_url: "#" },
+  ctaFinal: { title: "¿No sabes cuál diagnóstico necesitas?", subtitle: "En 15 minutos de conversación te ayudamos a identificar el nivel correcto, sin compromiso.", cta_text: "Agendar conversación gratuita →", cta_url: "#" },
 };
 
 /* ─── CTA Final Button with lead form support ─── */
