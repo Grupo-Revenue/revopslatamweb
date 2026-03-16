@@ -104,7 +104,7 @@ const AgentFeed = () => {
     <div className="rounded-[20px] p-6 md:p-8 relative overflow-hidden backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}>
       <div className="flex items-center gap-2 mb-6">
         <span className="w-2 h-2 rounded-full" style={{ background: AI_BLUE, boxShadow: `0 0 8px ${AI_BLUE}`, animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }} />
-        <span className="text-[15px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>Agente IA — Activo</span>
+        <span className="text-[15px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>Agente IA, Activo</span>
       </div>
       <div className="space-y-3 min-h-[200px]">
         {items.map((item, i) => (
