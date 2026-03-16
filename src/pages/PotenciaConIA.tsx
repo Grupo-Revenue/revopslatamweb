@@ -76,7 +76,7 @@ interface FeedItem { time: string; text: string; chipLabel: string; chipColor: s
 
 const allFeedItems: FeedItem[] = [
   { time: "09:14", text: "Lead calificado automáticamente", chipLabel: "Enviado a ventas", chipColor: "#16A34A", chipBg: "rgba(74,222,128,0.15)", done: true },
-  { time: "09:22", text: "Seguimiento enviado — sin respuesta 48h", chipLabel: "Automatización activa", chipColor: AI_BLUE, chipBg: "rgba(99,102,241,0.15)", done: true },
+  { time: "09:22", text: "Seguimiento enviado, sin respuesta 48h", chipLabel: "Automatización activa", chipColor: AI_BLUE, chipBg: "rgba(99,102,241,0.15)", done: true },
   { time: "09:31", text: "Reunión agendada por WhatsApp", chipLabel: "Vambe", chipColor: "#BE1869", chipBg: "rgba(190,24,105,0.1)", done: true },
   { time: "09:47", text: "Calificando nuevo lead entrante…", chipLabel: "En proceso", chipColor: "#EAB308", chipBg: "rgba(234,179,8,0.15)", done: false },
   { time: "09:52", text: "Email de nurturing enviado", chipLabel: "Workflow activo", chipColor: "#16A34A", chipBg: "rgba(74,222,128,0.15)", done: true },
