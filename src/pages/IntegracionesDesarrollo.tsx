@@ -74,7 +74,7 @@ const DEF = {
   },
   problema: {
     title: "La información más importante de tu negocio vive en silos",
-    body: "Tu equipo ingresa la misma información dos veces. Los datos son inconsistentes. Las decisiones se toman con información parcial. Y HubSpot es solo una herramienta más del stack — no el centro.",
+    body: "Tu equipo ingresa la misma información dos veces. Los datos son inconsistentes. Las decisiones se toman con información parcial. Y HubSpot es solo una herramienta más del stack, no el centro.",
     silos: ["HubSpot", "ERP", "Otros"],
   },
   construimos: {
