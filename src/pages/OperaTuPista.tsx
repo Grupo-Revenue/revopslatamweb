@@ -100,7 +100,7 @@ const DashboardHero = () => {
             animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite",
           }}
         />
-        <span className="text-white/80 text-sm font-semibold tracking-wide">Motor de Ingresos — Activo</span>
+        <span className="text-white/80 text-sm font-semibold tracking-wide">Motor de Ingresos, Activo</span>
       </div>
       <div className="grid grid-cols-2 gap-5">
         {metrics.map((m, i) => (
@@ -405,7 +405,7 @@ const ProblemSection = ({ section }: { section?: HomeSection }) => {
           ))}
         </div>
         <motion.div className="mt-14 mx-auto text-center text-sm font-medium leading-relaxed px-6 py-4 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.06), rgba(98,36,190,0.06))", color: DARK, maxWidth: 640 }} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }}>
-          Operar bien una pista requiere alguien que esté mirando los datos y afinando el motor — siempre.
+          Operar bien una pista requiere alguien que esté mirando los datos y afinando el motor, siempre.
         </motion.div>
       </div>
     </section>

@@ -415,7 +415,7 @@ export default function LeadFormModal() {
                       <h3 className="text-xl font-bold text-foreground mb-2">¡Gracias, {form.first_name}! 🙌</h3>
                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                         Recibimos tu información. En este momento, nuestras soluciones están enfocadas en equipos comerciales con más de 2 personas.<br /><br />
-                        Pero no te vayas con las manos vacías — te recomendamos hacer nuestro <strong className="text-foreground">Pulso Comercial</strong> gratuito para entender el estado de tu motor de ingresos.
+                        Pero no te vayas con las manos vacías, te recomendamos hacer nuestro <strong className="text-foreground">Pulso Comercial</strong> gratuito para entender el estado de tu motor de ingresos.
                       </p>
                       <a
                         href="https://pulso.revopslatam.com/"

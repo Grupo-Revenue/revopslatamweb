@@ -46,7 +46,7 @@ function SectionShell({ section, className, defaultBg, children }: {
 
 /* ═══ Sprint Timeline ═══ */
 const sprintItems = [
-  { label: "Lunes pasado", text: "Reunión de sprint — 3 prioridades definidas", done: true },
+  { label: "Lunes pasado", text: "Reunión de sprint, 3 prioridades definidas", done: true },
   { label: "Esta semana", text: "Pipeline optimizado · Automatización activa", done: true },
   { label: "En progreso", text: "Campaña de nurturing configurada", partial: true },
   { label: "Próximo lunes", text: "Cierre de sprint + reporte de KPIs", pending: true },
@@ -95,7 +95,7 @@ const SprintTimeline = () => {
 const plans = [
   { key: "claridad", label: "CLARIDAD", labelColor: "#6B7280", price: "50", promesa: "Sabrás exactamente qué está pasando en tu operación y tendrás un camino claro de qué mejorar cada mes.", para: "HubSpot funcionando, equipo pequeño, falta dirección estratégica.", features: ["Consultor RevOps asignado", "Especialista HubSpot técnico", "Sprint quincenal", "Soporte por ticket", "Reporte mensual de KPIs"], ctaLabel: "Empezar con Claridad →", ctaSolid: false, featured: false },
   { key: "momentum", label: "MOMENTUM", labelGradient: true, price: "90", promesa: "Tu operación de ventas y marketing funcionando alineada, mejorando cada mes, sin que tengas que empujarla.", para: "Equipos de ventas y marketing que necesitan alineación real y ejecución constante.", features: ["Consultor RevOps Senior", "Mayor capacidad de ejecución", "Arquitecto de soluciones disponible", "Análisis de pipeline mensual", "Playbooks comerciales activos", "Marketing Ops incluido"], ctaLabel: "Empezar con Momentum →", ctaSolid: true, featured: true },
-  { key: "escala", label: "ESCALA", labelColor: DARK, price: "160", promesa: "Tu función completa de Revenue Operations — sin contratar, sin esperar, sin riesgo.", para: "Empresas en crecimiento con múltiples equipos que quieren delegar su operación completa.", features: ["Marketing Ops Specialist asignado", "Gobierno ventas + marketing + CS", "Reunión estratégica mensual con liderazgo", "Reporting ejecutivo para directorio", "IA incluida en consultoría estratégica"], ctaLabel: "Empezar con Escala →", ctaSolid: false, featured: false },
+  { key: "escala", label: "ESCALA", labelColor: DARK, price: "160", promesa: "Tu función completa de Revenue Operations, sin contratar, sin esperar, sin riesgo.", para: "Empresas en crecimiento con múltiples equipos que quieren delegar su operación completa.", features: ["Marketing Ops Specialist asignado", "Gobierno ventas + marketing + CS", "Reunión estratégica mensual con liderazgo", "Reporting ejecutivo para directorio", "IA incluida en consultoría estratégica"], ctaLabel: "Empezar con Escala →", ctaSolid: false, featured: false },
 ];
 
 const PlanCard = ({ plan, i }: { plan: (typeof plans)[0]; i: number }) => {

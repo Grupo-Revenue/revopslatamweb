@@ -59,7 +59,7 @@ const DEF = {
   hero: {
     badge: "TÉCNICO",
     title: "Tu ecosistema tecnológico, finalmente conectado",
-    subtitle: "HubSpot conectado con tu ERP, tus herramientas y apps construidas a medida. Diseñamos cada integración antes de desarrollarla — siempre.",
+    subtitle: "HubSpot conectado con tu ERP, tus herramientas y apps construidas a medida. Diseñamos cada integración antes de desarrollarla, siempre.",
     cta: "Cuéntanos qué sistemas necesitas conectar →",
     cta2_text: "¿Es este el servicio correcto? ↓",
     breadcrumb: "Diseña y Construye → Integraciones y Desarrollo",
@@ -74,13 +74,13 @@ const DEF = {
   },
   problema: {
     title: "La información más importante de tu negocio vive en silos",
-    body: "Tu equipo ingresa la misma información dos veces. Los datos son inconsistentes. Las decisiones se toman con información parcial. Y HubSpot es solo una herramienta más del stack — no el centro.",
+    body: "Tu equipo ingresa la misma información dos veces. Los datos son inconsistentes. Las decisiones se toman con información parcial. Y HubSpot es solo una herramienta más del stack, no el centro.",
     silos: ["HubSpot", "ERP", "Otros"],
   },
   construimos: {
     title: "Lo que podemos construir",
     cards: [
-      { icon: "🗄️", title: "Integración HubSpot + ERP", desc: "Conexión bidireccional con SAP, Oracle u otros. Clientes, pedidos, facturación — sincronizado según la lógica de tu negocio.", tags: ["SAP", "Oracle", "Bidireccional"], badge: null },
+      { icon: "🗄️", title: "Integración HubSpot + ERP", desc: "Conexión bidireccional con SAP, Oracle u otros. Clientes, pedidos, facturación, sincronizado según la lógica de tu negocio.", tags: ["SAP", "Oracle", "Bidireccional"], badge: null },
       { icon: "🔌", title: "Integraciones con terceros", desc: "HubSpot conectado con WhatsApp Business, Slack, plataformas de pago, firma electrónica y cualquier sistema con API disponible.", tags: ["WhatsApp", "Slack", "APIs REST"], badge: null },
       { icon: "💻", title: "Apps a medida", desc: "Cuando la herramienta que necesitas no existe en el mercado. Construimos aplicaciones diseñadas para tu proceso, integradas con HubSpot.", tags: ["Full-stack", "HubSpot API", "A medida"], badge: "Desarrollo custom" },
       { icon: "🌐", title: "Portales y micrositios", desc: "Portales de clientes, plataformas de autoservicio o micrositios construidos sobre HubSpot CMS con lógica de negocio personalizada.", tags: ["HubSpot CMS", "Portal clientes", "Lógica custom"], badge: null },

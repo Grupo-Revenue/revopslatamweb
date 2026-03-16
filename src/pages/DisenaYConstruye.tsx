@@ -52,7 +52,7 @@ const DEF = {
   hero: {
     eyebrow: "DISEÑA Y CONSTRUYE TU PISTA",
     title: "Nadie construye un circuito poniendo el asfalto primero",
-    subtitle: "Diseñamos la pista antes de construirla — siempre. Proceso primero. HubSpot después.",
+    subtitle: "Diseñamos la pista antes de construirla, siempre. Proceso primero. HubSpot después.",
     cta: "Quiero construir mi pista →",
     cta2_text: "Primero quiero un diagnóstico →",
     cta2_url: "/conoce-tu-pista",
@@ -69,18 +69,18 @@ const DEF = {
   },
   servicios: {
     title: "Cinco servicios. Un principio.",
-    subtitle: "Proceso antes que tecnología — en cada proyecto, sin excepción.",
+    subtitle: "Proceso antes que tecnología, en cada proyecto, sin excepción.",
     services: [
       { badge: "EL FUNDAMENTO", badgeType: "hubspot", title: "Diseño de Procesos Comerciales", tagline: "El plano de tu operación comercial", description: "Diseñamos tu proceso completo antes de tocar cualquier herramienta.", price: "Desde 45 UF + IVA", href: "/diseño-de-procesos" },
       { badge: "MÁS RÁPIDO", badgeType: "hubspot", title: "Onboarding HubSpot", tagline: "En marcha en 3 semanas", description: "La forma más eficiente de arrancar con HubSpot. Con proceso, sin sobreingeniería.", price: "Desde 50 UF + IVA", href: "/onboarding-hubspot" },
       { badge: "MÁS POPULAR", badgeType: "brand", title: "Implementación HubSpot a Medida", tagline: "Tu proceso exacto en HubSpot", description: "Para procesos complejos o implementaciones que necesitan rehacerse desde las bases.", price: "calc", href: "/implementacion-hubspot" },
       { badge: "AVANZADO", badgeType: "default", title: "Personalización del CRM", tagline: "HubSpot que funciona como tu negocio", description: "UI Extensions, CRM Cards personalizadas y vistas a medida por rol.", price: "calc", href: "/personalizacion-crm" },
-      { badge: "TÉCNICO", badgeType: "default", title: "Integraciones y Desarrollo Custom", tagline: "Tu ecosistema, finalmente conectado", description: "ERP, apps a medida, WhatsApp, portales — HubSpot como centro de tu operación.", price: "calc", href: "/integraciones-desarrollo" },
+      { badge: "TÉCNICO", badgeType: "default", title: "Integraciones y Desarrollo Custom", tagline: "Tu ecosistema, finalmente conectado", description: "ERP, apps a medida, WhatsApp, portales, HubSpot como centro de tu operación.", price: "calc", href: "/integraciones-desarrollo" },
     ],
   },
   diferencia: {
     title: "Por qué una agencia de marketing no debería implementar tu CRM",
-    body: "El CRM es el corazón de tu operación comercial. Implementarlo bien requiere entender procesos de ventas, pipelines, automatizaciones de negocio y arquitectura de datos — no campañas ni creatividad.\n\nNosotros somos especialistas en operaciones de revenue. No hacemos marketing. Hacemos que tu operación comercial funcione.",
+    body: "El CRM es el corazón de tu operación comercial. Implementarlo bien requiere entender procesos de ventas, pipelines, automatizaciones de negocio y arquitectura de datos, no campañas ni creatividad.\n\nNosotros somos especialistas en operaciones de revenue. No hacemos marketing. Hacemos que tu operación comercial funcione.",
     credential: "HubSpot Platinum Partner · +10 años",
     comparison: {
       left: { header: "Agencia de Marketing", items: ["Implementa sin diseñar proceso", "Configura por Hub, no por negocio", "Entrega el portal y desaparece"] },

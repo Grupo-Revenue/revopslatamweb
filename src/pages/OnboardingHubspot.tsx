@@ -81,7 +81,7 @@ const DEF = {
   hero: {
     badge: "EN MARCHA EN 3 SEMANAS",
     title: "En marcha rápido, con las bases correctas",
-    subtitle: "Acabas de comprar HubSpot y quieres empezar. En 3 semanas tienes el portal funcionando — con proceso, no solo con configuración.",
+    subtitle: "Acabas de comprar HubSpot y quieres empezar. En 3 semanas tienes el portal funcionando, con proceso, no solo con configuración.",
     cta: "Agendar mi Onboarding →",
     cta2_text: "¿Es este el servicio correcto? ↓",
     breadcrumb: "Diseña y Construye → Onboarding HubSpot",
@@ -99,12 +99,12 @@ const DEF = {
       { num: 67, suffix: "%", label: "de implementaciones sin adopción real" },
       { num: 0, suffix: " UF", label: "de retorno si nadie lo usa" },
     ],
-    footnote: "Estimaciones basadas en nuestra experiencia de campo — no datos de estudios externos.",
+    footnote: "Estimaciones basadas en nuestra experiencia de campo, no datos de estudios externos.",
   },
   incluye: {
     title: "Lo que tienes al final de las 3 semanas",
     features: [
-      { icon: "settings", title: "Portal configurado con proceso", text: "Pipeline, etapas, propiedades y automatizaciones básicas — todo sobre proceso validado." },
+      { icon: "settings", title: "Portal configurado con proceso", text: "Pipeline, etapas, propiedades y automatizaciones básicas, todo sobre proceso validado." },
       { icon: "users", title: "Equipo capacitado por rol", text: "Cada persona aprende lo que necesita para su función. Sin capacitaciones genéricas." },
       { icon: "file", title: "Documentación completa", text: "Todo lo configurado, documentado. Para onboarding de nuevos y para crecer sobre bases sólidas." },
       { icon: "refresh", title: "Automatizaciones básicas", text: "Las automatizaciones esenciales para que el proceso ocurra sin intervención manual." },

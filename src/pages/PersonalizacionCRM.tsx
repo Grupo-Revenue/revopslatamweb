@@ -62,7 +62,7 @@ const DEF = {
     cta2_text: "¿Es este el servicio correcto? ↓",
     breadcrumb: "Diseña y Construye → Personalización del CRM",
     panels: [
-      { bg: "rgba(255,122,89,0.08)", borderColor: HUBSPOT, label: "📊 ERP — Facturación", labelColor: HUBSPOT, text: "Último pedido: $4.2M · Estado: Entregado ✓" },
+      { bg: "rgba(255,122,89,0.08)", borderColor: HUBSPOT, label: "📊 ERP, Facturación", labelColor: HUBSPOT, text: "Último pedido: $4.2M · Estado: Entregado ✓" },
       { bg: "rgba(190,24,105,0.08)", borderColor: "#BE1869", label: "🔄 Automatización activa", labelColor: "#BE1869", text: "Tarea creada: Follow-up en 3 días" },
       { bg: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.15)", label: "📋 Vista del rol: Account Manager", labelColor: "rgba(255,255,255,0.6)", text: "NPS: 72 · Contratos activos: 3 · Última interacción: Hoy" },
     ],

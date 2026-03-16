@@ -76,7 +76,7 @@ interface FeedItem { time: string; text: string; chipLabel: string; chipColor: s
 
 const allFeedItems: FeedItem[] = [
   { time: "09:14", text: "Lead calificado automáticamente", chipLabel: "Enviado a ventas", chipColor: "#16A34A", chipBg: "rgba(74,222,128,0.15)", done: true },
-  { time: "09:22", text: "Seguimiento enviado — sin respuesta 48h", chipLabel: "Automatización activa", chipColor: AI_BLUE, chipBg: "rgba(99,102,241,0.15)", done: true },
+  { time: "09:22", text: "Seguimiento enviado, sin respuesta 48h", chipLabel: "Automatización activa", chipColor: AI_BLUE, chipBg: "rgba(99,102,241,0.15)", done: true },
   { time: "09:31", text: "Reunión agendada por WhatsApp", chipLabel: "Vambe", chipColor: "#BE1869", chipBg: "rgba(190,24,105,0.1)", done: true },
   { time: "09:47", text: "Calificando nuevo lead entrante…", chipLabel: "En proceso", chipColor: "#EAB308", chipBg: "rgba(234,179,8,0.15)", done: false },
   { time: "09:52", text: "Email de nurturing enviado", chipLabel: "Workflow activo", chipColor: "#16A34A", chipBg: "rgba(74,222,128,0.15)", done: true },
@@ -104,7 +104,7 @@ const AgentFeed = () => {
     <div className="rounded-[20px] p-6 md:p-8 relative overflow-hidden backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 16px 48px rgba(0,0,0,0.2)" }}>
       <div className="flex items-center gap-2 mb-6">
         <span className="w-2 h-2 rounded-full" style={{ background: AI_BLUE, boxShadow: `0 0 8px ${AI_BLUE}`, animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite" }} />
-        <span className="text-[15px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>Agente IA — Activo</span>
+        <span className="text-[15px] font-semibold" style={{ color: "rgba(255,255,255,0.9)" }}>Agente IA, Activo</span>
       </div>
       <div className="space-y-3 min-h-[200px]">
         {items.map((item, i) => (
@@ -138,13 +138,13 @@ const DEF = {
   hero: {
     badge: "VANGUARDIA OPERATIVA",
     title: "La ventaja que tus competidores aún no tienen",
-    subtitle: "No implementamos IA por implementar. Mapeamos tu operación, identificamos dónde genera más impacto y construimos la solución correcta — integrada a HubSpot desde el primer día.",
+    subtitle: "No implementamos IA por implementar. Mapeamos tu operación, identificamos dónde genera más impacto y construimos la solución correcta, integrada a HubSpot desde el primer día.",
     cta_text: "Quiero saber dónde la IA impacta mi operación →",
     cta2_text: "¿Es este el servicio correcto? ↓",
   },
   problema: {
     title: "El problema no es la IA.\nEs cómo se está implementando.",
-    body: "La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas — no los resolvió.",
+    body: "La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas, no los resolvió.",
     highlight: "La IA que genera ventaja real no se instala. Se diseña.",
     bad_items: ["Herramienta comprada, proceso sin ordenar", "Solución genérica, sin integración al CRM", "El equipo no la entiende, nadie la usa"],
     good_items: ["Proceso diseñado antes de implementar", "Integrada a HubSpot, sin silos", "El equipo la opera desde el día 1"],
@@ -178,7 +178,7 @@ const DEF = {
   },
   ctaFinal: {
     title: "El primer paso es el mapa,\nno la herramienta",
-    subtitle: "En 30 minutos identificamos dónde la IA tiene más impacto en tu operación — antes de hablar de soluciones.",
+    subtitle: "En 30 minutos identificamos dónde la IA tiene más impacto en tu operación, antes de hablar de soluciones.",
     cta_text: "Quiero saber dónde la IA impacta mi operación",
     cta2_text: "Primero necesito ordenar mi operación →",
     cta2_url: "/conoce-tu-pista",

@@ -77,23 +77,23 @@ const DEF = {
   problema: {
     title: "Cuando el problema no es la herramienta",
     cards: [
-      { icon: "📊", title: "Tienen CRM. No tienen proceso.", text: "Cada vendedor trabaja a su manera. El pipeline no refleja la realidad. Los datos no son confiables. La herramienta está — el proceso, no." },
+      { icon: "📊", title: "Tienen CRM. No tienen proceso.", text: "Cada vendedor trabaja a su manera. El pipeline no refleja la realidad. Los datos no son confiables. La herramienta está, el proceso, no." },
       { icon: "🚀", title: "Quieren implementar bien desde el inicio.", text: "Están a punto de adquirir un CRM y no quieren repetir el error que vieron en otras empresas: tecnología sin dirección." },
     ],
-    pill: "El Diseño de Procesos resuelve el problema desde la raíz — sin importar el CRM que tengas.",
+    pill: "El Diseño de Procesos resuelve el problema desde la raíz, sin importar el CRM que tengas.",
   },
   entregables: {
     title: "Lo que tienes al final",
     cards: [
       { num: "01", icon: "blueprint", title: "Blueprint del proceso comercial", text: "Diagrama completo de tu operación. Cada etapa, cada responsable, cada criterio de avance. Visual, documentado y entendible por todo el equipo.", tag: "Diagrama visual + diccionario" },
-      { num: "02", icon: "database", title: "Arquitectura del CRM", text: "Diseño de pipeline(s), ciclo de vida, estados, propiedades críticas y automatizaciones. Agnóstico al CRM — funciona en HubSpot o cualquier otra herramienta.", tag: "100% agnóstico al CRM" },
+      { num: "02", icon: "database", title: "Arquitectura del CRM", text: "Diseño de pipeline(s), ciclo de vida, estados, propiedades críticas y automatizaciones. Agnóstico al CRM, funciona en HubSpot o cualquier otra herramienta.", tag: "100% agnóstico al CRM" },
       { num: "03", icon: "roadmap", title: "Plantilla de implementación", text: "La hoja de ruta exacta para construir lo diseñado. Si lo implementas tú, tienes el manual. Si lo hacemos nosotros, este documento es el punto de partida.", tag: "Implementable por cualquier proveedor" },
     ],
   },
   proceso: {
     title: "El proceso",
     steps: [
-      { icon: "🔍", title: "Kick-off y descubrimiento", text: "Entendemos tu proceso actual, dolores y objetivos. No asumimos nada — preguntamos todo." },
+      { icon: "🔍", title: "Kick-off y descubrimiento", text: "Entendemos tu proceso actual, dolores y objetivos. No asumimos nada, preguntamos todo." },
       { icon: "✏️", title: "Taller de diseño", text: "Co-construimos el proceso ideal con tu equipo. Este taller es donde ocurre la transformación real." },
       { icon: "✓", title: "Revisión y validación", text: "Cada etapa, definición y automatización revisada por tu equipo antes de cerrar." },
       { icon: "📦", title: "Entrega", text: "Blueprint + plantilla de implementación + sesión de transferencia de conocimiento." },

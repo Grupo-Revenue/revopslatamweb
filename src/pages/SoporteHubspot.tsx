@@ -208,7 +208,7 @@ const SoporteHubspot = () => {
             ))}
           </div>
           <p className="text-center text-[13px] mt-8" style={{ color: "#9CA3AF" }}>
-            Todos los planes requieren portal HubSpot activo. Servicio reactivo — se activa vía ticket. No incluye consultoría estratégica.
+            Todos los planes requieren portal HubSpot activo. Servicio reactivo, se activa vía ticket. No incluye consultoría estratégica.
           </p>
         </div>
       </SectionShell>

@@ -163,7 +163,7 @@ export default function PistaDiagnostico({ section }: { section?: HomeSection })
                 transition={{ delay: 0.15, duration: 0.6 }}
                 style={{ fontSize: 17, lineHeight: 1.7, color: "#4b5563", margin: 0 }}
               >
-                La pelotita —el revenue— solo fluye si cada pieza encaja perfectamente:
+                La pelotita, el revenue, solo fluye si cada pieza encaja perfectamente:
                 marketing, ventas, CRM, automatizaciones y procesos.
                 <br />
                 <strong style={{ color: "#1d1d1f" }}>Si una pieza falla, se cae.</strong> Aunque la pelotita sea buena.
