@@ -144,7 +144,7 @@ const DEF = {
   },
   problema: {
     title: "El problema no es la IA.\nEs cómo se está implementando.",
-    body: "La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas — no los resolvió.",
+    body: "La mayoría de los intentos fallan por la misma razón: alguien compró una herramienta, la instaló sobre un proceso que ya tenía problemas y esperó resultados. La IA amplificó los problemas, no los resolvió.",
     highlight: "La IA que genera ventaja real no se instala. Se diseña.",
     bad_items: ["Herramienta comprada, proceso sin ordenar", "Solución genérica, sin integración al CRM", "El equipo no la entiende, nadie la usa"],
     good_items: ["Proceso diseñado antes de implementar", "Integrada a HubSpot, sin silos", "El equipo la opera desde el día 1"],
