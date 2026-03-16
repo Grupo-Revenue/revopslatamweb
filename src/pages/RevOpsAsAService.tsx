@@ -46,7 +46,7 @@ function SectionShell({ section, className, defaultBg, children }: {
 
 /* ═══ Sprint Timeline ═══ */
 const sprintItems = [
-  { label: "Lunes pasado", text: "Reunión de sprint — 3 prioridades definidas", done: true },
+  { label: "Lunes pasado", text: "Reunión de sprint, 3 prioridades definidas", done: true },
   { label: "Esta semana", text: "Pipeline optimizado · Automatización activa", done: true },
   { label: "En progreso", text: "Campaña de nurturing configurada", partial: true },
   { label: "Próximo lunes", text: "Cierre de sprint + reporte de KPIs", pending: true },
