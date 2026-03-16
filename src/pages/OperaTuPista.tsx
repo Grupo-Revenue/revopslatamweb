@@ -405,7 +405,7 @@ const ProblemSection = ({ section }: { section?: HomeSection }) => {
           ))}
         </div>
         <motion.div className="mt-14 mx-auto text-center text-sm font-medium leading-relaxed px-6 py-4 rounded-2xl" style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.06), rgba(98,36,190,0.06))", color: DARK, maxWidth: 640 }} initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.5 }}>
-          Operar bien una pista requiere alguien que esté mirando los datos y afinando el motor — siempre.
+          Operar bien una pista requiere alguien que esté mirando los datos y afinando el motor, siempre.
         </motion.div>
       </div>
     </section>

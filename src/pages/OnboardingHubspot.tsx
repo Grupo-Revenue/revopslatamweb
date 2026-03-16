@@ -104,7 +104,7 @@ const DEF = {
   incluye: {
     title: "Lo que tienes al final de las 3 semanas",
     features: [
-      { icon: "settings", title: "Portal configurado con proceso", text: "Pipeline, etapas, propiedades y automatizaciones básicas — todo sobre proceso validado." },
+      { icon: "settings", title: "Portal configurado con proceso", text: "Pipeline, etapas, propiedades y automatizaciones básicas, todo sobre proceso validado." },
       { icon: "users", title: "Equipo capacitado por rol", text: "Cada persona aprende lo que necesita para su función. Sin capacitaciones genéricas." },
       { icon: "file", title: "Documentación completa", text: "Todo lo configurado, documentado. Para onboarding de nuevos y para crecer sobre bases sólidas." },
       { icon: "refresh", title: "Automatizaciones básicas", text: "Las automatizaciones esenciales para que el proceso ocurra sin intervención manual." },

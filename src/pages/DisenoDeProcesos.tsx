@@ -93,7 +93,7 @@ const DEF = {
   proceso: {
     title: "El proceso",
     steps: [
-      { icon: "🔍", title: "Kick-off y descubrimiento", text: "Entendemos tu proceso actual, dolores y objetivos. No asumimos nada — preguntamos todo." },
+      { icon: "🔍", title: "Kick-off y descubrimiento", text: "Entendemos tu proceso actual, dolores y objetivos. No asumimos nada, preguntamos todo." },
       { icon: "✏️", title: "Taller de diseño", text: "Co-construimos el proceso ideal con tu equipo. Este taller es donde ocurre la transformación real." },
       { icon: "✓", title: "Revisión y validación", text: "Cada etapa, definición y automatización revisada por tu equipo antes de cerrar." },
       { icon: "📦", title: "Entrega", text: "Blueprint + plantilla de implementación + sesión de transferencia de conocimiento." },

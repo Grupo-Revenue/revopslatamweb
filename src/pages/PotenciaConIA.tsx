@@ -178,7 +178,7 @@ const DEF = {
   },
   ctaFinal: {
     title: "El primer paso es el mapa,\nno la herramienta",
-    subtitle: "En 30 minutos identificamos dónde la IA tiene más impacto en tu operación — antes de hablar de soluciones.",
+    subtitle: "En 30 minutos identificamos dónde la IA tiene más impacto en tu operación, antes de hablar de soluciones.",
     cta_text: "Quiero saber dónde la IA impacta mi operación",
     cta2_text: "Primero necesito ordenar mi operación →",
     cta2_url: "/conoce-tu-pista",

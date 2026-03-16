@@ -69,7 +69,7 @@ const DEF = {
     cases: [
       { title: "Lo implementaron sin proceso", text: "Meses después, el equipo sigue en Excel porque el CRM no refleja cómo trabajan. Cada etapa fue creada a intuición. Las propiedades no tienen lógica. El resultado: tecnología sin adopción." },
       { title: "Lo implementó una agencia de marketing", text: "Técnicamente puede funcionar. Operacionalmente no sirve. Implementar un CRM requiere entender operación comercial, no campañas. Son disciplinas distintas." },
-      { title: "Lo implementaron internamente aprendiendo", text: "El portal es el reflejo de ese aprendizaje — con todo lo que implica. Cosas bien hechas, cosas que deberían rehacerse, y nadie que tenga el mapa completo de qué hace qué." },
+      { title: "Lo implementaron internamente aprendiendo", text: "El portal es el reflejo de ese aprendizaje, con todo lo que implica. Cosas bien hechas, cosas que deberían rehacerse, y nadie que tenga el mapa completo de qué hace qué." },
     ],
     pill: "La implementación a medida parte desde el principio. Proceso primero. HubSpot después.",
   },

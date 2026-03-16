@@ -398,7 +398,7 @@ const ProblemSection = ({ section }: { section?: HomeSection }) => {
   const { getBgStyle } = useSectionStyles(section);
 
   const cards = [
-    { emoji: "😓", title: "Tienen herramienta, falta operación", desc: "Marketing Hub comprado, automatizaciones a medias, campañas que nadie optimiza. La inversión existe — el retorno, no." },
+    { emoji: "😓", title: "Tienen herramienta, falta operación", desc: "Marketing Hub comprado, automatizaciones a medias, campañas que nadie optimiza. La inversión existe, el retorno, no." },
     { emoji: "⚡", title: "Tienen estrategia, falta ejecución", desc: "Saben qué quieren hacer pero nadie tiene tiempo de hacerlo bien. El día a día se come la operación." },
   ];
 
