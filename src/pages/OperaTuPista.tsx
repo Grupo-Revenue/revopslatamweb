@@ -100,7 +100,7 @@ const DashboardHero = () => {
             animation: "pulse 2s cubic-bezier(0.4,0,0.6,1) infinite",
           }}
         />
-        <span className="text-white/80 text-sm font-semibold tracking-wide">Motor de Ingresos — Activo</span>
+        <span className="text-white/80 text-sm font-semibold tracking-wide">Motor de Ingresos, Activo</span>
       </div>
       <div className="grid grid-cols-2 gap-5">
         {metrics.map((m, i) => (
