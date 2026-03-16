@@ -52,7 +52,7 @@ const DEF = {
   hero: {
     eyebrow: "DISEÑA Y CONSTRUYE TU PISTA",
     title: "Nadie construye un circuito poniendo el asfalto primero",
-    subtitle: "Diseñamos la pista antes de construirla — siempre. Proceso primero. HubSpot después.",
+    subtitle: "Diseñamos la pista antes de construirla, siempre. Proceso primero. HubSpot después.",
     cta: "Quiero construir mi pista →",
     cta2_text: "Primero quiero un diagnóstico →",
     cta2_url: "/conoce-tu-pista",
