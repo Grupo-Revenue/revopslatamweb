@@ -86,7 +86,7 @@ const DEF = {
     title: "Lo que tienes al final",
     cards: [
       { num: "01", icon: "blueprint", title: "Blueprint del proceso comercial", text: "Diagrama completo de tu operación. Cada etapa, cada responsable, cada criterio de avance. Visual, documentado y entendible por todo el equipo.", tag: "Diagrama visual + diccionario" },
-      { num: "02", icon: "database", title: "Arquitectura del CRM", text: "Diseño de pipeline(s), ciclo de vida, estados, propiedades críticas y automatizaciones. Agnóstico al CRM — funciona en HubSpot o cualquier otra herramienta.", tag: "100% agnóstico al CRM" },
+      { num: "02", icon: "database", title: "Arquitectura del CRM", text: "Diseño de pipeline(s), ciclo de vida, estados, propiedades críticas y automatizaciones. Agnóstico al CRM, funciona en HubSpot o cualquier otra herramienta.", tag: "100% agnóstico al CRM" },
       { num: "03", icon: "roadmap", title: "Plantilla de implementación", text: "La hoja de ruta exacta para construir lo diseñado. Si lo implementas tú, tienes el manual. Si lo hacemos nosotros, este documento es el punto de partida.", tag: "Implementable por cualquier proveedor" },
     ],
   },
