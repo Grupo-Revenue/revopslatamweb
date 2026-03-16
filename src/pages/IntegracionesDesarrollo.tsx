@@ -59,7 +59,7 @@ const DEF = {
   hero: {
     badge: "TÉCNICO",
     title: "Tu ecosistema tecnológico, finalmente conectado",
-    subtitle: "HubSpot conectado con tu ERP, tus herramientas y apps construidas a medida. Diseñamos cada integración antes de desarrollarla — siempre.",
+    subtitle: "HubSpot conectado con tu ERP, tus herramientas y apps construidas a medida. Diseñamos cada integración antes de desarrollarla, siempre.",
     cta: "Cuéntanos qué sistemas necesitas conectar →",
     cta2_text: "¿Es este el servicio correcto? ↓",
     breadcrumb: "Diseña y Construye → Integraciones y Desarrollo",
