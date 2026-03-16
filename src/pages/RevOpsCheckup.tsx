@@ -142,7 +142,7 @@ const CheckupGauge = () => {
         style={{ color: "rgba(255,255,255,0.3)" }}
       >
         <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#BE1869" }} />
-        Ejemplo ilustrativo — tu score real en 2 semanas
+        Ejemplo ilustrativo, tu score real en 2 semanas
       </motion.div>
     </motion.div>
   );
