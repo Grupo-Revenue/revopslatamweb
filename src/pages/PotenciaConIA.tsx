@@ -138,7 +138,7 @@ const DEF = {
   hero: {
     badge: "VANGUARDIA OPERATIVA",
     title: "La ventaja que tus competidores aún no tienen",
-    subtitle: "No implementamos IA por implementar. Mapeamos tu operación, identificamos dónde genera más impacto y construimos la solución correcta — integrada a HubSpot desde el primer día.",
+    subtitle: "No implementamos IA por implementar. Mapeamos tu operación, identificamos dónde genera más impacto y construimos la solución correcta, integrada a HubSpot desde el primer día.",
     cta_text: "Quiero saber dónde la IA impacta mi operación →",
     cta2_text: "¿Es este el servicio correcto? ↓",
   },
