@@ -38,7 +38,7 @@ const STEPS = [
   },
   {
     id: "broken",
-    eyebrow: "Estado 1 — Pista rota",
+    eyebrow: "Estado 1, Pista rota",
     title: "Sin sistema, sin previsibilidad.",
     body: "Tus equipos trabajan con datos distintos. Cada vendedor reinventa el proceso desde cero. El forecast es ficción. Pierdes deals por falta de seguimiento, no por falta de demanda.",
     highlight: "El 70% de las empresas B2B en LATAM operan así. No estás solo, pero seguir así tiene un costo.",
