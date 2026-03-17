@@ -304,23 +304,165 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         </div>
       </div>
 
-      {/* ── Mobile: premium vertical story ── */}
+      {/* ── Mobile: narrative + states ── */}
       <div className="lg:hidden px-5 py-6">
-        {/* Progress bar */}
-        <div className="flex items-center gap-1.5 mb-6 px-1">
-          {STEPS.map((s, i) => (
+
+        {/* ── Bloque A: Narrativa (siempre visible) ── */}
+        <div className="flex flex-col gap-8 mb-10">
+          {STEPS.slice(0, 2).map((step, i) => (
+            <motion.div
+              key={step.id}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-5%" }}
+              transition={{ duration: 0.6, delay: i * 0.12 }}
+              style={{
+                borderLeft: `3px solid ${step.accent}`,
+                paddingLeft: 20,
+              }}
+            >
+              <p
+                style={{
+                  fontSize: 10,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  fontWeight: 700,
+                  color: step.accent,
+                  marginBottom: 6,
+                }}
+              >
+                {step.eyebrow}
+              </p>
+              <h3
+                style={{
+                  fontSize: 22,
+                  fontWeight: 700,
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.02em",
+                  color: "#1d1d1f",
+                  marginBottom: 10,
+                }}
+              >
+                {step.title}
+              </h3>
+              <p
+                style={{
+                  fontSize: 15,
+                  lineHeight: 1.65,
+                  color: "#6e6e73",
+                  marginBottom: 14,
+                }}
+              >
+                {step.body}
+              </p>
+
+              {/* Inline track image */}
+              <div
+                style={{
+                  borderRadius: 14,
+                  background: "#F5F5F7",
+                  padding: "16px 12px",
+                  marginBottom: step.highlight ? 14 : 0,
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle at 50% 60%, ${step.accent.replace(")", " / 0.06)")}, transparent 70%)`,
+                  }}
+                />
+                <img
+                  src={TRACK_LAYERS[i]}
+                  alt=""
+                  style={{ width: "100%", maxWidth: 180, margin: "0 auto", display: "block", position: "relative", zIndex: 1 }}
+                  draggable={false}
+                />
+              </div>
+
+              {step.highlight && (
+                <p
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    lineHeight: 1.5,
+                    color: step.accent,
+                    padding: "12px 14px",
+                    borderRadius: 12,
+                    background: `${step.accent.replace(")", " / 0.05)")}`,
+                    borderLeft: `3px solid ${step.accent}`,
+                  }}
+                >
+                  {step.highlight}
+                </p>
+              )}
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ── Divider: transición a estados ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-6"
+        >
+          <div
+            style={{
+              width: 40,
+              height: 2,
+              borderRadius: 1,
+              background: "rgba(0,0,0,0.08)",
+              margin: "0 auto 16px",
+            }}
+          />
+          <p
+            style={{
+              fontSize: 11,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              fontWeight: 700,
+              color: "hsl(var(--pink))",
+              marginBottom: 6,
+            }}
+          >
+            Identifica tu situación
+          </p>
+          <h3
+            style={{
+              fontSize: 22,
+              fontWeight: 700,
+              lineHeight: 1.15,
+              letterSpacing: "-0.02em",
+              color: "#1d1d1f",
+            }}
+          >
+            ¿Dónde estás hoy?
+          </h3>
+        </motion.div>
+
+        {/* ── Progress dots (3 estados) ── */}
+        <div className="flex items-center gap-2 justify-center mb-5">
+          {STEPS.slice(2).map((s, i) => (
             <div
               key={i}
-              className="h-1 rounded-full flex-1 transition-all duration-500"
               style={{
-                background: mobileActive !== null && i <= mobileActive ? s.accent : "rgba(0,0,0,0.06)",
+                width: mobileActive === i + 2 ? 24 : 8,
+                height: 8,
+                borderRadius: 4,
+                background: mobileActive === i + 2 ? s.accent : "rgba(0,0,0,0.08)",
+                transition: "all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)",
               }}
             />
           ))}
         </div>
 
+        {/* ── Bloque B: 3 estados (accordion) ── */}
         <div className="flex flex-col gap-3">
-          {STEPS.map((step, i) => {
+          {STEPS.slice(2).map((step, realIdx) => {
+            const i = realIdx + 2;
             const isOpen = mobileActive === i;
             return (
               <motion.div
@@ -331,54 +473,52 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                   border: `1.5px solid ${isOpen ? step.accent : "rgba(0,0,0,0.06)"}`,
                   background: isOpen ? "#fff" : "rgba(255,255,255,0.6)",
                   overflow: "hidden",
-                  boxShadow: isOpen ? `0 8px 32px ${step.accent.replace(")", " / 0.1)")}` : "0 1px 4px rgba(0,0,0,0.03)",
+                  boxShadow: isOpen
+                    ? `0 8px 32px ${step.accent.replace(")", " / 0.1)")}`
+                    : "0 1px 4px rgba(0,0,0,0.03)",
                 }}
                 transition={{ layout: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }}
               >
                 {/* Header */}
                 <button
-                  onClick={() => { setMobileActive(isOpen ? null : i); setMobileTab("situacion"); }}
+                  onClick={() => { setMobileActive(isOpen ? null : i); }}
                   className="w-full flex items-center gap-4 px-5 py-4"
                 >
-                  {/* Step indicator */}
+                  {/* Color badge */}
                   <div
-                    className="flex items-center justify-center shrink-0"
+                    className="shrink-0"
                     style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 12,
-                      background: isOpen ? step.accent : `${step.accent.replace(")", " / 0.08)")}`,
-                      transition: "background 0.3s ease",
+                      width: 10,
+                      height: 10,
+                      borderRadius: 999,
+                      background: step.accent,
+                      boxShadow: isOpen ? `0 0 8px ${step.accent.replace(")", " / 0.4)")}` : "none",
+                      transition: "box-shadow 0.3s ease",
                     }}
-                  >
-                    <span style={{
-                      fontSize: 13,
-                      fontWeight: 800,
-                      color: isOpen ? "#fff" : step.accent,
-                      transition: "color 0.3s ease",
-                    }}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
+                  />
 
                   <div className="flex-1 text-left min-w-0">
-                    <p style={{
-                      fontSize: 10,
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      fontWeight: 700,
-                      color: isOpen ? step.accent : "#9ca3af",
-                      marginBottom: 1,
-                      transition: "color 0.3s ease",
-                    }}>
+                    <p
+                      style={{
+                        fontSize: 10,
+                        letterSpacing: "0.14em",
+                        textTransform: "uppercase",
+                        fontWeight: 700,
+                        color: isOpen ? step.accent : "#9ca3af",
+                        marginBottom: 1,
+                        transition: "color 0.3s ease",
+                      }}
+                    >
                       {step.eyebrow}
                     </p>
-                    <p style={{
-                      fontSize: 16,
-                      fontWeight: 700,
-                      color: "#1d1d1f",
-                      lineHeight: 1.2,
-                    }}>
+                    <p
+                      style={{
+                        fontSize: 16,
+                        fontWeight: 700,
+                        color: "#1d1d1f",
+                        lineHeight: 1.2,
+                      }}
+                    >
                       {step.title}
                     </p>
                   </div>
@@ -405,14 +545,14 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                       className="overflow-hidden"
                     >
                       <div className="px-5 pb-5">
-                        {/* Track image with ambient glow */}
+                        {/* Track image */}
                         <div
-                          className="relative"
                           style={{
                             borderRadius: 16,
                             background: "#F5F5F7",
                             padding: "20px 16px",
                             marginBottom: 16,
+                            position: "relative",
                             overflow: "hidden",
                           }}
                         >
@@ -433,17 +573,10 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                           />
                         </div>
 
-                        {/* Body text */}
-                        <p style={{
-                          fontSize: 15,
-                          lineHeight: 1.65,
-                          color: "#6e6e73",
-                          marginBottom: step.highlight ? 12 : 0,
-                        }}>
+                        <p style={{ fontSize: 15, lineHeight: 1.65, color: "#6e6e73", marginBottom: step.highlight ? 12 : 0 }}>
                           {step.body}
                         </p>
 
-                        {/* Highlight callout */}
                         {step.highlight && (
                           <motion.div
                             initial={{ opacity: 0, y: 8 }}
