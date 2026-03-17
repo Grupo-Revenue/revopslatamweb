@@ -1,6 +1,6 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import {
   Search, Wrench, Settings, Brain,
   Building2, BarChart3, Megaphone, Heart, Cog,
