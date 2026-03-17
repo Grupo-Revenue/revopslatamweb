@@ -29,6 +29,7 @@ import MarketingOps from "./pages/MarketingOps";
 import SoporteHubspot from "./pages/SoporteHubspot";
 import PotenciaConIA from "./pages/PotenciaConIA";
 import QueHacemos from "./pages/QueHacemos";
+import HubspotPartnerChile from "./pages/HubspotPartnerChile";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
@@ -83,6 +84,7 @@ const App = () => (
               <Route path="/soporte-hubspot" element={<SoporteHubspot />} />
               <Route path="/potencia-con-ia" element={<PotenciaConIA />} />
               <Route path="/que-hacemos" element={<QueHacemos />} />
+              <Route path="/hubspot-partner-chile" element={<HubspotPartnerChile />} />
               {/* Admin routes */}
               <Route path="/admin/setup" element={<AdminSetup />} />
               <Route path="/admin/login" element={<AdminLogin />} />
