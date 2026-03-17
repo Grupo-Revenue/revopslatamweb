@@ -47,7 +47,7 @@ const STEPS = [
   },
   {
     id: "incomplete",
-    eyebrow: "Estado 2 — Pista incompleta",
+    eyebrow: "Estado 2, Pista incompleta",
     title: "Base instalada, fricciones constantes.",
     body: "Tienes HubSpot u otro CRM pero lo usan al 30%. Los handoffs entre marketing, ventas y CS generan fricción constante. Generas datos, pero no los usas para tomar decisiones de revenue.",
     highlight: "Tu inversión en tecnología no se traduce en crecimiento real. Las mejores oportunidades se pierden en los gaps entre áreas.",
