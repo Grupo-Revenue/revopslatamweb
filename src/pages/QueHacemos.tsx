@@ -399,56 +399,7 @@ export default function QueHacemos() {
           </p>
         </div>
 
-        <div
-          className="mx-auto mt-14 grid gap-5 relative z-10"
-          style={{ maxWidth: 1000, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-        >
-          {roleCards.map((r, idx) => {
-            const Icon = ICON_MAP[r.icon] || Settings;
-            const color = r.iconColor || "#BE1869";
-            return (
-              <motion.div
-                key={r.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="transition-all duration-300 hover:-translate-y-0.5"
-                style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 16, padding: "28px 24px" }}
-                whileHover={{ borderColor: color, boxShadow: `0 8px 24px ${color}14` }}
-              >
-                <div className="flex items-center justify-center rounded-xl" style={{ width: 32, height: 32, background: `${color}14` }}>
-                  <Icon size={16} style={{ color }} />
-                </div>
-                <h3 className="font-bold mt-3" style={{ fontSize: 16, color: "#1A1A2E" }}>{r.title}</h3>
-                <p className="italic mt-2" style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.5 }}>{r.pain}</p>
-                <div className="mt-3 space-y-1">
-                  {r.symptoms.map((s) => (
-                    <p key={s} style={{ fontSize: 12, color: "#9CA3AF" }}>— "{s}"</p>
-                  ))}
-                </div>
-                <div className="my-4" style={{ height: 1, background: "#F0F0F0" }} />
-                <p className="uppercase font-bold" style={{ fontSize: 11, color: "#9CA3AF", letterSpacing: "0.06em" }}>
-                  Por dónde entrar:
-                </p>
-                <div className="mt-2 space-y-2">
-                  {r.options.map((o) => (
-                    <div key={o.text} className="flex items-start gap-2 flex-wrap" style={{ fontSize: 13 }}>
-                      <span style={{ color: "#374151" }}>{o.text}</span>
-                      <Link
-                        to={o.to}
-                        className="inline-flex items-center gap-1 font-semibold transition-all duration-200 hover:underline"
-                        style={{ color: o.chipColor || "#BE1869", background: o.chipColor ? `${o.chipColor}14` : "rgba(190,24,105,0.08)", borderRadius: 999, padding: "2px 10px", fontSize: 12 }}
-                      >
-                        {o.chip}
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+        <RolesCarousel roleCards={roleCards} />
       </SectionShell>
 
       {/* ══════ SECTION 5 — CTA FINAL ══════ */}
