@@ -123,10 +123,6 @@ function renderTitle(raw: string) {
 export default function QueHacemos() {
   const { openLeadForm } = useLeadForm();
   const { getSection, loading } = usePageSections("que-hacemos");
-  const sec3Ref = useRef<HTMLDivElement>(null);
-  const sec4Ref = useRef<HTMLDivElement>(null);
-  const sec3InView = useInView(sec3Ref, { once: true, margin: "-80px" });
-  const sec4InView = useInView(sec4Ref, { once: true, margin: "-80px" });
 
   const hero = getSection("hero");
   const metodologia = getSection("metodologia");
