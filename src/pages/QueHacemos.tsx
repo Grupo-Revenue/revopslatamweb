@@ -276,17 +276,20 @@ export default function QueHacemos() {
           </p>
         </div>
 
-        <motion.div
+        <div
           className="mx-auto mt-14 grid gap-6 relative z-10"
           style={{ maxWidth: 960, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-          variants={stagger} initial="hidden" animate={sec3InView ? "show" : "hidden"}
         >
-          {methodCards.map((c) => {
+          {methodCards.map((c, idx) => {
             const Icon = ICON_MAP[c.icon] || Settings;
             const iconColor = c.iconColor || "#BE1869";
             return (
               <motion.div
-                key={c.num} variants={fadeUp}
+                key={c.num}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: idx * 0.12 }}
                 className="relative overflow-hidden transition-all duration-300 hover:-translate-y-1"
                 style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 20, padding: 36 }}
                 whileHover={{ borderColor: iconColor, boxShadow: "0 12px 40px rgba(190,24,105,0.1)" }}
@@ -323,7 +326,7 @@ export default function QueHacemos() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </SectionShell>
 
       {/* ══════ SECTION 4 — SEGÚN TU ROL ══════ */}
