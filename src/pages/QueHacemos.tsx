@@ -124,6 +124,29 @@ function renderTitle(raw: string) {
 /* ─── Roles Carousel ─── */
 const ROLE_COLORS = ["#BE1869", "#0779D6", "#FF7A59", "#1CA398", "#6224BD"];
 
+/** Map service route → color of that service's methodology step */
+const SERVICE_COLOR_MAP: Record<string, string> = {
+  "/conoce-tu-pista": "#BE1869",
+  "/diagnostico-revops": "#BE1869",
+  "/revops-checkup": "#BE1869",
+  "/diseña-y-construye-tu-pista": "#6224BD",
+  "/implementacion-hubspot": "#6224BD",
+  "/marketing-ops": "#6224BD",
+  "/integraciones-desarrollo": "#6224BD",
+  "/onboarding-hubspot": "#6224BD",
+  "/diseno-de-procesos": "#6224BD",
+  "/personalizacion-crm": "#6224BD",
+  "/opera-tu-pista": "#1CA297",
+  "/revops-as-a-service": "#1CA297",
+  "/soporte-hubspot": "#1CA297",
+  "/potencia-con-ia": "#0779D6",
+  "/motor-de-ingresos": "#0779D6",
+};
+
+function getServiceColor(route: string, fallback: string): string {
+  return SERVICE_COLOR_MAP[route] || fallback;
+}
+
 function RolesCarousel({ roleCards }: { roleCards: RoleCard[] }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -195,18 +218,21 @@ function RolesCarousel({ roleCards }: { roleCards: RoleCard[] }) {
                         Por dónde entrar
                       </p>
                       <div className="mt-5 space-y-4">
-                        {r.options.map((o) => (
-                          <div key={o.text} className="flex flex-col gap-1.5">
-                            <span style={{ fontSize: 14, color: "#374151", lineHeight: 1.5 }}>{o.text}</span>
-                            <Link
-                              to={o.to}
-                              className="inline-flex items-center gap-1.5 font-semibold transition-all duration-200 hover:gap-2.5 w-fit"
-                              style={{ color: o.chipColor || color, background: o.chipColor ? `${o.chipColor}14` : `${color}14`, borderRadius: 999, padding: "4px 14px", fontSize: 13 }}
-                            >
-                              {o.chip} <ArrowRight size={13} />
-                            </Link>
-                          </div>
-                        ))}
+                        {r.options.map((o) => {
+                          const chipC = o.chipColor || getServiceColor(o.to, color);
+                          return (
+                            <div key={o.text} className="flex flex-col gap-1.5">
+                              <span style={{ fontSize: 14, color: "#374151", lineHeight: 1.5 }}>{o.text}</span>
+                              <Link
+                                to={o.to}
+                                className="inline-flex items-center gap-1.5 font-semibold transition-all duration-200 hover:gap-2.5 w-fit"
+                                style={{ color: chipC, background: `${chipC}14`, borderRadius: 999, padding: "4px 14px", fontSize: 13 }}
+                              >
+                                {o.chip} <ArrowRight size={13} />
+                              </Link>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
