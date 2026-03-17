@@ -213,7 +213,7 @@ export default function PistaDiagnostico({ section }: { section?: HomeSection })
           >
             <img
               src={pistaImg}
-              alt="Pista modular Imánix — metáfora del sistema de revenue"
+              alt="Pista modular Imánix, metáfora del sistema de revenue"
               className="w-full h-auto select-none"
               style={{ maxWidth: 420, opacity: 0.75 }}
               loading="lazy"
