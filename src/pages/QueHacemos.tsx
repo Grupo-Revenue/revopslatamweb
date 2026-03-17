@@ -111,10 +111,8 @@ const DEF_METODOLOGIA = { eyebrow: "NUESTRA METODOLOGÍA", title: "Te acompañam
 const DEF_ROLES = { eyebrow: "SEGÚN TU ROL", title: "El motor de ingresos le importa a todos.\nPero cada rol lo vive diferente.", subtitle: "El problema es el mismo — la pista rota. La entrada depende de cómo lo estás viviendo tú." };
 const DEF_CTA = { title: "El primer paso es entender\ndónde está tu pista hoy.", subtitle: "El Pulso Comercial es una evaluación gratuita de 5 minutos. Sin compromiso, sin pitch. Solo claridad sobre qué está frenando tu motor de ingresos.", cta_text: "Hacer el Pulso Comercial →", cta_url: "https://pulso.revopslatam.com/", cta2_text: "Prefiero hablar directo → Agendar conversación" };
 
-/* ─── Stagger variants ─── */
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
 const fadeUp = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } } };
-
 function renderTitle(raw: string) {
   return raw.split("\n").map((line, i, arr) => (
     <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
