@@ -26,6 +26,14 @@ import MethodCardsEditor from "@/components/admin/MethodCardsEditor";
 import RoleCardsEditor from "@/components/admin/RoleCardsEditor";
 import ChipsEditor from "@/components/admin/ChipsEditor";
 import ComoEntendemosEditor from "@/components/admin/ComoEntendemosEditor";
+import {
+  ComparisonTableEditor,
+  HubCardsEditor,
+  TimelineStepsEditor,
+  FaqEditor,
+  FitListEditor,
+  StatsEditor,
+} from "@/components/admin/PartnerPageEditors";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
@@ -933,6 +941,44 @@ export default function AdminPageSections() {
                   {/* Chips Editor (hero chips) */}
                   {section.section_key === "hero" && (
                     <ChipsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Partner page specialized editors */}
+                  {section.section_key === "hero" && (meta.stats as unknown[])?.length > 0 && (
+                    <StatsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "posicionamiento" && (
+                    <ComparisonTableEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "ecosistema" && (
+                    <HubCardsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "como-trabajamos" && (
+                    <TimelineStepsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "para-quien" && (
+                    <FitListEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "faq" && (
+                    <FaqEditor
                       metadata={meta}
                       onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
                     />
