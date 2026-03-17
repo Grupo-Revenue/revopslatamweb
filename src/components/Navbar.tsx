@@ -9,13 +9,7 @@ import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
 
 /* ─── Nav data ─── */
-const solucionesItems = [
-  { label: "Para el CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
-  { label: "Para Directores Comerciales y Head of Sales", to: "/para-directores-comerciales" },
-  { label: "Para Directores y Gerentes de Marketing", to: "/para-directores-y-gerentes-de-marketing" },
-  { label: "Para los que operan el negocio sin el título", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
-  { label: "Para Customer Success y Servicio al Cliente", to: "/para-customer-success-y-servicio-al-cliente" },
-];
+/* solucionesItems removed — replaced by direct "Qué hacemos" link */
 
 const serviciosGroups = [
   {
