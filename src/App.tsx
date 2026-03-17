@@ -53,7 +53,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <LoadingScreen />
+          {/* LoadingScreen removed */}
           <DynamicStylesLoader />
           <CustomCursor />
           <LeadFormModal />
