@@ -356,30 +356,6 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                 {step.body}
               </p>
 
-              {/* Inline track image */}
-              <div
-                style={{
-                  borderRadius: 14,
-                  background: "#F5F5F7",
-                  padding: "16px 12px",
-                  marginBottom: step.highlight ? 14 : 0,
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(circle at 50% 60%, ${step.accent.replace(")", " / 0.06)")}, transparent 70%)`,
-                  }}
-                />
-                <img
-                  src={TRACK_LAYERS[i]}
-                  alt=""
-                  style={{ width: "100%", maxWidth: 180, margin: "0 auto", display: "block", position: "relative", zIndex: 1 }}
-                  draggable={false}
-                />
-              </div>
 
               {step.highlight && (
                 <p
@@ -545,33 +521,35 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                       className="overflow-hidden"
                     >
                       <div className="px-5 pb-5">
-                        {/* Track image */}
-                        <div
-                          style={{
-                            borderRadius: 16,
-                            background: "#F5F5F7",
-                            padding: "20px 16px",
-                            marginBottom: 16,
-                            position: "relative",
-                            overflow: "hidden",
-                          }}
-                        >
+                        {/* Track image only for Estado 3 (complete) */}
+                        {i === 4 && (
                           <div
-                            className="absolute inset-0 pointer-events-none"
                             style={{
-                              background: `radial-gradient(circle at 50% 60%, ${step.accent.replace(")", " / 0.06)")}, transparent 70%)`,
+                              borderRadius: 16,
+                              background: "#F5F5F7",
+                              padding: "20px 16px",
+                              marginBottom: 16,
+                              position: "relative",
+                              overflow: "hidden",
                             }}
-                          />
-                          <motion.img
-                            src={TRACK_LAYERS[i]}
-                            alt=""
-                            initial={{ opacity: 0, scale: 0.92 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
-                            style={{ width: "100%", maxWidth: 200, margin: "0 auto", display: "block", position: "relative", zIndex: 1 }}
-                            draggable={false}
-                          />
-                        </div>
+                          >
+                            <div
+                              className="absolute inset-0 pointer-events-none"
+                              style={{
+                                background: `radial-gradient(circle at 50% 60%, ${step.accent.replace(")", " / 0.06)")}, transparent 70%)`,
+                              }}
+                            />
+                            <motion.img
+                              src={TRACK_LAYERS[i]}
+                              alt=""
+                              initial={{ opacity: 0, scale: 0.92 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.5, ease: "easeOut" }}
+                              style={{ width: "100%", maxWidth: 200, margin: "0 auto", display: "block", position: "relative", zIndex: 1 }}
+                              draggable={false}
+                            />
+                          </div>
+                        )}
 
                         <p style={{ fontSize: 15, lineHeight: 1.65, color: "#6e6e73", marginBottom: step.highlight ? 12 : 0 }}>
                           {step.body}
