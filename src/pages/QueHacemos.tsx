@@ -272,8 +272,8 @@ export default function QueHacemos() {
 
         {/* First 3 cards in a row */}
         <div
-          className="mx-auto mt-14 grid gap-6 relative z-10"
-          style={{ maxWidth: 960, gridTemplateColumns: "repeat(3, 1fr)" }}
+          className="mx-auto mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10"
+          style={{ maxWidth: 960 }}
         >
           {methodCards.slice(0, 3).map((c, idx) => {
             const Icon = ICON_MAP[c.icon] || Settings;
