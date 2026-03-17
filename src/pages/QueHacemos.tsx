@@ -1,6 +1,6 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 import {
   Search, Wrench, Settings, Brain,
   Building2, BarChart3, Megaphone, Heart, Cog,
@@ -19,7 +19,7 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 /* ─── Helpers ─── */
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
+const ICON_MAP: Record<string, LucideIcon> = {
   Search, Wrench, Settings, Brain, Building2, BarChart3, Megaphone, Heart, Cog,
 };
 
@@ -111,10 +111,8 @@ const DEF_METODOLOGIA = { eyebrow: "NUESTRA METODOLOGÍA", title: "Te acompañam
 const DEF_ROLES = { eyebrow: "SEGÚN TU ROL", title: "El motor de ingresos le importa a todos.\nPero cada rol lo vive diferente.", subtitle: "El problema es el mismo — la pista rota. La entrada depende de cómo lo estás viviendo tú." };
 const DEF_CTA = { title: "El primer paso es entender\ndónde está tu pista hoy.", subtitle: "El Pulso Comercial es una evaluación gratuita de 5 minutos. Sin compromiso, sin pitch. Solo claridad sobre qué está frenando tu motor de ingresos.", cta_text: "Hacer el Pulso Comercial →", cta_url: "https://pulso.revopslatam.com/", cta2_text: "Prefiero hablar directo → Agendar conversación" };
 
-/* ─── Stagger variants ─── */
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.12 } } };
 const fadeUp = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } } };
-
 function renderTitle(raw: string) {
   return raw.split("\n").map((line, i, arr) => (
     <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
@@ -125,10 +123,6 @@ function renderTitle(raw: string) {
 export default function QueHacemos() {
   const { openLeadForm } = useLeadForm();
   const { getSection, loading } = usePageSections("que-hacemos");
-  const sec3Ref = useRef<HTMLDivElement>(null);
-  const sec4Ref = useRef<HTMLDivElement>(null);
-  const sec3InView = useInView(sec3Ref, { once: true, margin: "-80px" });
-  const sec4InView = useInView(sec4Ref, { once: true, margin: "-80px" });
 
   const hero = getSection("hero");
   const metodologia = getSection("metodologia");
@@ -266,7 +260,7 @@ export default function QueHacemos() {
 
       {/* ══════ SECTION 3 — LO QUE HACEMOS ══════ */}
       <SectionShell section={metodologia} className="" defaultBg={{ background: "#fff", padding: "100px 24px" }}>
-        <div ref={sec3Ref} className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
+        <div className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
           <Eyebrow>{metEyebrow}</Eyebrow>
           <h2 className="font-bold mt-4" style={{ fontSize: 36, color: "#1A1A2E", lineHeight: 1.2, ...metStyle("title") }}>
             {renderTitle(metTitle)}
@@ -276,17 +270,20 @@ export default function QueHacemos() {
           </p>
         </div>
 
-        <motion.div
+        <div
           className="mx-auto mt-14 grid gap-6 relative z-10"
           style={{ maxWidth: 960, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-          variants={stagger} initial="hidden" animate={sec3InView ? "show" : "hidden"}
         >
-          {methodCards.map((c) => {
+          {methodCards.map((c, idx) => {
             const Icon = ICON_MAP[c.icon] || Settings;
             const iconColor = c.iconColor || "#BE1869";
             return (
               <motion.div
-                key={c.num} variants={fadeUp}
+                key={c.num}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: idx * 0.12 }}
                 className="relative overflow-hidden transition-all duration-300 hover:-translate-y-1"
                 style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 20, padding: 36 }}
                 whileHover={{ borderColor: iconColor, boxShadow: "0 12px 40px rgba(190,24,105,0.1)" }}
@@ -323,12 +320,12 @@ export default function QueHacemos() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </SectionShell>
 
       {/* ══════ SECTION 4 — SEGÚN TU ROL ══════ */}
       <SectionShell section={roles} className="" defaultBg={{ background: "#F9FAFB", padding: "100px 24px" }}>
-        <div ref={sec4Ref} className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
+        <div className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
           <Eyebrow>{rolEyebrow}</Eyebrow>
           <h2 className="font-bold mt-4" style={{ fontSize: 34, color: "#1A1A2E", lineHeight: 1.2, ...rolStyle("title") }}>
             {renderTitle(rolTitle)}
@@ -338,17 +335,20 @@ export default function QueHacemos() {
           </p>
         </div>
 
-        <motion.div
+        <div
           className="mx-auto mt-14 grid gap-5 relative z-10"
           style={{ maxWidth: 1000, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-          variants={stagger} initial="hidden" animate={sec4InView ? "show" : "hidden"}
         >
-          {roleCards.map((r) => {
+          {roleCards.map((r, idx) => {
             const Icon = ICON_MAP[r.icon] || Settings;
             const color = r.iconColor || "#BE1869";
             return (
               <motion.div
-                key={r.title} variants={fadeUp}
+                key={r.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="transition-all duration-300 hover:-translate-y-0.5"
                 style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 16, padding: "28px 24px" }}
                 whileHover={{ borderColor: color, boxShadow: `0 8px 24px ${color}14` }}
@@ -384,7 +384,7 @@ export default function QueHacemos() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </SectionShell>
 
       {/* ══════ SECTION 5 — CTA FINAL ══════ */}
