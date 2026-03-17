@@ -509,7 +509,7 @@ function TrackVisual({
       {/* Track image */}
       <img
         src={pistaImg}
-        alt="Sistema de revenue — pista modular Imanix"
+        alt="Sistema de revenue, pista modular Imanix"
         className="w-full h-auto select-none"
         style={{
           opacity: selected ? 0.35 : 0.7,
