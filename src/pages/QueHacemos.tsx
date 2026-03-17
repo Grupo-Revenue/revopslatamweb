@@ -124,6 +124,29 @@ function renderTitle(raw: string) {
 /* ─── Roles Carousel ─── */
 const ROLE_COLORS = ["#BE1869", "#0779D6", "#FF7A59", "#1CA398", "#6224BD"];
 
+/** Map service route → color of that service's methodology step */
+const SERVICE_COLOR_MAP: Record<string, string> = {
+  "/conoce-tu-pista": "#BE1869",
+  "/diagnostico-revops": "#BE1869",
+  "/revops-checkup": "#BE1869",
+  "/diseña-y-construye-tu-pista": "#6224BD",
+  "/implementacion-hubspot": "#6224BD",
+  "/marketing-ops": "#6224BD",
+  "/integraciones-desarrollo": "#6224BD",
+  "/onboarding-hubspot": "#6224BD",
+  "/diseno-de-procesos": "#6224BD",
+  "/personalizacion-crm": "#6224BD",
+  "/opera-tu-pista": "#1CA297",
+  "/revops-as-a-service": "#1CA297",
+  "/soporte-hubspot": "#1CA297",
+  "/potencia-con-ia": "#0779D6",
+  "/motor-de-ingresos": "#0779D6",
+};
+
+function getServiceColor(route: string, fallback: string): string {
+  return SERVICE_COLOR_MAP[route] || fallback;
+}
+
 function RolesCarousel({ roleCards }: { roleCards: RoleCard[] }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
