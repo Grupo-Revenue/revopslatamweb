@@ -914,7 +914,42 @@ export default function AdminPageSections() {
                     />
                   )}
 
-                  {/* Gradient text & badge (for hero/text sections) */}
+                  {/* Method Cards Editor (que-hacemos metodologia) */}
+                  {section.section_key === "metodologia" && (
+                    <MethodCardsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Role Cards Editor (que-hacemos roles) */}
+                  {section.section_key === "roles" && (
+                    <RoleCardsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Chips Editor (hero chips) */}
+                  {section.section_key === "hero" && (
+                    <ChipsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
+                  {/* Eyebrow field for sections that use it */}
+                  {(section.section_key === "hero" || section.section_key === "metodologia" || section.section_key === "roles") && (
+                    <div>
+                      <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Eyebrow (badge superior)</Label>
+                      <Input
+                        value={(meta.eyebrow as string) ?? ""}
+                        onChange={(e) => updateSectionLocal(section.id, "metadata", { ...meta, eyebrow: e.target.value || undefined })}
+                        className="bg-zinc-800 border-zinc-700 text-white mt-1 text-sm"
+                        placeholder="Ej: QUÉ HACEMOS"
+                      />
+                    </div>
+                  )}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <Label className="text-zinc-500 text-[10px] uppercase tracking-wider">Texto con gradiente</Label>
