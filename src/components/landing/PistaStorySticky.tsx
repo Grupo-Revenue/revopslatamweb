@@ -356,30 +356,6 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                 {step.body}
               </p>
 
-              {/* Inline track image */}
-              <div
-                style={{
-                  borderRadius: 14,
-                  background: "#F5F5F7",
-                  padding: "16px 12px",
-                  marginBottom: step.highlight ? 14 : 0,
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(circle at 50% 60%, ${step.accent.replace(")", " / 0.06)")}, transparent 70%)`,
-                  }}
-                />
-                <img
-                  src={TRACK_LAYERS[i]}
-                  alt=""
-                  style={{ width: "100%", maxWidth: 180, margin: "0 auto", display: "block", position: "relative", zIndex: 1 }}
-                  draggable={false}
-                />
-              </div>
 
               {step.highlight && (
                 <p
