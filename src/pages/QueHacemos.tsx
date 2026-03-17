@@ -260,7 +260,7 @@ export default function QueHacemos() {
 
       {/* ══════ SECTION 3 — LO QUE HACEMOS ══════ */}
       <SectionShell section={metodologia} className="" defaultBg={{ background: "#fff", padding: "100px 24px" }}>
-        <div ref={sec3Ref} className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
+        <div className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
           <Eyebrow>{metEyebrow}</Eyebrow>
           <h2 className="font-bold mt-4" style={{ fontSize: 36, color: "#1A1A2E", lineHeight: 1.2, ...metStyle("title") }}>
             {renderTitle(metTitle)}
