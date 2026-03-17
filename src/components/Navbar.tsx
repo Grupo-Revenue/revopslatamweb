@@ -9,13 +9,7 @@ import LogoWhiteColor from "@/assets/Logo_REVOPSLATAM_Negro_color.png";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
 
 /* ─── Nav data ─── */
-const solucionesItems = [
-  { label: "Para el CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
-  { label: "Para Directores Comerciales y Head of Sales", to: "/para-directores-comerciales" },
-  { label: "Para Directores y Gerentes de Marketing", to: "/para-directores-y-gerentes-de-marketing" },
-  { label: "Para los que operan el negocio sin el título", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
-  { label: "Para Customer Success y Servicio al Cliente", to: "/para-customer-success-y-servicio-al-cliente" },
-];
+/* solucionesItems removed — replaced by direct "Qué hacemos" link */
 
 const serviciosGroups = [
   {
@@ -330,7 +324,15 @@ const Navbar = () => {
               }}
             >
             <div className="flex items-center" style={{ gap: 24 }}>
-              <NavDropdown label="Soluciones" items={solucionesItems} />
+              <Link
+                to="/que-hacemos"
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "#1a1a2e" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
+              >
+                Qué hacemos
+              </Link>
               <ServiciosDropdown />
               <Link
                 to="#"
@@ -437,7 +439,14 @@ const Navbar = () => {
             className="fixed inset-0 z-40 flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
             style={{ background: "#ffffff" }}
           >
-            <MobileSection title="Soluciones" items={solucionesItems} onClose={() => setMobileOpen(false)} />
+            <Link
+              to="/que-hacemos"
+              onClick={() => setMobileOpen(false)}
+              className="py-4 text-lg font-semibold"
+              style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+            >
+              Qué hacemos
+            </Link>
             <MobileSectionGrouped onClose={() => setMobileOpen(false)} />
             <Link
               to="#"
