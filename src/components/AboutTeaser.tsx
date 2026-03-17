@@ -30,7 +30,7 @@ const AboutTeaser = ({ section }: { section?: HomeSection }) => {
   const values = (meta.values as typeof defaultValues) ?? defaultValues;
   const eyebrow = section?.subtitle ?? "Nuestra esencia";
   const title = section?.title ?? "Construimos crecimiento real, sano y sostenible.";
-  const bodyText = section?.body ?? "No ejecutamos tareas por cumplir. Nos comprometemos con el resultado de cada cliente como si fuera nuestro propio negocio.\n\nSomos Arquitectos del Revenue: diseñamos antes de construir, diagnosticamos antes de implementar, y medimos para mejorar de manera continua.";
+  const bodyText = section?.body ?? "No ejecutamos tareas por cumplir. Nos comprometemos con el resultado de cada cliente como si fuera nuestro propio negocio. Somos Arquitectos del Revenue: diseñamos antes de construir, diagnosticamos antes de implementar, y medimos para mejorar de manera continua.";
   const ctaText = section?.cta_text ?? "Conocer a Revops LATAM";
   const paragraphs = bodyText.split("\n\n");
 
