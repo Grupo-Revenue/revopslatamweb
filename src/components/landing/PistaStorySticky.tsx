@@ -23,7 +23,7 @@ const STEPS = [
     id: "pieces",
     eyebrow: "Las piezas",
     title: "Cada pieza importa.",
-    body: "Marketing, ventas, CRM, automatizaciones, procesos de servicio… cada una es una pieza de la pista. La pelotita —tu revenue— solo fluye si todas encajan perfectamente entre sí.",
+    body: "Marketing, ventas, CRM, automatizaciones, procesos de servicio… cada una es una pieza de la pista. La pelotita, tu revenue, solo fluye si todas encajan perfectamente entre sí.",
     accent: "hsl(208 95% 44%)",
     accentHsl: "208 95% 44%",
   },
