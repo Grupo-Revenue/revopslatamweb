@@ -20,6 +20,7 @@ const footerLinks = {
   ],
   empresa: [
     { label: "Nosotros", to: "/nosotros", external: false },
+    { label: "Partner HubSpot", to: "/hubspot-partner-chile", external: false },
     { label: "Pulso Comercial", to: "https://pulso.revopslatam.com/", external: true },
   ],
 };
