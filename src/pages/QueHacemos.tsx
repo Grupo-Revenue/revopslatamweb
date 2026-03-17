@@ -218,18 +218,21 @@ function RolesCarousel({ roleCards }: { roleCards: RoleCard[] }) {
                         Por dónde entrar
                       </p>
                       <div className="mt-5 space-y-4">
-                        {r.options.map((o) => (
-                          <div key={o.text} className="flex flex-col gap-1.5">
-                            <span style={{ fontSize: 14, color: "#374151", lineHeight: 1.5 }}>{o.text}</span>
-                            <Link
-                              to={o.to}
-                              className="inline-flex items-center gap-1.5 font-semibold transition-all duration-200 hover:gap-2.5 w-fit"
-                              style={{ color: o.chipColor || color, background: o.chipColor ? `${o.chipColor}14` : `${color}14`, borderRadius: 999, padding: "4px 14px", fontSize: 13 }}
-                            >
-                              {o.chip} <ArrowRight size={13} />
-                            </Link>
-                          </div>
-                        ))}
+                        {r.options.map((o) => {
+                          const chipC = o.chipColor || getServiceColor(o.to, color);
+                          return (
+                            <div key={o.text} className="flex flex-col gap-1.5">
+                              <span style={{ fontSize: 14, color: "#374151", lineHeight: 1.5 }}>{o.text}</span>
+                              <Link
+                                to={o.to}
+                                className="inline-flex items-center gap-1.5 font-semibold transition-all duration-200 hover:gap-2.5 w-fit"
+                                style={{ color: chipC, background: `${chipC}14`, borderRadius: 999, padding: "4px 14px", fontSize: 13 }}
+                              >
+                                {o.chip} <ArrowRight size={13} />
+                              </Link>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
