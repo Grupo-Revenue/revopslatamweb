@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import {
   Search, Wrench, Settings, Brain,
   Building2, BarChart3, Megaphone, Heart, Cog,
-  ArrowRight,
+  ArrowRight, ChevronLeft, ChevronRight,
 } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PistaStorySticky from "@/components/landing/PistaStorySticky";
@@ -15,6 +16,7 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import DynamicCTA from "@/components/DynamicCTA";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 
 /* ─── Helpers ─── */
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
@@ -117,6 +119,142 @@ function renderTitle(raw: string) {
   return raw.split("\n").map((line, i, arr) => (
     <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
   ));
+}
+
+/* ─── Roles Carousel ─── */
+const ROLE_COLORS = ["#BE1869", "#0779D6", "#FF7A59", "#1CA398", "#6224BD"];
+
+function RolesCarousel({ roleCards }: { roleCards: RoleCard[] }) {
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    const onSelect = () => setCurrent(api.selectedScrollSnap());
+    api.on("select", onSelect);
+    onSelect();
+    return () => { api.off("select", onSelect); };
+  }, [api]);
+
+  // Autoplay
+  useEffect(() => {
+    if (!api) return;
+    const interval = setInterval(() => {
+      if (api.canScrollNext()) api.scrollNext();
+      else api.scrollTo(0);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [api]);
+
+  const activeColor = roleCards[current]?.iconColor || ROLE_COLORS[current % ROLE_COLORS.length];
+
+  return (
+    <div className="mx-auto mt-14 relative z-10" style={{ maxWidth: 960 }}>
+      <Carousel setApi={setApi} opts={{ loop: true, align: "center" }} className="w-full">
+        <CarouselContent className="-ml-0">
+          {roleCards.map((r, idx) => {
+            const Icon = ICON_MAP[r.icon] || Settings;
+            const color = r.iconColor || ROLE_COLORS[idx % ROLE_COLORS.length];
+            return (
+              <CarouselItem key={r.title} className="pl-0 basis-full">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.5 }}
+                  className="mx-auto"
+                  style={{
+                    maxWidth: 900,
+                    background: "#fff",
+                    border: "1px solid #E5E7EB",
+                    borderTop: `3px solid ${color}`,
+                    borderRadius: 20,
+                    padding: "40px 36px",
+                  }}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-8 md:gap-12">
+                    {/* Left — Pain & Symptoms */}
+                    <div>
+                      <div className="flex items-center justify-center rounded-xl" style={{ width: 40, height: 40, background: `${color}14` }}>
+                        <Icon size={20} style={{ color }} />
+                      </div>
+                      <h3 className="font-bold mt-4" style={{ fontSize: 22, color: "#1A1A2E" }}>{r.title}</h3>
+                      <p className="italic mt-3" style={{ fontSize: 15, color: "#6B7280", lineHeight: 1.6 }}>
+                        "{r.pain}"
+                      </p>
+                      <div className="mt-5 space-y-2">
+                        {r.symptoms.map((s) => (
+                          <p key={s} style={{ fontSize: 14, color: "#9CA3AF" }}>— "{s}"</p>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Right — Options */}
+                    <div className="md:border-l md:pl-10" style={{ borderColor: "#F0F0F0" }}>
+                      <p className="uppercase font-bold" style={{ fontSize: 11, color: "#9CA3AF", letterSpacing: "0.08em" }}>
+                        Por dónde entrar
+                      </p>
+                      <div className="mt-5 space-y-4">
+                        {r.options.map((o) => (
+                          <div key={o.text} className="flex flex-col gap-1.5">
+                            <span style={{ fontSize: 14, color: "#374151", lineHeight: 1.5 }}>{o.text}</span>
+                            <Link
+                              to={o.to}
+                              className="inline-flex items-center gap-1.5 font-semibold transition-all duration-200 hover:gap-2.5 w-fit"
+                              style={{ color: o.chipColor || color, background: o.chipColor ? `${o.chipColor}14` : `${color}14`, borderRadius: 999, padding: "4px 14px", fontSize: 13 }}
+                            >
+                              {o.chip} <ArrowRight size={13} />
+                            </Link>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </CarouselItem>
+            );
+          })}
+        </CarouselContent>
+      </Carousel>
+
+      {/* Navigation: dots + arrows */}
+      <div className="flex items-center justify-center gap-6 mt-8">
+        <button
+          onClick={() => api?.scrollPrev()}
+          className="flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110"
+          style={{ width: 36, height: 36, border: `1.5px solid ${activeColor}40`, color: activeColor }}
+        >
+          <ChevronLeft size={18} />
+        </button>
+
+        <div className="flex items-center gap-2">
+          {roleCards.map((_, idx) => {
+            const dotColor = roleCards[idx]?.iconColor || ROLE_COLORS[idx % ROLE_COLORS.length];
+            return (
+              <button
+                key={idx}
+                onClick={() => api?.scrollTo(idx)}
+                className="rounded-full transition-all duration-300"
+                style={{
+                  width: current === idx ? 24 : 8,
+                  height: 8,
+                  background: current === idx ? dotColor : "#D1D5DB",
+                }}
+              />
+            );
+          })}
+        </div>
+
+        <button
+          onClick={() => api?.scrollNext()}
+          className="flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110"
+          style={{ width: 36, height: 36, border: `1.5px solid ${activeColor}40`, color: activeColor }}
+        >
+          <ChevronRight size={18} />
+        </button>
+      </div>
+    </div>
+  );
 }
 
 /* ═══════════════════════════════════════════════ */
@@ -397,56 +535,7 @@ export default function QueHacemos() {
           </p>
         </div>
 
-        <div
-          className="mx-auto mt-14 grid gap-5 relative z-10"
-          style={{ maxWidth: 1000, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-        >
-          {roleCards.map((r, idx) => {
-            const Icon = ICON_MAP[r.icon] || Settings;
-            const color = r.iconColor || "#BE1869";
-            return (
-              <motion.div
-                key={r.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="transition-all duration-300 hover:-translate-y-0.5"
-                style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 16, padding: "28px 24px" }}
-                whileHover={{ borderColor: color, boxShadow: `0 8px 24px ${color}14` }}
-              >
-                <div className="flex items-center justify-center rounded-xl" style={{ width: 32, height: 32, background: `${color}14` }}>
-                  <Icon size={16} style={{ color }} />
-                </div>
-                <h3 className="font-bold mt-3" style={{ fontSize: 16, color: "#1A1A2E" }}>{r.title}</h3>
-                <p className="italic mt-2" style={{ fontSize: 13, color: "#6B7280", lineHeight: 1.5 }}>{r.pain}</p>
-                <div className="mt-3 space-y-1">
-                  {r.symptoms.map((s) => (
-                    <p key={s} style={{ fontSize: 12, color: "#9CA3AF" }}>— "{s}"</p>
-                  ))}
-                </div>
-                <div className="my-4" style={{ height: 1, background: "#F0F0F0" }} />
-                <p className="uppercase font-bold" style={{ fontSize: 11, color: "#9CA3AF", letterSpacing: "0.06em" }}>
-                  Por dónde entrar:
-                </p>
-                <div className="mt-2 space-y-2">
-                  {r.options.map((o) => (
-                    <div key={o.text} className="flex items-start gap-2 flex-wrap" style={{ fontSize: 13 }}>
-                      <span style={{ color: "#374151" }}>{o.text}</span>
-                      <Link
-                        to={o.to}
-                        className="inline-flex items-center gap-1 font-semibold transition-all duration-200 hover:underline"
-                        style={{ color: o.chipColor || "#BE1869", background: o.chipColor ? `${o.chipColor}14` : "rgba(190,24,105,0.08)", borderRadius: 999, padding: "2px 10px", fontSize: 12 }}
-                      >
-                        {o.chip}
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+        <RolesCarousel roleCards={roleCards} />
       </SectionShell>
 
       {/* ══════ SECTION 5 — CTA FINAL ══════ */}
