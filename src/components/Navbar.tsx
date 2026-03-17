@@ -334,15 +334,7 @@ const Navbar = () => {
                 Qué hacemos
               </Link>
               <ServiciosDropdown />
-              <Link
-                to="#"
-                className="text-sm font-medium transition-colors duration-200"
-                style={{ color: "#1a1a2e" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
-              >
-                Recursos
-              </Link>
+              {/* Recursos - temporalmente oculto */}
               <Link
                 to="/nosotros"
                 className="text-sm font-medium transition-colors duration-200"
