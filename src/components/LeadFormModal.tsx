@@ -291,7 +291,7 @@ export default function LeadFormModal() {
               </div>
             )}
 
-            <div className="px-6 pb-6 pt-4 overflow-y-auto" style={{ maxHeight: step === 4 && qualified ? "80vh" : undefined }}>
+            <div className="px-6 pb-6 pt-4 overflow-y-auto" style={{ maxHeight: "calc(90vh - 80px)" }}>
               <AnimatePresence mode="wait">
                 {step === 0 && (
                   <StepWrapper key="s0">
