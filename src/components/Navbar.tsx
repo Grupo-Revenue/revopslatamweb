@@ -324,7 +324,15 @@ const Navbar = () => {
               }}
             >
             <div className="flex items-center" style={{ gap: 24 }}>
-              <NavDropdown label="Soluciones" items={solucionesItems} />
+              <Link
+                to="/que-hacemos"
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "#1a1a2e" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
+              >
+                Qué hacemos
+              </Link>
               <ServiciosDropdown />
               <Link
                 to="#"
