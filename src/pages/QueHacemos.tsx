@@ -325,7 +325,7 @@ export default function QueHacemos() {
 
       {/* ══════ SECTION 4 — SEGÚN TU ROL ══════ */}
       <SectionShell section={roles} className="" defaultBg={{ background: "#F9FAFB", padding: "100px 24px" }}>
-        <div ref={sec4Ref} className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
+        <div className="mx-auto text-center relative z-10" style={{ maxWidth: 960 }}>
           <Eyebrow>{rolEyebrow}</Eyebrow>
           <h2 className="font-bold mt-4" style={{ fontSize: 34, color: "#1A1A2E", lineHeight: 1.2, ...rolStyle("title") }}>
             {renderTitle(rolTitle)}
