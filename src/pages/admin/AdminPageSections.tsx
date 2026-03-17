@@ -26,6 +26,14 @@ import MethodCardsEditor from "@/components/admin/MethodCardsEditor";
 import RoleCardsEditor from "@/components/admin/RoleCardsEditor";
 import ChipsEditor from "@/components/admin/ChipsEditor";
 import ComoEntendemosEditor from "@/components/admin/ComoEntendemosEditor";
+import {
+  ComparisonTableEditor,
+  HubCardsEditor,
+  TimelineStepsEditor,
+  FaqEditor,
+  FitListEditor,
+  StatsEditor,
+} from "@/components/admin/PartnerPageEditors";
 
 type SitePage = Tables<"site_pages">;
 type PageSection = Tables<"page_sections">;
