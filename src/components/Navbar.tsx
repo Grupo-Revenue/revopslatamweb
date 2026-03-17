@@ -440,14 +440,7 @@ const Navbar = () => {
               Qué hacemos
             </Link>
             <MobileSectionGrouped onClose={() => setMobileOpen(false)} />
-            <Link
-              to="#"
-              onClick={() => setMobileOpen(false)}
-              className="py-4 text-lg font-semibold"
-              style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
-            >
-              Recursos
-            </Link>
+            {/* Recursos - temporalmente oculto */}
             <Link
               to="/nosotros"
               onClick={() => setMobileOpen(false)}
