@@ -1,7 +1,59 @@
 # Textos de Soluciones por Rol — RevOps LATAM
 
 > Documento generado el 17 de marzo de 2026
-> Incluye: componente RolesSolutions (Home) + 5 landing pages de roles (CMS)
+> Incluye: secciones narrativas del Home (El problema no es tu equipo) + componente RolesSolutions (Home) + 5 landing pages de roles (CMS)
+
+---
+
+## SECCIÓN "EL PROBLEMA NO ES TU EQUIPO" (HOME)
+
+Hay dos variantes de esta sección en el Home. Ambas comparten el mismo mensaje central.
+
+### Variante A — Revenue Track Simulator (componente interactivo con diagnóstico)
+
+- **Título:** El problema no es tu equipo. Es el sistema donde operan.
+- **Subtítulo:** Muchas empresas intentan resolver fricciones cambiando personas, pero el problema casi siempre está en cómo interactúan procesos, herramientas y datos.
+- **Label:** Diagnóstico rápido
+- **CTA:** Diagnosticar mi sistema de revenue
+
+**Opciones de dolor (tarjetas interactivas):**
+
+1. **Generamos leads, pero ventas dice que son malos.**
+   → Insight: Marketing y Ventas no comparten definición de MQL/SQL. Sin un SLA claro, el esfuerzo se diluye antes de llegar al pipeline.
+
+2. **Tenemos pipeline, pero el cierre es impredecible.**
+   → Insight: Sin etapas estandarizadas ni un CRM configurado por proceso, cada vendedor opera distinto. El forecast se vuelve ficción.
+
+3. **Vendemos, pero el crecimiento se estanca.**
+   → Insight: Sin automatización post-venta y métricas de retención, el revenue depende siempre de nuevos clientes. El sistema no escala.
+
+---
+
+### Variante B — Pista Story Sticky (storytelling con scroll parallax)
+
+- **Eyebrow:** El problema no es tu equipo
+- **Título:** Imagina que tu empresa es una pista de Imánix.
+- **Subtítulo:** ¿Recuerdas esas pistas modulares donde una pelotita baja por rampas, curvas y túneles? El revenue de tu empresa funciona exactamente igual. Descubre cómo se rompe —y cómo se arma.
+
+**Pasos del storytelling:**
+
+1. **Las piezas** — Cada pieza importa.
+   Marketing, ventas, CRM, automatizaciones, procesos de servicio… cada una es una pieza de la pista. La pelotita, tu revenue, solo fluye si todas encajan perfectamente entre sí.
+
+2. **La realidad** — Si una pieza falla, se cae.
+   Aunque la pelotita sea buena, aunque tengas talento, producto y mercado, si las piezas no encajan, el revenue se frena, se desvía o se pierde. Y no sabes exactamente dónde.
+   *Highlight: No les falta talento. Les falta un sistema bien diseñado.*
+
+3. **Estado 1, Pista rota** — Sin sistema, sin previsibilidad.
+   Tus equipos trabajan con datos distintos. Cada vendedor reinventa el proceso desde cero. El forecast es ficción. Pierdes deals por falta de seguimiento, no por falta de demanda.
+   *Highlight: El 70% de las empresas B2B en LATAM operan así. No estás solo, pero seguir así tiene un costo.*
+
+4. **Estado 2, Pista incompleta** — Base instalada, fricciones constantes.
+   Tienes HubSpot u otro CRM pero lo usan al 30%. Los handoffs entre marketing, ventas y CS generan fricción constante. Generas datos, pero no los usas para tomar decisiones de revenue.
+   *Highlight: Tu inversión en tecnología no se traduce en crecimiento real. Las mejores oportunidades se pierden en los gaps entre áreas.*
+
+5. **Estado 3, Pista bien armada** — Sistema fluido, listo para escalar.
+   Procesos conectados. Revenue predecible con ±15% de precisión trimestral. Cada nuevo rep es productivo en menos de 30 días. El sistema escala sin depender de héroes individuales.
 
 ---
 
