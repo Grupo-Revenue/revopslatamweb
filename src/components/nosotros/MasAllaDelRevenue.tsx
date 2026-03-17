@@ -17,7 +17,7 @@ const MasAllaDelRevenue = ({ section }: { section?: HomeSection }) => {
   const title = section?.title ?? "Más allá del revenue";
 
   const p1 = (meta.p1 as string) ?? "Parte de lo que generamos como empresa lo destinamos a apoyar iniciativas que promueven una cosmovisión bíblica y la predicación del Evangelio a lo largo de Latinoamérica.";
-  const p2 = (meta.p2 as string) ?? "Creemos que las empresas pueden ser instrumentos de bien en el mundo — no solo máquinas de generar utilidades. Y que el crecimiento sano de una empresa tiene un efecto real en las personas que trabajan en ella, en las familias que dependen de ella, y en las comunidades que la rodean.";
+  const p2 = (meta.p2 as string) ?? "Creemos que las empresas pueden ser instrumentos de bien en el mundo, no solo máquinas de generar utilidades. Y que el crecimiento sano de una empresa tiene un efecto real en las personas que trabajan en ella, en las familias que dependen de ella, y en las comunidades que la rodean.";
   const p3 = (meta.p3 as string) ?? "Ese es el para qué detrás de cada pista que diseñamos.";
   const closingQuote = (meta.closing_quote as string) ?? "Una empresa crece cuando su pista está bien armada. Y una pista bien armada hace bien al mundo.";
 

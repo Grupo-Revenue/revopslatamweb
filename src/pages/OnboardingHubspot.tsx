@@ -93,7 +93,7 @@ const DEF = {
   },
   problema: {
     title: "Comprar HubSpot es fácil. Usarlo bien es otra cosa.",
-    body: "La mayoría de las empresas compran HubSpot con la mejor intención. Lo configuran como pueden — o como les dice una agencia que no entiende su operación.\n\nEl resultado: un CRM que existe pero que nadie usa. O peor: que todos usan de forma diferente.",
+    body: "La mayoría de las empresas compran HubSpot con la mejor intención. Lo configuran como pueden, o como les dice una agencia que no entiende su operación.\n\nEl resultado: un CRM que existe pero que nadie usa. O peor: que todos usan de forma diferente.",
     stats: [
       { num: 3, suffix: " meses", label: "promedio hasta abandono sin proceso" },
       { num: 67, suffix: "%", label: "de implementaciones sin adopción real" },

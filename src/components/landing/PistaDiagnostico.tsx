@@ -213,7 +213,7 @@ export default function PistaDiagnostico({ section }: { section?: HomeSection })
           >
             <img
               src={pistaImg}
-              alt="Pista modular Imánix — metáfora del sistema de revenue"
+              alt="Pista modular Imánix, metáfora del sistema de revenue"
               className="w-full h-auto select-none"
               style={{ maxWidth: 420, opacity: 0.75 }}
               loading="lazy"
@@ -509,7 +509,7 @@ function TrackVisual({
       {/* Track image */}
       <img
         src={pistaImg}
-        alt="Sistema de revenue — pista modular Imanix"
+        alt="Sistema de revenue, pista modular Imanix"
         className="w-full h-auto select-none"
         style={{
           opacity: selected ? 0.35 : 0.7,
