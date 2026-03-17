@@ -439,7 +439,14 @@ const Navbar = () => {
             className="fixed inset-0 z-40 flex flex-col pt-24 px-8 pb-10 overflow-y-auto"
             style={{ background: "#ffffff" }}
           >
-            <MobileSection title="Soluciones" items={solucionesItems} onClose={() => setMobileOpen(false)} />
+            <Link
+              to="/que-hacemos"
+              onClick={() => setMobileOpen(false)}
+              className="py-4 text-lg font-semibold"
+              style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+            >
+              Qué hacemos
+            </Link>
             <MobileSectionGrouped onClose={() => setMobileOpen(false)} />
             <Link
               to="#"
