@@ -28,6 +28,7 @@ import RevOpsAsAService from "./pages/RevOpsAsAService";
 import MarketingOps from "./pages/MarketingOps";
 import SoporteHubspot from "./pages/SoporteHubspot";
 import PotenciaConIA from "./pages/PotenciaConIA";
+import QueHacemos from "./pages/QueHacemos";
 import NotFound from "./pages/NotFound";
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
