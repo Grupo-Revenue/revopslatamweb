@@ -87,10 +87,10 @@ type MethodCard = {
 };
 
 const DEF_METHOD_CARDS: MethodCard[] = [
-  { num: "01", icon: "Search", badge: "EL PRIMER PASO", title: "Conoce tu pista", subtitle: "El diagnóstico", desc: "Antes de construir o cambiar cualquier cosa, necesitas saber exactamente qué está fallando y por qué. Mapeamos tu operación e identificamos los cuellos de botella que frenan tu crecimiento.", tags: [{ label: "Diagnóstico del Motor de Ingresos", to: "/diagnostico-revops" }, { label: "Pulso Comercial", to: "https://pulso.revopslatam.com/", external: true }], link: "/conoce-tu-pista" },
-  { num: "02", icon: "Wrench", title: "Diseña y construye tu pista", subtitle: "La implementación", desc: "Con claridad del problema, diseñamos e implementamos el sistema. HubSpot configurado para tu proceso real. Integraciones sin silos. Procesos que el equipo realmente sigue.", tags: [{ label: "Implementación HubSpot CRM", to: "/implementacion-hubspot" }, { label: "Marketing Ops", to: "/marketing-ops" }, { label: "Integraciones Custom", to: "/integraciones-desarrollo" }], link: "/diseña-y-construye-tu-pista" },
-  { num: "03", icon: "Settings", title: "Opera tu pista", subtitle: "La operación continua", desc: "Una pista bien construida necesita operación constante. Tu consultor asignado y el equipo especialista trabajan sprint a sprint — estrategia y ejecución en paralelo, todos los meses.", tags: [{ label: "RevOps as a Service", to: "/revops-as-a-service" }, { label: "Soporte HubSpot", to: "/soporte-hubspot" }], link: "/opera-tu-pista" },
-  { num: "04", icon: "Brain", iconColor: "#6366F1", badge: "LA VENTAJA COMPETITIVA", badgeBg: "rgba(99,102,241,0.08)", badgeColor: "#6366F1", title: "Potencia tu pista con IA", subtitle: "La ventaja competitiva", desc: "Cuando la pista está ordenada, la IA la convierte en una ventaja real. Agentes que califican leads, automatizaciones con contexto, sistemas que aprenden.", tags: [{ label: "IA para tu Motor de Ingresos", to: "/potencia-con-ia", color: "#6366F1" }], link: "/potencia-con-ia" },
+  { num: "01", icon: "Search", iconColor: "#BE1869", badge: "EL PRIMER PASO", badgeBg: "rgba(190,24,105,0.08)", badgeColor: "#BE1869", title: "Conoce tu pista", subtitle: "El diagnóstico", desc: "Antes de construir o cambiar cualquier cosa, necesitas saber exactamente qué está fallando y por qué. Mapeamos tu operación e identificamos los cuellos de botella que frenan tu crecimiento.", tags: [{ label: "Diagnóstico del Motor de Ingresos", to: "/diagnostico-revops" }, { label: "Pulso Comercial", to: "https://pulso.revopslatam.com/", external: true }], link: "/conoce-tu-pista" },
+  { num: "02", icon: "Wrench", iconColor: "#6224BD", title: "Diseña y construye tu pista", subtitle: "La implementación", desc: "Con claridad del problema, diseñamos e implementamos el sistema. HubSpot configurado para tu proceso real. Integraciones sin silos. Procesos que el equipo realmente sigue.", tags: [{ label: "Implementación HubSpot CRM", to: "/implementacion-hubspot" }, { label: "Marketing Ops", to: "/marketing-ops" }, { label: "Integraciones Custom", to: "/integraciones-desarrollo" }], link: "/diseña-y-construye-tu-pista" },
+  { num: "03", icon: "Settings", iconColor: "#1CA297", title: "Opera tu pista", subtitle: "La operación continua", desc: "Una pista bien construida necesita operación constante. Tu consultor asignado y el equipo especialista trabajan sprint a sprint — estrategia y ejecución en paralelo, todos los meses.", tags: [{ label: "RevOps as a Service", to: "/revops-as-a-service" }, { label: "Soporte HubSpot", to: "/soporte-hubspot" }], link: "/opera-tu-pista" },
+  { num: "04", icon: "Brain", iconColor: "#0779D6", badge: "LA VENTAJA COMPETITIVA", badgeBg: "rgba(7,121,214,0.08)", badgeColor: "#0779D6", title: "Potencia tu pista con IA", subtitle: "La ventaja competitiva", desc: "Cuando la pista está ordenada, la IA la convierte en una ventaja real. Agentes que califican leads, automatizaciones con contexto, sistemas que aprenden.", tags: [{ label: "IA para tu Motor de Ingresos", to: "/potencia-con-ia", color: "#0779D6" }], link: "/potencia-con-ia" },
 ];
 
 type RoleCard = {
@@ -270,11 +270,12 @@ export default function QueHacemos() {
           </p>
         </div>
 
+        {/* First 3 cards in a row */}
         <div
-          className="mx-auto mt-14 grid gap-6 relative z-10"
-          style={{ maxWidth: 960, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
+          className="mx-auto mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10"
+          style={{ maxWidth: 960 }}
         >
-          {methodCards.map((c, idx) => {
+          {methodCards.slice(0, 3).map((c, idx) => {
             const Icon = ICON_MAP[c.icon] || Settings;
             const iconColor = c.iconColor || "#BE1869";
             return (
@@ -285,17 +286,17 @@ export default function QueHacemos() {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.5, delay: idx * 0.12 }}
                 className="relative overflow-hidden transition-all duration-300 hover:-translate-y-1"
-                style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 20, padding: 36 }}
-                whileHover={{ borderColor: iconColor, boxShadow: "0 12px 40px rgba(190,24,105,0.1)" }}
+                style={{ background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 20, padding: 36, borderTop: `3px solid ${iconColor}` }}
+                whileHover={{ borderColor: iconColor, boxShadow: `0 12px 40px ${iconColor}18` }}
               >
-                <span className="absolute top-4 right-5 font-bold select-none pointer-events-none" style={{ fontSize: 64, background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", opacity: 0.08, lineHeight: 1 }}>
+                <span className="absolute top-4 right-5 font-bold select-none pointer-events-none" style={{ fontSize: 64, color: iconColor, opacity: 0.07, lineHeight: 1 }}>
                   {c.num}
                 </span>
                 <div className="flex items-center justify-center rounded-2xl" style={{ width: 40, height: 40, background: `${iconColor}14` }}>
                   <Icon size={20} style={{ color: iconColor }} />
                 </div>
                 {c.badge && (
-                  <span className="inline-block mt-4 font-bold uppercase tracking-wider" style={{ fontSize: 11, background: c.badgeBg || "rgba(190,24,105,0.08)", color: c.badgeColor || "#BE1869", borderRadius: 999, padding: "4px 12px" }}>
+                  <span className="inline-block mt-4 font-bold uppercase tracking-wider" style={{ fontSize: 11, background: c.badgeBg || `${iconColor}14`, color: c.badgeColor || iconColor, borderRadius: 999, padding: "4px 12px" }}>
                     {c.badge}
                   </span>
                 )}
@@ -321,6 +322,67 @@ export default function QueHacemos() {
             );
           })}
         </div>
+
+        {/* Card 4 — full width spanning all 3 columns */}
+        {methodCards[3] && (() => {
+          const c = methodCards[3];
+          const Icon = ICON_MAP[c.icon] || Settings;
+          const iconColor = c.iconColor || "#0779D6";
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: 0.36 }}
+              className="mx-auto mt-6 relative overflow-hidden transition-all duration-300 hover:-translate-y-1"
+              style={{
+                maxWidth: 960,
+                background: `linear-gradient(135deg, ${iconColor}08, ${iconColor}03)`,
+                border: "1px solid #E5E7EB",
+                borderTop: `3px solid ${iconColor}`,
+                borderRadius: 20,
+                padding: "36px 40px",
+              }}
+              whileHover={{ borderColor: iconColor, boxShadow: `0 12px 40px ${iconColor}18` }}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-8 items-start relative z-10">
+                <div>
+                  <span className="absolute top-4 right-6 font-bold select-none pointer-events-none" style={{ fontSize: 80, color: iconColor, opacity: 0.06, lineHeight: 1 }}>
+                    {c.num}
+                  </span>
+                  <div className="flex items-center justify-center rounded-2xl" style={{ width: 40, height: 40, background: `${iconColor}14` }}>
+                    <Icon size={20} style={{ color: iconColor }} />
+                  </div>
+                  {c.badge && (
+                    <span className="inline-block mt-4 font-bold uppercase tracking-wider" style={{ fontSize: 11, background: c.badgeBg || `${iconColor}14`, color: c.badgeColor || iconColor, borderRadius: 999, padding: "4px 12px" }}>
+                      {c.badge}
+                    </span>
+                  )}
+                  <h3 className="font-bold mt-4" style={{ fontSize: 20, color: "#1A1A2E" }}>
+                    <Link to={c.link} className="hover:underline">{c.title}</Link>
+                  </h3>
+                  <p className="italic mt-1" style={{ fontSize: 14, color: "#6B7280" }}>{c.subtitle}</p>
+                </div>
+                <div>
+                  <p className="mt-1" style={{ fontSize: 15, color: "#6B7280", lineHeight: 1.7 }}>{c.desc}</p>
+                  <div className="flex flex-wrap gap-2 mt-5">
+                    {c.tags.map((tag) =>
+                      tag.external ? (
+                        <a key={tag.label} href={tag.to} target="_blank" rel="noopener noreferrer" className="transition-colors duration-200 hover:opacity-80" style={{ fontSize: 11, background: tag.color ? `${tag.color}14` : `${iconColor}14`, color: tag.color || iconColor, borderRadius: 999, padding: "4px 12px" }}>
+                          {tag.label}
+                        </a>
+                      ) : (
+                        <Link key={tag.label} to={tag.to} className="transition-colors duration-200 hover:opacity-80" style={{ fontSize: 11, background: tag.color ? `${tag.color}14` : `${iconColor}14`, color: tag.color || iconColor, borderRadius: 999, padding: "4px 12px" }}>
+                          {tag.label}
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })()}
       </SectionShell>
 
       {/* ══════ SECTION 4 — SEGÚN TU ROL ══════ */}
