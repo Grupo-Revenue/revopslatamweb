@@ -341,17 +341,20 @@ export default function QueHacemos() {
           </p>
         </div>
 
-        <motion.div
+        <div
           className="mx-auto mt-14 grid gap-5 relative z-10"
           style={{ maxWidth: 1000, gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}
-          variants={stagger} initial="hidden" animate={sec4InView ? "show" : "hidden"}
         >
-          {roleCards.map((r) => {
+          {roleCards.map((r, idx) => {
             const Icon = ICON_MAP[r.icon] || Settings;
             const color = r.iconColor || "#BE1869";
             return (
               <motion.div
-                key={r.title} variants={fadeUp}
+                key={r.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
                 className="transition-all duration-300 hover:-translate-y-0.5"
                 style={{ background: "#fff", border: "1px solid #E5E7EB", borderRadius: 16, padding: "28px 24px" }}
                 whileHover={{ borderColor: color, boxShadow: `0 8px 24px ${color}14` }}
@@ -387,7 +390,7 @@ export default function QueHacemos() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </SectionShell>
 
       {/* ══════ SECTION 5 — CTA FINAL ══════ */}
