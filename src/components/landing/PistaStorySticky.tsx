@@ -31,7 +31,7 @@ const STEPS = [
     id: "fall",
     eyebrow: "La realidad",
     title: "Si una pieza falla, se cae.",
-    body: "Aunque la pelotita sea buena —aunque tengas talento, producto y mercado— si las piezas no encajan, el revenue se frena, se desvía o se pierde. Y no sabes exactamente dónde.",
+    body: "Aunque la pelotita sea buena, aunque tengas talento, producto y mercado, si las piezas no encajan, el revenue se frena, se desvía o se pierde. Y no sabes exactamente dónde.",
     highlight: "No les falta talento. Les falta un sistema bien diseñado.",
     accent: "hsl(266 66% 44%)",
     accentHsl: "266 66% 44%",
