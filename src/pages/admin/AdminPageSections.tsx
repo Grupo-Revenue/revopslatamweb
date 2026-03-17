@@ -22,6 +22,9 @@ import TestimonialsEditor from "@/components/admin/TestimonialsEditor";
 import PainsEditor from "@/components/admin/PainsEditor";
 import SolutionsEditor from "@/components/admin/SolutionsEditor";
 import PorQueExistimosEditor from "@/components/admin/PorQueExistimosEditor";
+import MethodCardsEditor from "@/components/admin/MethodCardsEditor";
+import RoleCardsEditor from "@/components/admin/RoleCardsEditor";
+import ChipsEditor from "@/components/admin/ChipsEditor";
 import ComoEntendemosEditor from "@/components/admin/ComoEntendemosEditor";
 
 type SitePage = Tables<"site_pages">;
