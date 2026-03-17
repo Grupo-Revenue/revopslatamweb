@@ -373,7 +373,7 @@ export default function LeadFormModal() {
                           className="mt-0.5 w-4 h-4 rounded border-2 border-border accent-pink cursor-pointer"
                         />
                         <span className="text-xs text-muted-foreground leading-relaxed">
-                          Acepto recibir información y comunicaciones comerciales de RevOps LATAM. Puedo darme de baja en cualquier momento.
+                          Acepto recibir información y comunicaciones comerciales de Revops LATAM. Puedo darme de baja en cualquier momento.
                         </span>
                       </label>
                       {errors.consent && <p className="text-xs mt-1 text-destructive font-medium ml-6">{errors.consent}</p>}
