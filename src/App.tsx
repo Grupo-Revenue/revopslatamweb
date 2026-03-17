@@ -82,6 +82,7 @@ const App = () => (
               <Route path="/marketing-ops" element={<MarketingOps />} />
               <Route path="/soporte-hubspot" element={<SoporteHubspot />} />
               <Route path="/potencia-con-ia" element={<PotenciaConIA />} />
+              <Route path="/que-hacemos" element={<QueHacemos />} />
               {/* Admin routes */}
               <Route path="/admin/setup" element={<AdminSetup />} />
               <Route path="/admin/login" element={<AdminLogin />} />
