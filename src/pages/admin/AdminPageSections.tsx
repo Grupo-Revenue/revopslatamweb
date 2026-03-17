@@ -946,6 +946,44 @@ export default function AdminPageSections() {
                     />
                   )}
 
+                  {/* Partner page specialized editors */}
+                  {section.section_key === "hero" && (meta.stats as unknown[])?.length > 0 && (
+                    <StatsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "posicionamiento" && (
+                    <ComparisonTableEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "ecosistema" && (
+                    <HubCardsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "como-trabajamos" && (
+                    <TimelineStepsEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "para-quien" && (
+                    <FitListEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+                  {section.section_key === "faq" && (
+                    <FaqEditor
+                      metadata={meta}
+                      onChange={(m) => updateSectionLocal(section.id, "metadata", m)}
+                    />
+                  )}
+
                   {/* Eyebrow field for sections that use it */}
                   {(section.section_key === "hero" || section.section_key === "metodologia" || section.section_key === "roles") && (
                     <div>
