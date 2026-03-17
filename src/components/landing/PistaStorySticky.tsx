@@ -56,7 +56,7 @@ const STEPS = [
   },
   {
     id: "complete",
-    eyebrow: "Estado 3 — Pista bien armada",
+    eyebrow: "Estado 3, Pista bien armada",
     title: "Sistema fluido, listo para escalar.",
     body: "Procesos conectados. Revenue predecible con ±15% de precisión trimestral. Cada nuevo rep es productivo en menos de 30 días. El sistema escala sin depender de héroes individuales.",
     accent: "hsl(175 73% 37%)",
