@@ -19,7 +19,7 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 /* ─── Helpers ─── */
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; style?: React.CSSProperties }>> = {
+const ICON_MAP: Record<string, LucideIcon> = {
   Search, Wrench, Settings, Brain, Building2, BarChart3, Megaphone, Heart, Cog,
 };
 
