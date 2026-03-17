@@ -152,9 +152,9 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
         </motion.p>
       </div>
 
-      {/* ── Main sticky layout ── */}
+      {/* ── Desktop: sticky layout ── */}
       <div
-        className="mx-auto grid grid-cols-1 lg:grid-cols-2"
+        className="mx-auto hidden lg:grid grid-cols-2"
         style={{ maxWidth: 1280, paddingLeft: 48, paddingRight: 48 }}
       >
         {/* ── Left: scrolling text ── */}
@@ -242,7 +242,7 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
 
         {/* ── Right: sticky layered track ── */}
         <div
-          className="hidden lg:flex items-start justify-center sticky top-0"
+          className="flex items-start justify-center sticky top-0"
           style={{ height: "100vh", paddingTop: "8vh" }}
         >
           <div className="relative" style={{ maxWidth: 540, width: "100%" }}>
@@ -282,7 +282,6 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
               })}
             </div>
 
-
             {/* Progress dots */}
             <div
               className="absolute right-0 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-2"
@@ -303,51 +302,92 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Mobile: accordion with tabs */}
-        <div className="lg:hidden flex flex-col gap-3 px-2 py-8">
+      {/* ── Mobile: premium vertical story ── */}
+      <div className="lg:hidden px-5 py-6">
+        {/* Progress bar */}
+        <div className="flex items-center gap-1.5 mb-6 px-1">
+          {STEPS.map((s, i) => (
+            <div
+              key={i}
+              className="h-1 rounded-full flex-1 transition-all duration-500"
+              style={{
+                background: mobileActive !== null && i <= mobileActive ? s.accent : "rgba(0,0,0,0.06)",
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="flex flex-col gap-3">
           {STEPS.map((step, i) => {
             const isOpen = mobileActive === i;
             return (
-              <div
+              <motion.div
                 key={step.id}
+                layout
                 style={{
-                  borderRadius: 16,
-                  border: `1.5px solid ${isOpen ? step.accent : "rgba(0,0,0,0.08)"}`,
-                  background: isOpen ? "#fff" : "#fafafa",
+                  borderRadius: 20,
+                  border: `1.5px solid ${isOpen ? step.accent : "rgba(0,0,0,0.06)"}`,
+                  background: isOpen ? "#fff" : "rgba(255,255,255,0.6)",
                   overflow: "hidden",
-                  transition: "border-color 0.3s ease, background 0.3s ease",
+                  boxShadow: isOpen ? `0 8px 32px ${step.accent.replace(")", " / 0.1)")}` : "0 1px 4px rgba(0,0,0,0.03)",
                 }}
+                transition={{ layout: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1] } }}
               >
                 {/* Header */}
                 <button
                   onClick={() => { setMobileActive(isOpen ? null : i); setMobileTab("situacion"); }}
-                  className="w-full flex items-center justify-between px-5 py-4"
+                  className="w-full flex items-center gap-4 px-5 py-4"
                 >
-                  <div className="flex items-center gap-3">
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        background: step.accent,
-                        flexShrink: 0,
-                      }}
-                    />
-                    <div className="text-left">
-                      <p style={{ fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", fontWeight: 700, color: step.accent, marginBottom: 2 }}>
-                        {step.eyebrow}
-                      </p>
-                      <p style={{ fontSize: 16, fontWeight: 700, color: "#1d1d1f", lineHeight: 1.2 }}>
-                        {step.title}
-                      </p>
-                    </div>
+                  {/* Step indicator */}
+                  <div
+                    className="flex items-center justify-center shrink-0"
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 12,
+                      background: isOpen ? step.accent : `${step.accent.replace(")", " / 0.08)")}`,
+                      transition: "background 0.3s ease",
+                    }}
+                  >
+                    <span style={{
+                      fontSize: 13,
+                      fontWeight: 800,
+                      color: isOpen ? "#fff" : step.accent,
+                      transition: "color 0.3s ease",
+                    }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                   </div>
+
+                  <div className="flex-1 text-left min-w-0">
+                    <p style={{
+                      fontSize: 10,
+                      letterSpacing: "0.14em",
+                      textTransform: "uppercase",
+                      fontWeight: 700,
+                      color: isOpen ? step.accent : "#9ca3af",
+                      marginBottom: 1,
+                      transition: "color 0.3s ease",
+                    }}>
+                      {step.eyebrow}
+                    </p>
+                    <p style={{
+                      fontSize: 16,
+                      fontWeight: 700,
+                      color: "#1d1d1f",
+                      lineHeight: 1.2,
+                    }}>
+                      {step.title}
+                    </p>
+                  </div>
+
                   <ChevronDown
                     size={18}
                     style={{
-                      color: step.accent,
-                      transition: "transform 0.3s ease",
+                      color: isOpen ? step.accent : "#c7c7cc",
+                      transition: "transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.3s ease",
                       transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
                       flexShrink: 0,
                     }}
@@ -361,81 +401,73 @@ export default function PistaStorySticky({ section }: { section?: HomeSection })
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                      transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                       className="overflow-hidden"
                     >
                       <div className="px-5 pb-5">
-                        {/* Track image */}
+                        {/* Track image with ambient glow */}
                         <div
+                          className="relative"
                           style={{
-                            borderRadius: 12,
+                            borderRadius: 16,
                             background: "#F5F5F7",
-                            padding: 16,
+                            padding: "20px 16px",
                             marginBottom: 16,
+                            overflow: "hidden",
                           }}
                         >
-                          <img
+                          <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                              background: `radial-gradient(circle at 50% 60%, ${step.accent.replace(")", " / 0.06)")}, transparent 70%)`,
+                            }}
+                          />
+                          <motion.img
                             src={TRACK_LAYERS[i]}
                             alt=""
-                            style={{ width: "100%", maxWidth: 240, margin: "0 auto", display: "block" }}
+                            initial={{ opacity: 0, scale: 0.92 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            style={{ width: "100%", maxWidth: 200, margin: "0 auto", display: "block", position: "relative", zIndex: 1 }}
                             draggable={false}
                           />
                         </div>
 
-                        {/* Tabs */}
-                        <div className="flex gap-1 mb-3" style={{ borderRadius: 10, background: "#f0f0f2", padding: 3 }}>
-                          {(["situacion", "senales"] as const).map((tab) => {
-                            const hasContent = tab === "situacion" || step.highlight;
-                            if (!hasContent) return null;
-                            const label = tab === "situacion" ? "Situación" : "Señales";
-                            const active = mobileTab === tab;
-                            return (
-                              <button
-                                key={tab}
-                                onClick={() => setMobileTab(tab)}
-                                className="flex-1 text-center py-2 text-xs font-semibold transition-all duration-200"
-                                style={{
-                                  borderRadius: 8,
-                                  background: active ? "#fff" : "transparent",
-                                  color: active ? step.accent : "#86868b",
-                                  boxShadow: active ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
-                                }}
-                              >
-                                {label}
-                              </button>
-                            );
-                          })}
-                        </div>
+                        {/* Body text */}
+                        <p style={{
+                          fontSize: 15,
+                          lineHeight: 1.65,
+                          color: "#6e6e73",
+                          marginBottom: step.highlight ? 12 : 0,
+                        }}>
+                          {step.body}
+                        </p>
 
-                        {/* Tab content */}
-                        <div style={{ minHeight: 60 }}>
-                          {mobileTab === "situacion" && (
-                            <p style={{ fontSize: 15, lineHeight: 1.65, color: "#6e6e73" }}>
-                              {step.body}
-                            </p>
-                          )}
-                          {mobileTab === "senales" && step.highlight && (
-                            <p
-                              style={{
-                                fontSize: 14,
-                                fontWeight: 600,
-                                lineHeight: 1.5,
-                                color: step.accent,
-                                padding: "12px 14px",
-                                borderRadius: 10,
-                                background: `${step.accent.replace(")", " / 0.06)")}`,
-                                border: `1px solid ${step.accent.replace(")", " / 0.12)")}`,
-                              }}
-                            >
-                              {step.highlight}
-                            </p>
-                          )}
-                        </div>
+                        {/* Highlight callout */}
+                        {step.highlight && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.15, duration: 0.4 }}
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 600,
+                              lineHeight: 1.5,
+                              color: step.accent,
+                              padding: "12px 14px",
+                              borderRadius: 12,
+                              background: `${step.accent.replace(")", " / 0.05)")}`,
+                              borderLeft: `3px solid ${step.accent}`,
+                            }}
+                          >
+                            {step.highlight}
+                          </motion.div>
+                        )}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>
