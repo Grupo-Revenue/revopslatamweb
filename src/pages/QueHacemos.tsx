@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import {
   Search, Wrench, Settings, Brain,
   Building2, BarChart3, Megaphone, Heart, Cog,
-  ArrowRight,
+  ArrowRight, ChevronLeft, ChevronRight,
 } from "lucide-react";
+import { useState, useCallback, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PistaStorySticky from "@/components/landing/PistaStorySticky";
@@ -15,6 +16,7 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import DynamicCTA from "@/components/DynamicCTA";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 
 /* ─── Helpers ─── */
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
