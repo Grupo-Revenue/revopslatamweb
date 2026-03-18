@@ -245,12 +245,7 @@ const HubspotPartnerChile = () => {
     cta2_url: (ctam.cta2_url as string) ?? DEF.ctaFinal.cta2_url,
   };
 
-  useEffect(() => {
-    document.title = "Partner HubSpot Chile | Revops LATAM, Consultora Platinum";
-    const meta = document.querySelector('meta[name="description"]');
-    const content = "Revops LATAM es HubSpot Platinum Partner en Chile. No somos una agencia. Somos la consultora que implementa HubSpot y opera tu motor de ingresos completo. 14 años de experiencia.";
-    if (meta) { meta.setAttribute("content", content); } else { const m = document.createElement("meta"); m.name = "description"; m.content = content; document.head.appendChild(m); }
-  }, []);
+  usePageMeta({ ...PAGE_SEO["/hubspot-partner-chile"], path: "/hubspot-partner-chile" });
 
   const scrollToSection = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
