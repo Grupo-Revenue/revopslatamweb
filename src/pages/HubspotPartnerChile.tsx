@@ -249,6 +249,8 @@ const HubspotPartnerChile = () => {
 
   const scrollToSection = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
+  if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
+
   return (
     <div className="min-h-screen" style={{ fontFamily: "'Lexend', sans-serif" }}>
       <Navbar />

@@ -16,6 +16,7 @@ import { PAGE_SEO } from "@/lib/seo-config";
 const Index = () => {
   const { getSection, getMeta, loading } = useHomeSections();
   usePageMeta({ ...PAGE_SEO["/"], path: "/" });
+  if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
   return (
     <div className="min-h-screen">
       <Navbar />

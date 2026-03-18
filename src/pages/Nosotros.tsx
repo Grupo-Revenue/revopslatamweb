@@ -13,8 +13,9 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 import { PAGE_SEO } from "@/lib/seo-config";
 
 const Nosotros = () => {
-  const { getSection } = usePageSections("/nosotros");
+  const { getSection, loading } = usePageSections("/nosotros");
   usePageMeta({ ...PAGE_SEO["/nosotros"], path: "/nosotros" });
+  if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
   const heroSection = getSection("nosotros-hero");
   const porQueExistimosSection = getSection("por-que-existimos");
   const porQueDeEstaFormaSection = getSection("por-que-de-esta-forma");

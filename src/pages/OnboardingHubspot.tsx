@@ -293,6 +293,8 @@ export default function OnboardingHubspot() {
   const s3 = useCountUp(prob.stats[2]?.num ?? 0, 800);
   const counters = [s1, s2, s3];
 
+  if (loading) return <div className="min-h-screen" style={{ background: "#1A1A2E" }} />;
+
   const scrollToFit = () => document.getElementById("para-quien")?.scrollIntoView({ behavior: "smooth" });
 
   return (
