@@ -30,6 +30,7 @@ import SoporteHubspot from "./pages/SoporteHubspot";
 import PotenciaConIA from "./pages/PotenciaConIA";
 import QueHacemos from "./pages/QueHacemos";
 import HubspotPartnerChile from "./pages/HubspotPartnerChile";
+import ConoceTuPistaLanding from "./pages/ConoceTuPistaLanding";
 import NotFound from "./pages/NotFound";
 import { Navigate } from "react-router-dom";
 
@@ -93,6 +94,7 @@ const App = () => (
               <Route path="/potencia-con-ia" element={<PotenciaConIA />} />
               <Route path="/que-hacemos" element={<QueHacemos />} />
               <Route path="/hubspot-partner-chile" element={<HubspotPartnerChile />} />
+              <Route path="/lp/conoce-tu-pista" element={<ConoceTuPistaLanding />} />
               {/* Admin routes */}
               <Route path="/admin/setup" element={<AdminSetup />} />
               <Route path="/admin/login" element={<AdminLogin />} />
