@@ -415,7 +415,7 @@ const ConoceTuPistaLanding = () => {
         >
           <button
             onClick={handleHeroCTA}
-            className="w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
+            className="w-full text-[14px] font-semibold text-white py-3 rounded-full transition-transform active:scale-[0.97]"
             style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.4)" }}
           >
             Agenda tu conversación →
