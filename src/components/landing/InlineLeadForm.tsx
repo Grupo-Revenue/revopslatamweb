@@ -502,6 +502,4 @@ export default function InlineLeadForm({ sourcePage = "lp-conoce-tu-pista" }: { 
       </div>
     </div>
   );
-
-  const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
 }
