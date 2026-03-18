@@ -11,13 +11,6 @@ const footerLinks = {
     { label: "Implementación HubSpot", to: "/implementacion-hubspot" },
     { label: "RevOps as a Service", to: "/revops-as-a-service" },
   ],
-  roles: [
-    { label: "CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
-    { label: "Directores Comerciales", to: "/para-directores-comerciales" },
-    { label: "Marketing", to: "/para-directores-y-gerentes-de-marketing" },
-    { label: "Customer Success", to: "/para-customer-success-y-servicio-al-cliente" },
-    { label: "Operaciones", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
-  ],
   empresa: [
     { label: "Nosotros", to: "/nosotros", external: false },
     { label: "Partner HubSpot", to: "/hubspot-partner-chile", external: false },
