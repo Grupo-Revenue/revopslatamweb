@@ -368,38 +368,128 @@ const HubspotPartnerChile = () => {
 
       {/* ══════════ SECTION 2 — POSICIONAMIENTO ══════════ */}
       <SectionShell section={posSec} className="px-6" defaultBg={{ background: "#FFFFFF", padding: "100px 24px" }}>
-        <div className="relative z-10 mx-auto grid grid-cols-1 lg:grid-cols-[55%_45%] gap-12 items-start" style={{ maxWidth: 1100 }}>
+        <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 900 }}>
+          {/* Eyebrow */}
           <FadeIn>
-            <div style={{ maxWidth: 480 }}>
-              <h2 className="font-bold mb-8 whitespace-pre-line" style={{ fontSize: 34, color: "#1A1A2E", lineHeight: 1.25 }}>{pos.title}</h2>
-              {paragraphs.map((p, i) => (
-                <p key={i} className="mb-5" style={{ fontSize: 16, color: "#6B7280", lineHeight: 1.7 }}>{p}</p>
-              ))}
-              <div style={{ background: "linear-gradient(135deg, rgba(190,24,105,0.04), rgba(98,36,190,0.04))", borderLeft: "3px solid", borderImage: "linear-gradient(180deg, #BE1869, #6224BE) 1", borderRadius: "0 12px 12px 0", padding: "20px 24px" }}>
-                <p style={{ fontSize: 16, color: "#374151", lineHeight: 1.7, fontWeight: 500 }}>{pos.callout}</p>
+            <span
+              className="inline-block uppercase font-bold tracking-[0.14em] mb-5"
+              style={{ fontSize: 11, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+            >
+              POR QUÉ SOMOS DIFERENTES
+            </span>
+          </FadeIn>
+
+          {/* H2 */}
+          <FadeIn delay={0.05}>
+            <h2
+              className="font-bold mx-auto mb-5 whitespace-pre-line"
+              style={{ fontSize: "clamp(26px, 4vw, 38px)", color: "hsl(var(--foreground))", lineHeight: 1.2, maxWidth: 700 }}
+            >
+              {pos.title}
+            </h2>
+          </FadeIn>
+
+          {/* Subtitle — condensed */}
+          <FadeIn delay={0.1}>
+            <p className="mx-auto mb-14" style={{ fontSize: 16, color: "hsl(var(--muted-foreground))", maxWidth: 600, lineHeight: 1.7 }}>
+              Hay cientos de partners. La diferencia no está en el badge, está en entender tu negocio antes de abrir la herramienta.
+            </p>
+          </FadeIn>
+
+          {/* ─── TABLE — Protagonist ─── */}
+          <FadeIn delay={0.15}>
+            <div
+              className="overflow-hidden mx-auto"
+              style={{
+                borderRadius: 20,
+                border: "1px solid hsl(var(--border))",
+                boxShadow: "0 20px 60px rgba(0,0,0,0.06)",
+                background: "hsl(var(--card))",
+              }}
+            >
+              {/* Table Header */}
+              <div
+                className="grid grid-cols-[1.2fr_1fr_1fr] items-center"
+                style={{ padding: "20px 28px", borderBottom: "1px solid hsl(var(--border))", background: "hsl(var(--secondary))" }}
+              >
+                <span style={{ fontSize: 13, fontWeight: 700, color: "hsl(var(--muted-foreground))", textTransform: "uppercase", letterSpacing: "0.06em", textAlign: "left" }}>
+                  Aspecto
+                </span>
+                <span className="text-center" style={{ fontSize: 14, color: "hsl(var(--muted-foreground))", fontWeight: 500 }}>
+                  Agencia HubSpot
+                </span>
+                <div className="text-center">
+                  <span
+                    className="inline-block font-bold"
+                    style={{
+                      fontSize: 14,
+                      backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      padding: "4px 16px",
+                      borderRadius: 999,
+                      background: "linear-gradient(135deg, rgba(190,24,105,0.08), rgba(98,36,190,0.08))",
+                    }}
+                  >
+                    <span style={{ backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                      RevOps LATAM
+                    </span>
+                  </span>
+                </div>
               </div>
+
+              {/* Table Rows */}
+              {pos.comparison.map((row, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className="grid grid-cols-[1.2fr_1fr_1fr] items-center transition-colors duration-200"
+                  style={{
+                    padding: "20px 28px",
+                    borderBottom: i < pos.comparison.length - 1 ? "1px solid hsl(var(--border))" : "none",
+                    cursor: "default",
+                  }}
+                  whileHover={{ backgroundColor: "rgba(190,24,105,0.02)" }}
+                >
+                  <span style={{ fontSize: 15, color: "hsl(var(--foreground))", fontWeight: 600, textAlign: "left" }}>
+                    {row.label}
+                  </span>
+                  <span className="text-center" style={{ fontSize: 15, color: "hsl(var(--muted-foreground))" }}>
+                    {row.agency}
+                  </span>
+                  <div className="text-center flex items-center justify-center gap-2">
+                    <Check size={16} style={{ color: "#BE1869", flexShrink: 0 }} />
+                    <span
+                      className="font-bold"
+                      style={{ fontSize: 15, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                    >
+                      {row.revops}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </FadeIn>
 
-          <FadeIn direction="right" delay={0.2}>
-            <div style={{ background: "#F9FAFB", borderRadius: 20, padding: 32, border: "1px solid #E5E7EB", boxShadow: "0 20px 60px rgba(0,0,0,0.06)" }}>
-              <div className="grid grid-cols-[1fr_1fr_1fr] mb-4" style={{ gap: 8 }}>
-                <div />
-                <div className="text-center" style={{ fontSize: 13, color: "#9CA3AF" }}>Agencia HubSpot</div>
-                <div className="text-center font-bold" style={{ fontSize: 13, borderTop: "2px solid", borderImage: "linear-gradient(135deg, #BE1869, #6224BE) 1", background: "linear-gradient(135deg, rgba(190,24,105,0.04), rgba(98,36,190,0.04))", padding: "8px 4px 4px", borderRadius: "8px 8px 0 0" }}>
-                  <span style={{ backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>RevOps LATAM</span>
-                </div>
-              </div>
-              {pos.comparison.map((row, i) => (
-                <div key={i} className="grid grid-cols-[1fr_1fr_1fr] items-center" style={{ gap: 8, padding: "12px 0", borderBottom: i < pos.comparison.length - 1 ? "1px solid #F3F4F6" : "none" }}>
-                  <span style={{ fontSize: 14, color: "#374151", fontWeight: 600 }}>{row.label}</span>
-                  <span className="text-center" style={{ fontSize: 14, color: "#9CA3AF" }}>{row.agency}</span>
-                  <div className="text-center flex items-center justify-center gap-1">
-                    <Check size={14} style={{ color: "#BE1869", flexShrink: 0 }} />
-                    <span className="font-bold" style={{ fontSize: 14, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{row.revops}</span>
-                  </div>
-                </div>
-              ))}
+          {/* Callout — below table */}
+          <FadeIn delay={0.25}>
+            <div
+              className="mx-auto mt-12 text-left"
+              style={{
+                maxWidth: 700,
+                background: "linear-gradient(135deg, rgba(190,24,105,0.04), rgba(98,36,190,0.04))",
+                borderLeft: "3px solid",
+                borderImage: "linear-gradient(180deg, #BE1869, #6224BE) 1",
+                borderRadius: "0 12px 12px 0",
+                padding: "20px 24px",
+              }}
+            >
+              <p style={{ fontSize: 16, color: "hsl(var(--foreground))", lineHeight: 1.7, fontWeight: 500 }}>
+                {pos.callout}
+              </p>
             </div>
           </FadeIn>
         </div>
