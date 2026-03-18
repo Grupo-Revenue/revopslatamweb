@@ -318,7 +318,7 @@ const HubspotPartnerChile = () => {
                 {h.cta}
               </DynamicCTA>
               <DynamicCTA
-                styleKey={(hm.cta2_style_key as string) || "text-link"}
+                styleKey={(hm.cta2_style_key as string) || (hm.cta_style_key as string) || "text-link"}
                 onClick={() => scrollToSection("como-trabajamos")}
               >
                 {h.cta2}
