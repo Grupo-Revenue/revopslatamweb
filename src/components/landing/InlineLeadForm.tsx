@@ -4,6 +4,8 @@ import { ArrowRight, ArrowLeft, CheckCircle2, XCircle, Loader2 } from "lucide-re
 import { supabase } from "@/integrations/supabase/client";
 import { z } from "zod";
 
+const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
+
 // ── Options ──
 const CARGOS = [
   "Dueño / Socio / Founder",
