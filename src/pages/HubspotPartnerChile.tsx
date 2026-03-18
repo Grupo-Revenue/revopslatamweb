@@ -314,12 +314,14 @@ const HubspotPartnerChile = () => {
               <DynamicCTA
                 styleKey={(hm.cta_style_key as string) || (hm.cta1_style_key as string) || "primary"}
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
+                style={{ fontSize: 14, padding: "10px 24px" }}
               >
                 {h.cta}
               </DynamicCTA>
               <DynamicCTA
                 styleKey={(hm.cta2_style_key as string) || (hm.cta_style_key as string) || "text-link"}
                 onClick={() => scrollToSection("como-trabajamos")}
+                style={{ fontSize: 14, padding: "10px 24px" }}
               >
                 {h.cta2}
               </DynamicCTA>
