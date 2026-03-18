@@ -95,7 +95,7 @@ const DEF = {
   },
   ctaFinal: {
     badge: "HABLEMOS",
-    title: "¿Buscas un partner de HubSpot\nque entienda tu negocio\n— no solo la herramienta?",
+    title: "¿Buscas un partner de HubSpot\nque entienda tu negocio,\nno solo la herramienta?",
     subtitle: "El primer paso es una conversación. En 30 minutos entendemos tu situación, te decimos con honestidad si somos el equipo correcto para ti y qué tendría más impacto en tu operación.",
     cta: "Agenda una conversación →",
     cta2: "Ver el Pulso Comercial gratuito →",
