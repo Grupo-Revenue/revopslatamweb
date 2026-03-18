@@ -10,6 +10,7 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 import DynamicCTA from "@/components/DynamicCTA";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import hubspotPlatinumBadge from "@/assets/logos/hubspot-platinum-badge.png";
 
 /* ─── Defaults ─── */
 const DEF = {
