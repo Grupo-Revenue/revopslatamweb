@@ -136,18 +136,6 @@ const FadeIn = ({ children, className = "", delay = 0, direction = "up" }: {
   );
 };
 
-const StatCounter = ({ value, suffix = "", label, counterVal }: { value?: string; suffix?: string; label: string; counterVal?: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true });
-  const animated = useAnimatedCounter(counterVal ?? 0, 1500, inView && !!counterVal, "");
-  const display = counterVal ? `${animated} años` : (value ?? suffix);
-  return (
-    <div ref={ref} className="text-center">
-      <div className="text-[32px] font-bold" style={{ backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{display}</div>
-      <div className="text-[13px] mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{label}</div>
-    </div>
-  );
-};
 
 function HubIcon({ icon, color }: { icon: string; color: string }) {
   const useGradient = icon === "megaphone" || icon === "globe";
