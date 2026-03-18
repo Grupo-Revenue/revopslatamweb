@@ -311,20 +311,18 @@ const HubspotPartnerChile = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
-              <button
+              <DynamicCTA
+                styleKey={(hm.cta1_style_key as string) || "primary"}
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
-                className="text-white font-semibold transition-all duration-300 hover:scale-[1.02]"
-                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 15, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(190,24,105,0.25)" }}
               >
                 {h.cta}
-              </button>
-              <button
+              </DynamicCTA>
+              <DynamicCTA
+                styleKey={(hm.cta2_style_key as string) || "text-link"}
                 onClick={() => scrollToSection("como-trabajamos")}
-                className="font-medium transition-all duration-300 hover:text-white"
-                style={{ color: "rgba(255,255,255,0.45)", background: "transparent", border: "none", fontSize: 15, cursor: "pointer" }}
               >
                 {h.cta2}
-              </button>
+              </DynamicCTA>
             </motion.div>
           </div>
 
@@ -553,13 +551,18 @@ const HubspotPartnerChile = () => {
             <h2 className="text-white font-bold mb-5 whitespace-pre-line" style={{ fontSize: 30, lineHeight: 1.3 }}>{cta.title}</h2>
             <p className="mb-10" style={{ fontSize: 16, color: "rgba(255,255,255,0.65)", lineHeight: 1.7 }}>{cta.subtitle}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <DynamicCTA styleKey={ctam.cta_style_key as string}
+              <DynamicCTA
+                styleKey={(ctam.cta1_style_key as string) || "primary"}
                 onClick={() => { if (ctam.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile-cta"); else if (ctaFinalSec?.cta_url) window.open(ctaFinalSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile-cta"); }}
-                className="text-white font-semibold transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
-                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "16px 36px", fontSize: 16 }}>{cta.cta}</DynamicCTA>
-              <a href={cta.cta2_url} target="_blank" rel="noopener noreferrer"
-                className="font-semibold transition-all duration-300 hover:scale-[1.03]"
-                style={{ color: "#fff", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 999, padding: "16px 36px", fontSize: 16, background: "transparent" }}>{cta.cta2}</a>
+              >
+                {cta.cta}
+              </DynamicCTA>
+              <DynamicCTA
+                styleKey={(ctam.cta2_style_key as string) || "outline"}
+                onClick={() => { if (cta.cta2_url) window.open(cta.cta2_url, "_blank"); }}
+              >
+                {cta.cta2}
+              </DynamicCTA>
             </div>
           </FadeIn>
         </div>
