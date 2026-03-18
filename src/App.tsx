@@ -30,6 +30,7 @@ import SoporteHubspot from "./pages/SoporteHubspot";
 import PotenciaConIA from "./pages/PotenciaConIA";
 import QueHacemos from "./pages/QueHacemos";
 import HubspotPartnerChile from "./pages/HubspotPartnerChile";
+import ConoceTuPistaLanding from "./pages/ConoceTuPistaLanding";
 import NotFound from "./pages/NotFound";
 import { Navigate } from "react-router-dom";
 
