@@ -56,7 +56,7 @@ const DEF = {
   ctaFinal: {
     title: "¿No sabes cuál necesitas?",
     subtitle: "En 15 minutos te ayudamos a elegir, sin compromiso.",
-    cta_text: "Agendar conversación gratuita →",
+    cta_text: "Agendar conversación →",
     cta_url: "#",
   },
 };
@@ -113,7 +113,7 @@ const ConoceTuPistaLanding = () => {
     badge: (hm.badge as string) ?? DEF.hero.badge,
     title: hero?.title ?? DEF.hero.title,
     subtitle: hero?.subtitle ?? DEF.hero.subtitle,
-    cta_text: "Agenda una conversación gratuita →",
+    cta_text: "Agendar conversación →",
     cta_url: hero?.cta_url ?? DEF.hero.cta_url,
   };
 
@@ -200,7 +200,7 @@ const ConoceTuPistaLanding = () => {
           <motion.div {...fade(0.2)} className="mt-7">
             <button
               onClick={handleHeroCTA}
-              className="w-full sm:w-auto text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-transform active:scale-[0.97]"
+              className="w-full sm:w-auto text-[14px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
               style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
             >
               {h.cta_text}
@@ -384,7 +384,7 @@ const ConoceTuPistaLanding = () => {
             <motion.div {...fade(0.15)} className="mt-7">
               <button
                 onClick={handleFinalCTA}
-                className="w-full sm:w-auto text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-transform active:scale-[0.97]"
+                className="w-full sm:w-auto text-[14px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
                 style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.3)", ...cfStyle("cta") }}
               >
                 {cf.cta_text}
@@ -415,7 +415,7 @@ const ConoceTuPistaLanding = () => {
         >
           <button
             onClick={handleHeroCTA}
-            className="w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
+            className="w-full text-[14px] font-semibold text-white py-3 rounded-full transition-transform active:scale-[0.97]"
             style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.4)" }}
           >
             Agenda tu conversación →
