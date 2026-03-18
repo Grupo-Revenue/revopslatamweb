@@ -591,7 +591,7 @@ const HubspotPartnerChile = () => {
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 620 }}>
           <FadeIn>
             <span className="inline-block uppercase font-bold tracking-wider mb-6" style={{ fontSize: 11, color: "#FF7A59", background: "rgba(255,122,89,0.15)", borderRadius: 999, padding: "6px 16px" }}>{cta.badge}</span>
-            <h2 className="text-white font-bold mb-5 whitespace-pre-line" style={{ fontSize: 30, lineHeight: 1.3 }}>{cta.title}</h2>
+            <h2 className="text-white font-bold mb-5 md:whitespace-pre-line" style={{ fontSize: "clamp(22px, 5vw, 30px)", lineHeight: 1.3 }}>{cta.title}</h2>
             <p className="mb-10" style={{ fontSize: 16, color: "rgba(255,255,255,0.65)", lineHeight: 1.7 }}>{cta.subtitle}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <DynamicCTA
