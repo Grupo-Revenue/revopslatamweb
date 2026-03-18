@@ -39,6 +39,7 @@ const QueHacemos = lazy(() => import("./pages/QueHacemos"));
 const HubspotPartnerChile = lazy(() => import("./pages/HubspotPartnerChile"));
 const ConoceTuPistaLanding = lazy(() => import("./pages/ConoceTuPistaLanding"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const PoliticaPrivacidad = lazy(() => import("./pages/PoliticaPrivacidad"));
 
 // Admin pages - always lazy
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
@@ -114,6 +115,7 @@ const App = () => (
                 <Route path="/hubspot-partner-chile" element={<HubspotPartnerChile />} />
                 <Route path="/hubspot-partner" element={<Navigate to="/hubspot-partner-chile" replace />} />
                 <Route path="/lp/conoce-tu-pista" element={<ConoceTuPistaLanding />} />
+                <Route path="/politica-de-privacidad" element={<PoliticaPrivacidad />} />
                 {/* Admin routes */}
                 <Route path="/admin/setup" element={<AdminSetup />} />
                 <Route path="/admin/login" element={<AdminLogin />} />
