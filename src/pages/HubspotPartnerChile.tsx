@@ -319,88 +319,83 @@ const HubspotPartnerChile = () => {
       <Navbar />
 
       {/* ══════════ SECTION 1 — HERO ══════════ */}
-      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "100vh", background: "linear-gradient(180deg, #0D0D1A 0%, #141428 50%, #0D0D1A 100%)", paddingTop: 140, paddingBottom: 80 }}>
-        {/* Ambient orbs */}
-        <motion.div className="absolute pointer-events-none" style={{ width: 600, height: 600, top: -100, left: -200, background: "radial-gradient(circle, rgba(190,24,105,0.1) 0%, transparent 60%)", filter: "blur(120px)" }} animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} />
-        <motion.div className="absolute pointer-events-none" style={{ width: 500, height: 500, bottom: -50, right: -100, background: "radial-gradient(circle, rgba(98,36,190,0.1) 0%, transparent 60%)", filter: "blur(120px)" }} animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 3 }} />
+      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "100vh", background: "linear-gradient(180deg, #0D0D1A 0%, #111122 100%)", paddingTop: 140, paddingBottom: 80 }}>
+        {/* Single subtle ambient orb */}
+        <div className="absolute pointer-events-none" style={{ width: 600, height: 600, top: -150, left: -200, background: "radial-gradient(circle, rgba(190,24,105,0.07) 0%, transparent 60%)", filter: "blur(120px)" }} />
 
-        <div className="relative z-10 mx-auto grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-12 lg:gap-16" style={{ maxWidth: 1100 }}>
+        <div className="relative z-10 mx-auto grid grid-cols-1 lg:grid-cols-[55%_45%] items-center gap-16" style={{ maxWidth: 1100 }}>
           {/* LEFT — Content */}
           <div>
             {/* Tag */}
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 mb-6"
-              style={{ background: "rgba(255,122,89,0.06)", border: "1px solid rgba(255,122,89,0.15)", borderRadius: 999, padding: "6px 16px" }}>
+              style={{ background: "rgba(255,122,89,0.05)", border: "1px solid rgba(255,122,89,0.12)", borderRadius: 999, padding: "6px 16px" }}>
               <span className="font-semibold uppercase tracking-wider" style={{ fontSize: 11, color: "#FF7A59" }}>HubSpot Platinum Partner en Chile</span>
             </motion.div>
 
             {/* H1 */}
             <motion.h1
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-white font-bold leading-[1.08] mb-5"
-              style={{ fontSize: "clamp(32px, 3.5vw, 46px)" }}
+              className="text-white font-bold leading-[1.1] mb-5"
+              style={{ fontSize: "clamp(30px, 3.2vw, 44px)" }}
             >
               {h.title}
             </motion.h1>
 
             {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="mb-8"
-              style={{ fontSize: 16, color: "rgba(255,255,255,0.6)", maxWidth: 500, lineHeight: 1.75 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="mb-6"
+              style={{ fontSize: 16, color: "rgba(255,255,255,0.55)", maxWidth: 480, lineHeight: 1.7 }}
             >
               {h.subtitle}
             </motion.p>
 
-            {/* Credentials bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="flex flex-wrap items-center gap-x-1 gap-y-2 mb-8"
+            {/* Single proof line */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-[13px] font-medium mb-8"
+              style={{ color: "rgba(255,255,255,0.35)" }}
             >
-              {h.credentials.map((cred, i) => (
-                <span key={i} className="flex items-center gap-1">
-                  {i > 0 && <span className="mx-2" style={{ color: "rgba(255,255,255,0.15)" }}>·</span>}
-                  <span className="text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.45)" }}>{cred}</span>
-                </span>
-              ))}
-            </motion.div>
+              {h.proof}
+            </motion.p>
 
             {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
               <button
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
-                className="text-white font-semibold transition-all duration-300 hover:scale-[1.03]"
-                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 15, border: "none", cursor: "pointer", boxShadow: "0 4px 24px rgba(190,24,105,0.3)" }}
+                className="text-white font-semibold transition-all duration-300 hover:scale-[1.02]"
+                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 15, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(190,24,105,0.25)" }}
               >
                 {h.cta}
               </button>
               <button
                 onClick={() => scrollToSection("como-trabajamos")}
                 className="font-medium transition-all duration-300 hover:text-white"
-                style={{ color: "rgba(255,255,255,0.5)", background: "transparent", border: "none", fontSize: 15, cursor: "pointer" }}
+                style={{ color: "rgba(255,255,255,0.45)", background: "transparent", border: "none", fontSize: 15, cursor: "pointer" }}
               >
                 {h.cta2}
               </button>
             </motion.div>
           </div>
 
-          {/* RIGHT — Revenue Pipeline Visual */}
+          {/* RIGHT — Clean visual */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="hidden lg:block"
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden lg:flex justify-center"
           >
             <RevenuePipelineVisual />
           </motion.div>
