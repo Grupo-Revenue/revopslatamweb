@@ -68,17 +68,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Roles */}
-          <div>
-            <h4 className="text-[14px] font-semibold mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>Para tu rol</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.roles.map((l) => (
-                <li key={l.label}>
-                  <Link to={l.to} className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* Empresa */}
           <div>
