@@ -10,10 +10,12 @@ import AboutTeaser from "@/components/AboutTeaser";
 import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 import { useHomeSections } from "@/hooks/useHomeSections";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const Index = () => {
   const { getSection, getMeta, loading } = useHomeSections();
-
+  usePageMeta({ ...PAGE_SEO["/"], path: "/" });
   return (
     <div className="min-h-screen">
       <Navbar />

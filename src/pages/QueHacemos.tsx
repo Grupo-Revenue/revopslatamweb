@@ -16,6 +16,8 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import DynamicCTA from "@/components/DynamicCTA";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 
 /* ─── Helpers ─── */
@@ -287,6 +289,7 @@ function RolesCarousel({ roleCards }: { roleCards: RoleCard[] }) {
 export default function QueHacemos() {
   const { openLeadForm } = useLeadForm();
   const { getSection, loading } = usePageSections("que-hacemos");
+  usePageMeta({ ...PAGE_SEO["/que-hacemos"], path: "/que-hacemos" });
 
   const hero = getSection("hero");
   const metodologia = getSection("metodologia");

@@ -19,6 +19,8 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const ACCENT = "#FF7A59";
@@ -129,6 +131,7 @@ const SoporteHubspot = () => {
   const stat12 = useAnimatedCounter(12, 1200, heroInView, "h");
 
   const { getSection, loading } = usePageSections("soporte-hubspot");
+  usePageMeta({ ...PAGE_SEO["/soporte-hubspot"], path: "/soporte-hubspot" });
 
   const hero = getSection("hero");
   const planesSection = getSection("planes");

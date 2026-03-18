@@ -9,10 +9,12 @@ import LosNumeros from "@/components/nosotros/LosNumeros";
 import ElEquipo from "@/components/nosotros/ElEquipo";
 import MasAllaDelRevenue from "@/components/nosotros/MasAllaDelRevenue";
 import NosotrosCTA from "@/components/nosotros/NosotrosCTA";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const Nosotros = () => {
   const { getSection } = usePageSections("/nosotros");
-
+  usePageMeta({ ...PAGE_SEO["/nosotros"], path: "/nosotros" });
   const heroSection = getSection("nosotros-hero");
   const porQueExistimosSection = getSection("por-que-existimos");
   const porQueDeEstaFormaSection = getSection("por-que-de-esta-forma");

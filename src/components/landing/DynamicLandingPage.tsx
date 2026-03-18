@@ -20,6 +20,8 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 24 },
@@ -464,6 +466,8 @@ function CTASection({ section }: { section?: HomeSection }) {
 
 export default function DynamicLandingPage({ slug }: { slug: string }) {
   const { getSection, loading } = usePageSections(slug);
+  const seo = PAGE_SEO[slug] ?? { title: "Revops LATAM", description: "" };
+  usePageMeta({ ...seo, path: slug });
 
   if (loading) return <div className="min-h-screen bg-dark-bg" />;
 

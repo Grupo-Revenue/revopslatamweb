@@ -15,6 +15,8 @@ import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 import DynamicCTA from "@/components/DynamicCTA";
 import { useLeadForm } from "@/hooks/useLeadForm";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 
 const fadeUp = (delay = 0) => ({
@@ -207,6 +209,7 @@ const MotorDeIngresos = () => {
   const [openAccordion, setOpenAccordion] = useState(0);
   const { getSection, loading } = usePageSections("motor-de-ingresos");
   const { openLeadForm } = useLeadForm();
+  usePageMeta({ ...PAGE_SEO["/motor-de-ingresos"], path: "/motor-de-ingresos" });
 
   const hero = getSection("hero");
   const problema = getSection("problema");

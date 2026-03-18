@@ -20,6 +20,8 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const AI_BLUE = "#6366F1";
 const gradient = "linear-gradient(135deg,#BE1869,#6224BE)";
@@ -189,6 +191,7 @@ const DEF = {
 const PotenciaConIA = () => {
   const { getSection, loading } = usePageSections("potencia-con-ia");
   const { openLeadForm } = useLeadForm();
+  usePageMeta({ ...PAGE_SEO["/potencia-con-ia"], path: "/potencia-con-ia" });
 
   const hero = getSection("hero");
   const problema = getSection("problema");

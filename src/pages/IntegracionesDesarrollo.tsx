@@ -18,6 +18,8 @@ import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 
 import EcosystemDiagram from "@/components/services/EcosystemDiagram";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
 const HUBSPOT = "#FF7A59";
@@ -237,6 +239,7 @@ export default function IntegracionesDesarrollo() {
   const proceso = getSection("proceso");
   const paraQuien = getSection("para-quien");
   const precio = getSection("precio");
+  usePageMeta({ ...PAGE_SEO["/integraciones-desarrollo"], path: "/integraciones-desarrollo" });
 
   const hm = mt(hero), pm = mt(problema), cm = mt(construimos), prn = mt(principio), prm = mt(proceso), pqm = mt(paraQuien), prec = mt(precio);
 

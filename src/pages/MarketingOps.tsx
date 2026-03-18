@@ -20,6 +20,8 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const ACCENT = "#FF7A59";
@@ -245,6 +247,7 @@ const DEF = {
 const MarketingOps = () => {
   const { getSection, loading } = usePageSections("marketing-ops");
   const { openLeadForm } = useLeadForm();
+  usePageMeta({ ...PAGE_SEO["/marketing-ops"], path: "/marketing-ops" });
 
   const hero = getSection("hero");
   const problemaSection = getSection("problema");

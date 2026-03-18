@@ -16,6 +16,8 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import { useLeadForm } from "@/hooks/useLeadForm";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 /* ─── constants ─── */
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
@@ -209,6 +211,7 @@ const DEF = {
 const OperaTuPista = () => {
   const { getSection, loading } = usePageSections("opera-tu-pista");
   const { openLeadForm } = useLeadForm();
+  usePageMeta({ ...PAGE_SEO["/opera-tu-pista"], path: "/opera-tu-pista" });
 
   const hero = getSection("hero");
   const hm = mt(hero);
