@@ -27,7 +27,7 @@ const DEF = {
     badge: "Conoce tu pista",
     title: "¿Tu operación comercial\ndebería rendir más?",
     subtitle: "Descubre exactamente qué frena tu crecimiento con un diagnóstico RevOps diseñado para empresas en Chile.",
-    cta_text: "Quiero mi diagnóstico →",
+    cta_text: "Agenda una conversación gratuita →",
     cta_url: "#diagnosticos",
   },
   problema: {
