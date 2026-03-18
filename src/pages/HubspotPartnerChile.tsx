@@ -498,7 +498,7 @@ const HubspotPartnerChile = () => {
       </SectionShell>
 
       {/* ══════════ SECTION 3 — ECOSISTEMA ══════════ */}
-      <SectionShell section={ecoSec} className="px-6" defaultBg={{ background: "#F9FAFB", padding: "100px 24px" }}>
+      <SectionShell section={ecoSec} className="px-6 py-16 md:py-[100px]" defaultBg={{ background: "#F9FAFB" }}>
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 1100 }}>
           <FadeIn>
             <span className="uppercase font-bold tracking-widest mb-4 inline-block" style={{ fontSize: 11, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{eco.eyebrow}</span>
