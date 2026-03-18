@@ -311,20 +311,18 @@ const HubspotPartnerChile = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
-              <button
+              <DynamicCTA
+                styleKey={(hm.cta1_style_key as string) || "primary"}
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
-                className="text-white font-semibold transition-all duration-300 hover:scale-[1.02]"
-                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 15, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(190,24,105,0.25)" }}
               >
                 {h.cta}
-              </button>
-              <button
+              </DynamicCTA>
+              <DynamicCTA
+                styleKey={(hm.cta2_style_key as string) || "text-link"}
                 onClick={() => scrollToSection("como-trabajamos")}
-                className="font-medium transition-all duration-300 hover:text-white"
-                style={{ color: "rgba(255,255,255,0.45)", background: "transparent", border: "none", fontSize: 15, cursor: "pointer" }}
               >
                 {h.cta2}
-              </button>
+              </DynamicCTA>
             </motion.div>
           </div>
 
