@@ -133,7 +133,7 @@ const FadeIn = ({ children, className = "", delay = 0, direction = "up" }: {
 
 /* Hero Visual — Dashboard screenshot + Badge */
 const HeroDashboardVisual = ({ imageUrl }: { imageUrl?: string }) => (
-  <div className="relative w-full flex flex-col items-center" style={{ maxWidth: 500 }}>
+  <div className="relative w-full flex flex-col items-center" style={{ maxWidth: 650 }}>
     {/* Glow behind dashboard */}
     <div className="absolute inset-0 pointer-events-none" style={{
       background: "radial-gradient(ellipse at 50% 50%, rgba(190,24,105,0.12) 0%, rgba(98,36,190,0.06) 50%, transparent 80%)",
