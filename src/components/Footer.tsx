@@ -11,13 +11,6 @@ const footerLinks = {
     { label: "Implementación HubSpot", to: "/implementacion-hubspot" },
     { label: "RevOps as a Service", to: "/revops-as-a-service" },
   ],
-  roles: [
-    { label: "CEO / Gerente General", to: "/para-ceos-y-gerentes-generales" },
-    { label: "Directores Comerciales", to: "/para-directores-comerciales" },
-    { label: "Marketing", to: "/para-directores-y-gerentes-de-marketing" },
-    { label: "Customer Success", to: "/para-customer-success-y-servicio-al-cliente" },
-    { label: "Operaciones", to: "/para-los-que-operan-el-negocio-sin-el-titulo" },
-  ],
   empresa: [
     { label: "Nosotros", to: "/nosotros", external: false },
     { label: "Partner HubSpot", to: "/hubspot-partner-chile", external: false },
@@ -29,7 +22,7 @@ const Footer = () => {
   return (
     <footer style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <div className="max-w-[1200px] mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-8">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/">
@@ -75,17 +68,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Roles */}
-          <div>
-            <h4 className="text-[14px] font-semibold mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>Para tu rol</h4>
-            <ul className="space-y-2.5">
-              {footerLinks.roles.map((l) => (
-                <li key={l.label}>
-                  <Link to={l.to} className="text-[13px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.4)" }}>{l.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* Empresa */}
           <div>
