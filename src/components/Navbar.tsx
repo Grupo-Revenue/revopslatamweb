@@ -344,6 +344,15 @@ const Navbar = () => {
               >
                 Nosotros
               </Link>
+              <Link
+                to="/hubspot-partner-chile"
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "#1a1a2e" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
+              >
+                HubSpot Partner
+              </Link>
             </div>
 
             <div className="ml-auto flex items-center" style={{ gap: 16 }}>
@@ -448,6 +457,14 @@ const Navbar = () => {
               style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
             >
               Nosotros
+            </Link>
+            <Link
+              to="/hubspot-partner-chile"
+              onClick={() => setMobileOpen(false)}
+              className="py-4 text-lg font-semibold"
+              style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+            >
+              HubSpot Partner
             </Link>
 
             <div className="mt-auto pt-8 flex flex-col gap-4">
