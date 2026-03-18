@@ -238,9 +238,9 @@ const HubspotPartnerChile = () => {
   };
 
   useEffect(() => {
-    document.title = "Partner HubSpot Chile y LATAM | RevOps LATAM — Consultora Platinum";
+    document.title = "Partner HubSpot Chile | RevOps LATAM, Consultora Platinum";
     const meta = document.querySelector('meta[name="description"]');
-    const content = "RevOps LATAM es HubSpot Platinum Partner en Chile y LATAM. No somos una agencia. Somos la consultora que implementa HubSpot y opera tu motor de ingresos completo. 14 años de experiencia en la región.";
+    const content = "RevOps LATAM es HubSpot Platinum Partner en Chile. No somos una agencia. Somos la consultora que implementa HubSpot y opera tu motor de ingresos completo. 14 años de experiencia.";
     if (meta) { meta.setAttribute("content", content); } else { const m = document.createElement("meta"); m.name = "description"; m.content = content; document.head.appendChild(m); }
   }, []);
 
