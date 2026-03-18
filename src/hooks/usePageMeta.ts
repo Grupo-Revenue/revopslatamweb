@@ -23,14 +23,32 @@ function setMeta(name: string, content: string, attr = "name") {
   }
 }
 
-function setLink(rel: string, href: string) {
-  let el = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+function setLink(rel: string, href: string, attrs?: Record<string, string>) {
+  const selector = attrs
+    ? `link[rel="${rel}"][hreflang="${attrs.hreflang ?? ""}"]`
+    : `link[rel="${rel}"]:not([hreflang])`;
+  let el = document.querySelector(selector) as HTMLLinkElement | null;
   if (el) {
     el.href = href;
   } else {
     el = document.createElement("link");
     el.rel = rel;
     el.href = href;
+    if (attrs) Object.entries(attrs).forEach(([k, v]) => el!.setAttribute(k, v));
+    document.head.appendChild(el);
+  }
+}
+
+function setJsonLd(id: string, data: object) {
+  let el = document.getElementById(id) as HTMLScriptElement | null;
+  const json = JSON.stringify(data);
+  if (el) {
+    el.textContent = json;
+  } else {
+    el = document.createElement("script");
+    el.id = id;
+    el.type = "application/ld+json";
+    el.textContent = json;
     document.head.appendChild(el);
   }
 }
@@ -49,6 +67,11 @@ export function usePageMeta({ title, description, path, ogImage, noindex }: Page
     // Canonical
     setLink("canonical", canonical);
 
+    // Hreflang
+    setLink("alternate", canonical, { hreflang: "es-CL" });
+    setLink("alternate", canonical, { hreflang: "es-419" });
+    setLink("alternate", canonical, { hreflang: "x-default" });
+
     // Open Graph
     setMeta("og:title", fullTitle, "property");
     setMeta("og:description", description, "property");
@@ -61,6 +84,22 @@ export function usePageMeta({ title, description, path, ogImage, noindex }: Page
     setMeta("twitter:description", description, "name");
     setMeta("twitter:image", image, "name");
 
+    // BreadcrumbList JSON-LD
+    const crumbs = [{ name: "Inicio", url: `${BASE_URL}/` }];
+    if (path !== "/") {
+      crumbs.push({ name: fullTitle.split(" | ")[0].split(" — ")[0], url: canonical });
+    }
+    setJsonLd("seo-breadcrumb", {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: crumbs.map((c, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: c.name,
+        item: c.url,
+      })),
+    });
+
     // Robots
     if (noindex) {
       setMeta("robots", "noindex,nofollow");
@@ -68,9 +107,5 @@ export function usePageMeta({ title, description, path, ogImage, noindex }: Page
       const robotsMeta = document.querySelector('meta[name="robots"]');
       if (robotsMeta) robotsMeta.remove();
     }
-
-    return () => {
-      // Cleanup not needed — next page call will override
-    };
   }, [title, description, path, ogImage, noindex]);
 }
