@@ -312,7 +312,7 @@ const HubspotPartnerChile = () => {
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
               <DynamicCTA
-                styleKey={(hm.cta1_style_key as string) || "primary"}
+                styleKey={(hm.cta_style_key as string) || (hm.cta1_style_key as string) || "primary"}
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
               >
                 {h.cta}
@@ -552,7 +552,7 @@ const HubspotPartnerChile = () => {
             <p className="mb-10" style={{ fontSize: 16, color: "rgba(255,255,255,0.65)", lineHeight: 1.7 }}>{cta.subtitle}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <DynamicCTA
-                styleKey={(ctam.cta1_style_key as string) || "primary"}
+                styleKey={(ctam.cta_style_key as string) || (ctam.cta1_style_key as string) || "primary"}
                 onClick={() => { if (ctam.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile-cta"); else if (ctaFinalSec?.cta_url) window.open(ctaFinalSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile-cta"); }}
               >
                 {cta.cta}

@@ -57,7 +57,6 @@ export function useCTAStyles() {
     if (cachedStyles) {
       setStyles(cachedStyles);
       setLoading(false);
-      return;
     }
     if (!fetchPromise) {
       fetchPromise = fetchCTAStyles();
@@ -66,6 +65,18 @@ export function useCTAStyles() {
       setStyles(s);
       setLoading(false);
     });
+
+    // Realtime: invalidate cache on changes
+    const channel = supabase
+      .channel("cta_styles_changes")
+      .on("postgres_changes", { event: "*", schema: "public", table: "cta_styles" }, () => {
+        fetchPromise = null;
+        cachedStyles = null;
+        fetchCTAStyles().then((s) => setStyles(s));
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   const refetch = async () => {
