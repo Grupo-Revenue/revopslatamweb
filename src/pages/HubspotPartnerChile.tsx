@@ -251,57 +251,64 @@ const HubspotPartnerChile = () => {
       <Navbar />
 
       {/* ══════════ SECTION 1 — HERO ══════════ */}
-      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "90vh", background: "linear-gradient(180deg, #1A1A2E 0%, #0D0D1A 100%)", paddingTop: 130, paddingBottom: 80 }}>
-        <div className="relative z-10 mx-auto grid grid-cols-1 lg:grid-cols-[55%_45%] gap-12 items-center" style={{ maxWidth: 1100 }}>
-          {/* Left: Text */}
-          <div>
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-              className="inline-flex items-center mb-6"
-              style={{ background: "rgba(255,122,89,0.1)", border: "1px solid rgba(255,122,89,0.25)", borderRadius: 999, padding: "6px 16px", gap: 8 }}>
-              <span className="font-bold" style={{ fontSize: 12, color: "#FF7A59" }}>HUBSPOT PLATINUM PARTNER</span>
+      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "100vh", background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 50%, #0D0D1A 100%)", paddingTop: 120, paddingBottom: 60 }}>
+        {/* Animated ambient orbs */}
+        <motion.div className="absolute pointer-events-none" style={{ width: 600, height: 600, top: -100, left: -200, background: "radial-gradient(circle, rgba(255,122,89,0.12) 0%, transparent 60%)", filter: "blur(100px)" }} animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.div className="absolute pointer-events-none" style={{ width: 500, height: 500, bottom: -50, right: -150, background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 60%)", filter: "blur(100px)" }} animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.9, 0.5] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
+        <motion.div className="absolute pointer-events-none" style={{ width: 400, height: 400, top: "30%", right: "20%", background: "radial-gradient(circle, rgba(98,36,190,0.1) 0%, transparent 60%)", filter: "blur(100px)" }} animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }} />
+
+        <div className="relative z-10 mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16" style={{ maxWidth: 1100 }}>
+          {/* Left: Text content */}
+          <div className="flex-1 max-w-[560px]">
+            <motion.div initial={{ opacity: 0, y: -15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center mb-5"
+              style={{ background: "rgba(255,122,89,0.08)", border: "1px solid rgba(255,122,89,0.2)", borderRadius: 999, padding: "5px 14px", gap: 6 }}>
+              <span className="font-bold uppercase tracking-wider" style={{ fontSize: 11, color: "#FF7A59" }}>Platinum Partner</span>
             </motion.div>
 
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}
-              className="text-white font-bold leading-[1.12] mb-6 whitespace-pre-line" style={{ fontSize: "clamp(36px, 4.5vw, 58px)" }}>{h.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-white font-bold leading-[1.1] mb-5 whitespace-pre-line" style={{ fontSize: "clamp(32px, 3.8vw, 48px)" }}>{h.title}</motion.h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-              className="mb-8" style={{ fontSize: 17, color: "rgba(255,255,255,0.65)", maxWidth: 520, lineHeight: 1.7 }}>{h.subtitle}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}
+              className="mb-8" style={{ fontSize: 16, color: "rgba(255,255,255,0.6)", maxWidth: 480, lineHeight: 1.75 }}>{h.subtitle}</motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }}
-              className="flex flex-wrap items-center gap-4 mb-12">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
               <DynamicCTA styleKey={hm.cta_style_key as string}
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
                 className="text-white font-semibold transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
-                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 16 }}>{h.cta}</DynamicCTA>
+                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 28px", fontSize: 15, boxShadow: "0 4px 24px rgba(190,24,105,0.3)" }}>{h.cta}</DynamicCTA>
               <button onClick={() => scrollToSection("como-trabajamos")}
-                className="font-semibold transition-all duration-300 hover:scale-[1.03]"
-                style={{ color: "#fff", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 999, padding: "14px 32px", fontSize: 16, background: "transparent" }}>{h.cta2}</button>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap items-center" style={{ gap: 40 }}>
-              {h.stats.map((s, i) => (
-                <StatCounter key={i} value={s.value} label={s.label} counterVal={s.counter} />
-              ))}
+                className="font-medium transition-all duration-300 hover:text-white"
+                style={{ color: "rgba(255,255,255,0.5)", background: "transparent", border: "none", fontSize: 15, cursor: "pointer" }}>{h.cta2}</button>
             </motion.div>
           </div>
 
-          {/* Right: Badge Image */}
+          {/* Right: Badge Image — prominent and centered */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-            className="hidden lg:flex items-center justify-center relative"
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 flex items-center justify-center relative"
           >
-            {/* Glow behind badge */}
-            <div className="absolute inset-0 pointer-events-none" style={{
-              background: "radial-gradient(ellipse at center, rgba(255,122,89,0.15) 0%, rgba(190,24,105,0.08) 40%, transparent 70%)",
-              filter: "blur(40px)",
+            {/* Multi-layered glow */}
+            <div className="absolute pointer-events-none" style={{
+              width: "120%", height: "120%", top: "-10%", left: "-10%",
+              background: "radial-gradient(ellipse at center, rgba(255,122,89,0.18) 0%, rgba(190,24,105,0.1) 30%, rgba(98,36,190,0.06) 55%, transparent 75%)",
+              filter: "blur(50px)",
             }} />
+            {/* Rotating ring accent */}
+            <motion.div
+              className="absolute pointer-events-none"
+              style={{ width: "105%", height: "105%", top: "-2.5%", left: "-2.5%", borderRadius: "50%", border: "1px solid rgba(255,122,89,0.08)" }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            />
             <img
               src={hubspotPlatinumBadge}
               alt="HubSpot Platinum Partner Certification Badge"
-              className="relative z-10 w-full max-w-[360px] h-auto drop-shadow-2xl"
+              className="relative z-10 w-full h-auto drop-shadow-2xl"
+              style={{ maxWidth: 400, filter: "drop-shadow(0 20px 40px rgba(255,122,89,0.15))" }}
             />
           </motion.div>
         </div>
