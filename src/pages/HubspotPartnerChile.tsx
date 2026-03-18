@@ -374,65 +374,90 @@ const HubspotPartnerChile = () => {
       <Navbar />
 
       {/* ══════════ SECTION 1 — HERO ══════════ */}
-      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "100vh", background: "linear-gradient(180deg, #0D0D1A 0%, #1A1A2E 50%, #0D0D1A 100%)", paddingTop: 120, paddingBottom: 60 }}>
-        {/* Animated ambient orbs */}
-        <motion.div className="absolute pointer-events-none" style={{ width: 600, height: 600, top: -100, left: -200, background: "radial-gradient(circle, rgba(255,122,89,0.12) 0%, transparent 60%)", filter: "blur(100px)" }} animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
-        <motion.div className="absolute pointer-events-none" style={{ width: 500, height: 500, bottom: -50, right: -150, background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 60%)", filter: "blur(100px)" }} animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.9, 0.5] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }} />
-        <motion.div className="absolute pointer-events-none" style={{ width: 400, height: 400, top: "30%", right: "20%", background: "radial-gradient(circle, rgba(98,36,190,0.1) 0%, transparent 60%)", filter: "blur(100px)" }} animate={{ scale: [1, 1.1, 1], opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }} />
+      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "100vh", background: "linear-gradient(180deg, #0D0D1A 0%, #141428 50%, #0D0D1A 100%)", paddingTop: 140, paddingBottom: 80 }}>
+        {/* Ambient orbs */}
+        <motion.div className="absolute pointer-events-none" style={{ width: 600, height: 600, top: -100, left: -200, background: "radial-gradient(circle, rgba(190,24,105,0.1) 0%, transparent 60%)", filter: "blur(120px)" }} animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.div className="absolute pointer-events-none" style={{ width: 500, height: 500, bottom: -50, right: -100, background: "radial-gradient(circle, rgba(98,36,190,0.1) 0%, transparent 60%)", filter: "blur(120px)" }} animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 3 }} />
 
-        <div className="relative z-10 mx-auto flex flex-col lg:flex-row items-center gap-10 lg:gap-16" style={{ maxWidth: 1100 }}>
-          {/* Left: Text content */}
-          <div className="flex-1 max-w-[560px]">
-            <motion.div initial={{ opacity: 0, y: -15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-              className="inline-flex items-center mb-5"
-              style={{ background: "rgba(255,122,89,0.08)", border: "1px solid rgba(255,122,89,0.2)", borderRadius: 999, padding: "5px 14px", gap: 6 }}>
-              <span className="font-bold uppercase tracking-wider" style={{ fontSize: 11, color: "#FF7A59" }}>Platinum Partner</span>
+        <div className="relative z-10 mx-auto grid grid-cols-1 lg:grid-cols-[52%_48%] items-center gap-12 lg:gap-16" style={{ maxWidth: 1100 }}>
+          {/* LEFT — Content */}
+          <div>
+            {/* Tag */}
+            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 mb-6"
+              style={{ background: "rgba(255,122,89,0.06)", border: "1px solid rgba(255,122,89,0.15)", borderRadius: 999, padding: "6px 16px" }}>
+              <span className="font-semibold uppercase tracking-wider" style={{ fontSize: 11, color: "#FF7A59" }}>HubSpot Platinum Partner en Chile</span>
             </motion.div>
 
-            <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-white font-bold leading-[1.1] mb-5 whitespace-pre-line" style={{ fontSize: "clamp(32px, 3.8vw, 48px)" }}>{h.title}</motion.h1>
+            {/* H1 */}
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-white font-bold leading-[1.08] mb-5"
+              style={{ fontSize: "clamp(32px, 3.5vw, 46px)" }}
+            >
+              {h.title}
+            </motion.h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}
-              className="mb-8" style={{ fontSize: 16, color: "rgba(255,255,255,0.6)", maxWidth: 480, lineHeight: 1.75 }}>{h.subtitle}</motion.p>
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="mb-8"
+              style={{ fontSize: 16, color: "rgba(255,255,255,0.6)", maxWidth: 500, lineHeight: 1.75 }}
+            >
+              {h.subtitle}
+            </motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-              <DynamicCTA styleKey={hm.cta_style_key as string}
+            {/* Credentials bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="flex flex-wrap items-center gap-x-1 gap-y-2 mb-8"
+            >
+              {h.credentials.map((cred, i) => (
+                <span key={i} className="flex items-center gap-1">
+                  {i > 0 && <span className="mx-2" style={{ color: "rgba(255,255,255,0.15)" }}>·</span>}
+                  <span className="text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.45)" }}>{cred}</span>
+                </span>
+              ))}
+            </motion.div>
+
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
+            >
+              <button
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
-                className="text-white font-semibold transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
-                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 28px", fontSize: 15, boxShadow: "0 4px 24px rgba(190,24,105,0.3)" }}>{h.cta}</DynamicCTA>
-              <button onClick={() => scrollToSection("como-trabajamos")}
+                className="text-white font-semibold transition-all duration-300 hover:scale-[1.03]"
+                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 15, border: "none", cursor: "pointer", boxShadow: "0 4px 24px rgba(190,24,105,0.3)" }}
+              >
+                {h.cta}
+              </button>
+              <button
+                onClick={() => scrollToSection("como-trabajamos")}
                 className="font-medium transition-all duration-300 hover:text-white"
-                style={{ color: "rgba(255,255,255,0.5)", background: "transparent", border: "none", fontSize: 15, cursor: "pointer" }}>{h.cta2}</button>
+                style={{ color: "rgba(255,255,255,0.5)", background: "transparent", border: "none", fontSize: 15, cursor: "pointer" }}
+              >
+                {h.cta2}
+              </button>
             </motion.div>
           </div>
 
-          {/* Right: Badge Image — prominent and centered */}
+          {/* RIGHT — Revenue Pipeline Visual */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 flex items-center justify-center relative"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="hidden lg:block"
           >
-            {/* Multi-layered glow */}
-            <div className="absolute pointer-events-none" style={{
-              width: "120%", height: "120%", top: "-10%", left: "-10%",
-              background: "radial-gradient(ellipse at center, rgba(255,122,89,0.18) 0%, rgba(190,24,105,0.1) 30%, rgba(98,36,190,0.06) 55%, transparent 75%)",
-              filter: "blur(50px)",
-            }} />
-            {/* Rotating ring accent */}
-            <motion.div
-              className="absolute pointer-events-none"
-              style={{ width: "105%", height: "105%", top: "-2.5%", left: "-2.5%", borderRadius: "50%", border: "1px solid rgba(255,122,89,0.08)" }}
-              animate={{ rotate: 360 }}
-              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-            />
-            <img
-              src={hubspotPlatinumBadge}
-              alt="HubSpot Platinum Partner Certification Badge"
-              className="relative z-10 w-full h-auto drop-shadow-2xl"
-              style={{ maxWidth: 400, filter: "drop-shadow(0 20px 40px rgba(255,122,89,0.15))" }}
-            />
+            <RevenuePipelineVisual />
           </motion.div>
         </div>
       </SectionShell>
