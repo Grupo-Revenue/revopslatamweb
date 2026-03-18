@@ -132,26 +132,8 @@ const ConoceTuPistaLanding = () => {
     cta_url: ctaFinal?.cta_url ?? DEF.ctaFinal.cta_url,
   };
 
-  const ctaOpensForm = meta(ctaFinal).cta1_opens_lead_form === true;
-  const heroOpensForm = hm.cta1_opens_lead_form === true;
-
-  const handleHeroCTA = () => {
-    if (heroOpensForm) return openLeadForm("lp-conoce-hero");
-    if (h.cta_url?.startsWith("#")) {
-      document.getElementById(h.cta_url.slice(1))?.scrollIntoView({ behavior: "smooth" });
-    } else if (h.cta_url) {
-      window.location.href = h.cta_url;
-    }
-  };
-
-  const handleFinalCTA = () => {
-    if (ctaOpensForm) return openLeadForm("lp-conoce-cta-final");
-    if (cf.cta_url?.startsWith("#")) {
-      document.getElementById(cf.cta_url.slice(1))?.scrollIntoView({ behavior: "smooth" });
-    } else if (cf.cta_url) {
-      window.location.href = cf.cta_url;
-    }
-  };
+  const handleHeroCTA = () => openLeadForm("lp-conoce-hero");
+  const handleFinalCTA = () => openLeadForm("lp-conoce-cta-final");
 
   /* Sort cards: highlighted first on mobile */
   const sortedCards = [...d.cards].sort((a, b) => (b.highlighted ? 1 : 0) - (a.highlighted ? 1 : 0));
