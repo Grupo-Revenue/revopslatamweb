@@ -432,7 +432,7 @@ const HubspotPartnerChile = () => {
                     }}
                   >
                     <span style={{ backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                      RevOps LATAM
+                      Revops LATAM
                     </span>
                   </span>
                 </div>
