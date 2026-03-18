@@ -517,40 +517,6 @@ const HubspotPartnerChile = () => {
         </div>
       </SectionShell>
 
-      {/* ══════════ SECTION 5 — PARA QUIÉN ══════════ */}
-      <SectionShell section={pqSec} className="px-6" defaultBg={{ background: "#F9FAFB", padding: "100px 24px" }}>
-        <div className="relative z-10 mx-auto" style={{ maxWidth: 800 }}>
-          <FadeIn><h2 className="font-bold text-center mb-10 whitespace-pre-line" style={{ fontSize: 30, color: "#1A1A2E", lineHeight: 1.3 }}>{pq.title}</h2></FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <FadeIn delay={0.1}>
-              <div style={{ background: "rgba(22,163,74,0.04)", border: "1px solid rgba(22,163,74,0.15)", borderRadius: 20, padding: 32 }}>
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full" style={{ background: "rgba(22,163,74,0.15)" }}><Check size={14} style={{ color: "#16A34A" }} /></div>
-                  <span className="font-bold" style={{ fontSize: 14, color: "#16A34A" }}>Somos el partner correcto si:</span>
-                </div>
-                <ul className="space-y-3">
-                  {pq.yes.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2" style={{ fontSize: 14, color: "#374151" }}><Check size={16} className="shrink-0 mt-0.5" style={{ color: "#16A34A" }} /><span>{item}</span></li>
-                  ))}
-                </ul>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.2}>
-              <div style={{ background: "rgba(220,38,38,0.04)", border: "1px solid rgba(220,38,38,0.12)", borderRadius: 20, padding: 32 }}>
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="flex items-center justify-center w-6 h-6 rounded-full" style={{ background: "rgba(220,38,38,0.12)" }}><X size={14} style={{ color: "#DC2626" }} /></div>
-                  <span className="font-bold" style={{ fontSize: 14, color: "#DC2626" }}>No somos el partner correcto si:</span>
-                </div>
-                <ul className="space-y-3">
-                  {pq.no.map((item, i) => (
-                    <li key={i} className="flex items-start gap-2" style={{ fontSize: 14, color: "#374151" }}><X size={16} className="shrink-0 mt-0.5" style={{ color: "#DC2626" }} /><span>{item}</span></li>
-                  ))}
-                </ul>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </SectionShell>
 
       {/* ══════════ SECTION 6 — FAQ ══════════ */}
       <SectionShell section={faqSec} className="px-6" defaultBg={{ background: "#FFFFFF", padding: "100px 24px" }}>
