@@ -1,0 +1,1 @@
+UPDATE page_sections SET subtitle = 'Diseñamos, implementamos y operamos tu sistema completo en HubSpot: procesos, automatización y datos alineados para generar revenue real.' WHERE section_key = 'hero' AND page_id IN (SELECT id FROM site_pages WHERE slug = 'hubspot-partner-chile');
