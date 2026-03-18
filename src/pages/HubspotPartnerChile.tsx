@@ -356,8 +356,8 @@ const HubspotPartnerChile = () => {
           {/* H2 */}
           <FadeIn delay={0.05}>
             <h2
-              className="font-bold mx-auto mb-5 whitespace-pre-line"
-              style={{ fontSize: "clamp(26px, 4vw, 38px)", color: "hsl(var(--foreground))", lineHeight: 1.2, maxWidth: 700 }}
+              className="font-bold mx-auto mb-5 md:whitespace-pre-line"
+              style={{ fontSize: "clamp(24px, 4vw, 38px)", color: "hsl(var(--foreground))", lineHeight: 1.2, maxWidth: 700 }}
             >
               {pos.title}
             </h2>
@@ -370,10 +370,10 @@ const HubspotPartnerChile = () => {
             </p>
           </FadeIn>
 
-          {/* ─── TABLE — Protagonist ─── */}
+          {/* ─── TABLE — Desktop ─── */}
           <FadeIn delay={0.15}>
             <div
-              className="overflow-hidden mx-auto"
+              className="hidden md:block overflow-hidden mx-auto"
               style={{
                 borderRadius: 20,
                 border: "1px solid hsl(var(--border))",
@@ -448,6 +448,46 @@ const HubspotPartnerChile = () => {
             </div>
           </FadeIn>
 
+          {/* ─── TABLE — Mobile (stacked cards) ─── */}
+          <FadeIn delay={0.15}>
+            <div className="md:hidden flex flex-col gap-3">
+              {pos.comparison.map((row, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  style={{
+                    borderRadius: 16,
+                    border: "1px solid hsl(var(--border))",
+                    background: "hsl(var(--card))",
+                    padding: "16px 20px",
+                  }}
+                >
+                  <span className="block font-bold mb-3" style={{ fontSize: 14, color: "hsl(var(--foreground))" }}>
+                    {row.label}
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <span className="block text-[11px] uppercase tracking-wider font-semibold mb-1" style={{ color: "hsl(var(--muted-foreground))" }}>Agencia</span>
+                      <span style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", lineHeight: 1.4 }}>{row.agency}</span>
+                    </div>
+                    <div>
+                      <span className="block text-[11px] uppercase tracking-wider font-semibold mb-1" style={{ backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Revops LATAM</span>
+                      <div className="flex items-start gap-1.5">
+                        <Check size={14} className="mt-0.5 shrink-0" style={{ color: "#BE1869" }} />
+                        <span className="font-bold" style={{ fontSize: 13, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.4 }}>
+                          {row.revops}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </FadeIn>
+
           {/* Callout — below table */}
           <FadeIn delay={0.25}>
             <p className="mx-auto mt-12 text-center" style={{ maxWidth: 700, fontSize: 16, color: "#6B7280", lineHeight: 1.7 }}>
@@ -462,7 +502,7 @@ const HubspotPartnerChile = () => {
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 1100 }}>
           <FadeIn>
             <span className="uppercase font-bold tracking-widest mb-4 inline-block" style={{ fontSize: 11, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{eco.eyebrow}</span>
-            <h2 className="font-bold mb-5 mx-auto whitespace-pre-line" style={{ fontSize: 34, color: "#1A1A2E", maxWidth: 640, lineHeight: 1.25 }}>{eco.title}</h2>
+            <h2 className="font-bold mb-5 mx-auto md:whitespace-pre-line" style={{ fontSize: "clamp(24px, 4vw, 34px)", color: "#1A1A2E", maxWidth: 640, lineHeight: 1.25 }}>{eco.title}</h2>
             <p className="mx-auto mb-14" style={{ fontSize: 16, color: "#6B7280", maxWidth: 560, lineHeight: 1.7 }}>{eco.subtitle}</p>
           </FadeIn>
 
@@ -472,7 +512,7 @@ const HubspotPartnerChile = () => {
             {eco.hubs.map((card, i) => (
               <FadeIn key={card.title || i} delay={i * 0.1}>
                 <div className="text-left h-full transition-all duration-300 hover:-translate-y-1"
-                  style={{ background: "#FFFFFF", borderRadius: 20, padding: 36, border: "1px solid #E5E7EB" }}
+                  style={{ background: "#FFFFFF", borderRadius: 20, padding: "clamp(20px, 4vw, 36px)", border: "1px solid #E5E7EB" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = "#BE1869"; e.currentTarget.style.boxShadow = "0 20px 60px rgba(190,24,105,0.1)"; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = "#E5E7EB"; e.currentTarget.style.boxShadow = "none"; }}>
                   <span className="inline-block uppercase font-bold tracking-wider mb-4" style={{ fontSize: 11, color: card.badgeColor, background: `${card.badgeColor}14`, borderRadius: 999, padding: "4px 12px" }}>{card.badge}</span>
@@ -501,7 +541,8 @@ const HubspotPartnerChile = () => {
               {ct.steps.map((step, i) => (
                 <FadeIn key={step.num || i} delay={i * 0.15}>
                   <div className="relative flex flex-col items-center text-center">
-                    {i < ct.steps.length - 1 && <div className="lg:hidden absolute top-[56px] left-1/2 -translate-x-1/2 w-[3px] h-[calc(100%+32px)]" style={{ background: "linear-gradient(180deg, #BE1869, #6224BE)" }} />}
+                    {/* vertical line only on tablet, hidden on mobile and desktop */}
+                    {i < ct.steps.length - 1 && <div className="hidden md:block lg:hidden absolute top-[56px] left-1/2 -translate-x-1/2 w-[3px] h-[calc(100%+32px)]" style={{ background: "linear-gradient(180deg, #BE1869, #6224BE)" }} />}
                     <div className="relative z-10 flex items-center justify-center text-white font-bold mb-5" style={{ width: 56, height: 56, borderRadius: "50%", background: "linear-gradient(135deg, #BE1869, #6224BE)", fontSize: 18 }}>{step.num}</div>
                     <h3 className="font-bold mb-3" style={{ fontSize: 16, color: "#1A1A2E" }}>{step.title}</h3>
                     <p className="mb-4" style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7 }}>{step.desc}</p>
@@ -521,7 +562,7 @@ const HubspotPartnerChile = () => {
           <FadeIn>
             <div className="text-center mb-12">
               <span className="uppercase font-bold tracking-widest mb-4 inline-block" style={{ fontSize: 11, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{faq.eyebrow}</span>
-              <h2 className="font-bold whitespace-pre-line" style={{ fontSize: 30, color: "#1A1A2E", lineHeight: 1.3 }}>{faq.title}</h2>
+              <h2 className="font-bold md:whitespace-pre-line" style={{ fontSize: "clamp(22px, 5vw, 30px)", color: "#1A1A2E", lineHeight: 1.3 }}>{faq.title}</h2>
             </div>
           </FadeIn>
           <div>
@@ -550,7 +591,7 @@ const HubspotPartnerChile = () => {
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 620 }}>
           <FadeIn>
             <span className="inline-block uppercase font-bold tracking-wider mb-6" style={{ fontSize: 11, color: "#FF7A59", background: "rgba(255,122,89,0.15)", borderRadius: 999, padding: "6px 16px" }}>{cta.badge}</span>
-            <h2 className="text-white font-bold mb-5 whitespace-pre-line" style={{ fontSize: 30, lineHeight: 1.3 }}>{cta.title}</h2>
+            <h2 className="text-white font-bold mb-5 md:whitespace-pre-line" style={{ fontSize: "clamp(22px, 5vw, 30px)", lineHeight: 1.3 }}>{cta.title}</h2>
             <p className="mb-10" style={{ fontSize: 16, color: "rgba(255,255,255,0.65)", lineHeight: 1.7 }}>{cta.subtitle}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <DynamicCTA
