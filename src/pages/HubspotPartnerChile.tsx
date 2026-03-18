@@ -44,7 +44,7 @@ const DEF = {
   ecosistema: {
     eyebrow: "LO QUE IMPLEMENTAMOS",
     title: "Implementamos todo el ecosistema HubSpot.\nSiempre desde la lógica del motor de ingresos.",
-    subtitle: "Cada Hub de HubSpot es una pieza de la pista. La diferencia entre una implementación que funciona y una que no es si las piezas están conectadas entre sí — y con el proceso real del negocio.",
+    subtitle: "Cada Hub de HubSpot es una pieza de la pista. La diferencia entre una implementación que funciona y una que no es si las piezas están conectadas entre sí, y con el proceso real del negocio.",
     hubs: [
       { badge: "GENERA LA DEMANDA", badgeColor: "#BE1869", icon: "megaphone", title: "Marketing Hub", desc: "Formularios, emails, nurturing, lead scoring, landing pages y atribución. Para que marketing demuestre su impacto real en el pipeline — no solo en clics e impresiones.", tag: "Ideal para equipos de marketing" },
       { badge: "CONVIERTE LEADS", badgeColor: "#0779D7", icon: "chart", title: "Sales Hub", desc: "Pipeline con etapas claras, automatizaciones de seguimiento, secuencias, playbooks y forecast confiable. Para que el Director Comercial lidere con datos — no con intuición.", tag: "Ideal para equipos comerciales" },
