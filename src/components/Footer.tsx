@@ -93,9 +93,16 @@ const Footer = () => {
           <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.3)" }}>
             © 2026 Revops LATAM. Todos los derechos reservados.
           </p>
-          <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.3)" }}>
-            Construido con RevOps · Santiago, Chile
-          </p>
+          <div className="flex items-center gap-4">
+            <Link to="/politica-de-privacidad" className="text-[12px] transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.3)" }}>
+              Política de Privacidad
+            </Link>
+            <span className="text-[12px]" style={{ color: "rgba(255,255,255,0.15)" }}>·</span>
+            <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.3)" }}>
+              Santiago, Chile
+            </p>
+          </div>
+        </div>
         </div>
       </div>
     </footer>

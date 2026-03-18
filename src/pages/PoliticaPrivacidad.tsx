@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Shield, Eye, Lock, UserCheck, Trash2, FileText, Mail } from "lucide-react";
-import usePageMeta from "@/hooks/usePageMeta";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const sections = [
   {
