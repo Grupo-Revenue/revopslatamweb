@@ -341,7 +341,7 @@ const HubspotPartnerChile = () => {
       </SectionShell>
 
       {/* ══════════ SECTION 2 — POSICIONAMIENTO ══════════ */}
-      <SectionShell section={posSec} className="px-6" defaultBg={{ background: "#FFFFFF", padding: "100px 24px" }}>
+      <SectionShell section={posSec} className="px-6 py-16 md:py-[100px]" defaultBg={{ background: "#FFFFFF" }}>
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 900 }}>
           {/* Eyebrow */}
           <FadeIn>
@@ -498,7 +498,7 @@ const HubspotPartnerChile = () => {
       </SectionShell>
 
       {/* ══════════ SECTION 3 — ECOSISTEMA ══════════ */}
-      <SectionShell section={ecoSec} className="px-6" defaultBg={{ background: "#F9FAFB", padding: "100px 24px" }}>
+      <SectionShell section={ecoSec} className="px-6 py-16 md:py-[100px]" defaultBg={{ background: "#F9FAFB" }}>
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 1100 }}>
           <FadeIn>
             <span className="uppercase font-bold tracking-widest mb-4 inline-block" style={{ fontSize: 11, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{eco.eyebrow}</span>
@@ -550,7 +550,7 @@ const HubspotPartnerChile = () => {
       </SectionShell>
 
       {/* ══════════ SECTION 4 — CÓMO TRABAJAMOS ══════════ */}
-      <SectionShell section={ctSec} className="px-6" defaultBg={{ background: "#FFFFFF", padding: "100px 24px" }}>
+      <SectionShell section={ctSec} className="px-6 py-16 md:py-[100px]" defaultBg={{ background: "#FFFFFF" }}>
         <div id="como-trabajamos" className="relative z-10 mx-auto text-center scroll-mt-32" style={{ maxWidth: 900 }}>
           <FadeIn>
             <h2 className="font-bold mb-3" style={{ fontSize: 32, color: "#1A1A2E" }}>{ct.title}</h2>
@@ -579,7 +579,7 @@ const HubspotPartnerChile = () => {
 
 
       {/* ══════════ SECTION 6 — FAQ ══════════ */}
-      <SectionShell section={faqSec} className="px-6" defaultBg={{ background: "#FFFFFF", padding: "100px 24px" }}>
+      <SectionShell section={faqSec} className="px-6 py-16 md:py-[100px]" defaultBg={{ background: "#FFFFFF" }}>
         <div className="relative z-10 mx-auto" style={{ maxWidth: 720 }}>
           <FadeIn>
             <div className="text-center mb-12">
@@ -609,7 +609,7 @@ const HubspotPartnerChile = () => {
       </SectionShell>
 
       {/* ══════════ SECTION 7 — CTA FINAL ══════════ */}
-      <SectionShell section={ctaFinalSec} className="px-6" defaultBg={{ background: "#1A1A2E", padding: "80px 24px" }}>
+      <SectionShell section={ctaFinalSec} className="px-6 py-14 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 620 }}>
           <FadeIn>
             <span className="inline-block uppercase font-bold tracking-wider mb-6" style={{ fontSize: 11, color: "#FF7A59", background: "rgba(255,122,89,0.15)", borderRadius: 999, padding: "6px 16px" }}>{cta.badge}</span>
