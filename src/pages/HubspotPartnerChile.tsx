@@ -541,7 +541,8 @@ const HubspotPartnerChile = () => {
               {ct.steps.map((step, i) => (
                 <FadeIn key={step.num || i} delay={i * 0.15}>
                   <div className="relative flex flex-col items-center text-center">
-                    {i < ct.steps.length - 1 && <div className="lg:hidden absolute top-[56px] left-1/2 -translate-x-1/2 w-[3px] h-[calc(100%+32px)]" style={{ background: "linear-gradient(180deg, #BE1869, #6224BE)" }} />}
+                    {/* vertical line only on tablet, hidden on mobile and desktop */}
+                    {i < ct.steps.length - 1 && <div className="hidden md:block lg:hidden absolute top-[56px] left-1/2 -translate-x-1/2 w-[3px] h-[calc(100%+32px)]" style={{ background: "linear-gradient(180deg, #BE1869, #6224BE)" }} />}
                     <div className="relative z-10 flex items-center justify-center text-white font-bold mb-5" style={{ width: 56, height: 56, borderRadius: "50%", background: "linear-gradient(135deg, #BE1869, #6224BE)", fontSize: 18 }}>{step.num}</div>
                     <h3 className="font-bold mb-3" style={{ fontSize: 16, color: "#1A1A2E" }}>{step.title}</h3>
                     <p className="mb-4" style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7 }}>{step.desc}</p>
