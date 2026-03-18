@@ -361,7 +361,7 @@ const HubspotPartnerChile = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="hidden lg:flex justify-center"
           >
-            <RevenuePipelineVisual />
+            <HeroDashboardVisual />
           </motion.div>
         </div>
       </SectionShell>
