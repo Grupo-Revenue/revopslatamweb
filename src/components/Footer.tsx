@@ -22,7 +22,7 @@ const Footer = () => {
   return (
     <footer style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <div className="max-w-[1200px] mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-8">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link to="/">
