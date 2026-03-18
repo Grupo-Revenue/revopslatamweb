@@ -316,7 +316,7 @@ const HubspotPartnerChile = () => {
     subtitle: heroSec?.subtitle ?? DEF.hero.subtitle,
     cta: heroSec?.cta_text ?? DEF.hero.cta,
     cta2: (hm.cta2_text as string) ?? DEF.hero.cta2,
-    stats: (hm.stats as StatDef[]) ?? DEF.hero.stats,
+    credentials: (hm.credentials as string[]) ?? DEF.hero.credentials,
   };
 
   const paragraphs = posSec?.body ? posSec.body.split("||") : DEF.posicionamiento.paragraphs;
