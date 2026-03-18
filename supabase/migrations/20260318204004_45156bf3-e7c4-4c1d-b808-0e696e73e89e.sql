@@ -1,0 +1,1 @@
+UPDATE page_sections SET title = 'Convierte HubSpot en un sistema de revenue.' WHERE section_key = 'hero' AND page_id IN (SELECT id FROM site_pages WHERE slug = 'hubspot-partner-chile');
