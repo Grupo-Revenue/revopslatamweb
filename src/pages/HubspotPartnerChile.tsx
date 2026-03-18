@@ -159,17 +159,14 @@ const HeroDashboardVisual = ({ imageUrl }: { imageUrl?: string }) => (
 );
 
 function HubIcon({ icon, color }: { icon: string; color: string }) {
-  const useGradient = icon === "megaphone" || icon === "globe";
-  const p = { size: 40 };
-  const style = useGradient ? {} : { color };
-  const stroke = useGradient ? "url(#grad)" : undefined;
+  const p = { size: 40, color };
   switch (icon) {
-    case "megaphone": return <Megaphone {...p} stroke={stroke} style={style} />;
-    case "chart": return <BarChart3 {...p} stroke={stroke} style={style} />;
-    case "heart": return <Heart {...p} stroke={stroke} style={style} />;
-    case "settings": return <Settings {...p} stroke={stroke} style={style} />;
-    case "globe": return <Globe {...p} stroke={stroke} style={style} />;
-    default: return <Megaphone {...p} stroke={stroke} style={style} />;
+    case "megaphone": return <Megaphone {...p} />;
+    case "chart": return <BarChart3 {...p} />;
+    case "heart": return <Heart {...p} />;
+    case "settings": return <Settings {...p} />;
+    case "globe": return <Globe {...p} />;
+    default: return <Megaphone {...p} />;
   }
 }
 
