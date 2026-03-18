@@ -132,7 +132,7 @@ const FadeIn = ({ children, className = "", delay = 0, direction = "up" }: {
 };
 
 /* Hero Visual — Dashboard screenshot + Badge */
-const HeroDashboardVisual = () => (
+const HeroDashboardVisual = ({ imageUrl }: { imageUrl?: string }) => (
   <div className="relative w-full flex flex-col items-center" style={{ maxWidth: 500 }}>
     {/* Glow behind dashboard */}
     <div className="absolute inset-0 pointer-events-none" style={{
