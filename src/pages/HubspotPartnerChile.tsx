@@ -10,6 +10,7 @@ import DynamicCTA from "@/components/DynamicCTA";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import hubspotPlatinumBadge from "@/assets/logos/hubspot-platinum-badge.png";
+import hubspotDashboard from "@/assets/hubspot-dashboard-dark.png";
 
 /* ─── Defaults ─── */
 const DEF = {
@@ -130,88 +131,51 @@ const FadeIn = ({ children, className = "", delay = 0, direction = "up" }: {
   );
 };
 
-/* Revenue Pipeline Visual — minimal & premium */
-const STAGES = ["Leads", "MQL", "SQL", "Deal", "Revenue"];
-const LAYERS = ["Automatización", "Datos", "CRM"];
-
-const RevenuePipelineVisual = () => (
-  <div className="relative w-full flex flex-col items-center" style={{ maxWidth: 440 }}>
-    {/* Subtle glow */}
+/* Hero Visual — Dashboard screenshot + Badge */
+const HeroDashboardVisual = () => (
+  <div className="relative w-full flex flex-col items-center" style={{ maxWidth: 500 }}>
+    {/* Glow behind dashboard */}
     <div className="absolute inset-0 pointer-events-none" style={{
-      background: "radial-gradient(ellipse at 50% 30%, rgba(190,24,105,0.08) 0%, transparent 70%)",
-      filter: "blur(80px)",
+      background: "radial-gradient(ellipse at 50% 50%, rgba(190,24,105,0.12) 0%, rgba(98,36,190,0.06) 50%, transparent 80%)",
+      filter: "blur(60px)",
+      transform: "scale(1.2)",
     }} />
 
-    {/* Pipeline flow */}
-    <div className="relative z-10 flex items-center w-full justify-between mb-10">
-      {STAGES.map((stage, i) => (
-        <div key={stage} className="flex items-center flex-1">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-            className="flex flex-col items-center w-full"
-          >
-            <div
-              className="w-11 h-11 rounded-xl flex items-center justify-center text-[11px] font-bold text-white"
-              style={{
-                background: i === STAGES.length - 1
-                  ? "linear-gradient(135deg, #BE1869, #6224BE)"
-                  : "rgba(255,255,255,0.05)",
-                border: `1px solid ${i === STAGES.length - 1 ? "rgba(190,24,105,0.4)" : "rgba(255,255,255,0.08)"}`,
-              }}
-            >
-              {stage === "Revenue" ? "$" : (i + 1)}
-            </div>
-            <span className="mt-2 text-[10px] font-medium" style={{
-              color: i === STAGES.length - 1 ? "rgba(190,24,105,0.8)" : "rgba(255,255,255,0.35)"
-            }}>{stage}</span>
-          </motion.div>
-
-          {i < STAGES.length - 1 && (
-            <div className="flex-1 relative h-[1px] mx-1" style={{ marginTop: -14 }}>
-              <div className="absolute inset-0" style={{ background: "rgba(255,255,255,0.06)" }} />
-              <motion.div
-                className="absolute top-0 h-full w-3"
-                style={{ background: "linear-gradient(90deg, transparent, rgba(190,24,105,0.5), transparent)" }}
-                animate={{ left: ["-12px", "100%"] }}
-                transition={{ duration: 2, repeat: Infinity, delay: i * 0.4, ease: "linear" }}
-              />
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-
-    {/* 3 layer labels */}
+    {/* Badge — visible but not dominant */}
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 1.1 }}
-      className="relative z-10 flex items-center justify-center gap-6"
-    >
-      {LAYERS.map((label, i) => (
-        <div key={label} className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full" style={{
-            background: ["#BE1869", "#0779D7", "#FF7A59"][i],
-          }} />
-          <span className="text-[11px] font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>{label}</span>
-        </div>
-      ))}
-    </motion.div>
-
-    {/* Badge — proof, not protagonist */}
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.5, duration: 0.6 }}
-      className="relative z-10 mt-8"
+      transition={{ duration: 0.6, delay: 0.4 }}
+      className="relative z-20 mb-6"
     >
       <img
         src={hubspotPlatinumBadge}
         alt="HubSpot Platinum Partner"
-        className="h-14 w-auto"
-        style={{ opacity: 0.6 }}
+        className="h-24 w-auto"
+        style={{ filter: "drop-shadow(0 8px 24px rgba(255,122,89,0.15))" }}
+      />
+    </motion.div>
+
+    {/* Dashboard screenshot with treatment */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.6 }}
+      className="relative z-10 w-full rounded-2xl overflow-hidden"
+      style={{
+        border: "1px solid rgba(255,255,255,0.08)",
+        boxShadow: "0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(190,24,105,0.08)",
+      }}
+    >
+      {/* Subtle brand overlay */}
+      <div className="absolute inset-0 z-10 pointer-events-none" style={{
+        background: "linear-gradient(180deg, rgba(13,13,26,0.15) 0%, rgba(13,13,26,0.05) 50%, rgba(13,13,26,0.3) 100%)",
+      }} />
+      <img
+        src={hubspotDashboard}
+        alt="HubSpot CRM Dashboard"
+        className="w-full h-auto block"
+        style={{ filter: "saturate(0.85) brightness(0.95)" }}
       />
     </motion.div>
   </div>
@@ -397,7 +361,7 @@ const HubspotPartnerChile = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="hidden lg:flex justify-center"
           >
-            <RevenuePipelineVisual />
+            <HeroDashboardVisual />
           </motion.div>
         </div>
       </SectionShell>
