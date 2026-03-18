@@ -15,13 +15,13 @@ import hubspotPlatinumBadge from "@/assets/logos/hubspot-platinum-badge.png";
 /* ─── Defaults ─── */
 const DEF = {
   hero: {
-    title: "Somos HubSpot Platinum Partner\nen Chile y LATAM.\nPero no somos una agencia.",
-    subtitle: "Llevamos 14 años implementando y operando HubSpot en empresas B2B de Chile, México, Colombia, Perú y Argentina. No configuramos la herramienta y nos vamos — construimos el motor de ingresos completo.",
+    title: "Somos HubSpot Platinum Partner\nen Chile.\nPero no somos una agencia.",
+    subtitle: "Llevamos 14 años implementando y operando HubSpot en empresas B2B de Chile. No configuramos la herramienta y nos vamos, construimos el motor de ingresos completo.",
     cta: "Agenda una conversación →",
     cta2: "Ver cómo trabajamos ↓",
     stats: [
       { value: "Platinum", label: "Nivel de partnership HubSpot" },
-      { value: "14 años", label: "Operando en Chile y LATAM", counter: 14 },
+      { value: "14 años", label: "Operando en Chile", counter: 14 },
       { value: "5 Hubs", label: "Implementamos todo el ecosistema" },
     ],
   },
