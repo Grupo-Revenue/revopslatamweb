@@ -82,7 +82,7 @@ const DEF = {
   },
   faq: {
     eyebrow: "PREGUNTAS FRECUENTES",
-    title: "Lo que más nos preguntan sobre\nser partner HubSpot en Chile y LATAM",
+    title: "Lo que más nos preguntan sobre\nser partner HubSpot en Chile",
     faqs: [
       { q: "¿Qué es un HubSpot Partner?", a: "Un HubSpot Partner es una empresa certificada por HubSpot para implementar, configurar y operar sus productos. Los partners están organizados en niveles según su experiencia y volumen de clientes: Starter, Gold, Platinum, Diamond y Elite. RevOps LATAM es HubSpot Platinum Partner en Chile — uno de los niveles más altos del ecosistema de partners en la región." },
       { q: "¿Cuál es la diferencia entre un partner Platinum y uno Gold?", a: "El nivel Platinum refleja mayor experiencia acumulada, mayor volumen de implementaciones exitosas y certificaciones más avanzadas del equipo. En el directorio global de HubSpot hay miles de partners — los niveles más altos representan una fracción pequeña. En Chile y LATAM, los partners Platinum son especialmente escasos." },
