@@ -33,8 +33,9 @@ import HubspotPartnerChile from "./pages/HubspotPartnerChile";
 import NotFound from "./pages/NotFound";
 import { Navigate } from "react-router-dom";
 
-const ExternalRedirect = ({ to }: { to: string }) => {
-  window.location.replace(to);
+const BlogRedirect = () => {
+  const path = window.location.pathname.replace(/^\/blog/, '');
+  window.location.replace(`https://blog.revopslatam.com${path}`);
   return null;
 };
 
@@ -104,7 +105,7 @@ const App = () => (
                 <Route path="media" element={<AdminMedia />} />
                 <Route path="users" element={<AdminUsers />} />
               </Route>
-              <Route path="/blog/que-es-revenue-operations-y-cual-es-su-beneficio" element={<ExternalRedirect to="https://blog.revopslatam.com/que-es-revenue-operations-y-cual-es-su-beneficio" />} />
+              <Route path="/blog/*" element={<BlogRedirect />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
