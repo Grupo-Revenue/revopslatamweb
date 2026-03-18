@@ -508,7 +508,29 @@ const HubspotPartnerChile = () => {
 
           <svg width="0" height="0" className="absolute"><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stopColor="#BE1869" /><stop offset="100%" stopColor="#6224BE" /></linearGradient></defs></svg>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {/* Mobile checklist */}
+          <ul className="md:hidden space-y-4 text-left">
+            {eco.hubs.map((card, i) => (
+              <FadeIn key={card.title || i} delay={i * 0.08}>
+                <li className="flex items-start gap-3">
+                  <span
+                    className="mt-0.5 w-6 h-6 rounded-full flex items-center justify-center shrink-0"
+                    style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)" }}
+                  >
+                    <Check size={14} color="#fff" strokeWidth={3} />
+                  </span>
+                  <span style={{ fontSize: 15, color: "#374151", lineHeight: 1.5 }}>
+                    <strong style={{ color: card.badgeColor }}>{card.title}</strong>
+                    {" — "}
+                    {card.desc.length > 60 ? card.desc.slice(0, 60).trim() + "…" : card.desc}
+                  </span>
+                </li>
+              </FadeIn>
+            ))}
+          </ul>
+
+          {/* Desktop cards */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {eco.hubs.map((card, i) => (
               <FadeIn key={card.title || i} delay={i * 0.1}>
                 <div className="text-left h-full transition-all duration-300 hover:-translate-y-1"
@@ -518,7 +540,7 @@ const HubspotPartnerChile = () => {
                   <span className="inline-block uppercase font-bold tracking-wider mb-4" style={{ fontSize: 11, color: card.badgeColor, background: `${card.badgeColor}14`, borderRadius: 999, padding: "4px 12px" }}>{card.badge}</span>
                   <div className="mb-4"><HubIcon icon={card.icon} color={card.badgeColor} /></div>
                   <h3 className="font-bold mb-3" style={{ fontSize: 17, color: "#1A1A2E" }}>{card.title}</h3>
-                  <p className="hidden md:block mb-5" style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7 }}>{card.desc}</p>
+                  <p className="mb-5" style={{ fontSize: 14, color: "#6B7280", lineHeight: 1.7 }}>{card.desc}</p>
                   <span style={{ display: "inline-block", fontSize: 12, color: "#6B7280", background: "#F9FAFB", border: "1px solid #E5E7EB", borderRadius: 999, padding: "4px 14px" }}>{card.tag}</span>
                 </div>
               </FadeIn>
