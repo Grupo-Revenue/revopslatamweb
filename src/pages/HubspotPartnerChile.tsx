@@ -562,7 +562,7 @@ const HubspotPartnerChile = () => {
           <FadeIn>
             <div className="text-center mb-12">
               <span className="uppercase font-bold tracking-widest mb-4 inline-block" style={{ fontSize: 11, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{faq.eyebrow}</span>
-              <h2 className="font-bold whitespace-pre-line" style={{ fontSize: 30, color: "#1A1A2E", lineHeight: 1.3 }}>{faq.title}</h2>
+              <h2 className="font-bold md:whitespace-pre-line" style={{ fontSize: "clamp(22px, 5vw, 30px)", color: "#1A1A2E", lineHeight: 1.3 }}>{faq.title}</h2>
             </div>
           </FadeIn>
           <div>
