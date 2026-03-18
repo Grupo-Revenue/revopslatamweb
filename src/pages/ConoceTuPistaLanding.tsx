@@ -1,218 +1,81 @@
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import DynamicCTA from "@/components/DynamicCTA";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
-import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
-import BackgroundOrbs from "@/components/services/BackgroundOrbs";
-import SectionDivider from "@/components/services/SectionDivider";
-import DotPattern from "@/components/services/DotPattern";
-import GradientMesh from "@/components/services/GradientMesh";
-import NoiseOverlay from "@/components/services/NoiseOverlay";
-import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
+import { Check, ArrowRight, AlertTriangle, BarChart3, RefreshCw } from "lucide-react";
+import { Link } from "react-router-dom";
 
-/* ─── animation helper ─── */
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 } as const,
+/* ─── helpers ─── */
+const fade = (delay = 0) => ({
+  initial: { opacity: 0, y: 16 } as const,
   whileInView: { opacity: 1, y: 0 } as const,
-  viewport: { once: true, margin: "-60px" } as const,
-  transition: { duration: 0.6, delay, ease: "easeOut" as const },
+  viewport: { once: true, margin: "-40px" } as const,
+  transition: { duration: 0.45, delay, ease: "easeOut" as const },
 });
 
-const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
-
-function meta(section?: HomeSection): Record<string, unknown> {
-  return (section?.metadata as Record<string, unknown>) ?? {};
+function meta(s?: HomeSection): Record<string, unknown> {
+  return (s?.metadata as Record<string, unknown>) ?? {};
 }
 
-/* ─── SVG Track ─── */
-const TrackSVG = () => {
-  const pathRef = useRef<SVGPathElement>(null);
-  useEffect(() => {
-    const path = pathRef.current;
-    if (!path) return;
-    const length = path.getTotalLength();
-    path.style.strokeDasharray = `${length}`;
-    path.style.strokeDashoffset = `${length}`;
-    const timeout = setTimeout(() => {
-      path.style.transition = "stroke-dashoffset 2s ease-out";
-      path.style.strokeDashoffset = "0";
-    }, 400);
-    return () => clearTimeout(timeout);
-  }, []);
+const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 
-  return (
-    <svg viewBox="0 0 800 120" className="w-full max-w-[600px] mx-auto" style={{ opacity: 0.15 }}>
-      <defs>
-        <linearGradient id="trackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#BE1869" />
-          <stop offset="100%" stopColor="#6224BE" />
-        </linearGradient>
-      </defs>
-      <path
-        ref={pathRef}
-        d="M 20 60 C 120 20, 200 100, 300 60 S 480 10, 550 60 S 700 110, 780 60"
-        fill="none"
-        stroke="url(#trackGrad)"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
+/* ─── default data ─── */
+const DEF = {
+  hero: {
+    badge: "Conoce tu pista",
+    title: "¿Tu operación comercial\ndebería rendir más?",
+    subtitle: "Descubre exactamente qué frena tu crecimiento con un diagnóstico RevOps diseñado para empresas en Chile.",
+    cta_text: "Quiero mi diagnóstico →",
+    cta_url: "#diagnosticos",
+  },
+  problema: {
+    title: "Estos síntomas te suenan?",
+    stat_cards: [
+      { icon: "alert", text: "Pipeline impredecible: no sabes qué vas a cerrar este mes" },
+      { icon: "chart", text: "Datos inconsistentes: cada área tiene su propia verdad" },
+      { icon: "loop", text: "Inversión sin retorno claro: gastas pero no puedes medir" },
+    ],
+    highlight: "El problema casi nunca es la gente. Casi siempre es el sistema.",
+  },
+  diagnosticos: {
+    title: "Elige tu diagnóstico",
+    subtitle: "El nivel correcto depende de tu tamaño y complejidad.",
+    cards: [
+      { badge: "STARTER", title: "RevOps Checkup", tagline: "Claridad en 2 semanas", description: "Para equipos pequeños que necesitan claridad rápida.", price: "Desde 80 UF", duration: "2 semanas", href: "/revops-checkup", highlighted: false, badgeHighlight: false },
+      { badge: "GROWTH · MÁS ELEGIDO", title: "Diagnóstico RevOps", tagline: "Visión completa en 3 semanas", description: "Para empresas en crecimiento que necesitan un diagnóstico profundo.", price: "Desde 150 UF", duration: "3 semanas", href: "/diagnostico-revops", highlighted: true, badgeHighlight: true },
+      { badge: "ENTERPRISE", title: "Motor de Ingresos", tagline: "Transformación en 5 semanas", description: "Para operaciones complejas con múltiples equipos y herramientas.", price: "Desde 250 UF", duration: "5 semanas", href: "/motor-de-ingresos", highlighted: false, badgeHighlight: false },
+    ],
+  },
+  porQue: {
+    title: "¿Por qué diagnosticar primero?",
+    body: "El 70% de nuestros clientes continúan con un proyecto después del diagnóstico. No porque los convenzamos, sino porque revela oportunidades concretas.",
+    stats: [{ value: "14 años", label: "de experiencia" }, { value: "Platinum", label: "HubSpot Partners" }, { value: "Cientos", label: "de equipos alineados" }],
+  },
+  ctaFinal: {
+    title: "¿No sabes cuál necesitas?",
+    subtitle: "En 15 minutos te ayudamos a elegir, sin compromiso.",
+    cta_text: "Agendar conversación gratuita →",
+    cta_url: "#",
+  },
 };
 
-/* ─── Section Shell ─── */
-function SectionShell({ section, className, defaultBg, children }: {
-  section?: HomeSection; className: string; defaultBg?: React.CSSProperties; children: React.ReactNode;
-}) {
-  const { getBgStyle } = useSectionStyles(section);
-  const { hasBg, bgLayerStyle } = useSectionBackground(section);
-  return (
-    <section className={`relative overflow-hidden ${className}`} style={{ ...(defaultBg ?? {}), ...getBgStyle() }}>
-      {hasBg && <div style={bgLayerStyle} />}
-      {children}
-    </section>
-  );
-}
-
-/* ─── Stat Card for Section 2 ─── */
-const StatCard = ({ icon, text, delay }: { icon: string; text: string; delay: number }) => (
-  <motion.div
-    {...fadeUp(delay)}
-    className="rounded-2xl p-5 sm:p-6 flex items-center gap-4"
-    style={{ background: "#ffffff", border: "1px solid #E5E7EB", boxShadow: "0 4px 24px rgba(0,0,0,0.04)" }}
-  >
-    <span className="text-2xl flex-shrink-0">{icon}</span>
-    <span className="text-[15px] sm:text-base font-medium" style={{ color: "#1A1A2E" }}>{text}</span>
-  </motion.div>
-);
-
-/* ─── Pricing Card ─── */
-type PricingCardData = {
+type CardData = {
   badge: string; badgeHighlight?: boolean; title: string; tagline: string;
   description: string; price: string; duration: string; href: string; highlighted?: boolean;
 };
 
-const PricingCard = ({ card, delay }: { card: PricingCardData; delay: number }) => (
-  <motion.div
-    {...fadeUp(delay)}
-    className="relative rounded-[20px] p-[2px] transition-all duration-300 group"
-    style={{ background: card.highlighted ? GRADIENT : "transparent" }}
-  >
-    <div
-      className="rounded-[18px] p-8 sm:p-9 flex flex-col h-full transition-all duration-300 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.1)]"
-      style={{ background: "#ffffff", border: card.highlighted ? "none" : "1px solid #E5E7EB" }}
-      onMouseEnter={(e) => { if (!card.highlighted) e.currentTarget.style.borderColor = "#BE1869"; }}
-      onMouseLeave={(e) => { if (!card.highlighted) e.currentTarget.style.borderColor = "#E5E7EB"; }}
-    >
-      <span
-        className="inline-block self-start text-[11px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full mb-5"
-        style={card.badgeHighlight ? { background: GRADIENT, color: "#fff" } : { background: "#F3F4F6", color: "#6B7280" }}
-      >
-        {card.badge}
-      </span>
-      <h3 className="text-[22px] font-bold leading-tight tracking-tight" style={{ color: "#1A1A2E" }}>{card.title}</h3>
-      <p className="mt-1 text-[14px] font-semibold" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-        {card.tagline}
-      </p>
-      <p className="mt-4 text-[15px] leading-[1.7] flex-1" style={{ color: "#6B7280" }}>{card.description}</p>
-      <div className="my-6 h-px" style={{ background: "#E5E7EB" }} />
-      <p className="text-[24px] font-bold" style={{ color: "#1A1A2E" }}>{card.price}</p>
-      <p className="text-[14px] mt-0.5" style={{ color: "#6B7280" }}>{card.duration}</p>
-      <Link
-        to={card.href}
-        className="mt-6 inline-flex items-center justify-center text-[15px] font-semibold transition-all duration-200 hover:scale-[1.02]"
-        style={card.highlighted
-          ? { background: GRADIENT, color: "#fff", borderRadius: 9999, padding: "12px 28px" }
-          : { background: "transparent", color: "#BE1869", borderRadius: 9999, padding: "12px 28px", border: "2px solid #BE1869" }
-        }
-      >
-        Ver diagnóstico →
-      </Link>
-    </div>
-  </motion.div>
-);
-
-/* ─── Stat number ─── */
-const BigStat = ({ value, label, delay }: { value: string; label: string; delay: number }) => (
-  <motion.div {...fadeUp(delay)} className="text-center">
-    <p className="text-[36px] sm:text-[48px] font-extrabold tracking-tight" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-      {value}
-    </p>
-    <p className="text-[13px] sm:text-[14px] mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{label}</p>
-  </motion.div>
-);
-
-/* ─── Default data ─── */
-const DEFAULTS = {
-  hero: { title: "Antes de correr,\nnecesitas conocer tu pista", subtitle: "En RevOps LATAM no asumimos dónde están tus problemas. Los encontramos, con metodología, con datos y con 14 años de experiencia en el mercado chileno.", cta_text: "Quiero conocer mi pista →", cta_url: "#diagnosticos", badge: "Conoce tu pista" },
-  problema: { title: "¿Sientes que tu operación comercial debería rendir más?", body: "La mayoría de las empresas en crecimiento llegan a un punto donde tienen equipo, herramientas y actividad, pero los números no responden igual. El pipeline no es predecible. Las áreas no hablan el mismo idioma. Nadie tiene un número en el que confiar.", highlight: "El problema casi nunca es la gente. Casi siempre es el sistema.", stat_cards: [{ icon: "⚠️", text: "Pipeline impredecible" }, { icon: "📊", text: "Datos inconsistentes entre áreas" }, { icon: "🔄", text: "Inversión sin retorno claro" }] },
-  diagnosticos: { title: "Tres diagnósticos. Uno es el tuyo.", subtitle: "El nivel correcto depende de tu tamaño y complejidad. Aquí te ayudamos a elegir.", cards: [
-    { badge: "STARTER", title: "RevOps Checkup", tagline: "Claridad en 2 semanas", description: "Para equipos pequeños que necesitan claridad rápida. Sabrás exactamente qué está frenando tu crecimiento y qué hacer al respecto.", price: "Desde 80 UF", duration: "2 semanas", href: "/revops-checkup", highlighted: false, badgeHighlight: false },
-    { badge: "GROWTH", title: "Diagnóstico RevOps", tagline: "Visión completa en 3 semanas", description: "Para empresas en crecimiento que necesitan un diagnóstico profundo de su operación comercial, tecnología y procesos. El más elegido.", price: "Desde 150 UF", duration: "3 semanas", href: "/diagnostico-revops", highlighted: true, badgeHighlight: true },
-    { badge: "ENTERPRISE", title: "Diagnóstico Motor de Ingresos", tagline: "Transformación en 5 semanas", description: "Para operaciones complejas con múltiples equipos, herramientas y fuentes de datos. Análisis integral del motor de ingresos completo.", price: "Desde 250 UF", duration: "5 semanas", href: "/motor-de-ingresos", highlighted: false, badgeHighlight: false },
-  ] },
-  porQueDiagnosticar: { title: "El diagnóstico no es un gasto.\nEs el inicio de una relación.", body: "El 70% de nuestros clientes que pasan por un diagnóstico continúan con un proyecto de implementación o un retainer. No porque los convenzamos, sino porque el diagnóstico revela oportunidades concretas que no querían dejar pasar.\n\nUn buen diagnóstico no te dice que tienes problemas. Te dice cuánto te están costando, y qué pasa si los resuelves.", stats: [{ value: "14 años", label: "de experiencia" }, { value: "Platinum", label: "HubSpot Partners" }, { value: "Cientos", label: "de equipos alineados" }] },
-  ctaFinal: { title: "¿No sabes cuál diagnóstico necesitas?", subtitle: "En 15 minutos de conversación te ayudamos a identificar el nivel correcto, sin compromiso.", cta_text: "Agendar conversación gratuita →", cta_url: "#" },
+/* ─── Icon map ─── */
+const iconMap: Record<string, React.ReactNode> = {
+  alert: <AlertTriangle size={20} className="text-pink-400" />,
+  chart: <BarChart3 size={20} className="text-purple-400" />,
+  loop: <RefreshCw size={20} className="text-blue-400" />,
 };
-
-/* ─── CTA Final Button with lead form support ─── */
-function CTAFinalButton({ section, cta_text, cta_url, cfStyle }: {
-  section?: HomeSection; cta_text: string; cta_url: string;
-  cfStyle: (key: string) => React.CSSProperties;
-}) {
-  const { openLeadForm } = useLeadForm();
-  const m = meta(section);
-  const opensForm = m.cta1_opens_lead_form === true;
-
-  if (opensForm) {
-    return (
-      <button
-        onClick={() => openLeadForm("conoce-tu-pista-landing-cta-final")}
-        className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
-        style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
-      >
-        {cta_text}
-      </button>
-    );
-  }
-
-  return (
-    <Link
-      to={cta_url}
-      className="inline-flex items-center text-[15px] sm:text-base font-semibold text-white transition-all duration-200 hover:shadow-[0_0_24px_rgba(190,24,105,0.4)] hover:scale-[1.03]"
-      style={{ background: GRADIENT, borderRadius: 9999, padding: "14px 32px", ...cfStyle("cta") }}
-    >
-      {cta_text}
-    </Link>
-  );
-}
-
-/* ─── Landing Header (logo only) ─── */
-const LandingHeader = () => (
-  <header className="absolute top-0 left-0 right-0 z-50 flex items-center justify-center py-6">
-    <img src={logoBlanco} alt="Revops LATAM" className="h-8" />
-  </header>
-);
-
-/* ─── Landing Footer (minimal) ─── */
-const LandingFooter = () => (
-  <footer style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-    <div className="max-w-[1200px] mx-auto px-6 py-8 flex flex-col items-center gap-3">
-      <img src={logoBlanco} alt="Revops LATAM" className="h-6" />
-      <p className="text-[12px]" style={{ color: "rgba(255,255,255,0.3)" }}>
-        © 2026 Revops LATAM. Todos los derechos reservados.
-      </p>
-    </div>
-  </footer>
-);
 
 /* ═══════════════ LANDING PAGE ═══════════════ */
 const ConoceTuPistaLanding = () => {
+  const { openLeadForm } = useLeadForm();
   const { getSection, loading } = usePageSections("conoce-tu-pista");
 
   const hero = getSection("hero");
@@ -226,215 +89,340 @@ const ConoceTuPistaLanding = () => {
   const dm = meta(diagnosticos);
   const pqm = meta(porQue);
 
+  const { getStyle: heroStyle } = useSectionStyles(hero);
+  const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
+
+  if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
+
+  /* resolved data */
   const h = {
-    title: hero?.title ?? DEFAULTS.hero.title,
-    subtitle: hero?.subtitle ?? DEFAULTS.hero.subtitle,
-    cta_text: hero?.cta_text ?? DEFAULTS.hero.cta_text,
-    cta_url: hero?.cta_url ?? DEFAULTS.hero.cta_url,
-    badge: (hm.badge as string) ?? DEFAULTS.hero.badge,
+    badge: (hm.badge as string) ?? DEF.hero.badge,
+    title: hero?.title ?? DEF.hero.title,
+    subtitle: hero?.subtitle ?? DEF.hero.subtitle,
+    cta_text: hero?.cta_text ?? DEF.hero.cta_text,
+    cta_url: hero?.cta_url ?? DEF.hero.cta_url,
   };
 
   const p = {
-    title: problema?.title ?? DEFAULTS.problema.title,
-    body: problema?.body ?? DEFAULTS.problema.body,
-    highlight: (pm.highlight as string) ?? DEFAULTS.problema.highlight,
-    stat_cards: (pm.stat_cards as Array<{ icon: string; text: string }>) ?? DEFAULTS.problema.stat_cards,
+    title: problema?.title ?? DEF.problema.title,
+    highlight: (pm.highlight as string) ?? DEF.problema.highlight,
+    stat_cards: (pm.stat_cards as Array<{ icon: string; text: string }>) ?? DEF.problema.stat_cards,
   };
 
   const d = {
-    title: diagnosticos?.title ?? DEFAULTS.diagnosticos.title,
-    subtitle: diagnosticos?.subtitle ?? DEFAULTS.diagnosticos.subtitle,
-    cards: (dm.cards as PricingCardData[]) ?? DEFAULTS.diagnosticos.cards,
+    title: diagnosticos?.title ?? DEF.diagnosticos.title,
+    subtitle: diagnosticos?.subtitle ?? DEF.diagnosticos.subtitle,
+    cards: (dm.cards as CardData[]) ?? DEF.diagnosticos.cards,
   };
 
   const pq = {
-    title: porQue?.title ?? DEFAULTS.porQueDiagnosticar.title,
-    body: porQue?.body ?? DEFAULTS.porQueDiagnosticar.body,
-    stats: (pqm.stats as Array<{ value: string; label: string }>) ?? DEFAULTS.porQueDiagnosticar.stats,
+    title: porQue?.title ?? DEF.porQue.title,
+    body: porQue?.body ?? DEF.porQue.body,
+    stats: (pqm.stats as Array<{ value: string; label: string }>) ?? DEF.porQue.stats,
   };
 
   const cf = {
-    title: ctaFinal?.title ?? DEFAULTS.ctaFinal.title,
-    subtitle: ctaFinal?.subtitle ?? DEFAULTS.ctaFinal.subtitle,
-    cta_text: ctaFinal?.cta_text ?? DEFAULTS.ctaFinal.cta_text,
-    cta_url: ctaFinal?.cta_url ?? DEFAULTS.ctaFinal.cta_url,
+    title: ctaFinal?.title ?? DEF.ctaFinal.title,
+    subtitle: ctaFinal?.subtitle ?? DEF.ctaFinal.subtitle,
+    cta_text: ctaFinal?.cta_text ?? DEF.ctaFinal.cta_text,
+    cta_url: ctaFinal?.cta_url ?? DEF.ctaFinal.cta_url,
   };
 
-  const { getStyle: heroStyle } = useSectionStyles(hero);
-  const { getStyle: probStyle } = useSectionStyles(problema);
-  const { getStyle: diagStyle } = useSectionStyles(diagnosticos);
-  const { getStyle: pqStyle } = useSectionStyles(porQue);
-  const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
+  const ctaOpensForm = meta(ctaFinal).cta1_opens_lead_form === true;
+  const heroOpensForm = hm.cta1_opens_lead_form === true;
 
-  if (loading) return <div className="min-h-screen" style={{ background: "#1A1A2E" }} />;
+  const handleHeroCTA = () => {
+    if (heroOpensForm) return openLeadForm("lp-conoce-hero");
+    if (h.cta_url?.startsWith("#")) {
+      document.getElementById(h.cta_url.slice(1))?.scrollIntoView({ behavior: "smooth" });
+    } else if (h.cta_url) {
+      window.location.href = h.cta_url;
+    }
+  };
 
-  const bodyParagraphs = pq.body.split("\n\n").filter(Boolean);
+  const handleFinalCTA = () => {
+    if (ctaOpensForm) return openLeadForm("lp-conoce-cta-final");
+    if (cf.cta_url?.startsWith("#")) {
+      document.getElementById(cf.cta_url.slice(1))?.scrollIntoView({ behavior: "smooth" });
+    } else if (cf.cta_url) {
+      window.location.href = cf.cta_url;
+    }
+  };
+
+  /* Sort cards: highlighted first on mobile */
+  const sortedCards = [...d.cards].sort((a, b) => (b.highlighted ? 1 : 0) - (a.highlighted ? 1 : 0));
+
+  const heroTitle = (() => {
+    const lb = hm.title_line_break as string;
+    if (lb && h.title.includes(lb)) {
+      const idx = h.title.indexOf(lb);
+      return h.title.slice(0, idx).trimEnd() + "\n" + h.title.slice(idx);
+    }
+    return h.title;
+  })();
 
   return (
-    <div className="min-h-screen">
-      <LandingHeader />
+    <div className="min-h-screen" style={{ fontFamily: "'Lexend', sans-serif" }}>
 
-      {/* ─── SECTION 1: HERO ─── */}
-      <SectionShell section={hero} className="h-screen pt-28 sm:pt-32 pb-16 px-6" defaultBg={{ background: "#1A1A2E" }}>
-        <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 max-w-[1400px] mx-auto text-center">
+      {/* ════ HERO ════ */}
+      <section className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #0D0D1A 0%, #151528 100%)" }}>
+        {/* Subtle glow */}
+        <div className="absolute pointer-events-none" style={{ width: 300, height: 300, top: -80, left: "50%", transform: "translateX(-50%)", background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 70%)", filter: "blur(80px)" }} />
+
+        <div className="relative z-10 px-5 pt-16 pb-12 sm:px-8 sm:pt-24 sm:pb-20 max-w-[600px] mx-auto text-center">
+          {/* Logo */}
+          <motion.img {...fade(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mx-auto mb-10 sm:h-8 sm:mb-12" />
+
+          {/* Badge */}
           <motion.span
-            {...fadeUp(0)}
-            className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6"
-            style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}
+            {...fade(0.05)}
+            className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-5"
+            style={{ background: "rgba(190,24,105,0.12)", color: "#E84393", border: "1px solid rgba(190,24,105,0.25)" }}
           >
             {h.badge}
           </motion.span>
+
+          {/* Title */}
           <motion.h1
-            {...fadeUp(0.1)}
-            className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
-            style={{ color: "#ffffff", fontSize: "clamp(40px, 6vw, 64px)", ...heroStyle("title") }}
+            {...fade(0.1)}
+            className="font-extrabold leading-[1.1] tracking-tight whitespace-pre-line"
+            style={{ color: "#fff", fontSize: "clamp(28px, 7vw, 52px)", ...heroStyle("title") }}
           >
-            {(() => {
-              const lineBreak = hm.title_line_break as string;
-              if (lineBreak && h.title.includes(lineBreak)) {
-                const idx = h.title.indexOf(lineBreak);
-                return h.title.slice(0, idx).trimEnd() + "\n" + h.title.slice(idx);
-              }
-              return h.title;
-            })()}
+            {heroTitle}
           </motion.h1>
+
+          {/* Subtitle */}
           <motion.p
-            {...fadeUp(0.2)}
-            className="mt-6 text-[17px] sm:text-[18px] leading-[1.7] mx-auto"
-            style={{ color: "rgba(255,255,255,0.7)", maxWidth: 900, ...heroStyle("body") }}
+            {...fade(0.15)}
+            className="mt-4 text-[15px] sm:text-[17px] leading-[1.65]"
+            style={{ color: "rgba(255,255,255,0.65)", ...heroStyle("body") }}
           >
             {h.subtitle}
           </motion.p>
-          <motion.div {...fadeUp(0.3)} className="mt-10">
-            <DynamicCTA
-              styleKey={hm.cta_style_key as string}
-              onClick={() => h.cta_url && (window.location.href = h.cta_url)}
-              className="inline-flex items-center text-[15px] sm:text-base font-semibold transition-all duration-200 hover:scale-[1.03] rounded-full px-8 py-3.5"
+
+          {/* CTA */}
+          <motion.div {...fade(0.2)} className="mt-7">
+            <button
+              onClick={handleHeroCTA}
+              className="w-full sm:w-auto text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-transform active:scale-[0.97]"
+              style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
             >
               {h.cta_text}
-            </DynamicCTA>
+            </button>
           </motion.div>
-          {hero?.image_url && (
-            <motion.div {...fadeUp(0.5)} className="mt-14">
-              <ResponsiveHeroImage src={hero.image_url} alt={h.title} metadata={hm} defaultMaxWidth="920px" />
-            </motion.div>
-          )}
-        </div>
-      </SectionShell>
 
-      {/* ─── SECTION 2: EL PROBLEMA ─── */}
-      <SectionShell section={problema} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#ffffff" }}>
-        <GradientMesh variant="light" />
-        <NoiseOverlay />
-        <div className="relative z-10 max-w-[1100px] mx-auto flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
-          <div className="flex-1 max-w-[520px]">
-            <motion.h2
-              {...fadeUp(0)}
-              className="text-[28px] sm:text-[32px] md:text-[40px] font-bold leading-[1.15] tracking-tight"
-              style={{ color: "#1A1A2E", ...probStyle("title") }}
-            >
-              {p.title}
-            </motion.h2>
-            <motion.p {...fadeUp(0.1)} className="mt-6 text-[16px] leading-[1.7]" style={{ color: "#6B7280", ...probStyle("body") }}>
-              {p.body}
-            </motion.p>
-            <motion.p {...fadeUp(0.15)} className="mt-4 text-[16px] leading-[1.7] font-bold" style={{ color: "#1A1A2E" }}>
-              {p.highlight}
-            </motion.p>
-          </div>
-          <div className="flex-1 w-full max-w-[440px] flex flex-col gap-4">
+          {/* Trust line */}
+          <motion.div {...fade(0.25)} className="mt-6 flex items-center justify-center gap-2">
+            <Check size={14} style={{ color: "#1CA398" }} />
+            <span className="text-[12px]" style={{ color: "rgba(255,255,255,0.4)" }}>
+              Sin compromiso · Respuesta en 24h
+            </span>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ════ PAIN POINTS ════ */}
+      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
+        <div className="max-w-[520px] mx-auto">
+          <motion.h2
+            {...fade(0)}
+            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
+            style={{ color: "#1A1A2E" }}
+          >
+            {p.title}
+          </motion.h2>
+
+          <div className="mt-6 flex flex-col gap-3">
             {p.stat_cards.map((sc, i) => (
-              <StatCard key={i} icon={sc.icon} text={sc.text} delay={0.1 + i * 0.1} />
+              <motion.div
+                key={i}
+                {...fade(0.05 + i * 0.05)}
+                className="flex items-start gap-3.5 p-4 rounded-xl"
+                style={{ background: "#F8F9FB", border: "1px solid #F0F1F3" }}
+              >
+                <span className="mt-0.5 flex-shrink-0">
+                  {iconMap[sc.icon] || <span className="text-lg">{sc.icon}</span>}
+                </span>
+                <span className="text-[14px] sm:text-[15px] leading-[1.5] font-medium" style={{ color: "#374151" }}>
+                  {sc.text}
+                </span>
+              </motion.div>
             ))}
           </div>
-        </div>
-      </SectionShell>
 
-      {/* ─── SECTION 3: ELIGE TU DIAGNÓSTICO ─── */}
-      <SectionDivider />
-      <SectionShell section={diagnosticos} className="py-24 sm:py-[120px] px-6" defaultBg={{ background: "#F9FAFB" }}>
-        <DotPattern />
-        <GradientMesh variant="muted" />
-        <NoiseOverlay />
-        <div className="relative z-10 max-w-[1100px] mx-auto" id="diagnosticos">
+          <motion.p
+            {...fade(0.2)}
+            className="mt-6 text-[15px] font-bold leading-[1.5] p-4 rounded-xl border-l-4"
+            style={{ color: "#1A1A2E", background: "linear-gradient(90deg, rgba(190,24,105,0.06), transparent)", borderColor: "#BE1869" }}
+          >
+            {p.highlight}
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ════ DIAGNÓSTICOS ════ */}
+      <section id="diagnosticos" className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#F8F9FB" }}>
+        <div className="max-w-[520px] mx-auto">
           <motion.h2
-            {...fadeUp(0)}
-            className="text-[28px] sm:text-[32px] md:text-[40px] font-bold leading-[1.15] tracking-tight text-center"
-            style={{ color: "#1A1A2E", ...diagStyle("title") }}
+            {...fade(0)}
+            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
+            style={{ color: "#1A1A2E" }}
           >
             {d.title}
           </motion.h2>
           <motion.p
-            {...fadeUp(0.08)}
-            className="mt-4 text-center text-[16px] sm:text-[17px] leading-[1.6] max-w-[560px] mx-auto"
-            style={{ color: "#6B7280", ...diagStyle("subtitle") }}
+            {...fade(0.05)}
+            className="mt-3 text-[14px] sm:text-[15px] leading-[1.6] text-center"
+            style={{ color: "#6B7280" }}
           >
             {d.subtitle}
           </motion.p>
-          <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {d.cards.map((card, i) => (
-              <PricingCard key={i} card={card} delay={0.1 + i * 0.1} />
+
+          <div className="mt-8 flex flex-col gap-4">
+            {sortedCards.map((card, i) => (
+              <motion.div
+                key={i}
+                {...fade(0.05 + i * 0.06)}
+                className="relative rounded-2xl p-[2px]"
+                style={{ background: card.highlighted ? GRADIENT : "transparent" }}
+              >
+                <div
+                  className="rounded-[14px] p-5 sm:p-6 flex flex-col"
+                  style={{ background: "#fff", border: card.highlighted ? "none" : "1px solid #E5E7EB" }}
+                >
+                  {/* Badge row */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span
+                      className="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full"
+                      style={card.badgeHighlight
+                        ? { background: GRADIENT, color: "#fff" }
+                        : { background: "#F3F4F6", color: "#6B7280" }
+                      }
+                    >
+                      {card.badge}
+                    </span>
+                    <span className="text-[12px] font-medium" style={{ color: "#9CA3AF" }}>{card.duration}</span>
+                  </div>
+
+                  {/* Title & tagline */}
+                  <h3 className="text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{card.title}</h3>
+                  <p className="text-[13px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    {card.tagline}
+                  </p>
+
+                  {/* Description */}
+                  <p className="mt-3 text-[13px] sm:text-[14px] leading-[1.6]" style={{ color: "#6B7280" }}>
+                    {card.description}
+                  </p>
+
+                  {/* Price + CTA row */}
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{card.price}</span>
+                    <Link
+                      to={card.href}
+                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
+                      style={{ color: "#BE1869" }}
+                    >
+                      Ver más <ArrowRight size={14} />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
         </div>
-      </SectionShell>
+      </section>
 
-      {/* ─── SECTION 4: POR QUÉ DIAGNOSTICAR PRIMERO ─── */}
-      <SectionShell section={porQue} className="py-20 sm:py-[100px] px-6" defaultBg={{ background: "#1A1A2E" }}>
-        <BackgroundOrbs variant="section" />
-        <NoiseOverlay opacity={0.03} />
-        <div className="relative z-10 max-w-[680px] mx-auto text-center">
+      {/* ════ CREDIBILITY ════ */}
+      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#0D0D1A" }}>
+        <div className="max-w-[520px] mx-auto text-center">
           <motion.h2
-            {...fadeUp(0)}
-            className="text-[28px] sm:text-[32px] md:text-[40px] font-bold leading-[1.15] tracking-tight whitespace-pre-line"
-            style={{ color: "#ffffff", ...pqStyle("title") }}
+            {...fade(0)}
+            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
+            style={{ color: "#fff" }}
           >
             {pq.title}
           </motion.h2>
-          {bodyParagraphs.map((para, i) => (
-            <motion.p
-              key={i}
-              {...fadeUp(0.1 + i * 0.05)}
-              className="mt-6 text-[16px] sm:text-[17px] leading-[1.7]"
-              style={{ color: "rgba(255,255,255,0.7)", ...pqStyle("body") }}
-            >
-              {para}
-            </motion.p>
-          ))}
-          <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-12">
+          <motion.p
+            {...fade(0.08)}
+            className="mt-4 text-[14px] sm:text-[15px] leading-[1.7]"
+            style={{ color: "rgba(255,255,255,0.6)" }}
+          >
+            {pq.body.split("\n\n")[0]}
+          </motion.p>
+
+          {/* Stats */}
+          <div className="mt-10 grid grid-cols-3 gap-4">
             {pq.stats.map((s, i) => (
-              <BigStat key={i} value={s.value} label={s.label} delay={0.15 + i * 0.1} />
+              <motion.div key={i} {...fade(0.1 + i * 0.06)} className="text-center">
+                <p className="text-[22px] sm:text-[28px] font-extrabold tracking-tight" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  {s.value}
+                </p>
+                <p className="text-[11px] sm:text-[12px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+                  {s.label}
+                </p>
+              </motion.div>
             ))}
           </div>
         </div>
-      </SectionShell>
+      </section>
 
-      {/* ─── SECTION 5: CTA FINAL ─── */}
-      <SectionShell section={ctaFinal} className="py-16 sm:py-20 px-6 text-center" defaultBg={{ background: "#ffffff" }}>
-        <GradientMesh variant="center" />
-        <div className="relative z-10 max-w-[560px] mx-auto">
+      {/* ════ CTA FINAL ════ */}
+      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
+        <div className="max-w-[480px] mx-auto text-center">
           <motion.h2
-            {...fadeUp(0)}
-            className="text-[28px] sm:text-[32px] md:text-[40px] font-bold leading-[1.15] tracking-tight"
+            {...fade(0)}
+            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
             style={{ color: "#1A1A2E", ...cfStyle("title") }}
           >
             {cf.title}
           </motion.h2>
           <motion.p
-            {...fadeUp(0.1)}
-            className="mt-4 text-[16px] sm:text-[17px] leading-[1.6]"
+            {...fade(0.08)}
+            className="mt-3 text-[14px] sm:text-[15px] leading-[1.6]"
             style={{ color: "#6B7280", ...cfStyle("body") }}
           >
             {cf.subtitle}
           </motion.p>
-          <motion.div {...fadeUp(0.2)} className="mt-8">
-            <CTAFinalButton section={ctaFinal} cta_text={cf.cta_text} cta_url={cf.cta_url} cfStyle={cfStyle} />
+          <motion.div {...fade(0.15)} className="mt-7">
+            <button
+              onClick={handleFinalCTA}
+              className="w-full sm:w-auto text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-transform active:scale-[0.97]"
+              style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.3)", ...cfStyle("cta") }}
+            >
+              {cf.cta_text}
+            </button>
+          </motion.div>
+          <motion.div {...fade(0.2)} className="mt-4 flex items-center justify-center gap-2">
+            <Check size={14} style={{ color: "#1CA398" }} />
+            <span className="text-[12px]" style={{ color: "#9CA3AF" }}>
+              Sin compromiso · Respuesta en 24h
+            </span>
           </motion.div>
         </div>
-      </SectionShell>
+      </section>
 
-      <LandingFooter />
+      {/* ════ MINIMAL FOOTER ════ */}
+      <footer className="py-6 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <img src={logoBlanco} alt="Revops LATAM" className="h-5 mx-auto mb-2" />
+        <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.25)" }}>
+          © 2026 Revops LATAM. Todos los derechos reservados.
+        </p>
+      </footer>
+
+      {/* ════ STICKY MOBILE CTA ════ */}
+      <div
+        className="fixed bottom-0 left-0 right-0 z-50 sm:hidden px-4 pb-4 pt-2"
+        style={{ background: "linear-gradient(to top, rgba(255,255,255,1) 70%, rgba(255,255,255,0))" }}
+      >
+        <button
+          onClick={handleHeroCTA}
+          className="w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
+          style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.4)" }}
+        >
+          {h.cta_text}
+        </button>
+      </div>
     </div>
   );
 };
