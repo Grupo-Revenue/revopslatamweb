@@ -67,10 +67,10 @@ const DEF = {
     title: "No somos el partner correcto para todos.\nY eso está bien.",
     yes: [
       "Tienes entre 10 y 200 empleados y equipo comercial activo",
-      "Quieres que HubSpot sea el centro de tu operación — no una herramienta más",
+      "Quieres que HubSpot sea el centro de tu operación, no una herramienta más",
       "Buscas un partner que entienda el negocio, no solo la plataforma",
       "Quieres que alguien opere contigo después de la implementación",
-      "Estás en Chile, México, Colombia, Perú, Argentina o cualquier país de LATAM",
+      "Estás en Chile",
       "Quieres resultados medibles, no promesas",
     ],
     no: [
