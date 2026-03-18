@@ -175,7 +175,7 @@ function HubIcon({ icon, color }: { icon: string; color: string }) {
 /* ═══════════════════════════════════════ */
 const HubspotPartnerChile = () => {
   const { openLeadForm } = useLeadForm();
-  const { getSection, getMeta } = usePageSections("hubspot-partner-chile");
+  const { getSection, getMeta, loading } = usePageSections("hubspot-partner-chile");
   const [openFaq, setOpenFaq] = useState(0);
 
   // Sections
