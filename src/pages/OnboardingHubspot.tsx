@@ -269,7 +269,7 @@ function Timeline3({ steps }: { steps: typeof DEF.proceso.steps }) {
 /* ─── Main Page ─── */
 export default function OnboardingHubspot() {
   const { openLeadForm } = useLeadForm();
-  const { getSection } = usePageSections("onboarding-hubspot");
+  const { getSection, loading } = usePageSections("onboarding-hubspot");
   const hero = getSection("hero");
   const problema = getSection("problema");
   const incluye = getSection("incluye");
@@ -292,6 +292,8 @@ export default function OnboardingHubspot() {
   const s2 = useCountUp(prob.stats[1]?.num ?? 67, 1200);
   const s3 = useCountUp(prob.stats[2]?.num ?? 0, 800);
   const counters = [s1, s2, s3];
+
+  if (loading) return <div className="min-h-screen" style={{ background: "#1A1A2E" }} />;
 
   const scrollToFit = () => document.getElementById("para-quien")?.scrollIntoView({ behavior: "smooth" });
 

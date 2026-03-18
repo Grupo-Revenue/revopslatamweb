@@ -220,7 +220,7 @@ function DeliverableIcon({ type }: { type: string }) {
 /* ─── Main Page ─── */
 export default function DisenoDeProcesos() {
   const { openLeadForm } = useLeadForm();
-  const { getSection } = usePageSections("diseño-de-procesos");
+  const { getSection, loading } = usePageSections("diseño-de-procesos");
   const hero = getSection("hero");
   const problema = getSection("problema");
   const entregables = getSection("entregables");
@@ -280,6 +280,8 @@ export default function DisenoDeProcesos() {
   const scrollToParaQuien = () => {
     document.getElementById("para-quien")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  if (loading) return <div className="min-h-screen" style={{ background: "#1A1A2E" }} />;
 
   return (
     <div className="min-h-screen font-['Lexend']" style={{ background: "#fff" }}>

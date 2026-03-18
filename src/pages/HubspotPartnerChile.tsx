@@ -175,7 +175,7 @@ function HubIcon({ icon, color }: { icon: string; color: string }) {
 /* ═══════════════════════════════════════ */
 const HubspotPartnerChile = () => {
   const { openLeadForm } = useLeadForm();
-  const { getSection, getMeta } = usePageSections("hubspot-partner-chile");
+  const { getSection, getMeta, loading } = usePageSections("hubspot-partner-chile");
   const [openFaq, setOpenFaq] = useState(0);
 
   // Sections
@@ -248,6 +248,8 @@ const HubspotPartnerChile = () => {
   usePageMeta({ ...PAGE_SEO["/hubspot-partner-chile"], path: "/hubspot-partner-chile" });
 
   const scrollToSection = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
 
   return (
     <div className="min-h-screen" style={{ fontFamily: "'Lexend', sans-serif" }}>

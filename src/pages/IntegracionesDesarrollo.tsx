@@ -231,7 +231,7 @@ function PhasesTimeline({ phases }: { phases: typeof DEF.proceso.phases }) {
 /* ─── Main Page ─── */
 export default function IntegracionesDesarrollo() {
   const { openLeadForm } = useLeadForm();
-  const { getSection } = usePageSections("integraciones-desarrollo");
+  const { getSection, loading } = usePageSections("integraciones-desarrollo");
   const hero = getSection("hero");
   const problema = getSection("problema");
   const construimos = getSection("construimos");
@@ -250,9 +250,11 @@ export default function IntegracionesDesarrollo() {
   const proc = { title: proceso?.title ?? DEF.proceso.title, phases: (prm.phases as typeof DEF.proceso.phases) ?? DEF.proceso.phases };
   const pq = { title_yes: (pqm.title_yes as string) ?? DEF.paraQuien.title_yes, title_no: (pqm.title_no as string) ?? DEF.paraQuien.title_no, yes: (pqm.yes as string[]) ?? DEF.paraQuien.yes, no: (pqm.no as typeof DEF.paraQuien.no) ?? DEF.paraQuien.no };
   const pr = { label: (prec.label as string) ?? DEF.precio.label, headline: (prec.headline as string) ?? DEF.precio.headline, subtext: (prec.subtext as string) ?? DEF.precio.subtext, calcChip: (prec.calcChip as string) ?? DEF.precio.calcChip, cta: precio?.cta_text ?? DEF.precio.cta, link: (prec.link as string) ?? DEF.precio.link };
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  if (loading) return <div className="min-h-screen" style={{ background: "#1A1A2E" }} />;
 
   const scrollToFit = () => document.getElementById("para-quien")?.scrollIntoView({ behavior: "smooth" });
-  const [tooltipVisible, setTooltipVisible] = useState(false);
 
   return (
     <div className="min-h-screen font-['Lexend']" style={{ background: "#fff" }}>
