@@ -257,7 +257,7 @@ const HubspotPartnerChile = () => {
       <Navbar />
 
       {/* ══════════ SECTION 1 — HERO ══════════ */}
-      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "100vh", background: "linear-gradient(180deg, #0D0D1A 0%, #111122 100%)", paddingTop: 100, paddingBottom: 80 }}>
+      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "100vh", background: "linear-gradient(180deg, #0D0D1A 0%, #111122 100%)", paddingTop: 70, paddingBottom: 60 }}>
         {/* Single subtle ambient orb */}
         <div className="absolute pointer-events-none" style={{ width: 600, height: 600, top: -150, left: -200, background: "radial-gradient(circle, rgba(190,24,105,0.07) 0%, transparent 60%)", filter: "blur(120px)" }} />
 
