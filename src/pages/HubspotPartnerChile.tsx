@@ -356,8 +356,8 @@ const HubspotPartnerChile = () => {
           {/* H2 */}
           <FadeIn delay={0.05}>
             <h2
-              className="font-bold mx-auto mb-5 whitespace-pre-line"
-              style={{ fontSize: "clamp(26px, 4vw, 38px)", color: "hsl(var(--foreground))", lineHeight: 1.2, maxWidth: 700 }}
+              className="font-bold mx-auto mb-5 md:whitespace-pre-line"
+              style={{ fontSize: "clamp(24px, 4vw, 38px)", color: "hsl(var(--foreground))", lineHeight: 1.2, maxWidth: 700 }}
             >
               {pos.title}
             </h2>
