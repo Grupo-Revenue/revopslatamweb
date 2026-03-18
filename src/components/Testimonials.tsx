@@ -41,32 +41,7 @@ const isTestimonialVideo = (value: unknown): value is TestimonialVideo => {
   );
 };
 
-const defaultTestimonials: TestimonialVideo[] = [
-  {
-    youtube_id: "dQw4w9WgXcQ",
-    title: "Cómo triplicamos el pipeline en 6 meses",
-    client: "María López",
-    role: "VP Comercial, TechCorp",
-  },
-  {
-    youtube_id: "dQw4w9WgXcQ",
-    title: "De Excel a HubSpot: nuestra transformación",
-    client: "Carlos Ruiz",
-    role: "CEO, DataFlow",
-  },
-  {
-    youtube_id: "dQw4w9WgXcQ",
-    title: "RevOps nos dio previsibilidad real",
-    client: "Ana García",
-    role: "Directora de Operaciones, ScaleMX",
-  },
-  {
-    youtube_id: "dQw4w9WgXcQ",
-    title: "Automatización que generó resultados reales",
-    client: "Pedro Martínez",
-    role: "COO, GrowthLab",
-  },
-];
+const defaultTestimonials: TestimonialVideo[] = [];
 
 const Testimonials = ({ section }: { section?: HomeSection }) => {
   const meta = (section?.metadata ?? {}) as Record<string, unknown>;
