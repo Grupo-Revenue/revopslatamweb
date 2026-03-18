@@ -512,7 +512,7 @@ const HubspotPartnerChile = () => {
             {eco.hubs.map((card, i) => (
               <FadeIn key={card.title || i} delay={i * 0.1}>
                 <div className="text-left h-full transition-all duration-300 hover:-translate-y-1"
-                  style={{ background: "#FFFFFF", borderRadius: 20, padding: 36, border: "1px solid #E5E7EB" }}
+                  style={{ background: "#FFFFFF", borderRadius: 20, padding: "clamp(20px, 4vw, 36px)", border: "1px solid #E5E7EB" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = "#BE1869"; e.currentTarget.style.boxShadow = "0 20px 60px rgba(190,24,105,0.1)"; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = "#E5E7EB"; e.currentTarget.style.boxShadow = "none"; }}>
                   <span className="inline-block uppercase font-bold tracking-wider mb-4" style={{ fontSize: 11, color: card.badgeColor, background: `${card.badgeColor}14`, borderRadius: 999, padding: "4px 12px" }}>{card.badge}</span>
