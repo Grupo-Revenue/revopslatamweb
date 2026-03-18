@@ -269,7 +269,7 @@ function Timeline3({ steps }: { steps: typeof DEF.proceso.steps }) {
 /* ─── Main Page ─── */
 export default function OnboardingHubspot() {
   const { openLeadForm } = useLeadForm();
-  const { getSection } = usePageSections("onboarding-hubspot");
+  const { getSection, loading } = usePageSections("onboarding-hubspot");
   const hero = getSection("hero");
   const problema = getSection("problema");
   const incluye = getSection("incluye");
