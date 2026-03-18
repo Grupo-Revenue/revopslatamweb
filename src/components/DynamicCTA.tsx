@@ -31,7 +31,7 @@ export default function DynamicCTA({ styleKey, children, onClick, className = ""
     );
   }
 
-  const css = ctaStyleToCSS(styles);
+  const css = { ...ctaStyleToCSS(styles), ...inlineStyle };
   const hoverScale = styles.hoverScale ? parseFloat(styles.hoverScale) : undefined;
 
   return (

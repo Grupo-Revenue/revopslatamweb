@@ -257,7 +257,7 @@ const HubspotPartnerChile = () => {
       <Navbar />
 
       {/* ══════════ SECTION 1 — HERO ══════════ */}
-      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "auto", background: "linear-gradient(180deg, #0D0D1A 0%, #111122 100%)", paddingTop: 100, paddingBottom: 40 }}>
+      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "auto", background: "linear-gradient(180deg, #0D0D1A 0%, #111122 100%)", paddingTop: 120, paddingBottom: 64 }}>
         {/* Single subtle ambient orb */}
         <div className="absolute pointer-events-none" style={{ width: 600, height: 600, top: -150, left: -200, background: "radial-gradient(circle, rgba(190,24,105,0.07) 0%, transparent 60%)", filter: "blur(120px)" }} />
 
@@ -314,12 +314,14 @@ const HubspotPartnerChile = () => {
               <DynamicCTA
                 styleKey={(hm.cta_style_key as string) || (hm.cta1_style_key as string) || "primary"}
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
+                style={{ fontSize: 14, padding: "10px 24px" }}
               >
                 {h.cta}
               </DynamicCTA>
               <DynamicCTA
                 styleKey={(hm.cta2_style_key as string) || (hm.cta_style_key as string) || "text-link"}
                 onClick={() => scrollToSection("como-trabajamos")}
+                style={{ fontSize: 14, padding: "10px 24px" }}
               >
                 {h.cta2}
               </DynamicCTA>
