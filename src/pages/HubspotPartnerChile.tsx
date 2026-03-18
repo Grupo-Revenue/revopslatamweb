@@ -141,20 +141,6 @@ const HeroDashboardVisual = ({ imageUrl }: { imageUrl?: string }) => (
       transform: "scale(1.2)",
     }} />
 
-    {/* Badge — visible but not dominant */}
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.4 }}
-      className="relative z-20 mb-6"
-    >
-      <img
-        src={hubspotPlatinumBadge}
-        alt="HubSpot Platinum Partner"
-        className="h-24 w-auto"
-        style={{ filter: "drop-shadow(0 8px 24px rgba(255,122,89,0.15))" }}
-      />
-    </motion.div>
 
     {/* Dashboard screenshot with treatment */}
     <motion.div
