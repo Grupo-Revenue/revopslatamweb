@@ -136,15 +136,137 @@ const FadeIn = ({ children, className = "", delay = 0, direction = "up" }: {
   );
 };
 
-const StatCounter = ({ value, suffix = "", label, counterVal }: { value?: string; suffix?: string; label: string; counterVal?: number }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true });
-  const animated = useAnimatedCounter(counterVal ?? 0, 1500, inView && !!counterVal, "");
-  const display = counterVal ? `${animated} años` : (value ?? suffix);
+/* Revenue Pipeline Visual */
+const PIPELINE_STAGES = ["Leads", "MQL", "SQL", "Deal", "Revenue"];
+const PIPELINE_LABELS = ["CRM", "Automatización", "Datos", "Integraciones"];
+
+const RevenuePipelineVisual = () => {
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-[32px] font-bold" style={{ backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{display}</div>
-      <div className="text-[13px] mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>{label}</div>
+    <div className="relative w-full" style={{ maxWidth: 520 }}>
+      {/* Glow backdrop */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: "radial-gradient(ellipse at 50% 40%, rgba(190,24,105,0.12) 0%, rgba(98,36,190,0.08) 40%, transparent 70%)",
+        filter: "blur(60px)",
+      }} />
+
+      {/* Pipeline stages */}
+      <div className="relative z-10 flex items-center justify-between gap-1 mb-6">
+        {PIPELINE_STAGES.map((stage, i) => (
+          <div key={stage} className="flex items-center flex-1">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 + i * 0.12, ease: "easeOut" }}
+              className="relative flex flex-col items-center w-full"
+            >
+              {/* Node */}
+              <div className="relative">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center text-[11px] font-bold tracking-wide text-white relative z-10"
+                  style={{
+                    background: i === PIPELINE_STAGES.length - 1
+                      ? "linear-gradient(135deg, #BE1869, #6224BE)"
+                      : "rgba(255,255,255,0.06)",
+                    border: `1px solid ${i === PIPELINE_STAGES.length - 1 ? "rgba(190,24,105,0.5)" : "rgba(255,255,255,0.1)"}`,
+                    backdropFilter: "blur(12px)",
+                  }}
+                >
+                  {stage === "Revenue" ? "$" : (i + 1)}
+                </div>
+                {/* Active pulse on last node */}
+                {i === PIPELINE_STAGES.length - 1 && (
+                  <motion.div
+                    className="absolute inset-0 rounded-xl"
+                    style={{ border: "1px solid rgba(190,24,105,0.4)" }}
+                    animate={{ scale: [1, 1.4, 1.4], opacity: [0.6, 0, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                  />
+                )}
+              </div>
+              <span className="mt-2 text-[10px] font-medium" style={{ color: i === PIPELINE_STAGES.length - 1 ? "rgba(190,24,105,0.9)" : "rgba(255,255,255,0.45)" }}>{stage}</span>
+            </motion.div>
+
+            {/* Connector line with flowing particle */}
+            {i < PIPELINE_STAGES.length - 1 && (
+              <div className="flex-1 relative h-[1px] mx-1" style={{ marginTop: -14 }}>
+                <div className="absolute inset-0" style={{ background: "rgba(255,255,255,0.08)" }} />
+                <motion.div
+                  className="absolute top-0 h-full w-3 rounded-full"
+                  style={{ background: "linear-gradient(90deg, transparent, rgba(190,24,105,0.6), transparent)" }}
+                  animate={{ left: ["-12px", "100%"] }}
+                  transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.4, ease: "linear" }}
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* System layer cards */}
+      <div className="relative z-10 grid grid-cols-2 gap-3">
+        {PIPELINE_LABELS.map((label, i) => (
+          <motion.div
+            key={label}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.2 + i * 0.1 }}
+            className="rounded-xl px-4 py-3 flex items-center gap-3"
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.06)",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <div className="w-2 h-2 rounded-full" style={{
+              background: ["#BE1869", "#6224BE", "#0779D7", "#FF7A59"][i],
+              boxShadow: `0 0 8px ${["rgba(190,24,105,0.4)", "rgba(98,36,190,0.4)", "rgba(7,121,215,0.4)", "rgba(255,122,89,0.4)"][i]}`,
+            }} />
+            <span className="text-[12px] font-medium" style={{ color: "rgba(255,255,255,0.55)" }}>{label}</span>
+            {/* Activity indicator */}
+            <motion.div
+              className="ml-auto w-1.5 h-1.5 rounded-full"
+              style={{ background: "rgba(16,185,129,0.6)" }}
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+            />
+          </motion.div>
+        ))}
+      </div>
+
+      {/* "System active" status bar */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8 }}
+        className="relative z-10 mt-4 flex items-center justify-between rounded-lg px-4 py-2.5"
+        style={{ background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.12)" }}
+      >
+        <div className="flex items-center gap-2">
+          <motion.div
+            className="w-2 h-2 rounded-full"
+            style={{ background: "#10B981" }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+          <span className="text-[11px] font-medium" style={{ color: "rgba(16,185,129,0.8)" }}>Sistema activo</span>
+        </div>
+        <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.3)" }}>Revenue Engine v2.0</span>
+      </motion.div>
+
+      {/* Badge — integrated as proof, not protagonist */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2, duration: 0.6 }}
+        className="relative z-10 mt-5 flex justify-center"
+      >
+        <img
+          src={hubspotPlatinumBadge}
+          alt="HubSpot Platinum Partner"
+          className="h-16 w-auto"
+          style={{ opacity: 0.7, filter: "drop-shadow(0 4px 12px rgba(255,122,89,0.1))" }}
+        />
+      </motion.div>
     </div>
   );
 };
