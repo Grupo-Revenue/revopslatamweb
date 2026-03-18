@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { Megaphone, BarChart3, Heart, Settings, Globe, Check, X, ChevronDown } from "lucide-react";
 import { useLeadForm } from "@/hooks/useLeadForm";
-import { useAnimatedCounter } from "@/hooks/useAnimatedCounter";
+
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
