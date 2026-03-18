@@ -92,8 +92,19 @@ const ConoceTuPistaLanding = () => {
   const { getStyle: heroStyle } = useSectionStyles(hero);
   const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
 
-  const ctaFinalRef = useRef<HTMLElement>(null);
-  const ctaFinalVisible = useInView(ctaFinalRef, { margin: "0px 0px -20px 0px" });
+  const ctaFinalRef = useRef<HTMLDivElement>(null);
+  const [ctaFinalVisible, setCtaFinalVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ctaFinalRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setCtaFinalVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [loading]);
 
   if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
 
