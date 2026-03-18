@@ -59,8 +59,8 @@ const DEF = {
     steps: [
       { num: "01", title: "Diagnóstico primero", desc: "Mapeamos tu operación comercial real antes de configurar cualquier cosa. Sin este paso, HubSpot queda configurado para una empresa ideal que no existe.", chip: "Siempre el primer paso" },
       { num: "02", title: "Diseño antes de construir", desc: "Arquitectura completa documentada y validada con el equipo antes de tocar el portal. Qué propiedades, qué pipeline, qué automatizaciones, qué reportes.", chip: "Cero sorpresas" },
-      { num: "03", title: "Implementación con el equipo", desc: "Construimos junto al equipo que va a usar el sistema — no para ellos. La adopción no es un problema de capacitación: es un problema de participación en el diseño.", chip: "Adopción garantizada" },
-      { num: "04", title: "Activación y acompañamiento", desc: "No entregamos el portal y desaparecemos. Acompañamos la activación, medimos el uso real y hacemos los ajustes necesarios. El sistema queda funcionando — no solo configurado.", chip: "Siempre incluido" },
+      { num: "03", title: "Implementación con el equipo", desc: "Construimos junto al equipo que va a usar el sistema, no para ellos. La adopción no es un problema de capacitación: es un problema de participación en el diseño.", chip: "Adopción garantizada" },
+      { num: "04", title: "Activación y acompañamiento", desc: "No entregamos el portal y desaparecemos. Acompañamos la activación, medimos el uso real y hacemos los ajustes necesarios. El sistema queda funcionando, no solo configurado.", chip: "Siempre incluido" },
     ],
   },
   paraQuien: {
