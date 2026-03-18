@@ -132,7 +132,7 @@ const FadeIn = ({ children, className = "", delay = 0, direction = "up" }: {
 };
 
 /* Hero Visual — Dashboard screenshot + Badge */
-const HeroDashboardVisual = () => (
+const HeroDashboardVisual = ({ imageUrl }: { imageUrl?: string }) => (
   <div className="relative w-full flex flex-col items-center" style={{ maxWidth: 500 }}>
     {/* Glow behind dashboard */}
     <div className="absolute inset-0 pointer-events-none" style={{
@@ -172,7 +172,7 @@ const HeroDashboardVisual = () => (
         background: "linear-gradient(180deg, rgba(13,13,26,0.15) 0%, rgba(13,13,26,0.05) 50%, rgba(13,13,26,0.3) 100%)",
       }} />
       <img
-        src={hubspotDashboard}
+        src={imageUrl || hubspotDashboard}
         alt="HubSpot CRM Dashboard"
         className="w-full h-auto block"
         style={{ filter: "saturate(0.85) brightness(0.95)" }}
@@ -361,7 +361,7 @@ const HubspotPartnerChile = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="hidden lg:flex justify-center"
           >
-            <HeroDashboardVisual />
+            <HeroDashboardVisual imageUrl={heroSec?.image_url ?? undefined} />
           </motion.div>
         </div>
       </SectionShell>
