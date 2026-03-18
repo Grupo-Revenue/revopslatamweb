@@ -31,6 +31,13 @@ import PotenciaConIA from "./pages/PotenciaConIA";
 import QueHacemos from "./pages/QueHacemos";
 import HubspotPartnerChile from "./pages/HubspotPartnerChile";
 import NotFound from "./pages/NotFound";
+import { Navigate } from "react-router-dom";
+
+const ExternalRedirect = ({ to }: { to: string }) => {
+  window.location.replace(to);
+  return null;
+};
+
 import LoadingScreen from "./components/LoadingScreen";
 import DynamicStylesLoader from "./components/DynamicStylesLoader";
 import CustomCursor from "./components/CustomCursor";
