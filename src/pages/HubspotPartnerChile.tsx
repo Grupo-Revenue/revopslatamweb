@@ -268,7 +268,7 @@ const HubspotPartnerChile = () => {
             <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 mb-6"
               style={{ background: "rgba(255,122,89,0.05)", border: "1px solid rgba(255,122,89,0.12)", borderRadius: 999, padding: "6px 16px" }}>
-              <span className="font-semibold uppercase tracking-wider" style={{ fontSize: 11, color: "#FF7A59" }}>HubSpot Platinum Partner en Chile</span>
+              <span className="font-semibold uppercase tracking-wider" style={{ fontSize: 11, color: "#FF7A59" }}>HubSpot Platinum Partner en Chile y LATAM</span>
             </motion.div>
 
             {/* H1 */}
