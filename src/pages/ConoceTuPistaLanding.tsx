@@ -56,7 +56,7 @@ const DEF = {
   ctaFinal: {
     title: "¿No sabes cuál necesitas?",
     subtitle: "En 15 minutos te ayudamos a elegir, sin compromiso.",
-    cta_text: "Agendar conversación gratuita →",
+    cta_text: "Agendar conversación →",
     cta_url: "#",
   },
 };
