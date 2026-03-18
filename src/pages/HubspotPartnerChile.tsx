@@ -28,7 +28,7 @@ const DEF = {
   posicionamiento: {
     title: "Ser partner de HubSpot no nos hace buenos.\nSaber operar el negocio detrás\nde la herramienta, sí.",
     paragraphs: [
-      "Hay cientos de partners de HubSpot en el mundo. La diferencia no está en el badge — está en el enfoque.",
+      "Hay cientos de partners de HubSpot en el mundo. La diferencia no está en el badge, está en el enfoque.",
       "La mayoría llega, configura HubSpot según las mejores prácticas del manual, entrega el portal y desaparece. El equipo lo adopta parcialmente, los procesos se deterioran en 90 días y seis meses después nadie sabe si HubSpot está sirviendo para algo.",
     ],
     callout: "Nosotros hacemos lo contrario. Antes de abrir HubSpot, entendemos tu proceso comercial real. El resultado: un HubSpot que tu equipo usa, que produce datos confiables y que se convierte en la pista por donde fluye tu revenue.",
