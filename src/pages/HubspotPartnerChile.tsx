@@ -14,16 +14,11 @@ import hubspotPlatinumBadge from "@/assets/logos/hubspot-platinum-badge.png";
 /* ─── Defaults ─── */
 const DEF = {
   hero: {
-    title: "Convierte HubSpot en tu sistema de revenue.",
-    subtitle: "No implementamos herramientas y nos vamos. Diseñamos, implementamos y operamos el sistema completo: procesos, automatización y datos para escalar revenue en empresas B2B.",
-    cta: "Diseñar mi sistema de revenue",
+    title: "Convierte HubSpot en un sistema de revenue.",
+    subtitle: "Diseñamos, implementamos y operamos tu sistema completo en HubSpot: procesos, automatización y datos alineados para generar revenue real.",
+    cta: "Agenda una conversación",
     cta2: "Ver cómo trabajamos",
-    credentials: [
-      "+14 años operando HubSpot en B2B",
-      "HubSpot Platinum Partner",
-      "Implementación + Operación",
-      "Enfoque en revenue, no en marketing",
-    ],
+    proof: "+10 años operando HubSpot",
   },
   posicionamiento: {
     title: "Ser partner de HubSpot no nos hace buenos.\nSaber operar el negocio detrás\nde la herramienta, sí.",
