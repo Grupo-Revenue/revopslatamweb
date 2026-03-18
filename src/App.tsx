@@ -33,8 +33,9 @@ import HubspotPartnerChile from "./pages/HubspotPartnerChile";
 import NotFound from "./pages/NotFound";
 import { Navigate } from "react-router-dom";
 
-const ExternalRedirect = ({ to }: { to: string }) => {
-  window.location.replace(to);
+const BlogRedirect = () => {
+  const path = window.location.pathname.replace(/^\/blog/, '');
+  window.location.replace(`https://blog.revopslatam.com${path}`);
   return null;
 };
 
