@@ -14,6 +14,7 @@ import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
+import InlineLeadForm from "@/components/landing/InlineLeadForm";
 
 /* ─── animation helper ─── */
 const fadeUp = (delay = 0) => ({
