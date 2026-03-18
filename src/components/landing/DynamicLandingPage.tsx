@@ -466,6 +466,8 @@ function CTASection({ section }: { section?: HomeSection }) {
 
 export default function DynamicLandingPage({ slug }: { slug: string }) {
   const { getSection, loading } = usePageSections(slug);
+  const seo = PAGE_SEO[slug] ?? { title: "Revops LATAM", description: "" };
+  usePageMeta({ ...seo, path: slug });
 
   if (loading) return <div className="min-h-screen bg-dark-bg" />;
 
