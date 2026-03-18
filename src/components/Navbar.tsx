@@ -344,6 +344,15 @@ const Navbar = () => {
               >
                 Nosotros
               </Link>
+              <Link
+                to="/hubspot-partner-chile"
+                className="text-sm font-medium transition-colors duration-200"
+                style={{ color: "#1a1a2e" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#7c3aed")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#1a1a2e")}
+              >
+                HubSpot Partner
+              </Link>
             </div>
 
             <div className="ml-auto flex items-center" style={{ gap: 16 }}>
