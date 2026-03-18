@@ -1,40 +1,58 @@
 
 
-## Plan: Animacion "scan/encendido" en la imagen del Hero
+## Rediseño Sección Posicionamiento — Premium & Tabla Protagonista
 
-Entiendo perfectamente lo que describes: un efecto donde la imagen aparece progresivamente de arriba hacia abajo, como si los colores se fueran "encendiendo" o revelando con un barrido vertical luminoso.
+### Problema actual
+La sección tiene 3 bloques compitiendo por atención (título largo, dos párrafos de copy, callout + tabla comparativa pequeña). La tabla — que es el asset más diferenciador — queda relegada y comprimida.
 
-### Enfoque tecnico
+### Dirección del rediseño
 
-Usar un **clip-path animado con Framer Motion** combinado con un **resplandor de borde (glow line)** que baja mientras revela la imagen:
+**Invertir la jerarquía**: La tabla comparativa debe ser el elemento protagonista, no un complemento lateral.
 
-1. **Clip-path reveal**: La imagen inicia con `clipPath: inset(100% 0 0 0)` (completamente oculta) y anima hacia `inset(0% 0 0 0)` (completamente visible). Esto crea el efecto de revelado de arriba hacia abajo.
-
-2. **Linea de escaneo luminosa**: Un `div` superpuesto con un gradiente horizontal brillante (usando los colores de marca: rosa, morado, azul) que se desplaza de arriba hacia abajo al mismo ritmo que el clip-path. Esto simula el efecto de "encendido" de colores.
-
-3. **Glow post-reveal**: Una vez completada la animacion, un sutil resplandor de los colores de marca queda como halo alrededor de la imagen.
-
-### Cambios en archivos
-
-**`src/components/Hero.tsx`** (unico archivo a modificar):
-
-- Reemplazar el `motion.div` actual que envuelve la imagen del hero (lineas 87-98)
-- Agregar un contenedor con `overflow: hidden` y `position: relative`
-- La imagen usa `motion.img` con animacion de `clipPath` via Framer Motion
-- Superponer un `motion.div` como linea de escaneo con gradiente `linear-gradient(90deg, transparent, rgba(190,24,105,0.6), rgba(98,36,190,0.6), rgba(7,121,215,0.6), transparent)` que se mueve de `top: 0%` a `top: 100%`
-- Duracion total: ~1.5s con delay de 0.5s (sincronizado con la aparicion del texto)
-- La linea de escaneo desaparece con fade-out al llegar al final
+### Estructura propuesta
 
 ```text
-Estructura visual:
-
-  ┌─────────────────┐
-  │ ═══ glow line ══│  ← baja progresivamente
-  │ ████ revealed ██│
-  │                 │  ← parte aun oculta (clip-path)
-  │                 │
-  └─────────────────┘
+┌─────────────────────────────────────────────────────┐
+│  EYEBROW (gradiente)                                │
+│  "POR QUÉ SOMOS DIFERENTES"                        │
+│                                                     │
+│  H2 (centrado, max-width ~700px)                    │
+│  "Ser partner de HubSpot no nos hace buenos.        │
+│   Saber operar el negocio detrás de la              │
+│   herramienta, sí."                                 │
+│                                                     │
+│  Subtítulo (1 párrafo corto, centrado)              │
+│  Condensar los 2 párrafos actuales en 1-2 líneas    │
+│                                                     │
+│  ┌─────────────────────────────────────────────┐    │
+│  │  TABLA COMPARATIVA — FULL WIDTH             │    │
+│  │  Grande, con padding generoso, filas altas  │    │
+│  │  Agencia HubSpot  vs  RevOps LATAM          │    │
+│  │  (6 filas con hover sutil por fila)         │    │
+│  │  RevOps col: texto bold gradiente + ✓       │    │
+│  │  Agency col: texto tenue                    │    │
+│  └─────────────────────────────────────────────┘    │
+│                                                     │
+│  Callout (centrado, debajo de la tabla)             │
+│  Borde izquierdo gradiente, max-width ~700px        │
+└─────────────────────────────────────────────────────┘
 ```
 
-No se necesitan dependencias adicionales; Framer Motion ya soporta `clipPath` como propiedad animable.
+### Cambios técnicos en `HubspotPartnerChile.tsx`
+
+1. **Layout**: Cambiar de `grid 55%/45%` a layout centrado single-column (max-width 900px)
+2. **Copy**: Reducir los 2 párrafos a 1 subtítulo corto debajo del H2
+3. **Tabla**: Expandirla a ancho completo (~800px), con filas más altas (padding 20px), tipografía más grande (16px), hover por fila con highlight sutil
+4. **Encabezados de tabla**: "Agencia HubSpot" y "RevOps LATAM" más prominentes, con el header de RevOps usando el gradiente de marca
+5. **Callout**: Moverlo debajo de la tabla, centrado, como remate
+6. **Eyebrow**: Agregar tag superior "POR QUÉ SOMOS DIFERENTES" en gradiente
+7. **Animación**: Stagger las filas de la tabla con fade-in secuencial (delay 0.05s por fila)
+
+### Estilo premium
+- Fondo blanco limpio
+- Tabla con bordes sutiles `#F3F4F6`, esquinas redondeadas `20px`
+- Hover por fila: `background rgba(190,24,105,0.02)`
+- Columna RevOps con check icons y texto en gradiente bold
+- Columna Agency con texto `#9CA3AF` (tenue, segundo plano)
+- Sombra suave en el contenedor de la tabla `0 20px 60px rgba(0,0,0,0.06)`
 
