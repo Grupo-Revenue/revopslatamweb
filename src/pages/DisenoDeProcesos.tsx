@@ -281,6 +281,8 @@ export default function DisenoDeProcesos() {
     document.getElementById("para-quien")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  if (loading) return <div className="min-h-screen" style={{ background: "#1A1A2E" }} />;
+
   return (
     <div className="min-h-screen font-['Lexend']" style={{ background: "#fff" }}>
       <Navbar />
