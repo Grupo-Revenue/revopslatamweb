@@ -304,13 +304,13 @@ const ConoceTuPistaLanding = () => {
                   {/* Price + CTA row */}
                   <div className="mt-4 flex items-center justify-between">
                     <span className="text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{card.price}</span>
-                    <Link
-                      to={card.href}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
+                    <button
+                      onClick={() => openLeadForm(`lp-conoce-${card.badge.toLowerCase().replace(/\s/g, "-")}`)}
+                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors bg-transparent border-none cursor-pointer"
                       style={{ color: "#BE1869" }}
                     >
                       Ver más <ArrowRight size={14} />
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </motion.div>
