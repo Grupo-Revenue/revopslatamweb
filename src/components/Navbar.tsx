@@ -458,6 +458,14 @@ const Navbar = () => {
             >
               Nosotros
             </Link>
+            <Link
+              to="/hubspot-partner-chile"
+              onClick={() => setMobileOpen(false)}
+              className="py-4 text-lg font-semibold"
+              style={{ color: "#1a1a2e", borderBottom: "1px solid rgba(0,0,0,0.06)" }}
+            >
+              HubSpot Partner
+            </Link>
 
             <div className="mt-auto pt-8 flex flex-col gap-4">
               <a
