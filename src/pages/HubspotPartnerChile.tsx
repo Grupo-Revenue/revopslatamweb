@@ -370,10 +370,10 @@ const HubspotPartnerChile = () => {
             </p>
           </FadeIn>
 
-          {/* ─── TABLE — Protagonist ─── */}
+          {/* ─── TABLE — Desktop ─── */}
           <FadeIn delay={0.15}>
             <div
-              className="overflow-hidden mx-auto"
+              className="hidden md:block overflow-hidden mx-auto"
               style={{
                 borderRadius: 20,
                 border: "1px solid hsl(var(--border))",
@@ -442,6 +442,46 @@ const HubspotPartnerChile = () => {
                     >
                       {row.revops}
                     </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </FadeIn>
+
+          {/* ─── TABLE — Mobile (stacked cards) ─── */}
+          <FadeIn delay={0.15}>
+            <div className="md:hidden flex flex-col gap-3">
+              {pos.comparison.map((row, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  style={{
+                    borderRadius: 16,
+                    border: "1px solid hsl(var(--border))",
+                    background: "hsl(var(--card))",
+                    padding: "16px 20px",
+                  }}
+                >
+                  <span className="block font-bold mb-3" style={{ fontSize: 14, color: "hsl(var(--foreground))" }}>
+                    {row.label}
+                  </span>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <span className="block text-[11px] uppercase tracking-wider font-semibold mb-1" style={{ color: "hsl(var(--muted-foreground))" }}>Agencia</span>
+                      <span style={{ fontSize: 13, color: "hsl(var(--muted-foreground))", lineHeight: 1.4 }}>{row.agency}</span>
+                    </div>
+                    <div>
+                      <span className="block text-[11px] uppercase tracking-wider font-semibold mb-1" style={{ backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Revops LATAM</span>
+                      <div className="flex items-start gap-1.5">
+                        <Check size={14} className="mt-0.5 shrink-0" style={{ color: "#BE1869" }} />
+                        <span className="font-bold" style={{ fontSize: 13, backgroundImage: "linear-gradient(135deg, #BE1869, #6224BE)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", lineHeight: 1.4 }}>
+                          {row.revops}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               ))}
