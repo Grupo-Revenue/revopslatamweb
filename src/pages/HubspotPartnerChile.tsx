@@ -609,7 +609,7 @@ const HubspotPartnerChile = () => {
       </SectionShell>
 
       {/* ══════════ SECTION 7 — CTA FINAL ══════════ */}
-      <SectionShell section={ctaFinalSec} className="px-6" defaultBg={{ background: "#1A1A2E", padding: "80px 24px" }}>
+      <SectionShell section={ctaFinalSec} className="px-6 py-14 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
         <div className="relative z-10 mx-auto text-center" style={{ maxWidth: 620 }}>
           <FadeIn>
             <span className="inline-block uppercase font-bold tracking-wider mb-6" style={{ fontSize: 11, color: "#FF7A59", background: "rgba(255,122,89,0.15)", borderRadius: 999, padding: "6px 16px" }}>{cta.badge}</span>
