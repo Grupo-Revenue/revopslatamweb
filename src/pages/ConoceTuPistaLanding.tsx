@@ -6,7 +6,6 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 import { Check, ArrowRight, AlertTriangle, BarChart3, RefreshCw } from "lucide-react";
-import { Link } from "react-router-dom";
 
 /* ─── helpers ─── */
 const fade = (delay = 0) => ({
@@ -132,26 +131,8 @@ const ConoceTuPistaLanding = () => {
     cta_url: ctaFinal?.cta_url ?? DEF.ctaFinal.cta_url,
   };
 
-  const ctaOpensForm = meta(ctaFinal).cta1_opens_lead_form === true;
-  const heroOpensForm = hm.cta1_opens_lead_form === true;
-
-  const handleHeroCTA = () => {
-    if (heroOpensForm) return openLeadForm("lp-conoce-hero");
-    if (h.cta_url?.startsWith("#")) {
-      document.getElementById(h.cta_url.slice(1))?.scrollIntoView({ behavior: "smooth" });
-    } else if (h.cta_url) {
-      window.location.href = h.cta_url;
-    }
-  };
-
-  const handleFinalCTA = () => {
-    if (ctaOpensForm) return openLeadForm("lp-conoce-cta-final");
-    if (cf.cta_url?.startsWith("#")) {
-      document.getElementById(cf.cta_url.slice(1))?.scrollIntoView({ behavior: "smooth" });
-    } else if (cf.cta_url) {
-      window.location.href = cf.cta_url;
-    }
-  };
+  const handleHeroCTA = () => openLeadForm("lp-conoce-hero");
+  const handleFinalCTA = () => openLeadForm("lp-conoce-cta-final");
 
   /* Sort cards: highlighted first on mobile */
   const sortedCards = [...d.cards].sort((a, b) => (b.highlighted ? 1 : 0) - (a.highlighted ? 1 : 0));
@@ -322,13 +303,13 @@ const ConoceTuPistaLanding = () => {
                   {/* Price + CTA row */}
                   <div className="mt-4 flex items-center justify-between">
                     <span className="text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{card.price}</span>
-                    <Link
-                      to={card.href}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors"
+                    <button
+                      onClick={() => openLeadForm(`lp-conoce-${card.badge.toLowerCase().replace(/\s/g, "-")}`)}
+                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors bg-transparent border-none cursor-pointer"
                       style={{ color: "#BE1869" }}
                     >
                       Ver más <ArrowRight size={14} />
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </motion.div>
