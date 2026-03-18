@@ -172,7 +172,7 @@ const HeroDashboardVisual = ({ imageUrl }: { imageUrl?: string }) => (
         background: "linear-gradient(180deg, rgba(13,13,26,0.15) 0%, rgba(13,13,26,0.05) 50%, rgba(13,13,26,0.3) 100%)",
       }} />
       <img
-        src={hubspotDashboard}
+        src={imageUrl || hubspotDashboard}
         alt="HubSpot CRM Dashboard"
         className="w-full h-auto block"
         style={{ filter: "saturate(0.85) brightness(0.95)" }}
