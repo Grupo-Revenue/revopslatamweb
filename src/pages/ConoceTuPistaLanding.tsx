@@ -6,7 +6,6 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 import { Check, ArrowRight, AlertTriangle, BarChart3, RefreshCw } from "lucide-react";
-import { Link } from "react-router-dom";
 
 /* ─── helpers ─── */
 const fade = (delay = 0) => ({
