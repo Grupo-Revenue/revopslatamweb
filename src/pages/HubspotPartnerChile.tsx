@@ -268,32 +268,32 @@ const HubspotPartnerChile = () => {
   const pos = {
     title: posSec?.title ?? DEF.posicionamiento.title,
     callout: (pm.callout as string) ?? DEF.posicionamiento.callout,
-    comparison: (pm.comparison as CompRow[]) ?? DEF.posicionamiento.comparison,
+    comparison: (Array.isArray(pm.comparison) ? pm.comparison as CompRow[] : null) || DEF.posicionamiento.comparison,
   };
 
   const eco = {
     eyebrow: (em.eyebrow as string) ?? DEF.ecosistema.eyebrow,
     title: ecoSec?.title ?? DEF.ecosistema.title,
     subtitle: ecoSec?.subtitle ?? DEF.ecosistema.subtitle,
-    hubs: (em.hubs as HubDef[]) ?? DEF.ecosistema.hubs,
+    hubs: (Array.isArray(em.hubs) ? em.hubs as HubDef[] : null) || DEF.ecosistema.hubs,
   };
 
   const ct = {
     title: ctSec?.title ?? DEF.comoTrabajamos.title,
     subtitle: ctSec?.subtitle ?? DEF.comoTrabajamos.subtitle,
-    steps: (cm.steps as StepDef[]) ?? DEF.comoTrabajamos.steps,
+    steps: (Array.isArray(cm.steps) ? cm.steps as StepDef[] : null) || DEF.comoTrabajamos.steps,
   };
 
   const pq = {
     title: pqSec?.title ?? DEF.paraQuien.title,
-    yes: (pqm.yes_items as string[]) ?? DEF.paraQuien.yes,
-    no: (pqm.no_items as string[]) ?? DEF.paraQuien.no,
+    yes: (Array.isArray(pqm.yes_items) ? pqm.yes_items as string[] : null) || DEF.paraQuien.yes,
+    no: (Array.isArray(pqm.no_items) ? pqm.no_items as string[] : null) || DEF.paraQuien.no,
   };
 
   const faq = {
     eyebrow: (fm.eyebrow as string) ?? DEF.faq.eyebrow,
     title: faqSec?.title ?? DEF.faq.title,
-    faqs: (fm.faqs as FaqDef[]) ?? DEF.faq.faqs,
+    faqs: (Array.isArray(fm.faqs) ? fm.faqs as FaqDef[] : null) || DEF.faq.faqs,
   };
 
   const cta = {
