@@ -453,7 +453,7 @@ const HubspotPartnerChile = () => {
 
           {/* Callout — below table */}
           <FadeIn delay={0.25}>
-            <p className="mx-auto mt-12 text-left" style={{ maxWidth: 700, fontSize: 16, color: "#6B7280", lineHeight: 1.7 }}>
+            <p className="mx-auto mt-12 text-center" style={{ maxWidth: 700, fontSize: 16, color: "#6B7280", lineHeight: 1.7 }}>
               {pos.callout}
             </p>
           </FadeIn>
