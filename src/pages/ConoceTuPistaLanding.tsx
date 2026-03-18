@@ -25,8 +25,8 @@ const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const DEF = {
   hero: {
     badge: "Conoce tu pista",
-    title: "¿Tu operación comercial\ndebería rendir más?",
-    subtitle: "Descubre exactamente qué frena tu crecimiento con un diagnóstico RevOps diseñado para empresas en Chile.",
+    title: "Cada mes se pierden negocios.\nNosotros encontramos dónde.",
+    subtitle: "En Revops LATAM no llegamos a decirte que tienes problemas, llegamos a mostrarte cuáles son, dónde están y cuánto te están costando. Con metodología, con datos y con 14 años en el mercado chileno.",
     cta_text: "Agenda una conversación gratuita →",
     cta_url: "#diagnosticos",
   },
