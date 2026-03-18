@@ -550,7 +550,7 @@ const HubspotPartnerChile = () => {
       </SectionShell>
 
       {/* ══════════ SECTION 4 — CÓMO TRABAJAMOS ══════════ */}
-      <SectionShell section={ctSec} className="px-6" defaultBg={{ background: "#FFFFFF", padding: "100px 24px" }}>
+      <SectionShell section={ctSec} className="px-6 py-16 md:py-[100px]" defaultBg={{ background: "#FFFFFF" }}>
         <div id="como-trabajamos" className="relative z-10 mx-auto text-center scroll-mt-32" style={{ maxWidth: 900 }}>
           <FadeIn>
             <h2 className="font-bold mb-3" style={{ fontSize: 32, color: "#1A1A2E" }}>{ct.title}</h2>
