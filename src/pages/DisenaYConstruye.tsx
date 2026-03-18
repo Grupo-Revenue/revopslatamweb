@@ -17,6 +17,8 @@ import NoiseOverlay from "@/components/services/NoiseOverlay";
 import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
 import DynamicCTA from "@/components/DynamicCTA";
 import { useLeadForm } from "@/hooks/useLeadForm";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 
 /* ─── constants ─── */
@@ -237,6 +239,7 @@ const ComparisonColumns = ({ left, right }: { left: { header: string; items: str
 const DisenaYConstruye = () => {
   const { getSection, loading } = usePageSections("diseña-y-construye-tu-pista");
   const { openLeadForm } = useLeadForm();
+  usePageMeta({ ...PAGE_SEO["/diseña-y-construye-tu-pista"], path: "/diseña-y-construye-tu-pista" });
 
   const hero = getSection("hero");
   const hm = mt(hero);

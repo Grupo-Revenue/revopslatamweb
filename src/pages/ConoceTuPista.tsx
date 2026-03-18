@@ -15,6 +15,8 @@ import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 import ResponsiveHeroImage from "@/components/services/ResponsiveHeroImage";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 
 /* ─── animation helper ─── */
@@ -168,6 +170,7 @@ function CTAFinalButton({ section, cta_text, cta_url, cfStyle }: {
   cfStyle: (key: string) => React.CSSProperties;
 }) {
   const { openLeadForm } = useLeadForm();
+  usePageMeta({ ...PAGE_SEO["/conoce-tu-pista"], path: "/conoce-tu-pista" });
   const m = meta(section);
   const opensForm = m.cta1_opens_lead_form === true;
 

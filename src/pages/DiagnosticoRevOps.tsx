@@ -14,6 +14,8 @@ import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
 import DynamicCTA from "@/components/DynamicCTA";
 import { useLeadForm } from "@/hooks/useLeadForm";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 
 const fadeUp = (delay = 0) => ({
@@ -137,6 +139,7 @@ const DEF = {
 const DiagnosticoRevOps = () => {
   const { getSection, loading } = usePageSections("diagnostico-revops");
   const { openLeadForm } = useLeadForm();
+  usePageMeta({ ...PAGE_SEO["/diagnostico-revops"], path: "/diagnostico-revops" });
 
   const hero = getSection("hero");
   const problema = getSection("problema");

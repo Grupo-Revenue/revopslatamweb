@@ -19,6 +19,8 @@ import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
 const DARK = "#1A1A2E";
@@ -221,6 +223,7 @@ const DEF = {
 /* ═══ PAGE ═══ */
 const RevOpsAsAService = () => {
   const { getSection, loading } = usePageSections("revops-as-a-service");
+  usePageMeta({ ...PAGE_SEO["/revops-as-a-service"], path: "/revops-as-a-service" });
 
   const hero = getSection("hero");
   const planesSection = getSection("planes");
