@@ -1,5 +1,6 @@
 import { useLeadForm } from "@/hooks/useLeadForm";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import type { HomeSection } from "@/hooks/useHomeSections";
