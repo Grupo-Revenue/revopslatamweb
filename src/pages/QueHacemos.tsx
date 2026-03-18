@@ -289,6 +289,7 @@ function RolesCarousel({ roleCards }: { roleCards: RoleCard[] }) {
 export default function QueHacemos() {
   const { openLeadForm } = useLeadForm();
   const { getSection, loading } = usePageSections("que-hacemos");
+  usePageMeta({ ...PAGE_SEO["/que-hacemos"], path: "/que-hacemos" });
 
   const hero = getSection("hero");
   const metodologia = getSection("metodologia");
