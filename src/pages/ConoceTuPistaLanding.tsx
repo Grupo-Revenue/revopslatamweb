@@ -93,6 +93,9 @@ const ConoceTuPistaLanding = () => {
   const { getStyle: heroStyle } = useSectionStyles(hero);
   const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
 
+  const ctaFinalRef = useRef<HTMLElement>(null);
+  const ctaFinalVisible = useInView(ctaFinalRef, { margin: "0px 0px -20px 0px" });
+
   if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
 
   /* resolved data */
