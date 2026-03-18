@@ -10,24 +10,25 @@ import type { HomeSection } from "@/hooks/useHomeSections";
 import DynamicCTA from "@/components/DynamicCTA";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import hubspotPlatinumBadge from "@/assets/logos/hubspot-platinum-badge.png";
 
 /* ─── Defaults ─── */
 const DEF = {
   hero: {
-    title: "Somos HubSpot Platinum Partner\nen Chile y LATAM.\nPero no somos una agencia.",
-    subtitle: "Llevamos 14 años implementando y operando HubSpot en empresas B2B de Chile, México, Colombia, Perú y Argentina. No configuramos la herramienta y nos vamos — construimos el motor de ingresos completo.",
+    title: "Somos HubSpot Platinum Partner\nen Chile.\nPero no somos una agencia.",
+    subtitle: "Llevamos 14 años implementando y operando HubSpot en empresas B2B de Chile. No configuramos la herramienta y nos vamos, construimos el motor de ingresos completo.",
     cta: "Agenda una conversación →",
     cta2: "Ver cómo trabajamos ↓",
     stats: [
       { value: "Platinum", label: "Nivel de partnership HubSpot" },
-      { value: "14 años", label: "Operando en Chile y LATAM", counter: 14 },
+      { value: "14 años", label: "Operando en Chile", counter: 14 },
       { value: "5 Hubs", label: "Implementamos todo el ecosistema" },
     ],
   },
   posicionamiento: {
     title: "Ser partner de HubSpot no nos hace buenos.\nSaber operar el negocio detrás\nde la herramienta, sí.",
     paragraphs: [
-      "Hay cientos de partners de HubSpot en el mundo. La diferencia no está en el badge — está en el enfoque.",
+      "Hay cientos de partners de HubSpot en el mundo. La diferencia no está en el badge, está en el enfoque.",
       "La mayoría llega, configura HubSpot según las mejores prácticas del manual, entrega el portal y desaparece. El equipo lo adopta parcialmente, los procesos se deterioran en 90 días y seis meses después nadie sabe si HubSpot está sirviendo para algo.",
     ],
     callout: "Nosotros hacemos lo contrario. Antes de abrir HubSpot, entendemos tu proceso comercial real. El resultado: un HubSpot que tu equipo usa, que produce datos confiables y que se convierte en la pista por donde fluye tu revenue.",
@@ -43,12 +44,12 @@ const DEF = {
   ecosistema: {
     eyebrow: "LO QUE IMPLEMENTAMOS",
     title: "Implementamos todo el ecosistema HubSpot.\nSiempre desde la lógica del motor de ingresos.",
-    subtitle: "Cada Hub de HubSpot es una pieza de la pista. La diferencia entre una implementación que funciona y una que no es si las piezas están conectadas entre sí — y con el proceso real del negocio.",
+    subtitle: "Cada Hub de HubSpot es una pieza de la pista. La diferencia entre una implementación que funciona y una que no es si las piezas están conectadas entre sí, y con el proceso real del negocio.",
     hubs: [
-      { badge: "GENERA LA DEMANDA", badgeColor: "#BE1869", icon: "megaphone", title: "Marketing Hub", desc: "Formularios, emails, nurturing, lead scoring, landing pages y atribución. Para que marketing demuestre su impacto real en el pipeline — no solo en clics e impresiones.", tag: "Ideal para equipos de marketing" },
-      { badge: "CONVIERTE LEADS", badgeColor: "#0779D7", icon: "chart", title: "Sales Hub", desc: "Pipeline con etapas claras, automatizaciones de seguimiento, secuencias, playbooks y forecast confiable. Para que el Director Comercial lidere con datos — no con intuición.", tag: "Ideal para equipos comerciales" },
-      { badge: "RETIENE Y EXPANDE", badgeColor: "#1CA398", icon: "heart", title: "Service Hub", desc: "Tickets, NPS, CSAT y alertas de churn. Para conectar la postventa al motor de ingresos completo — y que CS deje de ser invisible en la estrategia comercial.", tag: "Ideal para equipos de Customer Success" },
-      { badge: "CONECTA TODO", badgeColor: "#6224BE", icon: "settings", title: "Operations Hub", desc: "Sincronización de datos, limpieza automática y workflows operativos avanzados. La pieza que hace que el resto del ecosistema funcione bien — cuando los datos están limpios, todas las decisiones mejoran.", tag: "Ideal para empresas con stack complejo" },
+      { badge: "GENERA LA DEMANDA", badgeColor: "#BE1869", icon: "megaphone", title: "Marketing Hub", desc: "Formularios, emails, nurturing, lead scoring, landing pages y atribución. Para que marketing demuestre su impacto real en el pipeline, no solo en clics e impresiones.", tag: "Ideal para equipos de marketing" },
+      { badge: "CONVIERTE LEADS", badgeColor: "#0779D7", icon: "chart", title: "Sales Hub", desc: "Pipeline con etapas claras, automatizaciones de seguimiento, secuencias, playbooks y forecast confiable. Para que el Director Comercial lidere con datos, no con intuición.", tag: "Ideal para equipos comerciales" },
+      { badge: "RETIENE Y EXPANDE", badgeColor: "#1CA398", icon: "heart", title: "Service Hub", desc: "Tickets, NPS, CSAT y alertas de churn. Para conectar la postventa al motor de ingresos completo, y que CS deje de ser invisible en la estrategia comercial.", tag: "Ideal para equipos de Customer Success" },
+      { badge: "CONECTA TODO", badgeColor: "#6224BE", icon: "settings", title: "Operations Hub", desc: "Sincronización de datos, limpieza automática y workflows operativos avanzados. La pieza que hace que el resto del ecosistema funcione bien, cuando los datos están limpios, todas las decisiones mejoran.", tag: "Ideal para empresas con stack complejo" },
       { badge: "CIERRA EL CICLO", badgeColor: "#BE1869", icon: "globe", title: "Content Hub", desc: "Sitio web, blog, landing pages y SEO integrado en HubSpot. Para que cada visita, formulario y descarga quede registrada automáticamente en el perfil del contacto.", tag: "Ideal para presencia digital integrada al CRM" },
     ],
   },
@@ -58,18 +59,18 @@ const DEF = {
     steps: [
       { num: "01", title: "Diagnóstico primero", desc: "Mapeamos tu operación comercial real antes de configurar cualquier cosa. Sin este paso, HubSpot queda configurado para una empresa ideal que no existe.", chip: "Siempre el primer paso" },
       { num: "02", title: "Diseño antes de construir", desc: "Arquitectura completa documentada y validada con el equipo antes de tocar el portal. Qué propiedades, qué pipeline, qué automatizaciones, qué reportes.", chip: "Cero sorpresas" },
-      { num: "03", title: "Implementación con el equipo", desc: "Construimos junto al equipo que va a usar el sistema — no para ellos. La adopción no es un problema de capacitación: es un problema de participación en el diseño.", chip: "Adopción garantizada" },
-      { num: "04", title: "Activación y acompañamiento", desc: "No entregamos el portal y desaparecemos. Acompañamos la activación, medimos el uso real y hacemos los ajustes necesarios. El sistema queda funcionando — no solo configurado.", chip: "Siempre incluido" },
+      { num: "03", title: "Implementación con el equipo", desc: "Construimos junto al equipo que va a usar el sistema, no para ellos. La adopción no es un problema de capacitación: es un problema de participación en el diseño.", chip: "Adopción garantizada" },
+      { num: "04", title: "Activación y acompañamiento", desc: "No entregamos el portal y desaparecemos. Acompañamos la activación, medimos el uso real y hacemos los ajustes necesarios. El sistema queda funcionando, no solo configurado.", chip: "Siempre incluido" },
     ],
   },
   paraQuien: {
     title: "No somos el partner correcto para todos.\nY eso está bien.",
     yes: [
       "Tienes entre 10 y 200 empleados y equipo comercial activo",
-      "Quieres que HubSpot sea el centro de tu operación — no una herramienta más",
+      "Quieres que HubSpot sea el centro de tu operación, no una herramienta más",
       "Buscas un partner que entienda el negocio, no solo la plataforma",
       "Quieres que alguien opere contigo después de la implementación",
-      "Estás en Chile, México, Colombia, Perú, Argentina o cualquier país de LATAM",
+      "Estás en Chile",
       "Quieres resultados medibles, no promesas",
     ],
     no: [
@@ -81,21 +82,20 @@ const DEF = {
   },
   faq: {
     eyebrow: "PREGUNTAS FRECUENTES",
-    title: "Lo que más nos preguntan sobre\nser partner HubSpot en Chile y LATAM",
+    title: "Lo que más nos preguntan sobre\nser partner HubSpot en Chile",
     faqs: [
-      { q: "¿Qué es un HubSpot Partner?", a: "Un HubSpot Partner es una empresa certificada por HubSpot para implementar, configurar y operar sus productos. Los partners están organizados en niveles según su experiencia y volumen de clientes: Starter, Gold, Platinum, Diamond y Elite. RevOps LATAM es HubSpot Platinum Partner en Chile — uno de los niveles más altos del ecosistema de partners en la región." },
-      { q: "¿Cuál es la diferencia entre un partner Platinum y uno Gold?", a: "El nivel Platinum refleja mayor experiencia acumulada, mayor volumen de implementaciones exitosas y certificaciones más avanzadas del equipo. En el directorio global de HubSpot hay miles de partners — los niveles más altos representan una fracción pequeña. En Chile y LATAM, los partners Platinum son especialmente escasos." },
-      { q: "¿Cómo elegir un partner de HubSpot en Chile?", a: "Más allá del nivel de partnership, hay tres preguntas que importan: ¿El partner entiende tu tipo de negocio y proceso comercial? ¿Tiene experiencia operando HubSpot después de la implementación — o solo configura y se va? ¿Puede mostrarte implementaciones reales en empresas similares a la tuya? El nivel Platinum es una señal de experiencia, pero no reemplaza el fit estratégico." },
-      { q: "¿Cuánto cuesta implementar HubSpot con un partner en Chile?", a: "El costo depende de la complejidad del proyecto: los módulos a implementar, el tamaño del equipo, las integraciones requeridas y el nivel de personalización. En RevOps LATAM trabajamos con una calculadora de precios que entrega un rango según las características de cada proyecto. El punto de partida siempre es el diagnóstico — para no cotizar una implementación sin entender qué necesita realmente la empresa." },
+      { q: "¿Qué es un HubSpot Partner?", a: "Un HubSpot Partner es una empresa certificada por HubSpot para implementar, configurar y operar sus productos. Los partners están organizados en niveles según su experiencia y volumen de clientes: Starter, Gold, Platinum, Diamond y Elite. RevOps LATAM es HubSpot Platinum Partner en Chile, uno de los niveles más altos del ecosistema de partners en la región." },
+      { q: "¿Cuál es la diferencia entre un partner Platinum y uno Gold?", a: "El nivel Platinum refleja mayor experiencia acumulada, mayor volumen de implementaciones exitosas y certificaciones más avanzadas del equipo. En el directorio global de HubSpot hay miles de partners, los niveles más altos representan una fracción pequeña. En Chile, los partners Platinum son especialmente escasos." },
+      { q: "¿Cómo elegir un partner de HubSpot en Chile?", a: "Más allá del nivel de partnership, hay tres preguntas que importan: ¿El partner entiende tu tipo de negocio y proceso comercial? ¿Tiene experiencia operando HubSpot después de la implementación, o solo configura y se va? ¿Puede mostrarte implementaciones reales en empresas similares a la tuya? El nivel Platinum es una señal de experiencia, pero no reemplaza el fit estratégico." },
+      { q: "¿Cuánto cuesta implementar HubSpot con un partner en Chile?", a: "El costo depende de la complejidad del proyecto: los módulos a implementar, el tamaño del equipo, las integraciones requeridas y el nivel de personalización. En RevOps LATAM trabajamos con una calculadora de precios que entrega un rango según las características de cada proyecto. El punto de partida siempre es el diagnóstico, para no cotizar una implementación sin entender qué necesita realmente la empresa." },
       { q: "¿Puedo contratar HubSpot directamente sin un partner?", a: "Sí. HubSpot se puede contratar directamente en hubspot.com. Un partner agrega valor en la implementación, la configuración estratégica, la integración con otras herramientas y la operación continua. Si solo necesitas la licencia, no necesitas un partner. Si quieres que HubSpot funcione de verdad en tu operación, un partner con experiencia hace la diferencia entre una inversión que rinde y una que se desperdicia." },
-      { q: "¿RevOps LATAM solo trabaja con HubSpot?", a: "Sí. HubSpot es el ecosistema central de todo lo que hacemos. No somos technology-agnostic — somos especialistas. Esa especialización profunda es lo que nos permite implementar y operar HubSpot con el nivel de detalle que los resultados requieren. Podemos integrarlo con prácticamente cualquier herramienta del stack del cliente, pero el motor siempre es HubSpot." },
-      { q: "¿Son partner de HubSpot en México, Colombia, Perú o Argentina?", a: "Sí. Somos HubSpot Platinum Partner con operación en toda LATAM. Nuestro equipo trabaja con empresas en México, Colombia, Perú y Argentina con la misma metodología que aplicamos en Chile. El horario, el idioma, la cultura comercial y la realidad del mercado latinoamericano son el contexto en el que operamos todos los días." },
-      { q: "¿Qué diferencia a RevOps LATAM de otras consultoras HubSpot?", a: "Tres cosas concretas: primero, siempre empezamos con diagnóstico — nunca proponemos soluciones antes de entender el problema. Segundo, no entregamos y desaparecemos — ofrecemos operación continua post-implementación. Tercero, no somos una agencia que configura HubSpot: somos una consultora de Revenue Operations que usa HubSpot como motor central para construir operaciones comerciales que escalan." },
+      { q: "¿RevOps LATAM solo trabaja con HubSpot?", a: "Sí. HubSpot es el ecosistema central de todo lo que hacemos. No somos technology-agnostic, somos especialistas. Esa especialización profunda es lo que nos permite implementar y operar HubSpot con el nivel de detalle que los resultados requieren. Podemos integrarlo con prácticamente cualquier herramienta del stack del cliente, pero el motor siempre es HubSpot." },
+      { q: "¿Qué diferencia a RevOps LATAM de otras consultoras HubSpot?", a: "Tres cosas concretas: primero, siempre empezamos con diagnóstico, nunca proponemos soluciones antes de entender el problema. Segundo, no entregamos y desaparecemos, ofrecemos operación continua post-implementación. Tercero, no somos una agencia que configura HubSpot: somos una consultora de Revenue Operations que usa HubSpot como motor central para construir operaciones comerciales que escalan." },
     ],
   },
   ctaFinal: {
     badge: "HABLEMOS",
-    title: "¿Buscas un partner de HubSpot\nque entienda tu negocio\n— no solo la herramienta?",
+    title: "¿Buscas un partner de HubSpot\nque entienda tu negocio,\nno solo la herramienta?",
     subtitle: "El primer paso es una conversación. En 30 minutos entendemos tu situación, te decimos con honestidad si somos el equipo correcto para ti y qué tendría más impacto en tu operación.",
     cta: "Agenda una conversación →",
     cta2: "Ver el Pulso Comercial gratuito →",
@@ -238,9 +238,9 @@ const HubspotPartnerChile = () => {
   };
 
   useEffect(() => {
-    document.title = "Partner HubSpot Chile y LATAM | RevOps LATAM — Consultora Platinum";
+    document.title = "Partner HubSpot Chile | RevOps LATAM, Consultora Platinum";
     const meta = document.querySelector('meta[name="description"]');
-    const content = "RevOps LATAM es HubSpot Platinum Partner en Chile y LATAM. No somos una agencia. Somos la consultora que implementa HubSpot y opera tu motor de ingresos completo. 14 años de experiencia en la región.";
+    const content = "RevOps LATAM es HubSpot Platinum Partner en Chile. No somos una agencia. Somos la consultora que implementa HubSpot y opera tu motor de ingresos completo. 14 años de experiencia.";
     if (meta) { meta.setAttribute("content", content); } else { const m = document.createElement("meta"); m.name = "description"; m.content = content; document.head.appendChild(m); }
   }, []);
 
@@ -251,42 +251,58 @@ const HubspotPartnerChile = () => {
       <Navbar />
 
       {/* ══════════ SECTION 1 — HERO ══════════ */}
-      <SectionShell section={heroSec} className="relative flex items-center justify-center px-6" defaultBg={{ minHeight: "85vh", background: "linear-gradient(180deg, #1A1A2E 0%, #0D0D1A 100%)", paddingTop: 120, paddingBottom: 80 }}>
-        <div className="relative z-10 text-center" style={{ maxWidth: 760 }}>
-          {/* Platinum Badge */}
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-            className="inline-flex items-center mx-auto mb-8"
-            style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 16, padding: "16px 32px", gap: 12 }}>
-            <div className="flex items-center justify-center shrink-0" style={{ width: 20, height: 20, borderRadius: "50%", background: "linear-gradient(135deg, #FF7A59, #FF5733)" }}>
-              <span className="text-white font-bold" style={{ fontSize: 12, lineHeight: 1 }}>H</span>
-            </div>
-            <span className="text-white font-bold" style={{ fontSize: 14 }}>HubSpot</span>
-            <span className="font-bold" style={{ fontSize: 14, color: "#FF7A59" }}>Platinum Partner</span>
-            <span className="uppercase font-bold" style={{ fontSize: 10, color: "#FF7A59", background: "rgba(255,122,89,0.15)", borderRadius: 999, padding: "3px 10px" }}>CERTIFICADO</span>
-          </motion.div>
+      <SectionShell section={heroSec} className="relative flex items-center px-6" defaultBg={{ minHeight: "90vh", background: "linear-gradient(180deg, #1A1A2E 0%, #0D0D1A 100%)", paddingTop: 130, paddingBottom: 80 }}>
+        <div className="relative z-10 mx-auto grid grid-cols-1 lg:grid-cols-[55%_45%] gap-12 items-center" style={{ maxWidth: 1100 }}>
+          {/* Left: Text */}
+          <div>
+            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+              className="inline-flex items-center mb-6"
+              style={{ background: "rgba(255,122,89,0.1)", border: "1px solid rgba(255,122,89,0.25)", borderRadius: 999, padding: "6px 16px", gap: 8 }}>
+              <span className="font-bold" style={{ fontSize: 12, color: "#FF7A59" }}>HUBSPOT PLATINUM PARTNER</span>
+            </motion.div>
 
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}
-            className="text-white font-bold leading-[1.15] mb-6 whitespace-pre-line" style={{ fontSize: "clamp(40px, 5vw, 66px)" }}>{h.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}
+              className="text-white font-bold leading-[1.12] mb-6 whitespace-pre-line" style={{ fontSize: "clamp(36px, 4.5vw, 58px)" }}>{h.title}</motion.h1>
 
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-            className="mx-auto mb-10" style={{ fontSize: 18, color: "rgba(255,255,255,0.65)", maxWidth: 600 }}>{h.subtitle}</motion.p>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
+              className="mb-8" style={{ fontSize: 17, color: "rgba(255,255,255,0.65)", maxWidth: 520, lineHeight: 1.7 }}>{h.subtitle}</motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }}
-            className="flex flex-wrap items-center justify-center gap-4 mb-14">
-            <DynamicCTA styleKey={hm.cta_style_key as string}
-              onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
-              className="text-white font-semibold transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
-              style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 16 }}>{h.cta}</DynamicCTA>
-            <button onClick={() => scrollToSection("como-trabajamos")}
-              className="font-semibold transition-all duration-300 hover:scale-[1.03]"
-              style={{ color: "#fff", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 999, padding: "14px 32px", fontSize: 16, background: "transparent" }}>{h.cta2}</button>
-          </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.45 }}
+              className="flex flex-wrap items-center gap-4 mb-12">
+              <DynamicCTA styleKey={hm.cta_style_key as string}
+                onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
+                className="text-white font-semibold transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
+                style={{ background: "linear-gradient(135deg, #BE1869, #6224BE)", borderRadius: 999, padding: "14px 32px", fontSize: 16 }}>{h.cta}</DynamicCTA>
+              <button onClick={() => scrollToSection("como-trabajamos")}
+                className="font-semibold transition-all duration-300 hover:scale-[1.03]"
+                style={{ color: "#fff", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 999, padding: "14px 32px", fontSize: 16, background: "transparent" }}>{h.cta2}</button>
+            </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex flex-wrap items-center justify-center" style={{ gap: 48 }}>
-            {h.stats.map((s, i) => (
-              <StatCounter key={i} value={s.value} label={s.label} counterVal={s.counter} />
-            ))}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-wrap items-center" style={{ gap: 40 }}>
+              {h.stats.map((s, i) => (
+                <StatCounter key={i} value={s.value} label={s.label} counterVal={s.counter} />
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Right: Badge Image */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
+            className="hidden lg:flex items-center justify-center relative"
+          >
+            {/* Glow behind badge */}
+            <div className="absolute inset-0 pointer-events-none" style={{
+              background: "radial-gradient(ellipse at center, rgba(255,122,89,0.15) 0%, rgba(190,24,105,0.08) 40%, transparent 70%)",
+              filter: "blur(40px)",
+            }} />
+            <img
+              src={hubspotPlatinumBadge}
+              alt="HubSpot Platinum Partner Certification Badge"
+              className="relative z-10 w-full max-w-[360px] h-auto drop-shadow-2xl"
+            />
           </motion.div>
         </div>
       </SectionShell>
