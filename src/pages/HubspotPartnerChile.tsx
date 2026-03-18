@@ -453,21 +453,9 @@ const HubspotPartnerChile = () => {
 
           {/* Callout — below table */}
           <FadeIn delay={0.25}>
-            <div
-              className="mx-auto mt-12 text-left"
-              style={{
-                maxWidth: 700,
-                background: "linear-gradient(135deg, rgba(190,24,105,0.04), rgba(98,36,190,0.04))",
-                borderLeft: "3px solid",
-                borderImage: "linear-gradient(180deg, #BE1869, #6224BE) 1",
-                borderRadius: "0 12px 12px 0",
-                padding: "20px 24px",
-              }}
-            >
-              <p style={{ fontSize: 16, color: "hsl(var(--foreground))", lineHeight: 1.7, fontWeight: 500 }}>
-                {pos.callout}
-              </p>
-            </div>
+            <p className="mx-auto mt-12 text-left" style={{ maxWidth: 700, fontSize: 16, color: "#6B7280", lineHeight: 1.7 }}>
+              {pos.callout}
+            </p>
           </FadeIn>
         </div>
       </SectionShell>
