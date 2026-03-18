@@ -312,7 +312,7 @@ const HubspotPartnerChile = () => {
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
             >
               <DynamicCTA
-                styleKey={(hm.cta1_style_key as string) || "primary"}
+                styleKey={(hm.cta_style_key as string) || (hm.cta1_style_key as string) || "primary"}
                 onClick={() => { if (hm.cta1_opens_lead_form) openLeadForm("hubspot-partner-chile"); else if (heroSec?.cta_url) window.open(heroSec.cta_url, "_blank"); else openLeadForm("hubspot-partner-chile"); }}
               >
                 {h.cta}
