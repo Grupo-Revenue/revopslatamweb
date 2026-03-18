@@ -1,149 +1,128 @@
 /**
- * Custom Vite plugin that generates per-route HTML files at build time.
- * Each file contains the correct <title>, <meta>, <link canonical>, OG tags,
- * and JSON-LD structured data so search engines see them without executing JS.
- *
- * This is a lightweight alternative to full pre-rendering (no headless browser needed).
+ * Vite plugin: generates per-route HTML files at build time with correct
+ * <title>, <meta>, <link canonical>, hreflang, and JSON-LD structured data.
+ * Google sees these tags without executing JS.
  */
 import type { Plugin } from "vite";
-import { PAGE_SEO } from "../src/lib/seo-config";
+import * as fs from "fs";
+import * as path from "path";
 
 const BASE_URL = "https://revopslatamweb.lovable.app";
 const DEFAULT_OG_IMAGE =
   "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ed8de748-17bb-4794-bd83-942f221cb1e1/id-preview-a1ce22e9--4814bcb9-c9f2-44d2-8ea5-4ce10dee1e68.lovable.app-1772049755037.png";
 
-interface BreadcrumbItem {
-  name: string;
-  url: string;
-}
-
-function getBreadcrumbs(path: string, title: string): BreadcrumbItem[] {
-  const crumbs: BreadcrumbItem[] = [{ name: "Inicio", url: `${BASE_URL}/` }];
-  if (path !== "/") {
-    crumbs.push({ name: title.split(" | ")[0].split(" — ")[0], url: `${BASE_URL}${path}` });
-  }
-  return crumbs;
-}
-
-function breadcrumbJsonLd(crumbs: BreadcrumbItem[]): string {
-  return JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: crumbs.map((c, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: c.name,
-      item: c.url,
-    })),
-  });
-}
-
-function serviceJsonLd(title: string, description: string, path: string): string | null {
-  // Only add Service schema for service pages
-  const servicePaths = [
-    "/revops-checkup", "/diagnostico-revops", "/motor-de-ingresos",
-    "/diseño-de-procesos", "/onboarding-hubspot", "/implementacion-hubspot",
-    "/personalizacion-crm", "/integraciones-desarrollo",
-    "/revops-as-a-service", "/marketing-ops", "/soporte-hubspot",
-    "/potencia-con-ia",
-  ];
-  if (!servicePaths.includes(path)) return null;
-
-  return JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: title.split(" | ")[0].split(" — ")[0],
-    description,
-    provider: {
-      "@type": "ProfessionalService",
-      name: "Revops LATAM",
-      url: BASE_URL,
-    },
-    areaServed: [
-      { "@type": "Country", "name": "Chile" },
-      { "@type": "Country", "name": "Colombia" },
-      { "@type": "Country", "name": "México" },
-      { "@type": "Country", "name": "Perú" },
-    ],
-    serviceType: "Revenue Operations Consulting",
-    url: `${BASE_URL}${path}`,
-  });
-}
+const SERVICE_PATHS = new Set([
+  "/revops-checkup", "/diagnostico-revops", "/motor-de-ingresos",
+  "/diseño-de-procesos", "/onboarding-hubspot", "/implementacion-hubspot",
+  "/personalizacion-crm", "/integraciones-desarrollo",
+  "/revops-as-a-service", "/marketing-ops", "/soporte-hubspot", "/potencia-con-ia",
+]);
 
 export default function seoPlugin(): Plugin {
   return {
     name: "seo-html-generator",
     apply: "build",
-    async generateBundle(_, bundle) {
-      // Find the main index.html in the bundle
-      const indexHtml = bundle["index.html"];
-      if (!indexHtml || indexHtml.type !== "asset") return;
+    closeBundle: {
+      order: "post",
+      sequential: true,
+      async handler() {
+        // Dynamically import seo-config (compiled during build)
+        let PAGE_SEO: Record<string, { title: string; description: string }>;
+        try {
+          const mod = await import("../src/lib/seo-config.ts");
+          PAGE_SEO = mod.PAGE_SEO;
+        } catch {
+          console.warn("[seo-plugin] Could not load seo-config, skipping HTML generation");
+          return;
+        }
 
-      const template = (indexHtml as any).source as string;
+        const distDir = path.resolve(process.cwd(), "dist");
+        const templatePath = path.join(distDir, "index.html");
+        if (!fs.existsSync(templatePath)) return;
 
-      for (const [routePath, seo] of Object.entries(PAGE_SEO)) {
-        if (routePath === "/") continue; // index.html handles /
+        const template = fs.readFileSync(templatePath, "utf-8");
+        let generated = 0;
 
-        const fullTitle = seo.title.includes("Revops LATAM")
-          ? seo.title
-          : `${seo.title} | Revops LATAM`;
-        const canonical = `${BASE_URL}${routePath}`;
-        const crumbs = getBreadcrumbs(routePath, fullTitle);
-        const serviceLd = serviceJsonLd(fullTitle, seo.description, routePath);
+        for (const [routePath, seo] of Object.entries(PAGE_SEO)) {
+          if (routePath === "/") continue;
 
-        // Build additional head content
-        const headInsert = [
-          `<title>${fullTitle}</title>`,
-          `<meta name="description" content="${seo.description}">`,
-          `<link rel="canonical" href="${canonical}">`,
-          `<meta property="og:title" content="${fullTitle}">`,
-          `<meta property="og:description" content="${seo.description}">`,
-          `<meta property="og:url" content="${canonical}">`,
-          `<meta property="og:image" content="${DEFAULT_OG_IMAGE}">`,
-          `<meta name="twitter:title" content="${fullTitle}">`,
-          `<meta name="twitter:description" content="${seo.description}">`,
-          // Hreflang
-          `<link rel="alternate" hreflang="es-CL" href="${canonical}">`,
-          `<link rel="alternate" hreflang="es-419" href="${canonical}">`,
-          `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
-          // Breadcrumb JSON-LD
-          `<script type="application/ld+json">${breadcrumbJsonLd(crumbs)}</script>`,
-          serviceLd ? `<script type="application/ld+json">${serviceLd}</script>` : "",
-        ]
-          .filter(Boolean)
-          .join("\n  ");
+          const fullTitle = seo.title.includes("Revops LATAM")
+            ? seo.title
+            : `${seo.title} | Revops LATAM`;
+          const canonical = `${BASE_URL}${routePath}`;
 
-        // Replace existing title and insert our SEO tags before </head>
-        let html = template
-          .replace(/<title>.*?<\/title>/, "") // remove original title
-          .replace("</head>", `  ${headInsert}\n</head>`);
+          // Breadcrumb
+          const crumbs = [
+            { name: "Inicio", url: `${BASE_URL}/` },
+            { name: fullTitle.split(" | ")[0].split(" — ")[0], url: canonical },
+          ];
+          const breadcrumbLd = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: crumbs.map((c, i) => ({
+              "@type": "ListItem", position: i + 1, name: c.name, item: c.url,
+            })),
+          });
 
-        // Determine file path — e.g. /nosotros → nosotros/index.html
-        const cleanPath = routePath.startsWith("/") ? routePath.slice(1) : routePath;
-        const fileName = `${cleanPath}/index.html`;
+          // Service schema
+          let serviceLd = "";
+          if (SERVICE_PATHS.has(routePath)) {
+            serviceLd = `\n  <script type="application/ld+json">${JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Service",
+              name: fullTitle.split(" | ")[0],
+              description: seo.description,
+              provider: { "@type": "ProfessionalService", name: "Revops LATAM", url: BASE_URL },
+              areaServed: [
+                { "@type": "Country", name: "Chile" },
+                { "@type": "Country", name: "Colombia" },
+                { "@type": "Country", name: "México" },
+                { "@type": "Country", name: "Perú" },
+              ],
+              url: canonical,
+            })}</script>`;
+          }
 
-        this.emitFile({
-          type: "asset",
-          fileName,
-          source: html,
-        });
-      }
+          const headInsert = [
+            `<title>${fullTitle}</title>`,
+            `<meta name="description" content="${seo.description}">`,
+            `<link rel="canonical" href="${canonical}">`,
+            `<meta property="og:title" content="${fullTitle}">`,
+            `<meta property="og:description" content="${seo.description}">`,
+            `<meta property="og:url" content="${canonical}">`,
+            `<meta property="og:image" content="${DEFAULT_OG_IMAGE}">`,
+            `<meta name="twitter:title" content="${fullTitle}">`,
+            `<meta name="twitter:description" content="${seo.description}">`,
+            `<link rel="alternate" hreflang="es-CL" href="${canonical}">`,
+            `<link rel="alternate" hreflang="es-419" href="${canonical}">`,
+            `<link rel="alternate" hreflang="x-default" href="${canonical}">`,
+            `<script type="application/ld+json">${breadcrumbLd}</script>`,
+            serviceLd,
+          ].filter(Boolean).join("\n  ");
 
-      // Also update the root index.html with hreflang + breadcrumb
-      const rootSeo = PAGE_SEO["/"];
-      if (rootSeo) {
+          let html = template
+            .replace(/<title>.*?<\/title>/, "")
+            .replace("</head>", `  ${headInsert}\n</head>`);
+
+          const cleanPath = routePath.startsWith("/") ? routePath.slice(1) : routePath;
+          const dir = path.join(distDir, cleanPath);
+          fs.mkdirSync(dir, { recursive: true });
+          fs.writeFileSync(path.join(dir, "index.html"), html);
+          generated++;
+        }
+
+        // Update root index.html with hreflang
         const rootInsert = [
           `<link rel="canonical" href="${BASE_URL}/">`,
           `<link rel="alternate" hreflang="es-CL" href="${BASE_URL}/">`,
           `<link rel="alternate" hreflang="es-419" href="${BASE_URL}/">`,
           `<link rel="alternate" hreflang="x-default" href="${BASE_URL}/">`,
         ].join("\n  ");
+        const rootHtml = fs.readFileSync(templatePath, "utf-8").replace("</head>", `  ${rootInsert}\n</head>`);
+        fs.writeFileSync(templatePath, rootHtml);
 
-        (indexHtml as any).source = template.replace(
-          "</head>",
-          `  ${rootInsert}\n</head>`
-        );
-      }
+        console.log(`[seo-plugin] Generated ${generated} per-route HTML files + updated root index.html`);
+      },
     },
   };
 }
