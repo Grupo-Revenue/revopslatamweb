@@ -7,6 +7,8 @@ import { useSectionStyles } from "@/hooks/useSectionStyles";
 import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import DynamicCTA from "@/components/DynamicCTA";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import hubspotPlatinumBadge from "@/assets/logos/hubspot-platinum-badge.png";
