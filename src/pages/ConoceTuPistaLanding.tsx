@@ -276,51 +276,69 @@ const ConoceTuPistaLanding = () => {
       <LandingHeader />
 
       {/* ─── SECTION 1: HERO ─── */}
-      <SectionShell section={hero} className="h-screen pt-28 sm:pt-32 pb-16 px-6" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={hero} className="min-h-screen pt-20 sm:pt-24 lg:pt-28 pb-10 sm:pb-16 px-4 sm:px-6" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 max-w-[1400px] mx-auto text-center">
-          <motion.span
-            {...fadeUp(0)}
-            className="inline-block text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-6"
-            style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}
-          >
-            {h.badge}
-          </motion.span>
-          <motion.h1
-            {...fadeUp(0.1)}
-            className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
-            style={{ color: "#ffffff", fontSize: "clamp(40px, 6vw, 64px)", ...heroStyle("title") }}
-          >
-            {(() => {
-              const lineBreak = hm.title_line_break as string;
-              if (lineBreak && h.title.includes(lineBreak)) {
-                const idx = h.title.indexOf(lineBreak);
-                return h.title.slice(0, idx).trimEnd() + "\n" + h.title.slice(idx);
-              }
-              return h.title;
-            })()}
-          </motion.h1>
-          <motion.p
-            {...fadeUp(0.2)}
-            className="mt-6 text-[17px] sm:text-[18px] leading-[1.7] mx-auto"
-            style={{ color: "rgba(255,255,255,0.7)", maxWidth: 900, ...heroStyle("body") }}
-          >
-            {h.subtitle}
-          </motion.p>
-          <motion.div {...fadeUp(0.3)} className="mt-10">
-            <DynamicCTA
-              styleKey={hm.cta_style_key as string}
-              onClick={() => h.cta_url && (window.location.href = h.cta_url)}
-              className="inline-flex items-center text-[15px] sm:text-base font-semibold transition-all duration-200 hover:scale-[1.03] rounded-full px-8 py-3.5"
+        <div className="relative z-10 max-w-[1200px] mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-14">
+          {/* Left column — copy */}
+          <div className="flex-1 text-center lg:text-left lg:pt-8 max-w-[560px]">
+            <motion.span
+              {...fadeUp(0)}
+              className="inline-block text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.12em] px-4 py-1.5 rounded-full mb-4 sm:mb-6"
+              style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}
             >
-              {h.cta_text}
-            </DynamicCTA>
-          </motion.div>
-          {hero?.image_url && (
-            <motion.div {...fadeUp(0.5)} className="mt-14">
-              <ResponsiveHeroImage src={hero.image_url} alt={h.title} metadata={hm} defaultMaxWidth="920px" />
+              {h.badge}
+            </motion.span>
+            <motion.h1
+              {...fadeUp(0.1)}
+              className="font-extrabold leading-[1.08] tracking-tight whitespace-pre-line"
+              style={{ color: "#ffffff", fontSize: "clamp(28px, 5vw, 52px)", ...heroStyle("title") }}
+            >
+              {(() => {
+                const lineBreak = hm.title_line_break as string;
+                if (lineBreak && h.title.includes(lineBreak)) {
+                  const idx = h.title.indexOf(lineBreak);
+                  return h.title.slice(0, idx).trimEnd() + "\n" + h.title.slice(idx);
+                }
+                return h.title;
+              })()}
+            </motion.h1>
+            <motion.p
+              {...fadeUp(0.2)}
+              className="mt-4 sm:mt-6 text-[15px] sm:text-[17px] leading-[1.7]"
+              style={{ color: "rgba(255,255,255,0.7)", ...heroStyle("body") }}
+            >
+              {h.subtitle}
+            </motion.p>
+
+            {/* Mobile CTA — scroll to form (visible only on mobile) */}
+            <motion.div {...fadeUp(0.3)} className="mt-6 lg:hidden">
+              <button
+                onClick={() => document.getElementById("hero-form")?.scrollIntoView({ behavior: "smooth" })}
+                className="inline-flex items-center gap-2 text-[15px] font-semibold text-white rounded-full px-7 py-3 transition-all active:scale-95"
+                style={{ background: "linear-gradient(90deg, #BE1869, #6224BE)" }}
+              >
+                {h.cta_text}
+              </button>
             </motion.div>
-          )}
+
+            {/* Trust signals */}
+            <motion.div {...fadeUp(0.35)} className="mt-6 sm:mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2">
+              <span className="text-[12px] sm:text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.45)" }}>✓ Sin compromiso</span>
+              <span className="text-[12px] sm:text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.45)" }}>✓ Respuesta en 24h</span>
+              <span className="text-[12px] sm:text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.45)" }}>✓ 14 años de experiencia</span>
+            </motion.div>
+          </div>
+
+          {/* Right column — inline form */}
+          <motion.div
+            id="hero-form"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+            className="w-full lg:w-[420px] lg:shrink-0 scroll-mt-20"
+          >
+            <InlineLeadForm sourcePage="lp-conoce-tu-pista" />
+          </motion.div>
         </div>
       </SectionShell>
 
