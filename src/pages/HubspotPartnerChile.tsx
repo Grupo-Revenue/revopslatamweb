@@ -142,26 +142,17 @@ const HeroDashboardVisual = ({ imageUrl }: { imageUrl?: string }) => (
     }} />
 
 
-    {/* Dashboard screenshot with treatment */}
+    {/* Dashboard screenshot */}
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.6 }}
-      className="relative z-10 w-full rounded-2xl overflow-hidden"
-      style={{
-        border: "1px solid rgba(255,255,255,0.08)",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(190,24,105,0.08)",
-      }}
+      className="relative z-10 w-full"
     >
-      {/* Subtle brand overlay */}
-      <div className="absolute inset-0 z-10 pointer-events-none" style={{
-        background: "linear-gradient(180deg, rgba(13,13,26,0.15) 0%, rgba(13,13,26,0.05) 50%, rgba(13,13,26,0.3) 100%)",
-      }} />
       <img
         src={imageUrl || hubspotDashboard}
         alt="HubSpot CRM Dashboard"
         className="w-full h-auto block"
-        style={{ filter: "saturate(0.85) brightness(0.95)" }}
       />
     </motion.div>
   </div>
