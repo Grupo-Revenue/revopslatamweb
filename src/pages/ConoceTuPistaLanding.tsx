@@ -1,5 +1,6 @@
 import { useLeadForm } from "@/hooks/useLeadForm";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import type { HomeSection } from "@/hooks/useHomeSections";
@@ -91,6 +92,9 @@ const ConoceTuPistaLanding = () => {
 
   const { getStyle: heroStyle } = useSectionStyles(hero);
   const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
+
+  const ctaFinalRef = useRef<HTMLElement>(null);
+  const ctaFinalVisible = useInView(ctaFinalRef, { margin: "0px 0px -20px 0px" });
 
   if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
 
@@ -368,7 +372,7 @@ const ConoceTuPistaLanding = () => {
       </section>
 
       {/* ════ CTA FINAL ════ */}
-      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
+      <section ref={ctaFinalRef} className="px-5 py-14 pb-24 sm:pb-20 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
         <div className="max-w-[480px] mx-auto text-center">
           <motion.h2
             {...fade(0)}
@@ -411,18 +415,20 @@ const ConoceTuPistaLanding = () => {
       </footer>
 
       {/* ════ STICKY MOBILE CTA ════ */}
-      <div
-        className="fixed bottom-0 left-0 right-0 z-50 sm:hidden px-4 pb-4 pt-2"
-        style={{ background: "linear-gradient(to top, rgba(255,255,255,1) 70%, rgba(255,255,255,0))" }}
-      >
-        <button
-          onClick={handleHeroCTA}
-          className="w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
-          style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.4)" }}
+      {!ctaFinalVisible && (
+        <div
+          className="fixed bottom-0 left-0 right-0 z-50 sm:hidden px-4 pb-4 pt-2"
+          style={{ background: "linear-gradient(to top, rgba(255,255,255,1) 70%, rgba(255,255,255,0))" }}
         >
-          {h.cta_text}
-        </button>
-      </div>
+          <button
+            onClick={handleHeroCTA}
+            className="w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
+            style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.4)" }}
+          >
+            {h.cta_text}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
