@@ -15,6 +15,8 @@ import SectionDivider from "@/components/services/SectionDivider";
 import DotPattern from "@/components/services/DotPattern";
 import GradientMesh from "@/components/services/GradientMesh";
 import NoiseOverlay from "@/components/services/NoiseOverlay";
+import { usePageMeta } from "@/hooks/usePageMeta";
+import { PAGE_SEO } from "@/lib/seo-config";
 
 
 const GRADIENT = "linear-gradient(90deg, #BE1869, #6224BE)";
@@ -274,6 +276,7 @@ export default function OnboardingHubspot() {
   const proceso = getSection("proceso");
   const paraQuien = getSection("para-quien");
   const precio = getSection("precio");
+  usePageMeta({ ...PAGE_SEO["/onboarding-hubspot"], path: "/onboarding-hubspot" });
 
   const hm = mt(hero), pm = mt(problema), im = mt(incluye), prm = mt(proceso), pqm = mt(paraQuien), prec = mt(precio);
 
