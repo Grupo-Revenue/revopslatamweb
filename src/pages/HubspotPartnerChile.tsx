@@ -304,7 +304,6 @@ const HubspotPartnerChile = () => {
   const hm = mt(heroSec), pm = mt(posSec), em = mt(ecoSec), cm = mt(ctSec), pqm = mt(pqSec), fm = mt(faqSec), ctam = mt(ctaFinalSec);
 
   // Resolved values with CMS → fallback
-  type StatDef = { value: string; label: string; counter?: number };
   type CompRow = { label: string; agency: string; revops: string };
   type HubDef = { badge: string; badgeColor: string; icon: string; title: string; desc: string; tag: string };
   type StepDef = { num: string; title: string; desc: string; chip: string };
