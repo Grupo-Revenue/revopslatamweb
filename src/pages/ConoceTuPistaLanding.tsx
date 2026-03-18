@@ -363,48 +363,49 @@ const ConoceTuPistaLanding = () => {
         </div>
       </section>
 
-      {/* ════ CTA FINAL ════ */}
-      <section ref={ctaFinalRef} className="px-5 py-14 pb-24 sm:pb-20 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
-        <div className="max-w-[480px] mx-auto text-center">
-          <motion.h2
-            {...fade(0)}
-            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
-            style={{ color: "#1A1A2E", ...cfStyle("title") }}
-          >
-            {cf.title}
-          </motion.h2>
-          <motion.p
-            {...fade(0.08)}
-            className="mt-3 text-[14px] sm:text-[15px] leading-[1.6]"
-            style={{ color: "#6B7280", ...cfStyle("body") }}
-          >
-            {cf.subtitle}
-          </motion.p>
-          <motion.div {...fade(0.15)} className="mt-7">
-            <button
-              onClick={handleFinalCTA}
-              className="w-full sm:w-auto text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-transform active:scale-[0.97]"
-              style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.3)", ...cfStyle("cta") }}
+      {/* ════ CTA FINAL + FOOTER (ref wrapper to hide sticky) ════ */}
+      <div ref={ctaFinalRef}>
+        <section className="px-5 py-14 pb-24 sm:pb-20 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
+          <div className="max-w-[480px] mx-auto text-center">
+            <motion.h2
+              {...fade(0)}
+              className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
+              style={{ color: "#1A1A2E", ...cfStyle("title") }}
             >
-              {cf.cta_text}
-            </button>
-          </motion.div>
-          <motion.div {...fade(0.2)} className="mt-4 flex items-center justify-center gap-2">
-            <Check size={14} style={{ color: "#1CA398" }} />
-            <span className="text-[12px]" style={{ color: "#9CA3AF" }}>
-              Sin compromiso · Respuesta en 24h
-            </span>
-          </motion.div>
-        </div>
-      </section>
+              {cf.title}
+            </motion.h2>
+            <motion.p
+              {...fade(0.08)}
+              className="mt-3 text-[14px] sm:text-[15px] leading-[1.6]"
+              style={{ color: "#6B7280", ...cfStyle("body") }}
+            >
+              {cf.subtitle}
+            </motion.p>
+            <motion.div {...fade(0.15)} className="mt-7">
+              <button
+                onClick={handleFinalCTA}
+                className="w-full sm:w-auto text-[15px] font-semibold text-white px-8 py-4 rounded-full transition-transform active:scale-[0.97]"
+                style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.3)", ...cfStyle("cta") }}
+              >
+                {cf.cta_text}
+              </button>
+            </motion.div>
+            <motion.div {...fade(0.2)} className="mt-4 flex items-center justify-center gap-2">
+              <Check size={14} style={{ color: "#1CA398" }} />
+              <span className="text-[12px]" style={{ color: "#9CA3AF" }}>
+                Sin compromiso · Respuesta en 24h
+              </span>
+            </motion.div>
+          </div>
+        </section>
 
-      {/* ════ MINIMAL FOOTER ════ */}
-      <footer className="py-6 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <img src={logoBlanco} alt="Revops LATAM" className="h-5 mx-auto mb-2" />
-        <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.25)" }}>
-          © 2026 Revops LATAM. Todos los derechos reservados.
-        </p>
-      </footer>
+        <footer className="py-6 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <img src={logoBlanco} alt="Revops LATAM" className="h-5 mx-auto mb-2" />
+          <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.25)" }}>
+            © 2026 Revops LATAM. Todos los derechos reservados.
+          </p>
+        </footer>
+      </div>
 
       {/* ════ STICKY MOBILE CTA ════ */}
       {!ctaFinalVisible && (
