@@ -38,6 +38,7 @@ const PotenciaConIA = lazy(() => import("./pages/PotenciaConIA"));
 const QueHacemos = lazy(() => import("./pages/QueHacemos"));
 const HubspotPartnerChile = lazy(() => import("./pages/HubspotPartnerChile"));
 const ConoceTuPistaLanding = lazy(() => import("./pages/ConoceTuPistaLanding"));
+const ImplementacionHubspotLanding = lazy(() => import("./pages/ImplementacionHubspotLanding"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PoliticaPrivacidad = lazy(() => import("./pages/PoliticaPrivacidad"));
 
