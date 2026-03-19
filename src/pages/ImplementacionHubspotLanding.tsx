@@ -274,10 +274,10 @@ const SERVICES = [
 function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void }) {
   return (
     <div className="relative z-10 max-w-[640px] mx-auto px-6">
-      <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-3" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>
+      <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-3" style={{ color: "#fff", fontSize: "clamp(28px, 4vw, 36px)" }}>
         ¿Por dónde partir? Depende de dónde estás.
       </motion.h2>
-      <motion.p {...fadeUp(0.05)} className="text-center text-base mb-12" style={{ color: "#4B5563", maxWidth: 520, margin: "0 auto" }}>
+      <motion.p {...fadeUp(0.05)} className="text-center text-base mb-12" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 520, margin: "0 auto" }}>
         Tenemos servicios para cada momento. Desde el arranque rápido hasta la implementación más compleja.
       </motion.p>
       <div className="flex flex-col gap-4">
