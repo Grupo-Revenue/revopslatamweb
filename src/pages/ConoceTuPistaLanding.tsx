@@ -311,7 +311,7 @@ const ConoceTuPistaLanding = () => {
             </p>
             <button
               onClick={() => openLeadForm("lp-conoce-alternativa")}
-              className="mt-4 text-[13px] font-semibold px-6 py-2.5 rounded-full transition-all active:scale-[0.97] hover:opacity-90"
+              className="mt-4 text-[14px] font-semibold px-6 py-2.5 rounded-full transition-all active:scale-[0.97] hover:opacity-90"
               style={{ color: "#BE1869", border: "1.5px solid rgba(190,24,105,0.35)", background: "transparent" }}
             >
               Conversemos tu caso →
