@@ -252,6 +252,7 @@ export default function LeadFormModal() {
         lead_score: finalScore,
         is_qualified: qualified,
         source_page: sourcePage,
+        referrer: document.referrer || "",
         hutk,
         ...utm,
       };
