@@ -1,7 +1,6 @@
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { motion } from "framer-motion";
 import { usePageSections } from "@/hooks/usePageSections";
-import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
