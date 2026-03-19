@@ -153,7 +153,16 @@ const HUBSPOT_MEETINGS_URL = "https://meetings.hubspot.com/febe-moena/reuniones-
 // ── Component ────────────────────────────────────────────────
 export default function LeadFormModal() {
   const { isOpen, closeLeadForm, sourcePage } = useLeadForm();
-  const [step, setStep] = useState(0); // 0-3 = form, 4 = result
+  const skipCrm = sourcePage.startsWith("lp-conoce");
+  const totalSteps = skipCrm ? 3 : 4;
+  const lastFormStep = totalSteps - 1;
+  const resultStep = totalSteps;
+  // Maps visual step → internal step (0=datos, 1=empresa, 2=crm, 3=desafío)
+  const toInternal = (s: number): number => {
+    if (!skipCrm) return s;
+    return s <= 1 ? s : s + 1; // skip internal step 2 (CRM)
+  };
+  const [step, setStep] = useState(0); // visual step index
   const [form, setForm] = useState<FormData>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
