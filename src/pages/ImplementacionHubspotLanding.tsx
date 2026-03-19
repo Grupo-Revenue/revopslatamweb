@@ -99,11 +99,14 @@ const DEF = {
     title_yes: "Es para ti si",
     title_no: "No es para ti si",
     yes: [
-      "Proceso comercial complejo o muy específico",
-      "Múltiples pipelines o equipos que deben alinearse",
-      "HubSpot implementado mal que necesita rehacerse",
+      "Acabas de adquirir HubSpot y quieres arrancar con las bases correctas",
+      "Tienes HubSpot pero tu equipo sigue trabajando en Excel",
+      "Tu implementación anterior quedó mal y necesita rehacerse",
+      "Tienes un proceso comercial complejo que ninguna configuración estándar resuelve",
+      "Tienes múltiples equipos o pipelines que deben alinearse en un solo sistema",
       "Vienes de otro CRM y la migración no quedó bien",
-      "No estás dispuesto a rehacer en 6 meses",
+      "HubSpot está funcionando pero quieres que sea más potente y fácil de usar para tu equipo",
+      "Necesitas conectar HubSpot con tu ERP, sistema de facturación u otras herramientas",
     ],
     no: [
       { text: "Proceso simple y estándar", chip: { label: "Onboarding →", href: "/onboarding-hubspot" } },
