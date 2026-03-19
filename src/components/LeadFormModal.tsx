@@ -153,7 +153,16 @@ const HUBSPOT_MEETINGS_URL = "https://meetings.hubspot.com/febe-moena/reuniones-
 // ── Component ────────────────────────────────────────────────
 export default function LeadFormModal() {
   const { isOpen, closeLeadForm, sourcePage } = useLeadForm();
-  const [step, setStep] = useState(0); // 0-3 = form, 4 = result
+  const skipCrm = sourcePage.startsWith("lp-conoce");
+  const totalSteps = skipCrm ? 3 : 4;
+  const lastFormStep = totalSteps - 1;
+  const resultStep = totalSteps;
+  // Maps visual step → internal step (0=datos, 1=empresa, 2=crm, 3=desafío)
+  const toInternal = (s: number): number => {
+    if (!skipCrm) return s;
+    return s <= 1 ? s : s + 1; // skip internal step 2 (CRM)
+  };
+  const [step, setStep] = useState(0); // visual step index
   const [form, setForm] = useState<FormData>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -168,7 +177,8 @@ export default function LeadFormModal() {
   const handleClose = () => { closeLeadForm(); setTimeout(reset, 300); };
 
   const validateStep = (): boolean => {
-    if (step === 0) {
+    const internal = toInternal(step);
+    if (internal === 0) {
       const result = step1Schema.safeParse(form);
       if (!result.success) {
         const errs: Record<string, string> = {};
@@ -177,7 +187,7 @@ export default function LeadFormModal() {
         return false;
       }
     }
-    if (step === 1) {
+    if (internal === 1) {
       const errs: Record<string, string> = {};
       if (!form.job_title) errs.job_title = "Selecciona tu cargo";
       if (!form.company_name.trim()) errs.company_name = "Requerido";
@@ -185,10 +195,10 @@ export default function LeadFormModal() {
       if (!form.team_size) errs.team_size = "Selecciona el tamaño";
       if (Object.keys(errs).length) { setErrors(errs); return false; }
     }
-    if (step === 2) {
+    if (internal === 2) {
       if (!form.has_crm) { setErrors({ has_crm: "Selecciona una opción" }); return false; }
     }
-    if (step === 3) {
+    if (internal === 3) {
       if (!form.main_pain) { setErrors({ main_pain: "Selecciona tu principal desafío" }); return false; }
       if (!form.consent) { setErrors(prev => ({ ...prev, consent: "Debes aceptar para continuar" })); return false; }
     }
@@ -197,9 +207,9 @@ export default function LeadFormModal() {
 
   const next = async () => {
     if (!validateStep()) return;
-    if (step < 3) { setStep(step + 1); return; }
+    if (step < lastFormStep) { setStep(step + 1); return; }
 
-    // Submit on step 3
+    // Submit on last form step
     setSubmitting(true);
     const finalScore = calculateScore(form);
     setScore(finalScore);
@@ -215,7 +225,7 @@ export default function LeadFormModal() {
         company_name: form.company_name.trim(),
         industry: form.industry,
         team_size: form.team_size,
-        has_crm: form.has_crm,
+        has_crm: skipCrm ? "No especificado" : form.has_crm,
         main_pain: form.main_pain,
         lead_score: finalScore,
         is_qualified: qualified,
@@ -229,12 +239,14 @@ export default function LeadFormModal() {
     } catch (_) { /* best effort */ }
 
     setSubmitting(false);
-    setStep(4);
+    setStep(resultStep);
   };
 
   if (!isOpen) return null;
 
-  const stepLabels = ["Tus datos", "Tu empresa", "Tu CRM", "Tu desafío"];
+  const stepLabels = skipCrm
+    ? ["Tus datos", "Tu empresa", "Tu desafío"]
+    : ["Tus datos", "Tu empresa", "Tu CRM", "Tu desafío"];
   const qualified = score >= 40;
 
   return (
@@ -257,7 +269,7 @@ export default function LeadFormModal() {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="relative w-full overflow-hidden rounded-2xl bg-white shadow-2xl"
             style={{
-              maxWidth: step === 4 && qualified ? "720px" : "520px",
+              maxWidth: step === resultStep && qualified ? "720px" : "520px",
               maxHeight: "90vh",
               transition: "max-width 0.3s ease",
             }}
@@ -268,7 +280,7 @@ export default function LeadFormModal() {
             </button>
 
             {/* Progress bar */}
-            {step < 4 && (
+            {step < resultStep && (
               <div className="px-6 pt-6">
                 <div className="flex gap-2 mb-1">
                   {stepLabels.map((label, i) => (
@@ -293,7 +305,7 @@ export default function LeadFormModal() {
 
             <div className="px-6 pb-6 pt-4 overflow-y-auto" style={{ maxHeight: "calc(90vh - 80px)" }}>
               <AnimatePresence mode="wait">
-                {step === 0 && (
+                {toInternal(step) === 0 && (
                   <StepWrapper key="s0">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Conversemos 👋</h3>
                     <p className="text-sm text-muted-foreground mb-6">Cuéntanos un poco sobre ti</p>
@@ -306,7 +318,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 1 && (
+                {toInternal(step) === 1 && (
                   <StepWrapper key="s1">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu empresa 🏢</h3>
                     <p className="text-sm text-muted-foreground mb-6">Para entender mejor tu contexto</p>
@@ -317,7 +329,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 2 && (
+                {toInternal(step) === 2 && (
                   <StepWrapper key="s2">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu CRM 💻</h3>
                     <p className="text-sm text-muted-foreground mb-6">¿Cuentas con un CRM actualmente?</p>
@@ -342,7 +354,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 3 && (
+                {toInternal(step) === 3 && (
                   <StepWrapper key="s3">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu principal desafío 🎯</h3>
                     <p className="text-sm text-muted-foreground mb-6">¿Cuál es el problema que más te resuena?</p>
@@ -381,7 +393,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 4 && qualified && (
+                {step === resultStep && qualified && (
                   <StepWrapper key="qualified">
                     <div className="text-center py-2">
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 15 }}>
@@ -406,7 +418,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 4 && !qualified && (
+                {step === resultStep && !qualified && (
                   <StepWrapper key="not-qualified">
                     <div className="text-center py-4">
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 15 }}>
@@ -436,7 +448,7 @@ export default function LeadFormModal() {
               </AnimatePresence>
 
               {/* Navigation */}
-              {step < 4 && (
+              {step < resultStep && (
                 <div className="flex items-center justify-between mt-8">
                   {step > 0 ? (
                     <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">
@@ -449,7 +461,7 @@ export default function LeadFormModal() {
                     className="flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-50 text-[15px]"
                     style={{ background: "var(--gradient-brand)" }}
                   >
-                    {submitting ? <Loader2 size={18} className="animate-spin" /> : step === 3 ? "Enviar" : "Siguiente"}
+                    {submitting ? <Loader2 size={18} className="animate-spin" /> : step === lastFormStep ? "Enviar" : "Siguiente"}
                     {!submitting && <ArrowRight size={16} />}
                   </button>
                 </div>
