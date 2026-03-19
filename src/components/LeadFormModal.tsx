@@ -225,6 +225,19 @@ export default function LeadFormModal() {
     const qualified = finalScore >= 40;
 
     try {
+      // Capture HubSpot tracking cookie (hutk)
+      const hutk = document.cookie.split("; ").find(c => c.startsWith("hubspotutk="))?.split("=")[1] || "";
+
+      // Capture UTM params from URL
+      const params = new URLSearchParams(window.location.search);
+      const utm = {
+        utm_source: params.get("utm_source") || "",
+        utm_medium: params.get("utm_medium") || "",
+        utm_campaign: params.get("utm_campaign") || "",
+        utm_content: params.get("utm_content") || "",
+        utm_term: params.get("utm_term") || "",
+      };
+
       const leadData = {
         first_name: form.first_name.trim(),
         last_name: form.last_name.trim(),
@@ -239,6 +252,8 @@ export default function LeadFormModal() {
         lead_score: finalScore,
         is_qualified: qualified,
         source_page: sourcePage,
+        hutk,
+        ...utm,
       };
 
       await Promise.allSettled([
