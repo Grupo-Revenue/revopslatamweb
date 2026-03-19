@@ -325,7 +325,7 @@ const ConoceTuPistaLanding = () => {
         <div className="max-w-[520px] mx-auto text-center">
           <motion.h2
             {...fade(0)}
-            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
+            className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
             style={{ color: "#fff" }}
           >
             El diagnóstico no es un gasto. Es el inicio.
