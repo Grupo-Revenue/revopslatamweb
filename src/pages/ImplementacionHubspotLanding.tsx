@@ -415,7 +415,7 @@ export default function ImplementacionHubspotLanding() {
         </div>
       </SectionShell>
 
-      <Footer />
+      
     </div>
   );
 }
