@@ -298,11 +298,9 @@ export default function ImplementacionHubspotLanding() {
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-16 pb-20">
-          <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mb-10 sm:h-8 sm:mb-12" />
-        </div>
-        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center" style={{ marginTop: "-2rem" }}>
+        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-16 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
           <div>
+            <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mb-10 sm:h-8 sm:mb-12" />
             <motion.p {...fadeUp()} className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>{h.breadcrumb}</motion.p>
             <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] uppercase font-bold tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5" style={{ fontSize: "clamp(40px, 5vw, 62px)", maxWidth: 580 }}>{h.title}</motion.h1>
