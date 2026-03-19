@@ -1,4 +1,4 @@
-
+import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
@@ -298,7 +298,10 @@ export default function ImplementacionHubspotLanding() {
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
+        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pt-16 pb-20">
+          <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mb-10 sm:h-8 sm:mb-12" />
+        </div>
+        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center" style={{ marginTop: "-2rem" }}>
           <div>
             <motion.p {...fadeUp()} className="text-xs mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>{h.breadcrumb}</motion.p>
             <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] uppercase font-bold tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
@@ -415,7 +418,13 @@ export default function ImplementacionHubspotLanding() {
         </div>
       </SectionShell>
 
-      
+
+      <footer className="py-6 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <img src={logoBlanco} alt="Revops LATAM" className="h-5 mx-auto mb-2" />
+        <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.25)" }}>
+          © 2026 Revops LATAM. Todos los derechos reservados.
+        </p>
+      </footer>
     </div>
   );
 }
