@@ -372,7 +372,7 @@ const ConoceTuPistaLanding = () => {
       </section>
 
       {/* ════ CTA FINAL + FOOTER (ref wrapper to hide sticky) ════ */}
-      <div ref={ctaFinalRef}>
+      <div>
         <section className="px-5 py-14 pb-24 sm:pb-20 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
           <div className="max-w-[480px] mx-auto text-center">
             <motion.h2
