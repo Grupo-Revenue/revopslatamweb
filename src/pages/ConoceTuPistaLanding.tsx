@@ -234,8 +234,8 @@ const ConoceTuPistaLanding = () => {
                   {item.num}
                 </span>
                 <div>
-                  <h3 className="text-[15px] font-bold" style={{ color: "#1A1A2E" }}>{item.title}</h3>
-                  <p className="mt-1.5 text-[13px] sm:text-[14px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.desc}</p>
+                  <h3 className="text-[16px] font-bold" style={{ color: "#1A1A2E" }}>{item.title}</h3>
+                  <p className="mt-1.5 text-[14px] sm:text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.desc}</p>
                 </div>
               </motion.div>
             ))}
