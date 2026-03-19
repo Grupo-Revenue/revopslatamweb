@@ -309,6 +309,13 @@ const ConoceTuPistaLanding = () => {
                     <span className="text-[12px] font-medium" style={{ color: "#9CA3AF" }}>{card.duration}</span>
                   </div>
 
+                  {/* Self-selection hint (GROWTH only) */}
+                  {card.highlighted && (
+                    <p className="text-[12px] mb-2" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                      Si tienes entre 3 y 10 vendedores, este es tu diagnóstico.
+                    </p>
+                  )}
+
                   {/* Title & tagline */}
                   <h3 className="text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{card.title}</h3>
                   <p className="text-[13px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
