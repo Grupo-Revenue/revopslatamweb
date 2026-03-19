@@ -282,7 +282,7 @@ const ConoceTuPistaLanding = () => {
               <h3 className="text-[22px] sm:text-[26px] font-bold mt-2" style={{ color: "#1A1A2E" }}>
                 Diagnóstico RevOps
               </h3>
-              <p className="text-[14px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <p className="text-[15px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Visión completa en 3 semanas
               </p>
 
