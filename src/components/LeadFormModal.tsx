@@ -393,7 +393,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 4 && qualified && (
+                {step === resultStep && qualified && (
                   <StepWrapper key="qualified">
                     <div className="text-center py-2">
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", damping: 15 }}>
