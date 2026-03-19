@@ -248,7 +248,7 @@ const ConoceTuPistaLanding = () => {
         <div className="max-w-[520px] mx-auto">
           <motion.h2
             {...fade(0)}
-            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
+            className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
             style={{ color: "#1A1A2E" }}
           >
             Tu diagnóstico en 3 semanas
