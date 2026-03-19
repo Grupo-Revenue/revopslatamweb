@@ -286,7 +286,7 @@ const ConoceTuPistaLanding = () => {
                 Visión completa en 3 semanas
               </p>
 
-              <p className="mt-4 text-[14px] sm:text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>
+              <p className="mt-4 text-[15px] sm:text-[16px] leading-[1.6]" style={{ color: "#6B7280" }}>
                 Para empresas con equipos comerciales de 3 a 15 vendedores que necesitan visibilidad real de su operación.
               </p>
 
