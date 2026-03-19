@@ -277,10 +277,10 @@ const SERVICES = [
 function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void }) {
   return (
     <div className="relative z-10 max-w-[640px] mx-auto px-6">
-      <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-5" style={{ color: "#fff", fontSize: "clamp(28px, 4vw, 36px)" }}>
+      <motion.h2 {...fadeUp()} className="text-center font-bold tracking-tight mb-5" style={{ color: "#fff", fontSize: "clamp(24px, 5vw, 28px)" }}>
         ¿Por dónde partir? Depende de dónde estás.
       </motion.h2>
-      <motion.p {...fadeUp(0.05)} className="text-center text-base" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 520, margin: "0 auto 48px" }}>
+      <motion.p {...fadeUp(0.05)} className="text-center text-[15px] sm:text-[16px] leading-[1.6]" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 520, margin: "0 auto 48px" }}>
         Tenemos servicios para cada momento. Desde el arranque rápido hasta la implementación más compleja.
       </motion.p>
       <div className="flex flex-col gap-4">
@@ -306,7 +306,7 @@ function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void
               {s.badge}
             </span>
             <h3 className="font-bold text-lg mb-2" style={{ color: "#1A1A2E" }}>{s.title}</h3>
-            <p className="text-sm leading-relaxed mb-3" style={{ color: "#6B7280" }}>{s.desc}</p>
+            <p className="text-[14px] sm:text-[15px] leading-relaxed mb-3" style={{ color: "#6B7280" }}>{s.desc}</p>
             <span className="text-[13px] font-semibold" style={{ color: "#BE1869" }}>{s.price}</span>
           </motion.div>
         ))}
@@ -365,10 +365,10 @@ export default function ImplementacionHubspotLanding() {
           <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
             
             <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] uppercase font-bold tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
-            <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5 lg:max-w-[580px]" style={{ fontSize: "clamp(36px, 5vw, 62px)" }}>{h.title}</motion.h1>
-            <motion.p {...fadeUp(0.15)} className="text-lg mb-8 lg:max-w-[500px]" style={{ color: "rgba(255,255,255,0.7)" }}>{h.subtitle}</motion.p>
+            <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.1] tracking-tight whitespace-pre-line lg:max-w-[580px]" style={{ fontSize: "clamp(28px, 7vw, 52px)" }}>{h.title}</motion.h1>
+            <motion.p {...fadeUp(0.15)} className="text-[16px] sm:text-[17px] leading-[1.65] mb-8 lg:max-w-[500px]" style={{ color: "rgba(255,255,255,0.65)" }}>{h.subtitle}</motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-col sm:flex-row items-center gap-4">
-              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-hero"); }} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-hero"); }} className="text-[15px] whitespace-nowrap font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
               <button onClick={scrollToFit} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{h.cta2}</button>
             </motion.div>
           </div>
@@ -384,11 +384,11 @@ export default function ImplementacionHubspotLanding() {
         <GradientMesh variant="light" />
         <NoiseOverlay />
         <div className="relative z-10 max-w-[800px] mx-auto px-6">
-          <motion.h2 {...fadeUp()} className="font-bold tracking-[-0.02em] mb-10 text-center" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)", maxWidth: 640, margin: "0 auto 40px" }}>{prob.title}</motion.h2>
+          <motion.h2 {...fadeUp()} className="font-bold tracking-tight mb-10 text-center" style={{ color: "#1A1A2E", fontSize: "clamp(24px, 5vw, 28px)", maxWidth: 640, margin: "0 auto 40px" }}>{prob.title}</motion.h2>
           <motion.div {...fadeUp(0.1)}>
             <ProblemAccordion cases={prob.cases} />
           </motion.div>
-          <motion.p {...fadeUp(0.3)} className="text-center text-base font-semibold mt-10" style={{ color: "#BE1869" }}>
+          <motion.p {...fadeUp(0.3)} className="text-center text-[14px] font-semibold mt-10" style={{ color: "#BE1869" }}>
             {prob.pill}
           </motion.p>
         </div>
@@ -407,7 +407,7 @@ export default function ImplementacionHubspotLanding() {
       {/* ── FASES ── */}
       <SectionShell section={fases} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[900px] mx-auto px-6">
-          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{fas.title}</motion.h2>
+          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-tight mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(24px, 5vw, 28px)" }}>{fas.title}</motion.h2>
           <PhasesTimeline phases={fas.phases} />
         </div>
       </SectionShell>
@@ -423,8 +423,8 @@ export default function ImplementacionHubspotLanding() {
               </h3>
               <ul className="space-y-3">
                 {pq.yes.map((it, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "#374151" }}>
-                    <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
+                  <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px]" style={{ color: "#374151" }}>
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
                   </li>
                 ))}
               </ul>
@@ -436,7 +436,7 @@ export default function ImplementacionHubspotLanding() {
               </h3>
               <ul className="space-y-3">
                 {pq.no.map((item, i) => (
-                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>{typeof item === "string" ? item : (item as any).text}</li>
+                  <li key={i} className="text-[15px] sm:text-[16px] leading-[1.6]" style={{ color: "#6B7280" }}>{typeof item === "string" ? item : (item as any).text}</li>
                 ))}
               </ul>
               <div className="mt-6 pt-5" style={{ borderTop: "1px solid #E5E7EB" }}>
@@ -458,7 +458,7 @@ export default function ImplementacionHubspotLanding() {
         <div className="relative z-10 max-w-[480px] mx-auto px-6">
           <motion.div {...fadeUp()} className="relative rounded-[20px] p-12 text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
             <span className="block text-[11px] uppercase tracking-wider font-semibold mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>{pr.label}</span>
-            <h3 className="text-2xl font-extrabold leading-tight mb-5" style={{ color: "#fff" }}>{pr.headline}</h3>
+            <h3 className="text-[22px] sm:text-[26px] font-extrabold leading-tight mb-5" style={{ color: "#fff" }}>{pr.headline}</h3>
             <p className="text-[13px] text-center mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>El precio depende del alcance. En 30 minutos lo definimos juntos.</p>
             <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-precio"); }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
           </motion.div>
