@@ -388,7 +388,7 @@ export default function ImplementacionHubspotLanding() {
           <motion.div {...fadeUp(0.1)}>
             <ProblemAccordion cases={prob.cases} />
           </motion.div>
-          <motion.p {...fadeUp(0.3)} className="text-center text-base font-semibold mt-10" style={{ color: "#BE1869" }}>
+          <motion.p {...fadeUp(0.3)} className="text-center text-[14px] font-semibold mt-10" style={{ color: "#BE1869" }}>
             {prob.pill}
           </motion.p>
         </div>
