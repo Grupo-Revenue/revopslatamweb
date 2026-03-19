@@ -356,7 +356,7 @@ export default function ImplementacionHubspotLanding() {
 
 
       {/* ── HERO ── */}
-      <SectionShell section={hero} className="min-h-[70vh] lg:min-h-[90vh] flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={hero} className="flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 w-full px-6 pt-16 sm:pt-24">
           <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mx-auto mb-10 sm:h-8 sm:mb-12" />
