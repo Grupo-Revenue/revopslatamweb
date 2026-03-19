@@ -158,7 +158,7 @@ const ConoceTuPistaLanding = () => {
           {/* Badge */}
           <motion.span
             {...fade(0.05)}
-            className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-5"
+            className="inline-block text-[12px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-5"
             style={{ background: "rgba(190,24,105,0.12)", color: "#E84393", border: "1px solid rgba(190,24,105,0.25)" }}
           >
             {h.badge}
@@ -176,7 +176,7 @@ const ConoceTuPistaLanding = () => {
           {/* Subtitle */}
           <motion.p
             {...fade(0.15)}
-            className="mt-4 text-[15px] sm:text-[17px] leading-[1.65]"
+            className="mt-4 text-[16px] sm:text-[17px] leading-[1.65]"
             style={{ color: "rgba(255,255,255,0.65)", ...heroStyle("body") }}
           >
             {h.subtitle}
@@ -185,7 +185,7 @@ const ConoceTuPistaLanding = () => {
           {/* Pricing hint */}
           <motion.p
             {...fade(0.18)}
-            className="mt-4 text-[12px] tracking-wide"
+            className="mt-4 text-[13px] tracking-wide"
             style={{ color: "rgba(255,255,255,0.38)" }}
           >
             Diagnóstico RevOps · 3 semanas · Desde 150 UF
@@ -195,7 +195,7 @@ const ConoceTuPistaLanding = () => {
           <motion.div {...fade(0.2)} className="mt-7">
             <button
               onClick={handleHeroCTA}
-              className="w-full sm:w-auto text-[14px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
+              className="w-full sm:w-auto text-[15px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
               style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
             >
               {h.cta_text}
@@ -209,7 +209,7 @@ const ConoceTuPistaLanding = () => {
         <div className="max-w-[520px] mx-auto">
           <motion.h2
             {...fade(0)}
-            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
+            className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
             style={{ color: "#1A1A2E" }}
           >
             Qué recibes al terminar
@@ -234,8 +234,8 @@ const ConoceTuPistaLanding = () => {
                   {item.num}
                 </span>
                 <div>
-                  <h3 className="text-[15px] font-bold" style={{ color: "#1A1A2E" }}>{item.title}</h3>
-                  <p className="mt-1.5 text-[13px] sm:text-[14px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.desc}</p>
+                  <h3 className="text-[16px] font-bold" style={{ color: "#1A1A2E" }}>{item.title}</h3>
+                  <p className="mt-1.5 text-[14px] sm:text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -248,14 +248,14 @@ const ConoceTuPistaLanding = () => {
         <div className="max-w-[520px] mx-auto">
           <motion.h2
             {...fade(0)}
-            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
+            className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
             style={{ color: "#1A1A2E" }}
           >
             Tu diagnóstico en 3 semanas
           </motion.h2>
           <motion.p
             {...fade(0.05)}
-            className="mt-3 text-[14px] sm:text-[15px] leading-[1.6] text-center"
+            className="mt-3 text-[15px] sm:text-[16px] leading-[1.6] text-center"
             style={{ color: "#6B7280" }}
           >
             Visión completa de dónde se pierden tus negocios, con números reales y un plan concreto para corregirlo.
@@ -269,24 +269,24 @@ const ConoceTuPistaLanding = () => {
           >
             <div className="rounded-[14px] p-6 sm:p-8 flex flex-col" style={{ background: "#fff" }}>
               <span
-                className="self-start text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full text-white"
+                className="self-start text-[11px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full text-white"
                 style={{ background: GRADIENT }}
               >
                 GROWTH · El más elegido
               </span>
 
-              <p className="text-[12px] mt-3" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <p className="text-[13px] mt-3" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Si tienes entre 3 y 10 vendedores, este es tu diagnóstico.
               </p>
 
               <h3 className="text-[22px] sm:text-[26px] font-bold mt-2" style={{ color: "#1A1A2E" }}>
                 Diagnóstico RevOps
               </h3>
-              <p className="text-[14px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <p className="text-[15px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Visión completa en 3 semanas
               </p>
 
-              <p className="mt-4 text-[14px] sm:text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>
+              <p className="mt-4 text-[15px] sm:text-[16px] leading-[1.6]" style={{ color: "#6B7280" }}>
                 Para empresas con equipos comerciales de 3 a 15 vendedores que necesitan visibilidad real de su operación.
               </p>
 
@@ -296,7 +296,7 @@ const ConoceTuPistaLanding = () => {
 
               <button
                 onClick={() => openLeadForm("lp-conoce-growth")}
-                className="mt-5 w-full text-[14px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
+                className="mt-5 w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
                 style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
               >
                 Quiero mi diagnóstico →
@@ -306,12 +306,12 @@ const ConoceTuPistaLanding = () => {
 
           {/* Alternativa */}
           <motion.div {...fade(0.18)} className="mt-8 flex flex-col items-center text-center">
-            <p className="text-[13px] sm:text-[14px] leading-[1.65] max-w-[420px]" style={{ color: "#9CA3AF" }}>
+            <p className="text-[14px] sm:text-[15px] leading-[1.65] max-w-[420px]" style={{ color: "#9CA3AF" }}>
               ¿Tu realidad es distinta? Tenemos otros planes para equipos más pequeños y para operaciones más complejas. Lo mejor es contarnos tu situación — en 15 minutos encontramos el enfoque correcto para ti.
             </p>
             <button
               onClick={() => openLeadForm("lp-conoce-alternativa")}
-              className="mt-4 text-[13px] font-semibold px-6 py-2.5 rounded-full transition-all active:scale-[0.97] hover:opacity-90"
+              className="mt-4 text-[14px] font-semibold px-6 py-2.5 rounded-full transition-all active:scale-[0.97] hover:opacity-90"
               style={{ color: "#BE1869", border: "1.5px solid rgba(190,24,105,0.35)", background: "transparent" }}
             >
               Conversemos tu caso →
@@ -325,21 +325,21 @@ const ConoceTuPistaLanding = () => {
         <div className="max-w-[520px] mx-auto text-center">
           <motion.h2
             {...fade(0)}
-            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
+            className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
             style={{ color: "#fff" }}
           >
             El diagnóstico no es un gasto. Es el inicio.
           </motion.h2>
           <motion.p
             {...fade(0.08)}
-            className="mt-5 text-[14px] sm:text-[15px] leading-[1.7]"
+            className="mt-5 text-[15px] sm:text-[16px] leading-[1.7]"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
             El 70% de nuestros clientes continúa con implementación después del diagnóstico.
           </motion.p>
           <motion.p
             {...fade(0.12)}
-            className="mt-2 text-[14px] sm:text-[15px] leading-[1.7]"
+            className="mt-2 text-[15px] sm:text-[16px] leading-[1.7]"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
             No porque los convenzamos — porque el diagnóstico muestra oportunidades que no querían dejar pasar.
@@ -352,7 +352,7 @@ const ConoceTuPistaLanding = () => {
                 <p className="text-[22px] sm:text-[28px] font-extrabold tracking-tight" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {s.value}
                 </p>
-                <p className="text-[11px] sm:text-[12px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+                <p className="text-[12px] sm:text-[13px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
                   {s.label}
                 </p>
               </motion.div>
@@ -367,14 +367,14 @@ const ConoceTuPistaLanding = () => {
           <div className="max-w-[480px] mx-auto text-center">
             <motion.h2
               {...fade(0)}
-              className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
+              className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
               style={{ color: "#1A1A2E", ...cfStyle("title") }}
             >
               {cf.title}
             </motion.h2>
             <motion.p
               {...fade(0.08)}
-              className="mt-3 text-[14px] sm:text-[15px] leading-[1.6]"
+              className="mt-3 text-[15px] sm:text-[16px] leading-[1.6]"
               style={{ color: "#6B7280", ...cfStyle("body") }}
             >
               {cf.subtitle}
@@ -382,7 +382,7 @@ const ConoceTuPistaLanding = () => {
             <motion.div {...fade(0.15)} className="mt-7">
               <button
                 onClick={handleFinalCTA}
-                className="w-full sm:w-auto text-[14px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
+                className="w-full sm:w-auto text-[15px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
                 style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.3)", ...cfStyle("cta") }}
               >
                 {cf.cta_text}
