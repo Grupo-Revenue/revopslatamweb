@@ -280,7 +280,7 @@ export default function LeadFormModal() {
             </button>
 
             {/* Progress bar */}
-            {step < 4 && (
+            {step < resultStep && (
               <div className="px-6 pt-6">
                 <div className="flex gap-2 mb-1">
                   {stepLabels.map((label, i) => (
