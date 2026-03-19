@@ -459,7 +459,7 @@ export default function ImplementacionHubspotLanding() {
             <p className="text-sm mb-5" style={{ color: "rgba(255,255,255,0.6)" }}>{pr.subtext}</p>
             <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.1)" }} />
             <p className="text-[13px] text-center mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>El precio depende del alcance. En 30 minutos lo definimos juntos.</p>
-            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { if (mt(precio).cta1_opens_lead_form) { openLeadForm("lp-implementacion-precio"); } else if (precio?.cta_url) { window.open(precio.cta_url, "_blank"); } }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
+            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-precio"); }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
           </motion.div>
         </div>
       </SectionShell>
