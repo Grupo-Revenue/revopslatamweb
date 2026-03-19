@@ -305,7 +305,7 @@ export default function LeadFormModal() {
 
             <div className="px-6 pb-6 pt-4 overflow-y-auto" style={{ maxHeight: "calc(90vh - 80px)" }}>
               <AnimatePresence mode="wait">
-                {step === 0 && (
+                {toInternal(step) === 0 && (
                   <StepWrapper key="s0">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Conversemos 👋</h3>
                     <p className="text-sm text-muted-foreground mb-6">Cuéntanos un poco sobre ti</p>
@@ -318,7 +318,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 1 && (
+                {toInternal(step) === 1 && (
                   <StepWrapper key="s1">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu empresa 🏢</h3>
                     <p className="text-sm text-muted-foreground mb-6">Para entender mejor tu contexto</p>
@@ -329,7 +329,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 2 && (
+                {toInternal(step) === 2 && (
                   <StepWrapper key="s2">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu CRM 💻</h3>
                     <p className="text-sm text-muted-foreground mb-6">¿Cuentas con un CRM actualmente?</p>
@@ -354,7 +354,7 @@ export default function LeadFormModal() {
                   </StepWrapper>
                 )}
 
-                {step === 3 && (
+                {toInternal(step) === 3 && (
                   <StepWrapper key="s3">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu principal desafío 🎯</h3>
                     <p className="text-sm text-muted-foreground mb-6">¿Cuál es el problema que más te resuena?</p>
