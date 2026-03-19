@@ -231,44 +231,6 @@ const ConoceTuPistaLanding = () => {
         </div>
       </section>
 
-      {/* ════ PAIN POINTS ════ */}
-      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
-        <div className="max-w-[520px] mx-auto">
-          <motion.h2
-            {...fade(0)}
-            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
-            style={{ color: "#1A1A2E" }}
-          >
-            {p.title}
-          </motion.h2>
-
-          <div className="mt-6 flex flex-col gap-3">
-            {p.stat_cards.map((sc, i) => (
-              <motion.div
-                key={i}
-                {...fade(0.05 + i * 0.05)}
-                className="flex items-start gap-3.5 p-4 rounded-xl"
-                style={{ background: "#F8F9FB", border: "1px solid #F0F1F3" }}
-              >
-                <span className="mt-0.5 flex-shrink-0">
-                  {iconMap[sc.icon] || <span className="text-lg">{sc.icon}</span>}
-                </span>
-                <span className="text-[14px] sm:text-[15px] leading-[1.5] font-medium" style={{ color: "#374151" }}>
-                  {sc.text}
-                </span>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.p
-            {...fade(0.2)}
-            className="mt-6 text-[15px] font-bold leading-[1.5] p-4 rounded-xl border-l-4"
-            style={{ color: "#1A1A2E", background: "linear-gradient(90deg, rgba(190,24,105,0.06), transparent)", borderColor: "#BE1869" }}
-          >
-            {p.highlight}
-          </motion.p>
-        </div>
-      </section>
 
       {/* ════ DIAGNÓSTICOS ════ */}
       <section id="diagnosticos" className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#F8F9FB" }}>
