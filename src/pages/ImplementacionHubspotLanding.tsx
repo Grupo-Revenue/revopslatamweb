@@ -367,9 +367,8 @@ export default function ImplementacionHubspotLanding() {
             <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] uppercase font-bold tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.1] tracking-tight whitespace-pre-line lg:max-w-[580px]" style={{ fontSize: "clamp(28px, 7vw, 52px)" }}>{h.title}</motion.h1>
             <motion.p {...fadeUp(0.15)} className="mt-4 text-[16px] sm:text-[17px] leading-[1.65] mb-8 lg:max-w-[500px]" style={{ color: "rgba(255,255,255,0.65)" }}>{h.subtitle}</motion.p>
-            <motion.div {...fadeUp(0.2)} className="flex flex-col sm:flex-row items-center gap-4">
+            <motion.div {...fadeUp(0.2)}>
               <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-hero"); }} className="text-[15px] whitespace-nowrap font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
-              <button onClick={scrollToFit} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{h.cta2}</button>
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
@@ -460,7 +459,7 @@ export default function ImplementacionHubspotLanding() {
             <span className="block text-[11px] uppercase tracking-wider font-semibold mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>{pr.label}</span>
             <h3 className="text-[22px] sm:text-[26px] font-extrabold leading-tight mb-5" style={{ color: "#fff" }}>{pr.headline}</h3>
             <p className="text-[13px] text-center mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>El precio depende del alcance. En 30 minutos lo definimos juntos.</p>
-            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-precio"); }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
+            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-precio"); }} className="w-full text-[15px] whitespace-nowrap font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
           </motion.div>
         </div>
       </SectionShell>
