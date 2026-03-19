@@ -2,7 +2,6 @@ import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { ArrowRight, ChevronDown, FileText, Layers, Settings, Users, BookOpen, HeartHandshake } from "lucide-react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import DynamicCTA from "@/components/DynamicCTA";
@@ -46,13 +45,7 @@ function SectionShell({ section, className, defaultBg, children }: {
   );
 }
 
-const RedirectChip = ({ label, href }: { label: string; href: string }) => (
-  <Link to={href} className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-[1.03]"
-    style={{ background: "linear-gradient(90deg, rgba(190,24,105,0.08), rgba(98,36,190,0.08))", color: "#BE1869" }}
-    onMouseEnter={e => { e.currentTarget.style.background = GRADIENT; e.currentTarget.style.color = "#fff"; }}
-    onMouseLeave={e => { e.currentTarget.style.background = "linear-gradient(90deg, rgba(190,24,105,0.08), rgba(98,36,190,0.08))"; e.currentTarget.style.color = "#BE1869"; }}
-  >{label} <ArrowRight size={14} /></Link>
-);
+
 
 /* ─── defaults ─── */
 const DEF = {
@@ -372,7 +365,7 @@ export default function ImplementacionHubspotLanding() {
             <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5" style={{ fontSize: "clamp(40px, 5vw, 62px)", maxWidth: 580 }}>{h.title}</motion.h1>
             <motion.p {...fadeUp(0.15)} className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</motion.p>
             <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
-              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { if (hm.cta1_opens_lead_form) { openLeadForm("lp-implementacion-hero"); } else if (hero?.cta_url) { window.open(hero.cta_url, "_blank"); } }} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-hero"); }} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
               <button onClick={scrollToFit} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{h.cta2}</button>
             </motion.div>
           </div>
@@ -466,7 +459,7 @@ export default function ImplementacionHubspotLanding() {
             <p className="text-sm mb-5" style={{ color: "rgba(255,255,255,0.6)" }}>{pr.subtext}</p>
             <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.1)" }} />
             <p className="text-[13px] text-center mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>El precio depende del alcance. En 30 minutos lo definimos juntos.</p>
-            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { if (mt(precio).cta1_opens_lead_form) { openLeadForm("lp-implementacion-precio"); } else if (precio?.cta_url) { window.open(precio.cta_url, "_blank"); } }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
+            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-precio"); }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
           </motion.div>
         </div>
       </SectionShell>
