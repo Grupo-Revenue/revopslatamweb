@@ -255,7 +255,7 @@ const ConoceTuPistaLanding = () => {
           </motion.h2>
           <motion.p
             {...fade(0.05)}
-            className="mt-3 text-[14px] sm:text-[15px] leading-[1.6] text-center"
+            className="mt-3 text-[15px] sm:text-[16px] leading-[1.6] text-center"
             style={{ color: "#6B7280" }}
           >
             Visión completa de dónde se pierden tus negocios, con números reales y un plan concreto para corregirlo.
