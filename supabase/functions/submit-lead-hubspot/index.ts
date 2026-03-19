@@ -12,7 +12,12 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { first_name, last_name, email, phone, job_title, company_name, industry, team_size, has_crm, main_pain, lead_score, utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer } = body;
+    const {
+      first_name, last_name, email, phone, job_title, company_name,
+      industry, team_size, has_crm, main_pain, lead_score,
+      utm_source, utm_medium, utm_campaign, utm_content, utm_term,
+      referrer,
+    } = body;
 
     const portalId = Deno.env.get("HUBSPOT_PORTAL_ID") ?? "1537563";
     const defaultFormGuid = Deno.env.get("HUBSPOT_FORM_GUID") ?? "853c8d2a-091e-4dc3-ada7-6fdabf48ef8e";
@@ -31,7 +36,20 @@ serve(async (req) => {
       painFieldName = "problema_principal__usan_otro_crm_";
     }
 
-    const hsPayload = {
+    // Build pageUri with UTMs appended if present
+    let pageUri = body.source_page || "";
+    const utmParams = new URLSearchParams();
+    if (utm_source) utmParams.set("utm_source", utm_source);
+    if (utm_medium) utmParams.set("utm_medium", utm_medium);
+    if (utm_campaign) utmParams.set("utm_campaign", utm_campaign);
+    if (utm_content) utmParams.set("utm_content", utm_content);
+    if (utm_term) utmParams.set("utm_term", utm_term);
+    const utmString = utmParams.toString();
+    if (utmString) {
+      pageUri += (pageUri.includes("?") ? "&" : "?") + utmString;
+    }
+
+    const hsPayload: Record<string, unknown> = {
       fields: [
         { name: "firstname", value: first_name },
         { name: "lastname", value: last_name },
@@ -49,22 +67,9 @@ serve(async (req) => {
       ],
       context: {
         hutk: body.hutk || undefined,
-        pageUri: body.source_page || "",
+        pageUri,
         pageName: "RevOps LATAM - Lead Form",
-        ...(referrer && { sfdcCampaignId: undefined, goToWebinarWebinarKey: undefined }),
-        ...(utm_source && { utm_source }),
-        ...(utm_medium && { utm_medium }),
-        ...(utm_campaign && { utm_campaign }),
-        ...(utm_content && { utm_content }),
-        ...(utm_term && { utm_term }),
       },
-      legalConsentOptions: undefined,
-    };
-
-    // Add referrer as a hidden field so HubSpot can see the original source
-    if (referrer) {
-      hsPayload.fields.push({ name: "referrer_url", value: referrer });
-    }
     };
 
     const hsRes = await fetch(hubspotUrl, {
