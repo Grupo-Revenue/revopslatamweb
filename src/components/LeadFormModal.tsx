@@ -366,9 +366,9 @@ export default function LeadFormModal() {
                 {toInternal(step) === 3 && (
                   <StepWrapper key="s3">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu principal desafío 🎯</h3>
-                    <p className="text-sm text-muted-foreground mb-6">¿Cuál es el problema que más te resuena?</p>
+                    <p className="text-sm text-muted-foreground mb-6">{skipCrm ? "¿Qué es lo que más te preocupa hoy?" : "¿Cuál es el problema que más te resuena?"}</p>
                     <div className="flex flex-col gap-2.5">
-                      {getPainOptions(form.has_crm).map(opt => (
+                      {(skipCrm ? PAIN_LANDING : getPainOptions(form.has_crm)).map(opt => (
                         <button
                           key={opt}
                           type="button"
