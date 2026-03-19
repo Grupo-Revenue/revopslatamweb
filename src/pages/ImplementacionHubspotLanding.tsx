@@ -268,7 +268,7 @@ function IncludeGrid({ section, title, items }: { section?: HomeSection; title: 
 /* ─── Main Landing Page ─── */
 export default function ImplementacionHubspotLanding() {
   const { openLeadForm } = useLeadForm();
-  const { getSection, loading } = usePageSections("implementacion-hubspot");
+  const { getSection, loading } = usePageSections("lp-implementacion-hubspot");
   const hero = getSection("hero");
   const problema = getSection("problema");
   const incluye = getSection("incluye");
