@@ -366,6 +366,7 @@ const ConoceTuPistaLanding = () => {
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
             No porque los convenzamos — porque el diagnóstico muestra oportunidades que no querían dejar pasar.
+          </motion.p>
 
           {/* Stats */}
           <div className="mt-10 grid grid-cols-3 gap-4">
