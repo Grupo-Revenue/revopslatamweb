@@ -99,7 +99,7 @@ const ConoceTuPistaLanding = () => {
     badge: (hm.badge as string) ?? DEF.hero.badge,
     title: hero?.title ?? DEF.hero.title,
     subtitle: hero?.subtitle ?? DEF.hero.subtitle,
-    cta_text: "Quiero saber dónde se pierden mis negocios →",
+    cta_text: "Quiero conversar mi caso →",
     cta_url: hero?.cta_url ?? DEF.hero.cta_url,
   };
 
