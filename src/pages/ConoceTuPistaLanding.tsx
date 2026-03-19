@@ -428,21 +428,6 @@ const ConoceTuPistaLanding = () => {
         </footer>
       </div>
 
-      {/* ════ STICKY MOBILE CTA ════ */}
-      {!ctaFinalVisible && (
-        <div
-          className="fixed bottom-0 left-0 right-0 z-50 sm:hidden px-4 pb-4 pt-2"
-          style={{ background: "linear-gradient(to top, rgba(255,255,255,1) 70%, rgba(255,255,255,0))" }}
-        >
-          <button
-            onClick={handleHeroCTA}
-            className="w-full text-[14px] font-semibold text-white py-3 rounded-full transition-transform active:scale-[0.97]"
-            style={{ background: GRADIENT, boxShadow: "0 4px 20px rgba(190,24,105,0.4)" }}
-          >
-            Agenda tu conversación →
-          </button>
-        </div>
-      )}
     </div>
   );
 };
