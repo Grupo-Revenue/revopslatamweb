@@ -48,6 +48,7 @@ serve(async (req) => {
         { name: painFieldName, value: main_pain || "" },
       ],
       context: {
+        hutk: body.hutk || undefined,
         pageUri: body.source_page || "",
         pageName: "RevOps LATAM - Lead Form",
       },
