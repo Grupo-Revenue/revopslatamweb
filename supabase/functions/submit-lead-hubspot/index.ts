@@ -12,7 +12,7 @@ serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { first_name, last_name, email, phone, job_title, company_name, industry, team_size, has_crm, main_pain, lead_score, utm_source, utm_medium, utm_campaign, utm_content, utm_term } = body;
+    const { first_name, last_name, email, phone, job_title, company_name, industry, team_size, has_crm, main_pain, lead_score, utm_source, utm_medium, utm_campaign, utm_content, utm_term, referrer } = body;
 
     const portalId = Deno.env.get("HUBSPOT_PORTAL_ID") ?? "1537563";
     const defaultFormGuid = Deno.env.get("HUBSPOT_FORM_GUID") ?? "853c8d2a-091e-4dc3-ada7-6fdabf48ef8e";
