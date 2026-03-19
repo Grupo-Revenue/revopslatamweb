@@ -176,7 +176,7 @@ const ConoceTuPistaLanding = () => {
           {/* Subtitle */}
           <motion.p
             {...fade(0.15)}
-            className="mt-4 text-[15px] sm:text-[17px] leading-[1.65]"
+            className="mt-4 text-[16px] sm:text-[17px] leading-[1.65]"
             style={{ color: "rgba(255,255,255,0.65)", ...heroStyle("body") }}
           >
             {h.subtitle}
