@@ -231,6 +231,44 @@ const ConoceTuPistaLanding = () => {
         </div>
       </section>
 
+      {/* ════ QUÉ RECIBES ════ */}
+      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
+        <div className="max-w-[520px] mx-auto">
+          <motion.h2
+            {...fade(0)}
+            className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
+            style={{ color: "#1A1A2E" }}
+          >
+            Qué recibes al terminar
+          </motion.h2>
+
+          <div className="mt-8 flex flex-col gap-4">
+            {[
+              { num: "01", title: "Mapa de tu operación comercial", desc: "Cómo funciona hoy tu proceso de ventas: etapas, responsables, herramientas y dónde se pierde la información." },
+              { num: "02", title: "Reporte de oportunidades con impacto", desc: "Dónde se están cayendo los negocios, cuánto vale cada fuga y qué tiene más sentido resolver primero." },
+              { num: "03", title: "Roadmap de 90 días", desc: "Las acciones prioritarias en orden, con responsables sugeridos y KPIs para medir el avance." },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                {...fade(0.05 + i * 0.06)}
+                className="flex gap-4 p-5 rounded-2xl"
+                style={{ background: "#F8F9FB", border: "1px solid #F0F1F3" }}
+              >
+                <span
+                  className="text-[20px] font-extrabold leading-none mt-0.5 flex-shrink-0"
+                  style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                >
+                  {item.num}
+                </span>
+                <div>
+                  <h3 className="text-[15px] font-bold" style={{ color: "#1A1A2E" }}>{item.title}</h3>
+                  <p className="mt-1.5 text-[13px] sm:text-[14px] leading-[1.6]" style={{ color: "#6B7280" }}>{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ════ DIAGNÓSTICOS ════ */}
       <section id="diagnosticos" className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#F8F9FB" }}>
