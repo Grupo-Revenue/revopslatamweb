@@ -296,7 +296,7 @@ const ConoceTuPistaLanding = () => {
 
               <button
                 onClick={() => openLeadForm("lp-conoce-growth")}
-                className="mt-5 w-full text-[14px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
+                className="mt-5 w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
                 style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
               >
                 Quiero mi diagnóstico →
