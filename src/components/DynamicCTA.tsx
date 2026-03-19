@@ -31,7 +31,12 @@ export default function DynamicCTA({ styleKey, children, onClick, className = ""
     );
   }
 
-  const css = { ...ctaStyleToCSS(styles), ...inlineStyle };
+  // DB styles take priority over inline defaults; remove conflicting shorthand/longhand
+  const dbCSS = ctaStyleToCSS(styles);
+  const merged = { ...inlineStyle, ...dbCSS };
+  // Prevent React warning: if backgroundColor is set, remove background shorthand (and vice versa)
+  if (merged.backgroundColor && merged.background) delete merged.background;
+  const css = merged;
   const hoverScale = styles.hoverScale ? parseFloat(styles.hoverScale) : undefined;
 
   return (
