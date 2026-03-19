@@ -277,7 +277,7 @@ function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void
       <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-3" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>
         ¿Por dónde partir? Depende de dónde estás.
       </motion.h2>
-      <motion.p {...fadeUp(0.05)} className="text-center text-base mb-12" style={{ color: "#6B7280", maxWidth: 520, margin: "0 auto" }}>
+      <motion.p {...fadeUp(0.05)} className="text-center text-base mb-12" style={{ color: "#4B5563", maxWidth: 520, margin: "0 auto" }}>
         Tenemos servicios para cada momento. Desde el arranque rápido hasta la implementación más compleja.
       </motion.p>
       <div className="flex flex-col gap-4">
@@ -287,10 +287,10 @@ function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void
             {...fadeUp(0.08 + i * 0.06)}
             className="rounded-2xl p-6 sm:p-8 border transition-all"
             style={{
-              background: s.featured ? "linear-gradient(135deg, rgba(190,24,105,0.04), rgba(98,36,190,0.04))" : "#fff",
-              borderColor: s.featured ? "#BE1869" : "#E5E7EB",
-              borderWidth: s.featured ? 2 : 1,
-              boxShadow: s.featured ? "0 8px 32px rgba(190,24,105,0.1)" : "none",
+              background: s.featured ? "#F0EEFF" : "#FFFFFF",
+              borderColor: s.featured ? "#6224BE" : "rgba(0,0,0,0.08)",
+              borderWidth: s.featured ? 2 : 0.5,
+              boxShadow: s.featured ? "0 8px 32px rgba(98,36,190,0.1)" : "none",
             }}
           >
             <span
@@ -309,7 +309,7 @@ function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void
         ))}
       </div>
       <motion.div {...fadeUp(0.5)} className="mt-10 text-center">
-        <p className="text-[13px] mb-4" style={{ color: "#9CA3AF" }}>¿No sabes cuál necesitas? Cuéntanos dónde estás y te orientamos.</p>
+        <p className="text-[13px] mb-4" style={{ color: "#6B7280" }}>¿No sabes cuál necesitas? Cuéntanos dónde estás y te orientamos.</p>
         <button
           onClick={() => openLeadForm("lp-implementacion-escala")}
           className="text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03]"
