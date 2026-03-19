@@ -332,7 +332,7 @@ const ConoceTuPistaLanding = () => {
           </motion.h2>
           <motion.p
             {...fade(0.08)}
-            className="mt-5 text-[14px] sm:text-[15px] leading-[1.7]"
+            className="mt-5 text-[15px] sm:text-[16px] leading-[1.7]"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
             El 70% de nuestros clientes continúa con implementación después del diagnóstico.
