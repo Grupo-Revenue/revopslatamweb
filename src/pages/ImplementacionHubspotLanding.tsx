@@ -45,13 +45,7 @@ function SectionShell({ section, className, defaultBg, children }: {
   );
 }
 
-const RedirectChip = ({ label, href }: { label: string; href: string }) => (
-  <Link to={href} className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 hover:scale-[1.03]"
-    style={{ background: "linear-gradient(90deg, rgba(190,24,105,0.08), rgba(98,36,190,0.08))", color: "#BE1869" }}
-    onMouseEnter={e => { e.currentTarget.style.background = GRADIENT; e.currentTarget.style.color = "#fff"; }}
-    onMouseLeave={e => { e.currentTarget.style.background = "linear-gradient(90deg, rgba(190,24,105,0.08), rgba(98,36,190,0.08))"; e.currentTarget.style.color = "#BE1869"; }}
-  >{label} <ArrowRight size={14} /></Link>
-);
+
 
 /* ─── defaults ─── */
 const DEF = {
