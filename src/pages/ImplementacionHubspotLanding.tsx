@@ -293,7 +293,69 @@ export default function ImplementacionHubspotLanding() {
 
   return (
     <div className="min-h-screen font-['Lexend']" style={{ background: "#fff" }}>
-      
+
+/* ─── Service Scale ─── */
+const SERVICES = [
+  { badge: "EL FUNDAMENTO", title: "Diseño de Procesos", desc: "El plano de tu operación comercial antes de tocar cualquier herramienta. Para quien quiere construir bien desde el primer día.", price: "Desde 45 UF + IVA", featured: false },
+  { badge: "MÁS RÁPIDO", title: "Onboarding HubSpot", desc: "En marcha en 3 semanas. Para proceso simple, equipo de hasta 5-6 personas y quien acaba de adquirir HubSpot.", price: "Desde 50 UF + IVA", featured: false },
+  { badge: "MÁS SOLICITADO", title: "Implementación HubSpot a Medida", desc: "Tu proceso exacto en HubSpot. Para procesos complejos, múltiples pipelines o implementaciones que necesitan rehacerse desde las bases.", price: "Precio según alcance", featured: true },
+  { badge: "AVANZADO", title: "Personalización del CRM", desc: "HubSpot que se ve y funciona como tu negocio. CRM Cards personalizadas, vistas por rol y datos de sistemas externos en un solo lugar.", price: "Precio según alcance", featured: false },
+  { badge: "TÉCNICO", title: "Integraciones y Desarrollo Custom", desc: "Tu ecosistema, finalmente conectado. ERP, WhatsApp, portales a medida y HubSpot como centro de tu operación.", price: "Precio según alcance", featured: false },
+];
+
+function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void }) {
+  return (
+    <div className="relative z-10 max-w-[640px] mx-auto px-6">
+      <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-3" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>
+        ¿Por dónde partir? Depende de dónde estás.
+      </motion.h2>
+      <motion.p {...fadeUp(0.05)} className="text-center text-base mb-12" style={{ color: "#6B7280", maxWidth: 520, margin: "0 auto" }}>
+        Tenemos servicios para cada momento. Desde el arranque rápido hasta la implementación más compleja.
+      </motion.p>
+
+      <div className="flex flex-col gap-4">
+        {SERVICES.map((s, i) => (
+          <motion.div
+            key={i}
+            {...fadeUp(0.08 + i * 0.06)}
+            className="rounded-2xl p-6 sm:p-8 border transition-all"
+            style={{
+              background: s.featured ? "linear-gradient(135deg, rgba(190,24,105,0.04), rgba(98,36,190,0.04))" : "#fff",
+              borderColor: s.featured ? "#BE1869" : "#E5E7EB",
+              borderWidth: s.featured ? 2 : 1,
+              boxShadow: s.featured ? "0 8px 32px rgba(190,24,105,0.1)" : "none",
+            }}
+          >
+            <span
+              className="inline-block text-[10px] font-bold uppercase tracking-[0.14em] px-3 py-1 rounded-full mb-3"
+              style={{
+                background: s.featured ? GRADIENT : "rgba(98,36,190,0.06)",
+                color: s.featured ? "#fff" : "#6224BE",
+              }}
+            >
+              {s.badge}
+            </span>
+            <h3 className="font-bold text-lg mb-2" style={{ color: "#1A1A2E" }}>{s.title}</h3>
+            <p className="text-sm leading-relaxed mb-3" style={{ color: "#6B7280" }}>{s.desc}</p>
+            <span className="text-[13px] font-semibold" style={{ color: "#BE1869" }}>{s.price}</span>
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.div {...fadeUp(0.5)} className="mt-10 text-center">
+        <p className="text-[13px] mb-4" style={{ color: "#9CA3AF" }}>¿No sabes cuál necesitas? Cuéntanos dónde estás y te orientamos.</p>
+        <button
+          onClick={() => openLeadForm("lp-implementacion-escala")}
+          className="text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03]"
+          style={{ background: "transparent", border: "1.5px solid #BE1869", color: "#BE1869" }}
+        >
+          Conversemos tu caso →
+        </button>
+      </motion.div>
+    </div>
+  );
+}
+
 
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[90vh] flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
