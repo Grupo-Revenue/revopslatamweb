@@ -196,6 +196,15 @@ const ConoceTuPistaLanding = () => {
             {h.subtitle}
           </motion.p>
 
+          {/* Pricing hint */}
+          <motion.p
+            {...fade(0.18)}
+            className="mt-4 text-[12px] tracking-wide"
+            style={{ color: "rgba(255,255,255,0.38)" }}
+          >
+            Diagnóstico RevOps · 3 semanas · Desde 150 UF
+          </motion.p>
+
           {/* CTA */}
           <motion.div {...fade(0.2)} className="mt-7">
             <button
