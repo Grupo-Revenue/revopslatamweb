@@ -109,9 +109,10 @@ const DEF = {
       "Necesitas conectar HubSpot con tu ERP, sistema de facturación u otras herramientas",
     ],
     no: [
-      { text: "Proceso simple y estándar", chip: { label: "Onboarding →", href: "/onboarding-hubspot" } },
-      { text: "No tienes claridad de tu proceso", chip: { label: "Conoce tu pista →", href: "/conoce-tu-pista" } },
-      { text: "Necesitas conectar con ERP u otros sistemas", chip: { label: "Integraciones →", href: "/integraciones-desarrollo" } },
+      "No tienes claridad de qué está fallando en tu operación comercial — primero necesitas un diagnóstico",
+      "Buscas solo una agencia que configure HubSpot técnicamente sin entender tu proceso",
+      "Necesitas una solución lista en 48 horas sin diseño previo",
+      "No tienes HubSpot ni planeas adoptarlo como CRM principal",
     ],
   },
   precio: {
