@@ -51,12 +51,20 @@ serve(async (req) => {
         hutk: body.hutk || undefined,
         pageUri: body.source_page || "",
         pageName: "RevOps LATAM - Lead Form",
-        ...(utm_source && { "utm_source": utm_source }),
-        ...(utm_medium && { "utm_medium": utm_medium }),
-        ...(utm_campaign && { "utm_campaign": utm_campaign }),
-        ...(utm_content && { "utm_content": utm_content }),
-        ...(utm_term && { "utm_term": utm_term }),
+        ...(referrer && { sfdcCampaignId: undefined, goToWebinarWebinarKey: undefined }),
+        ...(utm_source && { utm_source }),
+        ...(utm_medium && { utm_medium }),
+        ...(utm_campaign && { utm_campaign }),
+        ...(utm_content && { utm_content }),
+        ...(utm_term && { utm_term }),
       },
+      legalConsentOptions: undefined,
+    };
+
+    // Add referrer as a hidden field so HubSpot can see the original source
+    if (referrer) {
+      hsPayload.fields.push({ name: "referrer_url", value: referrer });
+    }
     };
 
     const hsRes = await fetch(hubspotUrl, {
