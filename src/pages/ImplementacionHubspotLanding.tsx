@@ -1,4 +1,4 @@
-
+import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
