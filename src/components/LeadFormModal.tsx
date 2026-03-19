@@ -269,7 +269,7 @@ export default function LeadFormModal() {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="relative w-full overflow-hidden rounded-2xl bg-white shadow-2xl"
             style={{
-              maxWidth: step === 4 && qualified ? "720px" : "520px",
+              maxWidth: step === resultStep && qualified ? "720px" : "520px",
               maxHeight: "90vh",
               transition: "max-width 0.3s ease",
             }}
