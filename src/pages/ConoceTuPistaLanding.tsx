@@ -158,7 +158,7 @@ const ConoceTuPistaLanding = () => {
           {/* Badge */}
           <motion.span
             {...fade(0.05)}
-            className="inline-block text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-5"
+            className="inline-block text-[12px] font-bold uppercase tracking-[0.14em] px-4 py-1.5 rounded-full mb-5"
             style={{ background: "rgba(190,24,105,0.12)", color: "#E84393", border: "1px solid rgba(190,24,105,0.25)" }}
           >
             {h.badge}
