@@ -224,6 +224,9 @@ function PhasesTimeline({ phases }: { phases: typeof DEF.fases.phases }) {
           </motion.div>
         ))}
       </div>
+      <p className="mt-8 text-[12px] text-center" style={{ color: "#9CA3AF" }}>
+        *Tiempos referenciales de un proyecto estándar. Los plazos dependerán de la complejidad de tu implementación.
+      </p>
     </div>
   );
 }
