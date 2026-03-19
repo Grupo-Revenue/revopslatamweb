@@ -2,7 +2,6 @@ import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { ArrowRight, ChevronDown, FileText, Layers, Settings, Users, BookOpen, HeartHandshake } from "lucide-react";
 import { useLeadForm } from "@/hooks/useLeadForm";
 import DynamicCTA from "@/components/DynamicCTA";
