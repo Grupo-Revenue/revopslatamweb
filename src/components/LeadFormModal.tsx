@@ -65,6 +65,15 @@ const PAIN_OTHER_CRM = [
   "Solo estoy explorando, no es prioridad",
 ];
 
+const PAIN_LANDING = [
+  "No sé dónde se están perdiendo mis negocios",
+  "El pipeline no es predecible — los cierres no cuadran",
+  "Crecimos, pero la operación comercial se desordenó",
+  "Invierto en ventas pero los números no responden como deberían",
+  "Quiero ordenar el proceso antes de implementar cualquier herramienta",
+  "Solo estoy explorando, todavía no es urgente",
+];
+
 // ── Scoring tables ───────────────────────────────────────────
 const CARGO_SCORE: Record<string, number> = {
   "Dueño / Socio / Founder": 5,
