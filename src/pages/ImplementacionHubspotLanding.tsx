@@ -377,7 +377,7 @@ export default function ImplementacionHubspotLanding() {
 
 
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
         <GradientMesh variant="light" />
         <NoiseOverlay />
         <div className="relative z-10 max-w-[800px] mx-auto px-6">
