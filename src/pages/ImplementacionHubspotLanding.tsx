@@ -374,14 +374,15 @@ export default function ImplementacionHubspotLanding() {
                 <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: "#F3F4F6", color: "#9CA3AF" }}>✗</span>
                 {pq.title_no}
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-3">
                 {pq.no.map((item, i) => (
-                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>
-                    <p className="mb-2">{item.text}</p>
-                    {item.chip && <RedirectChip label={item.chip.label} href={item.chip.href} />}
-                  </li>
+                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>{item.text}</li>
                 ))}
               </ul>
+              <div className="mt-6 pt-5" style={{ borderTop: "1px solid #E5E7EB" }}>
+                <p className="text-[13px] mb-4" style={{ color: "#9CA3AF" }}>¿No es exactamente lo que buscas? Cuéntanos tu situación y te orientamos al servicio correcto.</p>
+                <button onClick={() => openLeadForm("lp-implementacion-no-fit")} className="text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03]" style={{ background: "transparent", border: "1.5px solid #BE1869", color: "#BE1869" }}>Conversemos tu caso →</button>
+              </div>
             </motion.div>
           </div>
         </div>
