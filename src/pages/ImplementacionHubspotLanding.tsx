@@ -377,7 +377,7 @@ export default function ImplementacionHubspotLanding() {
 
 
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
         <GradientMesh variant="light" />
         <NoiseOverlay />
         <div className="relative z-10 max-w-[800px] mx-auto px-6">
@@ -391,7 +391,7 @@ export default function ImplementacionHubspotLanding() {
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      
 
       {/* ── ESCALA DE SERVICIOS ── */}
       <SectionShell section={incluye} className="py-16 md:py-20" defaultBg={{ background: "#F9FAFB" }}>
@@ -402,7 +402,7 @@ export default function ImplementacionHubspotLanding() {
       </SectionShell>
 
       {/* ── FASES ── */}
-      <SectionShell section={fases} className="py-24 md:py-[100px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={fases} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[900px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{fas.title}</motion.h2>
           <PhasesTimeline phases={fas.phases} />
@@ -410,7 +410,7 @@ export default function ImplementacionHubspotLanding() {
       </SectionShell>
 
       {/* ── PARA QUIÉN ── */}
-      <SectionShell section={paraQuien} className="py-24 md:py-[100px]" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={paraQuien} className="py-16 md:py-20" defaultBg={{ background: "#F9FAFB" }}>
         <div id="para-quien" className="relative z-10 max-w-[1000px] mx-auto px-6 scroll-mt-32">
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div {...fadeUp()} className="rounded-2xl p-8 border bg-white" style={{ borderColor: "#E5E7EB" }}>
@@ -449,7 +449,7 @@ export default function ImplementacionHubspotLanding() {
 
       {/* ── PRECIO ── */}
       
-      <SectionShell section={precio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={precio} className="py-16 md:py-20" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />
         <div className="relative z-10 max-w-[480px] mx-auto px-6">
