@@ -269,7 +269,7 @@ const ConoceTuPistaLanding = () => {
           >
             <div className="rounded-[14px] p-6 sm:p-8 flex flex-col" style={{ background: "#fff" }}>
               <span
-                className="self-start text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full text-white"
+                className="self-start text-[11px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full text-white"
                 style={{ background: GRADIENT }}
               >
                 GROWTH · El más elegido
