@@ -351,95 +351,93 @@ export default function ImplementacionHubspotLanding() {
   return (
     <div className="min-h-screen font-['Lexend']" style={{ background: "#fff" }}>
 
-
       {/* ── HERO ── */}
-      <SectionShell section={hero} className="min-h-[90vh] flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={hero} className="min-h-[92vh] flex flex-col items-center justify-center" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
-        <div className="relative z-10 w-full px-6 pt-16 sm:pt-24">
-          <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mx-auto mb-10 sm:h-8 sm:mb-12" />
+        <div className="relative z-10 w-full px-6 pt-12 sm:pt-16">
+          <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-6 mx-auto mb-8 sm:h-7 sm:mb-10 opacity-80" />
         </div>
-        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
+        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pb-16 grid lg:grid-cols-[55%_45%] gap-10 items-center">
           <div>
-            
-            <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] uppercase font-bold tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
-            <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5" style={{ fontSize: "clamp(40px, 5vw, 62px)", maxWidth: 580 }}>{h.title}</motion.h1>
-            <motion.p {...fadeUp(0.15)} className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</motion.p>
-            <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
-              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-hero"); }} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
-              <button onClick={scrollToFit} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{h.cta2}</button>
+            <motion.span {...fadeUp(0.05)} className="inline-block text-[11px] uppercase font-bold tracking-[0.14em] px-4 py-1.5 rounded-full mb-5" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.06)", color: (hm.badge_color as string) || "rgba(255,255,255,0.8)", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.12)" }}>{h.badge}</motion.span>
+            <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.06] tracking-[-0.03em] mb-4" style={{ fontSize: "clamp(32px, 5vw, 56px)", maxWidth: 540 }}>{h.title}</motion.h1>
+            <motion.p {...fadeUp(0.15)} className="text-base sm:text-lg mb-7 leading-relaxed" style={{ color: "rgba(255,255,255,0.6)", maxWidth: 480 }}>{h.subtitle}</motion.p>
+            <motion.div {...fadeUp(0.2)} className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-hero"); }} className="text-[15px] font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_0_40px_rgba(190,24,105,0.35)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
+              <button onClick={scrollToFit} className="text-[13px] font-medium text-white/50 hover:text-white/80 transition-colors duration-300 underline underline-offset-4 decoration-white/20 hover:decoration-white/50">{h.cta2}</button>
             </motion.div>
           </div>
           <motion.div {...fadeUp(0.25)} className="hidden lg:block">
             {hero?.image_url ? <img src={hero.image_url} alt="" className="w-full max-w-[420px] rounded-2xl" /> : <BeforeAfterToggle before={h.before} after={h.after} />}
           </motion.div>
         </div>
+        {/* Fade-out gradient into next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 z-20 pointer-events-none" style={{ background: "linear-gradient(to bottom, transparent, #fff)" }} />
       </SectionShell>
 
 
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-24 md:py-[120px]" defaultBg={{ background: "#fff" }}>
-        <GradientMesh variant="light" />
-        <NoiseOverlay />
-        <div className="relative z-10 max-w-[800px] mx-auto px-6">
-          <motion.h2 {...fadeUp()} className="font-bold tracking-[-0.02em] mb-10 text-center" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)", maxWidth: 640, margin: "0 auto 40px" }}>{prob.title}</motion.h2>
+      <SectionShell section={problema} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
+        <div className="relative z-10 max-w-[700px] mx-auto px-6">
+          <motion.h2 {...fadeUp()} className="font-bold tracking-[-0.02em] mb-8 text-center" style={{ color: "#1A1A2E", fontSize: "clamp(24px, 4vw, 34px)", lineHeight: 1.15 }}>{prob.title}</motion.h2>
           <motion.div {...fadeUp(0.1)}>
             <ProblemAccordion cases={prob.cases} />
           </motion.div>
-          <motion.div {...fadeUp(0.3)} className="flex justify-center mt-10">
-            <span className="inline-block text-center text-sm font-bold px-7 py-3 rounded-full" style={{ background: "linear-gradient(90deg, rgba(190,24,105,0.08), rgba(98,36,190,0.08))", color: "#BE1869" }}>{prob.pill}</span>
+          <motion.div {...fadeUp(0.3)} className="flex justify-center mt-8">
+            <span className="inline-block text-center text-[13px] font-semibold px-6 py-2.5 rounded-full" style={{ background: "linear-gradient(90deg, rgba(190,24,105,0.06), rgba(98,36,190,0.06))", color: "#BE1869" }}>{prob.pill}</span>
           </motion.div>
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      {/* Subtle divider */}
+      <div className="h-px mx-auto max-w-[200px]" style={{ background: "linear-gradient(90deg, transparent, #E5E7EB, transparent)" }} />
 
       {/* ── ESCALA DE SERVICIOS ── */}
-      <SectionShell section={incluye} className="py-16 md:py-20" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={incluye} className="py-16 md:py-20" defaultBg={{ background: "#FAFAFA" }}>
         <DotPattern />
-        <GradientMesh variant="muted" />
         <NoiseOverlay />
         <ServiceScale openLeadForm={openLeadForm} />
       </SectionShell>
 
       {/* ── FASES ── */}
-      <SectionShell section={fases} className="py-24 md:py-[100px]" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={fases} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[900px] mx-auto px-6">
-          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(28px, 4vw, 36px)" }}>{fas.title}</motion.h2>
+          <motion.h2 {...fadeUp()} className="text-center font-bold tracking-[-0.02em] mb-10" style={{ color: "#1A1A2E", fontSize: "clamp(24px, 4vw, 34px)" }}>{fas.title}</motion.h2>
           <PhasesTimeline phases={fas.phases} />
         </div>
       </SectionShell>
 
       {/* ── PARA QUIÉN ── */}
-      <SectionShell section={paraQuien} className="py-24 md:py-[100px]" defaultBg={{ background: "#F9FAFB" }}>
-        <div id="para-quien" className="relative z-10 max-w-[1000px] mx-auto px-6 scroll-mt-32">
-          <div className="grid md:grid-cols-2 gap-8">
-            <motion.div {...fadeUp()} className="rounded-2xl p-8 border bg-white" style={{ borderColor: "#E5E7EB" }}>
-              <h3 className="font-bold text-lg mb-5 flex items-center gap-2" style={{ color: "#1A1A2E" }}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold" style={{ background: GRADIENT }}>✓</span>
+      <SectionShell section={paraQuien} className="py-16 md:py-20" defaultBg={{ background: "#FAFAFA" }}>
+        <div id="para-quien" className="relative z-10 max-w-[960px] mx-auto px-6 scroll-mt-32">
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div {...fadeUp()} className="rounded-2xl p-7 border bg-white" style={{ borderColor: "#E5E7EB" }}>
+              <h3 className="font-bold text-base mb-4 flex items-center gap-2" style={{ color: "#1A1A2E" }}>
+                <span className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[10px] font-bold" style={{ background: GRADIENT }}>✓</span>
                 {pq.title_yes}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {pq.yes.map((it, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "#374151" }}>
-                    <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
+                  <li key={i} className="flex items-start gap-2 text-[13px] leading-relaxed" style={{ color: "#374151" }}>
+                    <span className="mt-[7px] w-1 h-1 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
                   </li>
                 ))}
               </ul>
             </motion.div>
-            <motion.div {...fadeUp(0.1)} className="rounded-2xl p-8 border bg-white" style={{ borderColor: "#E5E7EB" }}>
-              <h3 className="font-bold text-lg mb-5 flex items-center gap-2" style={{ color: "#1A1A2E" }}>
-                <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: "#F3F4F6", color: "#9CA3AF" }}>✗</span>
+            <motion.div {...fadeUp(0.1)} className="rounded-2xl p-7 border bg-white" style={{ borderColor: "#E5E7EB" }}>
+              <h3 className="font-bold text-base mb-4 flex items-center gap-2" style={{ color: "#1A1A2E" }}>
+                <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ background: "#F3F4F6", color: "#9CA3AF" }}>✗</span>
                 {pq.title_no}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {pq.no.map((item, i) => (
-                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>{typeof item === "string" ? item : (item as any).text}</li>
+                  <li key={i} className="text-[13px] leading-relaxed" style={{ color: "#6B7280" }}>{typeof item === "string" ? item : (item as any).text}</li>
                 ))}
               </ul>
-              <div className="mt-6 pt-5" style={{ borderTop: "1px solid #E5E7EB" }}>
-                <p className="text-[13px] mb-4 text-center" style={{ color: "#9CA3AF" }}>¿No estás seguro si esto es lo que necesitas? Cuéntanos tu situación y te orientamos sin compromiso.</p>
+              <div className="mt-5 pt-4" style={{ borderTop: "1px solid #E5E7EB" }}>
+                <p className="text-[12px] mb-3 text-center" style={{ color: "#9CA3AF" }}>¿No estás seguro? Cuéntanos tu situación.</p>
                 <div className="text-center">
-                  <button onClick={() => openLeadForm("lp-implementacion-no-fit")} className="text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03]" style={{ background: "transparent", border: "1.5px solid #BE1869", color: "#BE1869" }}>Conversemos tu caso →</button>
+                  <button onClick={() => openLeadForm("lp-implementacion-no-fit")} className="text-[13px] font-semibold px-5 py-2 rounded-full transition-all duration-200 hover:scale-[1.03]" style={{ background: "transparent", border: "1.5px solid #BE1869", color: "#BE1869" }}>Conversemos →</button>
                 </div>
               </div>
             </motion.div>
@@ -448,24 +446,21 @@ export default function ImplementacionHubspotLanding() {
       </SectionShell>
 
       {/* ── PRECIO ── */}
-      
-      <SectionShell section={precio} className="py-20 md:py-[80px]" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={precio} className="py-16 md:py-20" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
-        <GradientMesh variant="center" />
-        <div className="relative z-10 max-w-[480px] mx-auto px-6">
-          <motion.div {...fadeUp()} className="relative rounded-[20px] p-12 text-center" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 24px 64px rgba(190,24,105,0.12)" }}>
-            <span className="block text-[11px] uppercase tracking-wider font-semibold mb-4" style={{ color: "rgba(255,255,255,0.5)" }}>{pr.label}</span>
-            <h3 className="text-2xl font-extrabold leading-tight mb-5" style={{ color: "#fff" }}>{pr.headline}</h3>
-            <p className="text-[13px] text-center mb-5" style={{ color: "rgba(255,255,255,0.5)" }}>El precio depende del alcance. En 30 minutos lo definimos juntos.</p>
-            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-precio"); }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
+        <div className="relative z-10 max-w-[440px] mx-auto px-6">
+          <motion.div {...fadeUp()} className="relative rounded-[20px] p-10 text-center" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 20px 60px rgba(190,24,105,0.1)" }}>
+            <span className="block text-[10px] uppercase tracking-[0.16em] font-semibold mb-3" style={{ color: "rgba(255,255,255,0.4)" }}>{pr.label}</span>
+            <h3 className="text-xl font-extrabold leading-tight mb-4" style={{ color: "#fff" }}>{pr.headline}</h3>
+            <p className="text-[13px] mb-5 leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>El precio depende del alcance. En 30 minutos lo definimos juntos.</p>
+            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-precio"); }} className="w-full text-[14px] font-semibold text-white rounded-full py-3 transition-all duration-300 hover:scale-[1.04] hover:shadow-[0_0_40px_rgba(190,24,105,0.3)]" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
           </motion.div>
         </div>
       </SectionShell>
 
-
-      <footer className="py-6 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <img src={logoBlanco} alt="Revops LATAM" className="h-5 mx-auto mb-2" />
-        <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.25)" }}>
+      <footer className="py-5 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <img src={logoBlanco} alt="Revops LATAM" className="h-4 mx-auto mb-1.5 opacity-40" />
+        <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.2)" }}>
           © 2026 Revops LATAM. Todos los derechos reservados.
         </p>
       </footer>
