@@ -225,7 +225,7 @@ export default function LeadFormModal() {
         company_name: form.company_name.trim(),
         industry: form.industry,
         team_size: form.team_size,
-        has_crm: form.has_crm,
+        has_crm: skipCrm ? "No especificado" : form.has_crm,
         main_pain: form.main_pain,
         lead_score: finalScore,
         is_qualified: qualified,
