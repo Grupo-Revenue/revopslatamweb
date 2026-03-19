@@ -382,7 +382,7 @@ const ConoceTuPistaLanding = () => {
             <motion.div {...fade(0.15)} className="mt-7">
               <button
                 onClick={handleFinalCTA}
-                className="w-full sm:w-auto text-[14px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
+                className="w-full sm:w-auto text-[15px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
                 style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.3)", ...cfStyle("cta") }}
               >
                 {cf.cta_text}
