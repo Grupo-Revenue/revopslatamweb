@@ -452,7 +452,7 @@ export default function ImplementacionHubspotLanding() {
 
       {/* ── PRECIO ── */}
       
-      <SectionShell section={precio} className="py-16 md:py-20" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={precio} className="py-12 md:py-16" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />
         <div className="relative z-10 max-w-[480px] mx-auto px-6">
