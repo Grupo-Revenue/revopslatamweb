@@ -366,14 +366,14 @@ export default function LeadFormModal() {
                 {toInternal(step) === 3 && (
                   <StepWrapper key="s3">
                     <h3 className="text-2xl font-bold text-foreground mb-1">Tu principal desafío 🎯</h3>
-                    <p className="text-sm text-muted-foreground mb-6">{skipCrm ? "¿Qué es lo que más te preocupa hoy?" : "¿Cuál es el problema que más te resuena?"}</p>
-                    <div className="flex flex-col gap-2.5">
+                    <p className="text-sm text-muted-foreground mb-4">{skipCrm ? "¿Qué es lo que más te preocupa hoy?" : "¿Cuál es el problema que más te resuena?"}</p>
+                    <div className="flex flex-col gap-1.5">
                       {(skipCrm ? PAIN_LANDING : getPainOptions(form.has_crm)).map(opt => (
                         <button
                           key={opt}
                           type="button"
                           onClick={() => set("main_pain", opt)}
-                          className="text-left px-5 py-3.5 rounded-xl text-[15px] font-medium transition-all duration-200 border-2"
+                          className="text-left px-4 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-200 border-2"
                           style={{
                             background: form.main_pain === opt ? "hsl(337 74% 44% / 0.08)" : "hsl(var(--muted) / 0.4)",
                             borderColor: form.main_pain === opt ? "hsl(337 74% 44%)" : "transparent",
@@ -385,20 +385,6 @@ export default function LeadFormModal() {
                       ))}
                     </div>
                     {errors.main_pain && <p className="text-xs mt-1.5 text-destructive font-medium">{errors.main_pain}</p>}
-                    <div className="mt-5 pt-4 border-t border-border">
-                      <label className="flex items-start gap-2.5 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={form.consent}
-                          onChange={e => { setForm(prev => ({ ...prev, consent: e.target.checked })); setErrors(prev => { const n = { ...prev }; delete n.consent; return n; }); }}
-                          className="mt-0.5 w-4 h-4 rounded border-2 border-border accent-pink cursor-pointer"
-                        />
-                        <span className="text-xs text-muted-foreground leading-relaxed">
-                          Acepto recibir información y comunicaciones comerciales de Revops LATAM. Puedo darme de baja en cualquier momento.
-                        </span>
-                      </label>
-                      {errors.consent && <p className="text-xs mt-1 text-destructive font-medium ml-6">{errors.consent}</p>}
-                    </div>
                   </StepWrapper>
                 )}
 
