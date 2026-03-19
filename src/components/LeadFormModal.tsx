@@ -209,7 +209,7 @@ export default function LeadFormModal() {
     if (!validateStep()) return;
     if (step < lastFormStep) { setStep(step + 1); return; }
 
-    // Submit on step 3
+    // Submit on last form step
     setSubmitting(true);
     const finalScore = calculateScore(form);
     setScore(finalScore);
