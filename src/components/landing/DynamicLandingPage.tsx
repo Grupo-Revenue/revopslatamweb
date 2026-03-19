@@ -162,6 +162,16 @@ function HeroSection({ section }: { section?: HomeSection }) {
                 {section.cta_text}
               </DynamicCTA>
             )}
+            {meta.cta2_text && (
+              <DynamicCTA
+                styleKey={meta.cta2_style_key as string}
+                onClick={() =>
+                  meta.cta2_url && (window.location.href = meta.cta2_url as string)
+                }
+              >
+                {meta.cta2_text as string}
+              </DynamicCTA>
+            )}
           </motion.div>
         )}
 
