@@ -201,19 +201,6 @@ const ConoceTuPistaLanding = () => {
               {h.cta_text}
             </button>
           </motion.div>
-
-          {/* Credentials */}
-          <motion.p {...fade(0.23)} className="mt-5 text-[12px] tracking-wide" style={{ color: "rgba(255,255,255,0.38)" }}>
-            14 años en Chile · HubSpot Platinum Partner
-          </motion.p>
-
-          {/* Trust line */}
-          <motion.div {...fade(0.27)} className="mt-3 flex items-center justify-center gap-2">
-            <Check size={14} style={{ color: "#1CA398" }} />
-            <span className="text-[12px]" style={{ color: "rgba(255,255,255,0.4)" }}>
-              Sin compromiso · Respuesta en 24h
-            </span>
-          </motion.div>
         </div>
       </section>
 
