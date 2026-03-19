@@ -436,7 +436,7 @@ export default function ImplementacionHubspotLanding() {
               </h3>
               <ul className="space-y-3">
                 {pq.no.map((item, i) => (
-                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>{typeof item === "string" ? item : (item as any).text}</li>
+                  <li key={i} className="text-[15px] sm:text-[16px] leading-[1.6]" style={{ color: "#6B7280" }}>{typeof item === "string" ? item : (item as any).text}</li>
                 ))}
               </ul>
               <div className="mt-6 pt-5" style={{ borderTop: "1px solid #E5E7EB" }}>
