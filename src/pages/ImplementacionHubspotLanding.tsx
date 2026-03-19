@@ -440,12 +440,14 @@ export default function ImplementacionHubspotLanding() {
               </h3>
               <ul className="space-y-3">
                 {pq.no.map((item, i) => (
-                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>{item.text}</li>
+                  <li key={i} className="text-base" style={{ color: "#6B7280" }}>{item}</li>
                 ))}
               </ul>
               <div className="mt-6 pt-5" style={{ borderTop: "1px solid #E5E7EB" }}>
-                <p className="text-[13px] mb-4" style={{ color: "#9CA3AF" }}>¿No es exactamente lo que buscas? Cuéntanos tu situación y te orientamos al servicio correcto.</p>
-                <button onClick={() => openLeadForm("lp-implementacion-no-fit")} className="text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03]" style={{ background: "transparent", border: "1.5px solid #BE1869", color: "#BE1869" }}>Conversemos tu caso →</button>
+                <p className="text-[13px] mb-4 text-center" style={{ color: "#9CA3AF" }}>¿No estás seguro si esto es lo que necesitas? Cuéntanos tu situación y te orientamos sin compromiso.</p>
+                <div className="text-center">
+                  <button onClick={() => openLeadForm("lp-implementacion-no-fit")} className="text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-200 hover:scale-[1.03]" style={{ background: "transparent", border: "1.5px solid #BE1869", color: "#BE1869" }}>Conversemos tu caso →</button>
+                </div>
               </div>
             </motion.div>
           </div>
