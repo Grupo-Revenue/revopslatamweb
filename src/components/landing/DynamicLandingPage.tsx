@@ -139,10 +139,19 @@ function HeroSection({ section }: { section?: HomeSection }) {
           </motion.p>
         )}
 
+        {meta.partner_badge && (
+          <motion.p
+            {...fadeUp(0.25)}
+            className="mt-5 text-xs tracking-wide text-primary-foreground/70"
+          >
+            {meta.partner_badge as string}
+          </motion.p>
+        )}
+
         {(section.cta_text || meta.cta2_text) && (
           <motion.div
             {...fadeUp(0.3)}
-            className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             {section.cta_text && (
               <DynamicCTA
@@ -151,16 +160,6 @@ function HeroSection({ section }: { section?: HomeSection }) {
                 className="gap-2"
               >
                 {section.cta_text}
-              </DynamicCTA>
-            )}
-            {meta.cta2_text && (
-              <DynamicCTA
-                styleKey={meta.cta2_style_key as string}
-                onClick={() =>
-                  meta.cta2_url && (window.location.href = meta.cta2_url as string)
-                }
-              >
-                {meta.cta2_text as string}
               </DynamicCTA>
             )}
           </motion.div>
