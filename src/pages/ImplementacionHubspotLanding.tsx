@@ -413,7 +413,7 @@ export default function ImplementacionHubspotLanding() {
       </SectionShell>
 
       {/* ── PARA QUIÉN ── */}
-      <SectionShell section={paraQuien} className="py-16 md:py-20" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={paraQuien} className="py-12 md:py-16" defaultBg={{ background: "#F9FAFB" }}>
         <div id="para-quien" className="relative z-10 max-w-[1000px] mx-auto px-6 scroll-mt-32">
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div {...fadeUp()} className="rounded-2xl p-8 border bg-white" style={{ borderColor: "#E5E7EB" }}>
