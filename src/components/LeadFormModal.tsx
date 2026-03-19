@@ -239,12 +239,14 @@ export default function LeadFormModal() {
     } catch (_) { /* best effort */ }
 
     setSubmitting(false);
-    setStep(4);
+    setStep(resultStep);
   };
 
   if (!isOpen) return null;
 
-  const stepLabels = ["Tus datos", "Tu empresa", "Tu CRM", "Tu desafío"];
+  const stepLabels = skipCrm
+    ? ["Tus datos", "Tu empresa", "Tu desafío"]
+    : ["Tus datos", "Tu empresa", "Tu CRM", "Tu desafío"];
   const qualified = score >= 40;
 
   return (
