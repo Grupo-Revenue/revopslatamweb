@@ -1,5 +1,5 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
+
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -293,7 +293,7 @@ export default function ImplementacionHubspotLanding() {
 
   return (
     <div className="min-h-screen font-['Lexend']" style={{ background: "#fff" }}>
-      <Navbar />
+      
 
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center" defaultBg={{ background: "#1A1A2E" }}>
@@ -415,7 +415,7 @@ export default function ImplementacionHubspotLanding() {
         </div>
       </SectionShell>
 
-      <Footer />
+      
     </div>
   );
 }
