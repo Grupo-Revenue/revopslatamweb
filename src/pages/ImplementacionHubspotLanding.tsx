@@ -174,7 +174,7 @@ function ProblemAccordion({ cases }: { cases: typeof DEF.problema.cases }) {
           <AnimatePresence>
             {open === i && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
-                <p className="pb-5 text-sm leading-relaxed" style={{ color: "#6B7280" }}>{c.text}</p>
+                <p className="pb-5 text-[15px] leading-relaxed" style={{ color: "#374151" }}>{c.text}</p>
               </motion.div>
             )}
           </AnimatePresence>
