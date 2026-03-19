@@ -374,7 +374,7 @@ const ConoceTuPistaLanding = () => {
             </motion.h2>
             <motion.p
               {...fade(0.08)}
-              className="mt-3 text-[14px] sm:text-[15px] leading-[1.6]"
+              className="mt-3 text-[15px] sm:text-[16px] leading-[1.6]"
               style={{ color: "#6B7280", ...cfStyle("body") }}
             >
               {cf.subtitle}
