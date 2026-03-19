@@ -336,12 +336,12 @@ export default function ImplementacionHubspotLanding() {
 
       <SectionDivider />
 
-      {/* ── QUÉ INCLUYE ── */}
+      {/* ── ESCALA DE SERVICIOS ── */}
       <SectionShell section={incluye} className="py-24 md:py-[120px]" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
-        <IncludeGrid section={incluye} title={inc.title} items={inc.items} />
+        <ServiceScale openLeadForm={openLeadForm} />
       </SectionShell>
 
       {/* ── FASES ── */}
