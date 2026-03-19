@@ -391,7 +391,7 @@ export default function ImplementacionHubspotLanding() {
         </div>
       </SectionShell>
 
-      <SectionDivider />
+      
 
       {/* ── ESCALA DE SERVICIOS ── */}
       <SectionShell section={incluye} className="py-16 md:py-20" defaultBg={{ background: "#F9FAFB" }}>
