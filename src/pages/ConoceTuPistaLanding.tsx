@@ -352,7 +352,7 @@ const ConoceTuPistaLanding = () => {
                 <p className="text-[22px] sm:text-[28px] font-extrabold tracking-tight" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {s.value}
                 </p>
-                <p className="text-[11px] sm:text-[12px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+                <p className="text-[12px] sm:text-[13px] mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>
                   {s.label}
                 </p>
               </motion.div>
