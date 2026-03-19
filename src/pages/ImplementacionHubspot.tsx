@@ -409,7 +409,7 @@ export default function ImplementacionHubspot() {
               </AnimatePresence>
             </div>
             <div className="h-px mb-5" style={{ background: "rgba(255,255,255,0.1)" }} />
-            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { if (mt(precio).cta1_opens_lead_form) { openLeadForm("implementacion-precio"); } else if (precio?.cta_url) { window.open(precio.cta_url, "_blank"); } }} className="w-full text-sm font-semibold text-white rounded-full py-3.5 mb-3 transition-all duration-200 hover:scale-[1.03] hover:shadow-lg" style={{ background: GRADIENT }}>{pr.cta}</DynamicCTA>
+            <DynamicCTA styleKey={mt(precio).cta_style_key as string} onClick={() => { if (mt(precio).cta1_opens_lead_form) { openLeadForm("implementacion-precio"); } else if (precio?.cta_url) { window.open(precio.cta_url, "_blank"); } }} className="w-full transition-all duration-200">{pr.cta}</DynamicCTA>
             <a href="#" className="text-sm font-medium hover:underline" style={{ color: "#BE1869" }}>{pr.link}</a>
           </motion.div>
         </div>
