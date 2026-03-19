@@ -356,7 +356,7 @@ export default function ImplementacionHubspotLanding() {
 
 
       {/* ── HERO ── */}
-      <SectionShell section={hero} className="min-h-[70vh] lg:min-h-[90vh] flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={hero} className="flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 w-full px-6 pt-16 sm:pt-24">
           <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mx-auto mb-10 sm:h-8 sm:mb-12" />
@@ -380,7 +380,7 @@ export default function ImplementacionHubspotLanding() {
 
 
       {/* ── PROBLEMA ── */}
-      <SectionShell section={problema} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={problema} className="py-12 md:py-16" defaultBg={{ background: "#fff" }}>
         <GradientMesh variant="light" />
         <NoiseOverlay />
         <div className="relative z-10 max-w-[800px] mx-auto px-6">
@@ -397,7 +397,7 @@ export default function ImplementacionHubspotLanding() {
       
 
       {/* ── ESCALA DE SERVICIOS ── */}
-      <SectionShell section={incluye} className="pt-12 pb-16 md:pt-16 md:pb-20" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={incluye} className="pt-10 pb-14 md:pt-14 md:pb-20" defaultBg={{ background: "#F9FAFB" }}>
         <DotPattern />
         <GradientMesh variant="muted" />
         <NoiseOverlay />
@@ -405,7 +405,7 @@ export default function ImplementacionHubspotLanding() {
       </SectionShell>
 
       {/* ── FASES ── */}
-      <SectionShell section={fases} className="py-16 md:py-20" defaultBg={{ background: "#fff" }}>
+      <SectionShell section={fases} className="py-12 md:py-16" defaultBg={{ background: "#fff" }}>
         <div className="relative z-10 max-w-[900px] mx-auto px-6">
           <motion.h2 {...fadeUp()} className="text-center font-bold tracking-tight mb-14" style={{ color: "#1A1A2E", fontSize: "clamp(24px, 5vw, 28px)" }}>{fas.title}</motion.h2>
           <PhasesTimeline phases={fas.phases} />
@@ -413,7 +413,7 @@ export default function ImplementacionHubspotLanding() {
       </SectionShell>
 
       {/* ── PARA QUIÉN ── */}
-      <SectionShell section={paraQuien} className="py-16 md:py-20" defaultBg={{ background: "#F9FAFB" }}>
+      <SectionShell section={paraQuien} className="py-12 md:py-16" defaultBg={{ background: "#F9FAFB" }}>
         <div id="para-quien" className="relative z-10 max-w-[1000px] mx-auto px-6 scroll-mt-32">
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div {...fadeUp()} className="rounded-2xl p-8 border bg-white" style={{ borderColor: "#E5E7EB" }}>
@@ -452,7 +452,7 @@ export default function ImplementacionHubspotLanding() {
 
       {/* ── PRECIO ── */}
       
-      <SectionShell section={precio} className="py-16 md:py-20" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={precio} className="py-12 md:py-16" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="section" />
         <GradientMesh variant="center" />
         <div className="relative z-10 max-w-[480px] mx-auto px-6">
