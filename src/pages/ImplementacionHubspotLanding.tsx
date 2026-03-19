@@ -353,18 +353,18 @@ export default function ImplementacionHubspotLanding() {
 
 
       {/* ── HERO ── */}
-      <SectionShell section={hero} className="min-h-[90vh] flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
+      <SectionShell section={hero} className="min-h-[80vh] lg:min-h-[90vh] flex flex-col items-center" defaultBg={{ background: "#1A1A2E" }}>
         <BackgroundOrbs variant="hero" />
         <div className="relative z-10 w-full px-6 pt-16 sm:pt-24">
           <motion.img {...fadeUp(0)} src={logoBlanco} alt="Revops LATAM" className="h-7 mx-auto mb-10 sm:h-8 sm:mb-12" />
         </div>
-        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
-          <div>
+        <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6 pb-12 lg:pb-20 grid lg:grid-cols-[55%_45%] gap-12 items-center">
+          <div className="text-center lg:text-left flex flex-col items-center lg:items-start">
             
             <motion.span {...fadeUp(0.05)} className="inline-block text-[12px] uppercase font-bold tracking-[0.12em] px-4 py-1.5 rounded-full mb-6" style={{ background: (hm.badge_bg as string) || "rgba(255,255,255,0.08)", color: (hm.badge_color as string) || "#fff", border: (hm.badge_bg as string) ? "none" : "1px solid rgba(255,255,255,0.2)" }}>{h.badge}</motion.span>
-            <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5" style={{ fontSize: "clamp(40px, 5vw, 62px)", maxWidth: 580 }}>{h.title}</motion.h1>
-            <motion.p {...fadeUp(0.15)} className="text-lg mb-8" style={{ color: "rgba(255,255,255,0.7)", maxWidth: 500 }}>{h.subtitle}</motion.p>
-            <motion.div {...fadeUp(0.2)} className="flex flex-wrap items-center gap-4">
+            <motion.h1 {...fadeUp(0.1)} className="font-extrabold text-white leading-[1.08] tracking-[-0.02em] mb-5 lg:max-w-[580px]" style={{ fontSize: "clamp(36px, 5vw, 62px)" }}>{h.title}</motion.h1>
+            <motion.p {...fadeUp(0.15)} className="text-lg mb-8 lg:max-w-[500px]" style={{ color: "rgba(255,255,255,0.7)" }}>{h.subtitle}</motion.p>
+            <motion.div {...fadeUp(0.2)} className="flex flex-col sm:flex-row items-center gap-4">
               <DynamicCTA styleKey={hm.cta_style_key as string} onClick={() => { openLeadForm("lp-implementacion-hero"); }} className="text-sm font-semibold text-white rounded-full px-8 py-3.5 transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_0_32px_rgba(190,24,105,0.4)]" style={{ background: (hm.cta_bg as string) || GRADIENT }}>{h.cta}</DynamicCTA>
               <button onClick={scrollToFit} className="text-sm font-medium text-white/70 underline underline-offset-4 hover:text-white transition-colors">{h.cta2}</button>
             </motion.div>
