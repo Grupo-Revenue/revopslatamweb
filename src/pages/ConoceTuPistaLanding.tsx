@@ -306,8 +306,8 @@ const ConoceTuPistaLanding = () => {
 
           {/* Alternativa */}
           <motion.div {...fade(0.18)} className="mt-8 flex flex-col items-center text-center">
-            <p className="text-[14px] sm:text-[15px] leading-[1.65] max-w-[420px]" style={{ color: "#9CA3AF" }}>
-              ¿Tu realidad es distinta? Tenemos otros planes para equipos más pequeños y para operaciones más complejas. Lo mejor es contarnos tu situación — en 15 minutos encontramos el enfoque correcto para ti.
+            <p className="text-[15px] sm:text-[16px] leading-[1.65] max-w-[420px]" style={{ color: "#6B7280" }}>
+              ¿Tu realidad es distinta? Tenemos otros planes para equipos más pequeños y para operaciones más complejas. Lo mejor es contarnos tu situación, en 15 minutos encontramos el enfoque correcto para ti.
             </p>
             <button
               onClick={() => openLeadForm("lp-conoce-alternativa")}
