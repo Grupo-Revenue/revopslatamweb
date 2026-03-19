@@ -306,7 +306,7 @@ function ServiceScale({ openLeadForm }: { openLeadForm: (source: string) => void
               {s.badge}
             </span>
             <h3 className="font-bold text-lg mb-2" style={{ color: "#1A1A2E" }}>{s.title}</h3>
-            <p className="text-sm leading-relaxed mb-3" style={{ color: "#6B7280" }}>{s.desc}</p>
+            <p className="text-[14px] sm:text-[15px] leading-relaxed mb-3" style={{ color: "#6B7280" }}>{s.desc}</p>
             <span className="text-[13px] font-semibold" style={{ color: "#BE1869" }}>{s.price}</span>
           </motion.div>
         ))}
