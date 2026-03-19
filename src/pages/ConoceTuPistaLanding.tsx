@@ -54,9 +54,9 @@ const DEF = {
     stats: [{ value: "14 años", label: "de experiencia" }, { value: "Platinum", label: "HubSpot Partners" }, { value: "Cientos", label: "de equipos alineados" }],
   },
   ctaFinal: {
-    title: "¿No sabes cuál necesitas?",
-    subtitle: "En 15 minutos te ayudamos a elegir, sin compromiso.",
-    cta_text: "Agendar conversación →",
+    title: "¿Listo para saber dónde se pierden tus negocios?",
+    subtitle: "En 15 minutos te mostramos si el Diagnóstico RevOps es lo que necesitas y cómo funciona el proceso.",
+    cta_text: "Quiero agendar mi diagnóstico →",
     cta_url: "#",
   },
 };
