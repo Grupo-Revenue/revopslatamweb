@@ -385,9 +385,9 @@ export default function ImplementacionHubspotLanding() {
           <motion.div {...fadeUp(0.1)}>
             <ProblemAccordion cases={prob.cases} />
           </motion.div>
-          <motion.div {...fadeUp(0.3)} className="flex justify-center mt-10">
-            <span className="inline-block text-center text-sm font-bold px-7 py-3 rounded-full" style={{ background: "linear-gradient(90deg, rgba(190,24,105,0.08), rgba(98,36,190,0.08))", color: "#BE1869" }}>{prob.pill}</span>
-          </motion.div>
+          <motion.p {...fadeUp(0.3)} className="text-center text-base font-semibold mt-10" style={{ color: "#BE1869" }}>
+            {prob.pill}
+          </motion.p>
         </div>
       </SectionShell>
 
