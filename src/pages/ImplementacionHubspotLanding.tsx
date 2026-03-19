@@ -423,8 +423,8 @@ export default function ImplementacionHubspotLanding() {
               </h3>
               <ul className="space-y-3">
                 {pq.yes.map((it, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "#374151" }}>
-                    <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
+                  <li key={i} className="flex items-start gap-2 text-[14px] sm:text-[15px]" style={{ color: "#374151" }}>
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GRADIENT }} />{it}
                   </li>
                 ))}
               </ul>
