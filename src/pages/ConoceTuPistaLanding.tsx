@@ -270,7 +270,7 @@ const ConoceTuPistaLanding = () => {
         </div>
       </section>
 
-      {/* ════ DIAGNÓSTICOS ════ */}
+      {/* ════ DIAGNÓSTICO GROWTH ════ */}
       <section id="diagnosticos" className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#F8F9FB" }}>
         <div className="max-w-[520px] mx-auto">
           <motion.h2
@@ -278,75 +278,68 @@ const ConoceTuPistaLanding = () => {
             className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
             style={{ color: "#1A1A2E" }}
           >
-            {d.title}
+            Tu diagnóstico en 3 semanas
           </motion.h2>
           <motion.p
             {...fade(0.05)}
             className="mt-3 text-[14px] sm:text-[15px] leading-[1.6] text-center"
             style={{ color: "#6B7280" }}
           >
-            {d.subtitle}
+            Visión completa de dónde se pierden tus negocios, con números reales y un plan concreto para corregirlo.
           </motion.p>
 
-          <div className="mt-8 flex flex-col gap-4">
-            {sortedCards.map((card, i) => (
-              <motion.div
-                key={i}
-                {...fade(0.05 + i * 0.06)}
-                className="relative rounded-2xl p-[2px]"
-                style={{ background: card.highlighted ? GRADIENT : "transparent" }}
+          {/* Card GROWTH */}
+          <motion.div
+            {...fade(0.1)}
+            className="mt-8 rounded-2xl p-[2px]"
+            style={{ background: GRADIENT }}
+          >
+            <div className="rounded-[14px] p-6 sm:p-8 flex flex-col" style={{ background: "#fff" }}>
+              <span
+                className="self-start text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full text-white"
+                style={{ background: GRADIENT }}
               >
-                <div
-                  className="rounded-[14px] p-5 sm:p-6 flex flex-col"
-                  style={{ background: "#fff", border: card.highlighted ? "none" : "1px solid #E5E7EB" }}
-                >
-                  {/* Badge row */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span
-                      className="text-[10px] font-bold uppercase tracking-[0.12em] px-3 py-1 rounded-full"
-                      style={card.badgeHighlight
-                        ? { background: GRADIENT, color: "#fff" }
-                        : { background: "#F3F4F6", color: "#6B7280" }
-                      }
-                    >
-                      {card.badge}
-                    </span>
-                    <span className="text-[12px] font-medium" style={{ color: "#9CA3AF" }}>{card.duration}</span>
-                  </div>
+                GROWTH · El más elegido
+              </span>
 
-                  {/* Self-selection hint (GROWTH only) */}
-                  {card.highlighted && (
-                    <p className="text-[12px] mb-2" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                      Si tienes entre 3 y 10 vendedores, este es tu diagnóstico.
-                    </p>
-                  )}
+              <p className="text-[12px] mt-3" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                Si tienes entre 3 y 10 vendedores, este es tu diagnóstico.
+              </p>
 
-                  {/* Title & tagline */}
-                  <h3 className="text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{card.title}</h3>
-                  <p className="text-[13px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    {card.tagline}
-                  </p>
+              <h3 className="text-[22px] sm:text-[26px] font-bold mt-2" style={{ color: "#1A1A2E" }}>
+                Diagnóstico RevOps
+              </h3>
+              <p className="text-[14px] font-semibold mt-0.5" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                Visión completa en 3 semanas
+              </p>
 
-                  {/* Description */}
-                  <p className="mt-3 text-[13px] sm:text-[14px] leading-[1.6]" style={{ color: "#6B7280" }}>
-                    {card.description}
-                  </p>
+              <p className="mt-4 text-[14px] sm:text-[15px] leading-[1.6]" style={{ color: "#6B7280" }}>
+                Para empresas con equipos comerciales de 3 a 15 vendedores que necesitan visibilidad real de su operación.
+              </p>
 
-                  {/* Price + CTA row */}
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="text-[18px] font-bold" style={{ color: "#1A1A2E" }}>{card.price}</span>
-                    <button
-                      onClick={() => openLeadForm(`lp-conoce-${card.badge.toLowerCase().replace(/\s/g, "-")}`)}
-                      className="inline-flex items-center gap-1.5 text-[13px] font-semibold transition-colors bg-transparent border-none cursor-pointer"
-                      style={{ color: "#BE1869" }}
-                    >
-                      Ver más <ArrowRight size={14} />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              <p className="mt-5 text-[24px] sm:text-[28px] font-extrabold" style={{ color: "#1A1A2E" }}>
+                Desde 150 UF
+              </p>
+
+              <button
+                onClick={() => openLeadForm("lp-conoce-growth")}
+                className="mt-5 w-full text-[14px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
+                style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
+              >
+                Quiero mi diagnóstico →
+              </button>
+            </div>
+          </motion.div>
+
+          {/* Links secundarios */}
+          <motion.div {...fade(0.18)} className="mt-6 flex flex-col items-center gap-2.5">
+            <a href="/revops-checkup" className="text-[13px] leading-[1.5] text-center no-underline transition-colors hover:opacity-80" style={{ color: "#6B7280" }}>
+              ¿Tienes menos de 3 vendedores? → <span className="font-semibold" style={{ color: "#BE1869" }}>RevOps Checkup desde 80 UF</span>
+            </a>
+            <a href="/motor-de-ingresos" className="text-[13px] leading-[1.5] text-center no-underline transition-colors hover:opacity-80" style={{ color: "#6B7280" }}>
+              ¿Operación más compleja? → <span className="font-semibold" style={{ color: "#BE1869" }}>Motor de Ingresos desde 250 UF</span>
+            </a>
+          </motion.div>
         </div>
       </section>
 
