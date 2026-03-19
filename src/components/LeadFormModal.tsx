@@ -444,21 +444,40 @@ export default function LeadFormModal() {
 
               {/* Navigation */}
               {step < resultStep && (
-                <div className="flex items-center justify-between mt-8">
-                  {step > 0 ? (
-                    <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">
-                      <ArrowLeft size={16} /> Atrás
+                <div className="mt-6">
+                  {/* Consent inline on last step */}
+                  {step === lastFormStep && (
+                    <div className="mb-4">
+                      <label className="flex items-start gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={form.consent}
+                          onChange={e => { setForm(prev => ({ ...prev, consent: e.target.checked })); setErrors(prev => { const n = { ...prev }; delete n.consent; return n; }); }}
+                          className="mt-0.5 w-3.5 h-3.5 rounded border border-border accent-pink cursor-pointer flex-shrink-0"
+                        />
+                        <span className="text-[11px] text-muted-foreground leading-relaxed">
+                          Al enviar, acepto recibir comunicaciones de Revops LATAM.
+                        </span>
+                      </label>
+                      {errors.consent && <p className="text-[11px] mt-0.5 text-destructive font-medium ml-5">{errors.consent}</p>}
+                    </div>
+                  )}
+                  <div className="flex items-center justify-between">
+                    {step > 0 ? (
+                      <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">
+                        <ArrowLeft size={16} /> Atrás
+                      </button>
+                    ) : <div />}
+                    <button
+                      onClick={next}
+                      disabled={submitting}
+                      className="flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-50 text-[15px]"
+                      style={{ background: "var(--gradient-brand)" }}
+                    >
+                      {submitting ? <Loader2 size={18} className="animate-spin" /> : step === lastFormStep ? "Enviar" : "Siguiente"}
+                      {!submitting && <ArrowRight size={16} />}
                     </button>
-                  ) : <div />}
-                  <button
-                    onClick={next}
-                    disabled={submitting}
-                    className="flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-50 text-[15px]"
-                    style={{ background: "var(--gradient-brand)" }}
-                  >
-                    {submitting ? <Loader2 size={18} className="animate-spin" /> : step === lastFormStep ? "Enviar" : "Siguiente"}
-                    {!submitting && <ArrowRight size={16} />}
-                  </button>
+                  </div>
                 </div>
               )}
             </div>
