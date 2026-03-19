@@ -388,12 +388,6 @@ const ConoceTuPistaLanding = () => {
                 {cf.cta_text}
               </button>
             </motion.div>
-            <motion.div {...fade(0.2)} className="mt-4 flex items-center justify-center gap-2">
-              <Check size={14} style={{ color: "#1CA398" }} />
-              <span className="text-[12px]" style={{ color: "#9CA3AF" }}>
-                Sin compromiso · Respuesta en 24h
-              </span>
-            </motion.div>
           </div>
         </section>
 
