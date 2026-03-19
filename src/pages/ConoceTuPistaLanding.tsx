@@ -275,7 +275,7 @@ const ConoceTuPistaLanding = () => {
                 GROWTH · El más elegido
               </span>
 
-              <p className="text-[12px] mt-3" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <p className="text-[13px] mt-3" style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Si tienes entre 3 y 10 vendedores, este es tu diagnóstico.
               </p>
 
