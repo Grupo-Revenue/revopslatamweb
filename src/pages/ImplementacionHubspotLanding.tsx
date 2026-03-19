@@ -293,7 +293,7 @@ export default function ImplementacionHubspotLanding() {
 
   return (
     <div className="min-h-screen font-['Lexend']" style={{ background: "#fff" }}>
-      <Navbar />
+      
 
       {/* ── HERO ── */}
       <SectionShell section={hero} className="min-h-[90vh] flex items-center" defaultBg={{ background: "#1A1A2E" }}>
