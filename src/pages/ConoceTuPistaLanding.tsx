@@ -2,9 +2,11 @@ import { useLeadForm } from "@/hooks/useLeadForm";
 import { motion } from "framer-motion";
 import { usePageSections } from "@/hooks/usePageSections";
 import { useSectionStyles } from "@/hooks/useSectionStyles";
+import { useSectionBackground } from "@/hooks/useSectionBackground";
 import type { HomeSection } from "@/hooks/useHomeSections";
 import logoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco_color.png";
 import { Check, ArrowRight, AlertTriangle, BarChart3, RefreshCw } from "lucide-react";
+import DynamicCTA from "@/components/DynamicCTA";
 
 /* ─── helpers ─── */
 const fade = (delay = 0) => ({
@@ -19,6 +21,37 @@ function meta(s?: HomeSection): Record<string, unknown> {
 }
 
 const GRADIENT = "linear-gradient(135deg, #BE1869, #6224BE)";
+
+/** Wraps a section with CMS background support */
+function SectionShell({
+  section,
+  defaultBg,
+  className = "",
+  style: extraStyle,
+  children,
+}: {
+  section?: HomeSection;
+  defaultBg: string;
+  className?: string;
+  style?: React.CSSProperties;
+  children: React.ReactNode;
+}) {
+  const { getBgStyle } = useSectionStyles(section);
+  const { hasBg, bgLayerStyle } = useSectionBackground(section);
+  const cmsBg = getBgStyle();
+  // CMS background overrides default; inline extraStyle is lowest priority
+  const sectionStyle: React.CSSProperties = {
+    background: defaultBg,
+    ...extraStyle,
+    ...cmsBg,
+  };
+  return (
+    <section className={`relative overflow-hidden ${className}`} style={sectionStyle}>
+      {hasBg && <div style={bgLayerStyle} />}
+      <div className="relative z-10">{children}</div>
+    </section>
+  );
+}
 
 /* ─── default data ─── */
 const DEF = {
@@ -99,6 +132,10 @@ const ConoceTuPistaLanding = () => {
   const crm = meta(credibility);
 
   const { getStyle: heroStyle } = useSectionStyles(hero);
+  const { getStyle: probStyle } = useSectionStyles(problema);
+  const { getStyle: qrStyle } = useSectionStyles(queRecibes);
+  const { getStyle: diagStyle } = useSectionStyles(diagnosticos);
+  const { getStyle: credStyle } = useSectionStyles(credibility);
   const { getStyle: cfStyle } = useSectionStyles(ctaFinal);
 
   if (loading) return <div className="min-h-screen" style={{ background: "#0D0D1A" }} />;
@@ -167,7 +204,7 @@ const ConoceTuPistaLanding = () => {
     <div className="min-h-screen" style={{ fontFamily: "'Lexend', sans-serif" }}>
 
       {/* ════ HERO ════ */}
-      <section className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #0D0D1A 0%, #151528 100%)" }}>
+      <SectionShell section={hero} defaultBg="linear-gradient(180deg, #0D0D1A 0%, #151528 100%)">
         <div className="absolute pointer-events-none" style={{ width: 300, height: 300, top: -80, left: "50%", transform: "translateX(-50%)", background: "radial-gradient(circle, rgba(190,24,105,0.12) 0%, transparent 70%)", filter: "blur(80px)" }} />
 
         <div className="relative z-10 px-5 pt-16 pb-12 sm:px-8 sm:pt-24 sm:pb-20 max-w-[600px] mx-auto text-center">
@@ -206,24 +243,57 @@ const ConoceTuPistaLanding = () => {
           </motion.p>
 
           <motion.div {...fade(0.2)} className="mt-7">
-            <button
+            <DynamicCTA
+              styleKey={hm.cta_style_key as string}
               onClick={handleHeroCTA}
-              className="w-full sm:w-auto text-[15px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
-              style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
+              className="w-full sm:w-auto transition-transform active:scale-[0.97] whitespace-nowrap"
             >
               {h.cta_text}
-            </button>
+            </DynamicCTA>
           </motion.div>
         </div>
-      </section>
+      </SectionShell>
+
+      {/* ════ PROBLEMA / SÍNTOMAS ════ */}
+      <SectionShell section={problema} defaultBg="#0D0D1A" className="px-5 py-14 sm:px-8 sm:py-20">
+        <div className="max-w-[520px] mx-auto text-center">
+          <motion.h2
+            {...fade(0)}
+            className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
+            style={{ color: "#fff", ...probStyle("title") }}
+          >
+            {p.title}
+          </motion.h2>
+          <div className="mt-8 flex flex-col gap-3">
+            {p.stat_cards.map((card, i) => (
+              <motion.div
+                key={i}
+                {...fade(0.05 + i * 0.06)}
+                className="flex items-center gap-4 rounded-xl p-4"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+              >
+                {iconMap[card.icon] ?? iconMap.alert}
+                <span className="text-[14px] sm:text-[15px] text-white/80 leading-snug">{card.text}</span>
+              </motion.div>
+            ))}
+          </div>
+          <motion.p
+            {...fade(0.25)}
+            className="mt-6 text-[14px] font-semibold"
+            style={{ background: GRADIENT, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+          >
+            {p.highlight}
+          </motion.p>
+        </div>
+      </SectionShell>
 
       {/* ════ QUÉ RECIBES ════ */}
-      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
+      <SectionShell section={queRecibes} defaultBg="#fff" className="px-5 py-14 sm:px-8 sm:py-20">
         <div className="max-w-[520px] mx-auto">
           <motion.h2
             {...fade(0)}
             className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
-            style={{ color: "#1A1A2E" }}
+            style={{ color: "#1A1A2E", ...qrStyle("title") }}
           >
             {qr.title}
           </motion.h2>
@@ -250,22 +320,22 @@ const ConoceTuPistaLanding = () => {
             ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       {/* ════ DIAGNÓSTICO GROWTH ════ */}
-      <section id="diagnosticos" className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#F8F9FB" }}>
-        <div className="max-w-[520px] mx-auto">
+      <SectionShell section={diagnosticos} defaultBg="#F8F9FB" className="px-5 py-14 sm:px-8 sm:py-20" style={{ scrollMarginTop: 80 }}>
+        <div id="diagnosticos" className="max-w-[520px] mx-auto">
           <motion.h2
             {...fade(0)}
             className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight text-center"
-            style={{ color: "#1A1A2E" }}
+            style={{ color: "#1A1A2E", ...diagStyle("title") }}
           >
             {d.title}
           </motion.h2>
           <motion.p
             {...fade(0.05)}
             className="mt-3 text-[15px] sm:text-[16px] leading-[1.6] text-center"
-            style={{ color: "#6B7280" }}
+            style={{ color: "#6B7280", ...diagStyle("subtitle") }}
           >
             {d.subtitle}
           </motion.p>
@@ -302,13 +372,13 @@ const ConoceTuPistaLanding = () => {
                 {d.growth_price}
               </p>
 
-              <button
+              <DynamicCTA
+                styleKey={dm.cta_style_key as string}
                 onClick={() => openLeadForm("lp-conoce-growth")}
-                className="mt-5 w-full text-[15px] font-semibold text-white py-3.5 rounded-full transition-transform active:scale-[0.97]"
-                style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.35)" }}
+                className="mt-5 w-full transition-transform active:scale-[0.97]"
               >
                 {d.growth_cta}
-              </button>
+              </DynamicCTA>
             </div>
           </motion.div>
 
@@ -316,31 +386,31 @@ const ConoceTuPistaLanding = () => {
             <p className="text-[15px] sm:text-[16px] leading-[1.65] max-w-[420px]" style={{ color: "#6B7280" }}>
               {d.alternativa_text}
             </p>
-            <button
+            <DynamicCTA
+              styleKey={dm.cta2_style_key as string}
               onClick={() => openLeadForm("lp-conoce-alternativa")}
-              className="mt-4 text-[14px] font-semibold px-6 py-2.5 rounded-full transition-all active:scale-[0.97] hover:opacity-90"
-              style={{ color: "#BE1869", border: "1.5px solid rgba(190,24,105,0.35)", background: "transparent" }}
+              className="mt-4 transition-all active:scale-[0.97] hover:opacity-90"
             >
               {d.alternativa_cta}
-            </button>
+            </DynamicCTA>
           </motion.div>
         </div>
-      </section>
+      </SectionShell>
 
       {/* ════ CREDIBILITY ════ */}
-      <section className="px-5 py-14 sm:px-8 sm:py-20" style={{ background: "#0D0D1A" }}>
+      <SectionShell section={credibility} defaultBg="#0D0D1A" className="px-5 py-14 sm:px-8 sm:py-20">
         <div className="max-w-[520px] mx-auto text-center">
           <motion.h2
             {...fade(0)}
             className="text-[24px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
-            style={{ color: "#fff" }}
+            style={{ color: "#fff", ...credStyle("title") }}
           >
             {cr.title}
           </motion.h2>
           <motion.p
             {...fade(0.08)}
             className="mt-5 text-[15px] sm:text-[16px] leading-[1.7]"
-            style={{ color: "rgba(255,255,255,0.6)" }}
+            style={{ color: "rgba(255,255,255,0.6)", ...credStyle("body") }}
           >
             {cr.body_1}
           </motion.p>
@@ -365,11 +435,11 @@ const ConoceTuPistaLanding = () => {
             ))}
           </div>
         </div>
-      </section>
+      </SectionShell>
 
       {/* ════ CTA FINAL + FOOTER ════ */}
       <div>
-        <section className="px-5 py-14 pb-24 sm:pb-20 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
+        <SectionShell section={ctaFinal} defaultBg="#fff" className="px-5 py-14 pb-24 sm:pb-20 sm:px-8 sm:py-20">
           <div className="max-w-[480px] mx-auto text-center">
             <motion.h2
               {...fade(0)}
@@ -386,16 +456,16 @@ const ConoceTuPistaLanding = () => {
               {cf.subtitle}
             </motion.p>
             <motion.div {...fade(0.15)} className="mt-7">
-              <button
+              <DynamicCTA
+                styleKey={(meta(ctaFinal).cta_style_key as string)}
                 onClick={handleFinalCTA}
-                className="w-full sm:w-auto text-[15px] font-semibold text-white px-7 py-3.5 rounded-full transition-transform active:scale-[0.97] whitespace-nowrap"
-                style={{ background: GRADIENT, boxShadow: "0 4px 24px rgba(190,24,105,0.3)", ...cfStyle("cta") }}
+                className="w-full sm:w-auto transition-transform active:scale-[0.97] whitespace-nowrap"
               >
                 {cf.cta_text}
-              </button>
+              </DynamicCTA>
             </motion.div>
           </div>
-        </section>
+        </SectionShell>
 
         <footer className="py-6 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <img src={logoBlanco} alt="Revops LATAM" className="h-5 mx-auto mb-2" />
