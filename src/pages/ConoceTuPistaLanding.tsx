@@ -351,15 +351,21 @@ const ConoceTuPistaLanding = () => {
             className="text-[22px] sm:text-[28px] font-bold leading-[1.15] tracking-tight"
             style={{ color: "#fff" }}
           >
-            {pq.title}
+            El diagnóstico no es un gasto. Es el inicio.
           </motion.h2>
           <motion.p
             {...fade(0.08)}
-            className="mt-4 text-[14px] sm:text-[15px] leading-[1.7]"
+            className="mt-5 text-[14px] sm:text-[15px] leading-[1.7]"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
-            {pq.body.split("\n\n")[0]}
+            El 70% de nuestros clientes continúa con implementación después del diagnóstico.
           </motion.p>
+          <motion.p
+            {...fade(0.12)}
+            className="mt-2 text-[14px] sm:text-[15px] leading-[1.7]"
+            style={{ color: "rgba(255,255,255,0.6)" }}
+          >
+            No porque los convenzamos — porque el diagnóstico muestra oportunidades que no querían dejar pasar.
 
           {/* Stats */}
           <div className="mt-10 grid grid-cols-3 gap-4">
