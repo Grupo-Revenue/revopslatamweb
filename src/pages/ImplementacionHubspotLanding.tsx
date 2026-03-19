@@ -418,7 +418,13 @@ export default function ImplementacionHubspotLanding() {
         </div>
       </SectionShell>
 
-      
+
+      <footer className="py-6 text-center" style={{ background: "#0A0A14", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <img src={logoBlanco} alt="Revops LATAM" className="h-5 mx-auto mb-2" />
+        <p className="text-[11px]" style={{ color: "rgba(255,255,255,0.25)" }}>
+          © 2026 Revops LATAM. Todos los derechos reservados.
+        </p>
+      </footer>
     </div>
   );
 }
