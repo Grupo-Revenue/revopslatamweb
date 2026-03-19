@@ -177,7 +177,8 @@ export default function LeadFormModal() {
   const handleClose = () => { closeLeadForm(); setTimeout(reset, 300); };
 
   const validateStep = (): boolean => {
-    if (step === 0) {
+    const internal = toInternal(step);
+    if (internal === 0) {
       const result = step1Schema.safeParse(form);
       if (!result.success) {
         const errs: Record<string, string> = {};
@@ -186,7 +187,7 @@ export default function LeadFormModal() {
         return false;
       }
     }
-    if (step === 1) {
+    if (internal === 1) {
       const errs: Record<string, string> = {};
       if (!form.job_title) errs.job_title = "Selecciona tu cargo";
       if (!form.company_name.trim()) errs.company_name = "Requerido";
@@ -194,10 +195,10 @@ export default function LeadFormModal() {
       if (!form.team_size) errs.team_size = "Selecciona el tamaño";
       if (Object.keys(errs).length) { setErrors(errs); return false; }
     }
-    if (step === 2) {
+    if (internal === 2) {
       if (!form.has_crm) { setErrors({ has_crm: "Selecciona una opción" }); return false; }
     }
-    if (step === 3) {
+    if (internal === 3) {
       if (!form.main_pain) { setErrors({ main_pain: "Selecciona tu principal desafío" }); return false; }
       if (!form.consent) { setErrors(prev => ({ ...prev, consent: "Debes aceptar para continuar" })); return false; }
     }
@@ -206,7 +207,7 @@ export default function LeadFormModal() {
 
   const next = async () => {
     if (!validateStep()) return;
-    if (step < 3) { setStep(step + 1); return; }
+    if (step < lastFormStep) { setStep(step + 1); return; }
 
     // Submit on step 3
     setSubmitting(true);
