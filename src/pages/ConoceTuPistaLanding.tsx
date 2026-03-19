@@ -339,7 +339,7 @@ const ConoceTuPistaLanding = () => {
           </motion.p>
           <motion.p
             {...fade(0.12)}
-            className="mt-2 text-[14px] sm:text-[15px] leading-[1.7]"
+            className="mt-2 text-[15px] sm:text-[16px] leading-[1.7]"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
             No porque los convenzamos — porque el diagnóstico muestra oportunidades que no querían dejar pasar.
