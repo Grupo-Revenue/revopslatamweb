@@ -448,7 +448,7 @@ export default function LeadFormModal() {
               </AnimatePresence>
 
               {/* Navigation */}
-              {step < 4 && (
+              {step < resultStep && (
                 <div className="flex items-center justify-between mt-8">
                   {step > 0 ? (
                     <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors font-medium">
@@ -461,7 +461,7 @@ export default function LeadFormModal() {
                     className="flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-white transition-all hover:scale-[1.03] disabled:opacity-50 text-[15px]"
                     style={{ background: "var(--gradient-brand)" }}
                   >
-                    {submitting ? <Loader2 size={18} className="animate-spin" /> : step === 3 ? "Enviar" : "Siguiente"}
+                    {submitting ? <Loader2 size={18} className="animate-spin" /> : step === lastFormStep ? "Enviar" : "Siguiente"}
                     {!submitting && <ArrowRight size={16} />}
                   </button>
                 </div>
