@@ -201,19 +201,6 @@ const ConoceTuPistaLanding = () => {
               {h.cta_text}
             </button>
           </motion.div>
-
-          {/* Credentials */}
-          <motion.p {...fade(0.23)} className="mt-5 text-[12px] tracking-wide" style={{ color: "rgba(255,255,255,0.38)" }}>
-            14 años en Chile · HubSpot Platinum Partner
-          </motion.p>
-
-          {/* Trust line */}
-          <motion.div {...fade(0.27)} className="mt-3 flex items-center justify-center gap-2">
-            <Check size={14} style={{ color: "#1CA398" }} />
-            <span className="text-[12px]" style={{ color: "rgba(255,255,255,0.4)" }}>
-              Sin compromiso · Respuesta en 24h
-            </span>
-          </motion.div>
         </div>
       </section>
 
@@ -317,14 +304,18 @@ const ConoceTuPistaLanding = () => {
             </div>
           </motion.div>
 
-          {/* Links secundarios */}
-          <motion.div {...fade(0.18)} className="mt-6 flex flex-col items-center gap-2.5">
-            <a href="/revops-checkup" className="text-[13px] leading-[1.5] text-center no-underline transition-colors hover:opacity-80" style={{ color: "#6B7280" }}>
-              ¿Tienes menos de 3 vendedores? → <span className="font-semibold" style={{ color: "#BE1869" }}>RevOps Checkup desde 80 UF</span>
-            </a>
-            <a href="/motor-de-ingresos" className="text-[13px] leading-[1.5] text-center no-underline transition-colors hover:opacity-80" style={{ color: "#6B7280" }}>
-              ¿Operación más compleja? → <span className="font-semibold" style={{ color: "#BE1869" }}>Motor de Ingresos desde 250 UF</span>
-            </a>
+          {/* Alternativa */}
+          <motion.div {...fade(0.18)} className="mt-8 flex flex-col items-center text-center">
+            <p className="text-[13px] sm:text-[14px] leading-[1.65] max-w-[420px]" style={{ color: "#9CA3AF" }}>
+              ¿Tu realidad es distinta? Tenemos otros planes para equipos más pequeños y para operaciones más complejas. Lo mejor es contarnos tu situación — en 15 minutos encontramos el enfoque correcto para ti.
+            </p>
+            <button
+              onClick={() => openLeadForm("lp-conoce-alternativa")}
+              className="mt-4 text-[13px] font-semibold px-6 py-2.5 rounded-full transition-all active:scale-[0.97] hover:opacity-90"
+              style={{ color: "#BE1869", border: "1.5px solid rgba(190,24,105,0.35)", background: "transparent" }}
+            >
+              Conversemos tu caso →
+            </button>
           </motion.div>
         </div>
       </section>
@@ -396,12 +387,6 @@ const ConoceTuPistaLanding = () => {
               >
                 {cf.cta_text}
               </button>
-            </motion.div>
-            <motion.div {...fade(0.2)} className="mt-4 flex items-center justify-center gap-2">
-              <Check size={14} style={{ color: "#1CA398" }} />
-              <span className="text-[12px]" style={{ color: "#9CA3AF" }}>
-                Sin compromiso · Respuesta en 24h
-              </span>
             </motion.div>
           </div>
         </section>
