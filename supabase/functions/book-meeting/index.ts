@@ -246,63 +246,6 @@ async function createCalendarEvent(
   return data;
 }
 
-/* ── HubSpot contact ── */
-async function createHubSpotContact(params: {
-  name: string;
-  email: string;
-  context: string;
-  summary: string;
-}) {
-  const HUBSPOT_API_KEY = Deno.env.get("HUBSPOT_API_KEY");
-  if (!HUBSPOT_API_KEY) {
-    console.warn("HUBSPOT_API_KEY not set, skipping HubSpot contact creation");
-    return;
-  }
-
-  const [firstName, ...lastParts] = params.name.trim().split(" ");
-  const lastName = lastParts.join(" ") || "";
-
-  // Create or update contact
-  try {
-    const res = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${HUBSPOT_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        properties: {
-          email: params.email,
-          firstname: firstName,
-          lastname: lastName,
-        },
-      }),
-    });
-
-    if (res.status === 409) {
-      // Contact exists — update
-      const existing = await res.json();
-      const contactId = existing?.message?.match(/ID: (\d+)/)?.[1];
-      if (contactId) {
-        await fetch(
-          `https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`,
-          {
-            method: "PATCH",
-            headers: {
-              Authorization: `Bearer ${HUBSPOT_API_KEY}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              properties: { firstname: firstName, lastname: lastName },
-            }),
-          }
-        );
-      }
-    }
-  } catch (e) {
-    console.error("HubSpot contact error:", e);
-  }
-}
 
 /* ── Slack notification ── */
 async function notifySlack(params: {
