@@ -349,9 +349,9 @@ serve(async (req) => {
       display_time: finalDisplayTime,
     }).catch((e) => console.error("Slack error (non-blocking):", e));
 
-    // Step 7: Update Supabase conversation
+    // Step 6: Update Supabase conversation
     if (conversation_id) {
-      console.log("Step 7: Updating Supabase conversation...");
+      console.log("Step 6: Updating Supabase conversation...");
       const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
       const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
       const supabase = createClient(supabaseUrl, supabaseKey);
