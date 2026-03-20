@@ -634,10 +634,13 @@ const AgenticLandingPage = () => {
     setMessages(updatedMessages);
     const newTurn = turn + 1;
     setTurn(newTurn);
+    // Process Q5 answer for HubSpot
+    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
+    processAnswerForHubSpot(option, newTurn, currentEmail);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [messages, turn, callClaude, processClaudeResult]);
+  }, [messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
 
   // Handle Q5 free text send
   const handleQ5FreeTextSend = useCallback(async () => {
@@ -650,10 +653,13 @@ const AgenticLandingPage = () => {
     setChatInput("");
     const newTurn = turn + 1;
     setTurn(newTurn);
+    // Process Q5 free text for HubSpot
+    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
+    processAnswerForHubSpot(val, newTurn, currentEmail);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, messages, turn, callClaude, processClaudeResult]);
+  }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
