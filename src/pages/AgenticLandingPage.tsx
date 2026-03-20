@@ -889,7 +889,7 @@ const AgenticLandingPage = () => {
                   <button
                     onClick={() => handleEarlyEmailSave(earlyEmail)}
                     disabled={!earlyEmail.trim()}
-                    className="w-full py-3 rounded-full text-white font-medium text-[14px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
+                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
                     Continuar →
