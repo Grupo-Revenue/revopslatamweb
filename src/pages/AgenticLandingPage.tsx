@@ -269,9 +269,13 @@ const AgenticLandingPage = () => {
 
   // Helper to process Claude result and handle phase transitions
   const processClaudeResult = useCallback(
-    async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string }, baseMsgs: { role: "ai" | "user"; text: string }[]) => {
+    async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string }[]) => {
       await typewriterEffect(result.reply);
       const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
+      // If repeat_turn, roll back the turn counter so the question doesn't count
+      if (result.repeat_turn) {
+        setTurn((prev) => Math.max(prev - 1, 1));
+      }
       if (result.score !== undefined) setLeadScore(result.score);
       if (result.flag) setLeadFlag(result.flag);
       if (result.summary) setSummary(result.summary);
