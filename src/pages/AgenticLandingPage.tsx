@@ -166,75 +166,10 @@ const AgenticLandingPage = () => {
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture;
 
-  // Save early email to Supabase
-  const handleEarlyEmailSave = useCallback(async (email: string) => {
-    if (!email.trim() || !conversationId) return;
-    setEarlyEmailSaved(true);
-    setShowEmailCapture(false);
-    setEmailCaptureHandled(true);
-    // Pre-fill final email fields
-    setEmailInput(email.trim());
-    setNurturingEmail(email.trim());
-    // Add as user bubble
-    const emailMsg = { role: "user" as const, text: email.trim() };
-    setMessages(prev => [...prev, emailMsg]);
-    await supabase
-      .from("conversations")
-      .update({ availability_preference: `early_email:${email.trim()}` })
-      .eq("id", conversationId);
-    // Continue with the pending Claude call
-    if (pendingClaudeCall) {
-      const updatedMsgs = [...pendingClaudeCall.messages, emailMsg];
-      const result = await callClaude(updatedMsgs, pendingClaudeCall.turn);
-      if (result) {
-        await typewriterEffect(result.reply);
-        const finalMsgs = [...updatedMsgs, { role: "ai" as const, text: result.reply }];
-        setMessages(finalMsgs);
-        if (result.score !== undefined) setLeadScore(result.score);
-        if (result.flag) setLeadFlag(result.flag);
-        if (result.summary) setSummary(result.summary);
-        if (conversationId) {
-          const extra: Record<string, string> = {};
-          if (result.summary) extra.summary = result.summary;
-          saveMessages(conversationId, finalMsgs, Object.keys(extra).length ? extra : undefined);
-        }
-        if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
-        else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
-      }
-      setPendingClaudeCall(null);
-    }
-  }, [conversationId, pendingClaudeCall, callClaude, typewriterEffect, saveMessages, fetchAvailability]);
-
-  // Skip email capture
-  const handleSkipEmail = useCallback(async () => {
-    setShowEmailCapture(false);
-    setEmailCaptureHandled(true);
-    // Continue with the pending Claude call
-    if (pendingClaudeCall) {
-      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
-      if (result) {
-        await typewriterEffect(result.reply);
-        const finalMsgs = [...pendingClaudeCall.messages, { role: "ai" as const, text: result.reply }];
-        setMessages(finalMsgs);
-        if (result.score !== undefined) setLeadScore(result.score);
-        if (result.flag) setLeadFlag(result.flag);
-        if (result.summary) setSummary(result.summary);
-        if (conversationId) {
-          const extra: Record<string, string> = {};
-          if (result.summary) extra.summary = result.summary;
-          saveMessages(conversationId, finalMsgs, Object.keys(extra).length ? extra : undefined);
-        }
-        if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
-        else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
-      }
-      setPendingClaudeCall(null);
-    }
-  }, [pendingClaudeCall, callClaude, typewriterEffect, conversationId, saveMessages, fetchAvailability]);
-
   // Scroll chat to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isAITyping]);
+  }, [messages, isAITyping, showEmailCapture]);
 
   // Create conversation in Supabase
   const createConversation = useCallback(async () => {
@@ -272,7 +207,6 @@ const AgenticLandingPage = () => {
       new Promise((resolve) => {
         setIsTypewriting(true);
         let i = 0;
-        // Add empty AI message
         setMessages((prev) => [...prev, { role: "ai", text: "" }]);
         const interval = setInterval(() => {
           i++;
@@ -295,30 +229,20 @@ const AgenticLandingPage = () => {
   const callClaude = useCallback(
     async (allMessages: { role: "ai" | "user"; text: string }[], currentTurn: number) => {
       setIsAITyping(true);
-
-      // Convert to Anthropic format
       const anthropicMessages = allMessages.map((m) => ({
         role: m.role === "ai" ? "assistant" as const : "user" as const,
         content: m.text,
       }));
-
       try {
         const { data, error } = await supabase.functions.invoke("chat-agent", {
-          body: {
-            messages: anthropicMessages,
-            context: contextRef.current,
-            turn: currentTurn,
-          },
+          body: { messages: anthropicMessages, context: contextRef.current, turn: currentTurn },
         });
-
         setIsAITyping(false);
-
         if (error || !data?.reply) {
           console.error("chat-agent error:", error, data);
           await typewriterEffect("Disculpa, tuve un problema técnico. ¿Podrías intentar de nuevo?");
           return null;
         }
-
         return data as { reply: string; phase: string; summary?: string; score?: number; flag?: string };
       } catch (e) {
         setIsAITyping(false);
@@ -330,13 +254,43 @@ const AgenticLandingPage = () => {
     [typewriterEffect]
   );
 
+  // Fetch real availability from Febe's calendar
+  const fetchAvailability = useCallback(async () => {
+    setLoadingSlots(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("get-availability");
+      if (!error && data?.availability) setAvailabilitySlots(data.availability);
+    } catch (e) {
+      console.error("get-availability error:", e);
+    }
+    setLoadingSlots(false);
+  }, []);
+
+  // Helper to process Claude result and handle phase transitions
+  const processClaudeResult = useCallback(
+    async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string }, baseMsgs: { role: "ai" | "user"; text: string }[]) => {
+      await typewriterEffect(result.reply);
+      const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
+      if (result.score !== undefined) setLeadScore(result.score);
+      if (result.flag) setLeadFlag(result.flag);
+      if (result.summary) setSummary(result.summary);
+      if (conversationId) {
+        const extra: Record<string, string> = {};
+        if (result.summary) extra.summary = result.summary;
+        saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
+      }
+      if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
+      else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
+    },
+    [typewriterEffect, conversationId, saveMessages, fetchAvailability]
+  );
+
   // Start conversation — Screen 0 → 1 (chat)
   const startChat = useCallback(async () => {
     setScreen(1);
     const convId = await createConversation();
     const newTurn = 1;
     setTurn(newTurn);
-
     const result = await callClaude([], newTurn);
     if (result) {
       await typewriterEffect(result.reply);
@@ -345,19 +299,36 @@ const AgenticLandingPage = () => {
     }
   }, [createConversation, callClaude, typewriterEffect, saveMessages]);
 
-  // Fetch real availability from Febe's calendar
-  const fetchAvailability = useCallback(async () => {
-    setLoadingSlots(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("get-availability");
-      if (!error && data?.availability) {
-        setAvailabilitySlots(data.availability);
-      }
-    } catch (e) {
-      console.error("get-availability error:", e);
+  // Save early email to Supabase and continue flow
+  const handleEarlyEmailSave = useCallback(async (email: string) => {
+    if (!email.trim() || !conversationId) return;
+    setEarlyEmailSaved(true);
+    setShowEmailCapture(false);
+    setEmailCaptureHandled(true);
+    setEmailInput(email.trim());
+    setNurturingEmail(email.trim());
+    await supabase
+      .from("conversations")
+      .update({ availability_preference: `early_email:${email.trim()}` })
+      .eq("id", conversationId);
+    // Continue with pending call
+    if (pendingClaudeCall) {
+      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
+      if (result) await processClaudeResult(result, pendingClaudeCall.messages);
+      setPendingClaudeCall(null);
     }
-    setLoadingSlots(false);
-  }, []);
+  }, [conversationId, pendingClaudeCall, callClaude, processClaudeResult]);
+
+  // Skip email capture
+  const handleSkipEmail = useCallback(async () => {
+    setShowEmailCapture(false);
+    setEmailCaptureHandled(true);
+    if (pendingClaudeCall) {
+      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
+      if (result) await processClaudeResult(result, pendingClaudeCall.messages);
+      setPendingClaudeCall(null);
+    }
+  }, [pendingClaudeCall, callClaude, processClaudeResult]);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
@@ -372,34 +343,20 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
 
+    // After 2nd user answer (turn 3), show email capture before continuing
+    if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
+      setPendingClaudeCall({ messages: updatedMessages, turn: newTurn });
+      // Show Lidia's email request as a typewriter bubble
+      const emailAsk = "¿Me darías tu email para que no perdamos el contacto? 😊";
+      await typewriterEffect(emailAsk);
+      setShowEmailCapture(true);
+      return;
+    }
+
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
-
-    await typewriterEffect(result.reply);
-    const finalMessages = [...updatedMessages, { role: "ai" as const, text: result.reply }];
-
-    // Store score/flag if returned
-    if (result.score !== undefined) setLeadScore(result.score);
-    if (result.flag) setLeadFlag(result.flag);
-    if (result.summary) setSummary(result.summary);
-
-    // Save to Supabase
-    if (conversationId) {
-      const extra: Record<string, string> = {};
-      if (result.summary) extra.summary = result.summary;
-      saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
-    }
-
-    // Phase transitions
-    if (result.phase === "nurturing") {
-      setSummary(result.summary || null);
-      setScreen(5); // nurturing screen
-    } else if (result.phase === "availability") {
-      // Qualified or tibio — show availability picker
-      fetchAvailability();
-      setScreen(5); // availability picker
-    }
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages, fetchAvailability]);
+    await processClaudeResult(result, updatedMessages);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
