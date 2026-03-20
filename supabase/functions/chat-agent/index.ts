@@ -46,6 +46,11 @@ serve(async (req) => {
 
     const fullSystemPrompt = `${SYSTEM_PROMPT}\n\nContexto del visitante: ${contextDetail}\n\nTurn actual: ${turn}`;
 
+    // Ensure messages array is never empty — Anthropic requires at least one message
+    const apiMessages = messages.length > 0
+      ? messages
+      : [{ role: "user", content: "Hola, acabo de llegar. Hazme tu primera pregunta de diagnóstico." }];
+
     // Call Anthropic API
     const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -58,7 +63,7 @@ serve(async (req) => {
         model: "claude-sonnet-4-20250514",
         max_tokens: 200,
         system: fullSystemPrompt,
-        messages,
+        messages: apiMessages,
       }),
     });
 
