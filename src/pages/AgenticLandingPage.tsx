@@ -289,6 +289,11 @@ const AgenticLandingPage = () => {
     await typewriterEffect(result.reply);
     const finalMessages = [...updatedMessages, { role: "ai" as const, text: result.reply }];
 
+    // Store score/flag if returned
+    if (result.score !== undefined) setLeadScore(result.score);
+    if (result.flag) setLeadFlag(result.flag);
+    if (result.summary) setSummary(result.summary);
+
     // Save to Supabase
     if (conversationId) {
       const extra: Record<string, string> = {};
@@ -298,14 +303,45 @@ const AgenticLandingPage = () => {
     }
 
     // Phase transitions
-    if (result.phase === "availability") {
+    if (result.phase === "nurturing") {
+      // Unqualified — show nurturing email capture (screen 6 repurposed)
+      setSummary(result.summary || null);
+      setScreen(6); // nurturing screen
+    } else if (result.phase === "availability") {
+      // Qualified or tibio — stay in chat for availability response
       setScreen(5);
     } else if (result.phase === "complete") {
-      setSummary(result.summary || null);
+      // Got availability response — go to name/email capture
       setAvailabilityPref(val);
-      setScreen(6);
+      setScreen(7); // name+email screen (shifted)
     }
   }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages]);
+
+  // Handle nurturing email submit (unqualified leads)
+  const handleNurturingSubmit = useCallback(async () => {
+    if (!nurturingEmail.trim()) return;
+    setScreen(7); // loading
+
+    try {
+      await supabase.functions.invoke("book-meeting", {
+        body: {
+          name: "",
+          email: nurturingEmail.trim(),
+          context: contextRef.current,
+          summary,
+          availability_preference: "",
+          conversation_id: conversationId,
+          score: leadScore,
+          flag: "no_calificado",
+          nurturing_only: true,
+          ...utmRef.current,
+        },
+      });
+    } catch (e) {
+      console.error("nurturing submit error:", e);
+    }
+    setScreen(8); // confirmation
+  }, [nurturingEmail, conversationId, summary, leadScore]);
 
   const handleConfirmData = useCallback(async () => {
     if (!nameInput.trim() || !emailInput.trim()) return;
