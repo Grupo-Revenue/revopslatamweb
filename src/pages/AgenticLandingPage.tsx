@@ -140,7 +140,7 @@ const screenVariants = {
 const AgenticLandingPage = () => {
   const [screen, setScreen] = useState(0);
   const [chatInput, setChatInput] = useState("");
-  const [messages, setMessages] = useState<{ role: "ai" | "user"; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: "ai" | "user"; text: string; meta?: boolean }[]>([]);
   const [isAITyping, setIsAITyping] = useState(false);
   const [isTypewriting, setIsTypewriting] = useState(false);
   const [nameInput, setNameInput] = useState("");
