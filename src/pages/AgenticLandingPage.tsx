@@ -7,10 +7,14 @@ import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
 const BG_COLORS = [
   "#1A1033", // Screen 0: Welcome Lidia
   "#1A1033", "#1C1240", "#1E1550", "#16203A",
-  "#0F2030", "#0A2028", "#082018", "#0A1F1A",
+  "#0F2030", // Screen 5: chat (availability)
+  "#0A2028", // Screen 6: nurturing email
+  "#0A2028", // Screen 7: name+email (qualified)
+  "#082018", // Screen 8: loading
+  "#0A1F1A", // Screen 9: confirmation
 ];
 
-const TOTAL_SCREENS = 9;
+const TOTAL_SCREENS = 10;
 const TYPEWRITER_MS = 30;
 const WELCOME_TYPEWRITER_MS = 25;
 
