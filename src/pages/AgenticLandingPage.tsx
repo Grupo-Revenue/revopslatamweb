@@ -161,6 +161,7 @@ const AgenticLandingPage = () => {
   const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [emailCaptureHandled, setEmailCaptureHandled] = useState(false);
   const [pendingClaudeCall, setPendingClaudeCall] = useState<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
+  const pendingClaudeCallRef = useRef<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
@@ -311,24 +312,28 @@ const AgenticLandingPage = () => {
       .from("conversations")
       .update({ availability_preference: `early_email:${email.trim()}` })
       .eq("id", conversationId);
-    // Continue with pending call
-    if (pendingClaudeCall) {
-      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
-      if (result) await processClaudeResult(result, pendingClaudeCall.messages);
+    // Continue with pending call (use ref to avoid stale closure)
+    const pending = pendingClaudeCallRef.current;
+    if (pending) {
+      pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
+      const result = await callClaude(pending.messages, pending.turn);
+      if (result) await processClaudeResult(result, pending.messages);
     }
-  }, [conversationId, pendingClaudeCall, callClaude, processClaudeResult]);
+  }, [conversationId, callClaude, processClaudeResult]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
     setShowEmailCapture(false);
     setEmailCaptureHandled(true);
-    if (pendingClaudeCall) {
-      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
-      if (result) await processClaudeResult(result, pendingClaudeCall.messages);
+    const pending = pendingClaudeCallRef.current;
+    if (pending) {
+      pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
+      const result = await callClaude(pending.messages, pending.turn);
+      if (result) await processClaudeResult(result, pending.messages);
     }
-  }, [pendingClaudeCall, callClaude, processClaudeResult]);
+  }, [callClaude, processClaudeResult]);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
@@ -345,7 +350,9 @@ const AgenticLandingPage = () => {
 
     // After 2nd user answer (turn 3), show email capture before continuing
     if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
-      setPendingClaudeCall({ messages: updatedMessages, turn: newTurn });
+      const pending = { messages: updatedMessages, turn: newTurn };
+      pendingClaudeCallRef.current = pending;
+      setPendingClaudeCall(pending);
       // Show Lidia's email request as a typewriter bubble
       const emailAsk = "¿Me darías tu email para que no perdamos el contacto? 😊";
       await typewriterEffect(emailAsk);
