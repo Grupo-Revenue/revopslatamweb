@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import IsotipoBlanco from "@/assets/Isotipo_blanco.svg";
+import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
 
 /* ─── palette per screen ─── */
 const BG_COLORS = [
@@ -562,7 +562,7 @@ const AgenticLandingPage = () => {
       }}
     >
       <div className="flex items-center justify-center pt-5 pb-2 shrink-0">
-        <img src={IsotipoBlanco} alt="Revops LATAM" className="h-7 w-auto opacity-40 select-none" />
+        <img src={LogoBlanco} alt="Revops LATAM" className="h-7 w-auto opacity-40 select-none" />
       </div>
 
       <div className="flex-1 w-full max-w-[420px] mx-auto overflow-hidden">
