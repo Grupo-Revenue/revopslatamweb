@@ -210,7 +210,7 @@ serve(async (req) => {
     const data = await aiRes.json();
     const fullReply = data.choices?.[0]?.message?.content || "";
 
-    // Check if Claude flagged this as a repeat turn (user asked a question instead of answering)
+    // Check if flagged as a repeat turn (user asked a question instead of answering)
     let repeatTurn = false;
     let reply = fullReply;
     if (reply.includes("---REPEAT_TURN---")) {
@@ -224,50 +224,48 @@ serve(async (req) => {
     let score: number | undefined;
     let flag: string | undefined;
 
+    // Always strip summary data from the visible reply — regardless of turn
+    // This prevents the model from accidentally leaking scoring info to the user
+    if (reply.includes("---SUMMARY---")) {
+      const parts = reply.split("---SUMMARY---");
+      reply = parts[0].trim();
+      summary = parts[1].trim();
+    }
+    // Fallback: strip "Cargo: ... Flag: ..." block even without separator
+    const cargoIdx = reply.indexOf("Cargo:");
+    if (cargoIdx !== -1) {
+      const possibleSummary = reply.slice(cargoIdx).trim();
+      if (possibleSummary.match(/Score:\s*\d+/i)) {
+        summary = possibleSummary;
+        reply = reply.slice(0, cargoIdx).trim();
+      }
+    }
+
+    // Extract score and flag from summary
+    if (summary) {
+      const scoreMatch = summary.match(/Score:\s*(\d+)/i);
+      const flagMatch = summary.match(/Flag:\s*(calificado|tibio|no_calificado)/i);
+      if (scoreMatch) score = parseInt(scoreMatch[1]);
+      if (flagMatch) flag = flagMatch[1];
+    }
+
     if (turn >= 6) {
       phase = "complete";
+    } else if (turn >= 5 && !repeatTurn && score !== undefined) {
+      if (score < 40) {
+        phase = "nurturing";
+      } else {
+        phase = "availability";
+      }
+      flag = flag || (score >= 70 ? "calificado" : score >= 40 ? "tibio" : "no_calificado");
     } else if (turn >= 5 && !repeatTurn) {
-      // After 4 questions answered, Claude calculates score
-      const summaryMatch = reply.split("---SUMMARY---");
-      if (summaryMatch.length > 1) {
-        reply = summaryMatch[0].trim();
-        summary = summaryMatch[1].trim();
+      // No score extracted but turn >= 5 — infer from text
+      if (reply.includes("contenido relevante") || reply.includes("mandar contenido")) {
+        phase = "nurturing";
+        flag = "no_calificado";
       } else {
-        const scoreMatch = reply.match(/Score:\s*(\d+)/i);
-        const flagMatch = reply.match(/Flag:\s*(calificado|tibio|no_calificado)/i);
-        if (scoreMatch) {
-          score = parseInt(scoreMatch[1]);
-          flag = flagMatch?.[1] || (score >= 70 ? "calificado" : score >= 40 ? "tibio" : "no_calificado");
-          const summaryStart = reply.indexOf("Cargo:");
-          if (summaryStart !== -1) {
-            summary = reply.slice(summaryStart).trim();
-            reply = reply.slice(0, summaryStart).trim();
-          }
-        }
-      }
-
-      if (summary) {
-        const scoreMatch2 = summary.match(/Score:\s*(\d+)/i);
-        const flagMatch2 = summary.match(/Flag:\s*(calificado|tibio|no_calificado)/i);
-        if (scoreMatch2) score = parseInt(scoreMatch2[1]);
-        if (flagMatch2) flag = flagMatch2[1];
-      }
-
-      if (score !== undefined) {
-        if (score < 40) {
-          phase = "nurturing";
-        } else {
-          phase = "availability";
-        }
-        flag = flag || (score >= 70 ? "calificado" : score >= 40 ? "tibio" : "no_calificado");
-      } else {
-        if (reply.includes("contenido relevante") || reply.includes("mandar contenido")) {
-          phase = "nurturing";
-          flag = "no_calificado";
-        } else {
-          phase = "availability";
-          flag = "calificado";
-        }
+        phase = "availability";
+        flag = "calificado";
       }
     }
 
