@@ -1013,7 +1013,7 @@ const AgenticLandingPage = () => {
                       <button
                         key={dateKey}
                         onClick={() => setSelectedDay(dateKey)}
-                        className="px-4 py-3 rounded-xl text-left text-[14px] font-medium capitalize transition-all duration-200 active:scale-[0.97] hover:scale-[1.01]"
+                        className="px-4 py-3 rounded-xl text-left text-[15px] font-medium capitalize transition-all duration-200 active:scale-[0.97] hover:scale-[1.01]"
                         style={{
                           background: "rgba(255,255,255,0.06)",
                           border: "1px solid rgba(255,255,255,0.08)",
