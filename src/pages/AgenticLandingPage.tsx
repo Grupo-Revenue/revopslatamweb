@@ -849,11 +849,15 @@ const AgenticLandingPage = () => {
 
             {/* Email capture overlay — replaces the chat input area */}
             {showEmailCapture && !isAITyping && !isTypewriting ? (
-              <motion.div
+              <motion.form
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="px-4 pb-4 pt-3"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
+                }}
               >
                 <div
                   className="rounded-2xl p-5 flex flex-col gap-3"
@@ -884,11 +888,18 @@ const AgenticLandingPage = () => {
                       placeholder="tu@email.com"
                       className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
                       autoFocus
+                      inputMode="email"
+                      enterKeyHint="done"
+                      autoCapitalize="none"
+                      autoCorrect="off"
                     />
                   </div>
                   <button
-                    onPointerDown={(e) => {
-                      e.preventDefault();
+                    type="submit"
+                    onTouchStart={() => {
+                      if (earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
+                    }}
+                    onMouseDown={() => {
                       if (earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
                     }}
                     disabled={!earlyEmail.trim()}
@@ -898,13 +909,14 @@ const AgenticLandingPage = () => {
                     Continuar →
                   </button>
                   <button
+                    type="button"
                     onClick={handleSkipEmail}
                     className="text-[13px] text-white/25 hover:text-white/45 transition-colors self-center"
                   >
                     Prefiero no darlo ahora
                   </button>
                 </div>
-              </motion.div>
+              </motion.form>
             ) : showQ5Buttons && !isAITyping && !isTypewriting ? (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
