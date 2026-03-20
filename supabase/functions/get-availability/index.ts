@@ -78,7 +78,7 @@ serve(async (req) => {
     if (!GOOGLE_SA_JSON) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON not configured");
     if (!FEBE_CALENDAR_ID) throw new Error("FEBE_CALENDAR_ID not configured");
 
-    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON);
+    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON, FEBE_CALENDAR_ID);
 
     // Look at next 5 business days
     const now = new Date();
