@@ -99,7 +99,7 @@ const ChatInput = ({
       onKeyDown={(e) => e.key === "Enter" && value.trim() && !disabled && onSend()}
       placeholder={placeholder}
       disabled={disabled}
-      className="flex-1 bg-transparent text-white text-[15px] placeholder:text-white/30 outline-none font-[Lexend] disabled:opacity-40"
+      className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend] disabled:opacity-40"
     />
     <button
       onClick={onSend}
