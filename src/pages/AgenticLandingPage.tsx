@@ -50,11 +50,11 @@ const TypingDots = () => (
 /* ─── AI bubble ─── */
 const AIBubble = ({ children, isTyping = false }: { children?: React.ReactNode; isTyping?: boolean }) => (
   <div className="flex flex-col gap-1.5 max-w-[92%]">
-    <span className="text-[10px] tracking-[0.12em] uppercase text-white/35 font-medium pl-1">
+    <span className="text-[11px] tracking-[0.12em] uppercase text-white/35 font-medium pl-1">
       Revops LATAM
     </span>
     <div
-      className="rounded-2xl rounded-bl-md px-4 py-3 text-[15px] leading-relaxed text-white/90"
+      className="rounded-2xl rounded-bl-md px-4 py-3 text-[16px] leading-relaxed text-white/90"
       style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(8px)" }}
     >
       {isTyping ? <TypingDots /> : children}
