@@ -374,7 +374,7 @@ const AgenticLandingPage = () => {
       setPendingClaudeCall(pending);
       // Ask for email naturally
       const emailAsk = "Perfecto, gracias por contarme. Antes de seguir, ¿me darías tu email? Así no perdemos el contacto 😊";
-      await typewriterEffect(emailAsk);
+      await typewriterEffect(emailAsk, true);
       setShowEmailCapture(true);
       return;
     }
