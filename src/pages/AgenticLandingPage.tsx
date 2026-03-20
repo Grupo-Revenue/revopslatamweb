@@ -149,6 +149,7 @@ const AgenticLandingPage = () => {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [availabilitySlots, setAvailabilitySlots] = useState<Record<string, { display_date: string; slots: { date: string; startTime: string; endTime: string; display_date: string; display_time: string }[] }>>({});
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<{ date: string; startTime: string; endTime: string; display_date: string; display_time: string } | null>(null);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
@@ -613,7 +614,7 @@ const AgenticLandingPage = () => {
             </motion.div>
           );
         }
-        // Availability picker for qualified/tibio
+        // Availability picker for qualified/tibio — days first, then times
         return (
           <motion.div key="s5-avail" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
@@ -630,35 +631,60 @@ const AgenticLandingPage = () => {
                   <TypingDots />
                   <span className="text-white/40 text-[13px]">Buscando horarios disponibles...</span>
                 </motion.div>
+              ) : !selectedDay ? (
+                /* Step 1: Pick a day */
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col gap-2 mt-2">
+                  <AIBubble>¿Qué día te queda mejor?</AIBubble>
+                  <div className="flex flex-col gap-2 mt-2 pl-1">
+                    {Object.entries(availabilitySlots).map(([dateKey, dayData]) => (
+                      <button
+                        key={dateKey}
+                        onClick={() => setSelectedDay(dateKey)}
+                        className="px-4 py-3 rounded-xl text-left text-[14px] font-medium capitalize transition-all duration-200 active:scale-[0.97] hover:scale-[1.01]"
+                        style={{
+                          background: "rgba(255,255,255,0.06)",
+                          border: "1px solid rgba(255,255,255,0.08)",
+                          color: "rgba(255,255,255,0.75)",
+                        }}
+                      >
+                        📅 {dayData.display_date}
+                        <span className="text-white/30 text-[12px] ml-2">
+                          ({dayData.slots.length} horarios)
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
               ) : (
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col gap-3 mt-2">
-                  <span className="text-[11px] tracking-[0.1em] uppercase text-white/30 font-medium pl-1">
-                    Elige un horario
-                  </span>
-                  {Object.entries(availabilitySlots).map(([dateKey, dayData]) => (
-                    <div key={dateKey} className="flex flex-col gap-1.5">
-                      <span className="text-[13px] text-white/50 font-medium capitalize pl-1">{dayData.display_date}</span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {dayData.slots.slice(0, 8).map((slot) => {
-                          const isSelected = selectedSlot?.date === slot.date && selectedSlot?.startTime === slot.startTime;
-                          return (
-                            <button
-                              key={`${slot.date}-${slot.startTime}`}
-                              onClick={() => setSelectedSlot(slot)}
-                              className="px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 active:scale-[0.95]"
-                              style={{
-                                background: isSelected ? "#BE1869" : "rgba(255,255,255,0.06)",
-                                border: `1px solid ${isSelected ? "rgba(190,24,105,0.5)" : "rgba(255,255,255,0.08)"}`,
-                                color: isSelected ? "#fff" : "rgba(255,255,255,0.6)",
-                              }}
-                            >
-                              {slot.display_time}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
+                /* Step 2: Pick a time for selected day */
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="flex flex-col gap-3 mt-2">
+                  <UserBubble>{availabilitySlots[selectedDay]?.display_date}</UserBubble>
+                  <AIBubble>Perfecto, ¿a qué hora te acomoda?</AIBubble>
+                  <div className="flex flex-wrap gap-2 mt-1 pl-1">
+                    {availabilitySlots[selectedDay]?.slots.map((slot) => {
+                      const isSelected = selectedSlot?.date === slot.date && selectedSlot?.startTime === slot.startTime;
+                      return (
+                        <button
+                          key={`${slot.date}-${slot.startTime}`}
+                          onClick={() => setSelectedSlot(slot)}
+                          className="px-4 py-2 rounded-xl text-[14px] font-medium transition-all duration-200 active:scale-[0.95]"
+                          style={{
+                            background: isSelected ? "#BE1869" : "rgba(255,255,255,0.06)",
+                            border: `1px solid ${isSelected ? "rgba(190,24,105,0.5)" : "rgba(255,255,255,0.08)"}`,
+                            color: isSelected ? "#fff" : "rgba(255,255,255,0.6)",
+                          }}
+                        >
+                          {slot.display_time}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <button
+                    onClick={() => { setSelectedDay(null); setSelectedSlot(null); }}
+                    className="text-[12px] text-white/30 hover:text-white/50 transition-colors self-start pl-1 mt-1"
+                  >
+                    ← Elegir otro día
+                  </button>
                 </motion.div>
               )}
               <div ref={messagesEndRef} />
