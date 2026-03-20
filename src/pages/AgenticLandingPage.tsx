@@ -551,56 +551,118 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 6: Nurturing email (no_calificado) ── */
-      case 6:
-        return (
-          <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
-              {messages.map((m, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-                  {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
+      /* ── Screen 5: Availability picker (calificado/tibio) OR Nurturing (no_calificado) ── */
+      case 5:
+        if (leadFlag === "no_calificado") {
+          return (
+            <motion.div key="s5-nur" {...screenVariants} className="flex flex-col h-full">
+              <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
+                {messages.map((m, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                    {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
+                  </motion.div>
+                ))}
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
+                  <AIBubble>Déjame tu correo y te mando recursos útiles para tu situación.</AIBubble>
                 </motion.div>
-              ))}
-              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
-                <AIBubble>Déjame tu correo y te mando recursos útiles para tu situación.</AIBubble>
-              </motion.div>
+                <div ref={messagesEndRef} />
+              </div>
+              <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+                <input
+                  type="email"
+                  value={nurturingEmail}
+                  onChange={(e) => setNurturingEmail(e.target.value)}
+                  placeholder="Tu correo electrónico"
+                  className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                  style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
+                />
+                <button
+                  onClick={handleNurturingSubmit}
+                  disabled={!nurturingEmail.trim()}
+                  className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                  style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
+                >
+                  Enviar →
+                </button>
+              </div>
+            </motion.div>
+          );
+        }
+        // Availability picker for qualified/tibio
+        return (
+          <motion.div key="s5-avail" {...screenVariants} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
+              {/* Last AI message */}
+              {messages.length > 0 && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                  <AIBubble>{messages[messages.length - 1].text}</AIBubble>
+                </motion.div>
+              )}
+
+              {/* Slots */}
+              {loadingSlots ? (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center gap-3 py-6">
+                  <TypingDots />
+                  <span className="text-white/40 text-[13px]">Buscando horarios disponibles...</span>
+                </motion.div>
+              ) : (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col gap-3 mt-2">
+                  <span className="text-[11px] tracking-[0.1em] uppercase text-white/30 font-medium pl-1">
+                    Elige un horario
+                  </span>
+                  {Object.entries(availabilitySlots).map(([dateKey, dayData]) => (
+                    <div key={dateKey} className="flex flex-col gap-1.5">
+                      <span className="text-[13px] text-white/50 font-medium capitalize pl-1">{dayData.display_date}</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {dayData.slots.slice(0, 8).map((slot) => {
+                          const isSelected = selectedSlot?.date === slot.date && selectedSlot?.startTime === slot.startTime;
+                          return (
+                            <button
+                              key={`${slot.date}-${slot.startTime}`}
+                              onClick={() => setSelectedSlot(slot)}
+                              className="px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 active:scale-[0.95]"
+                              style={{
+                                background: isSelected ? "#BE1869" : "rgba(255,255,255,0.06)",
+                                border: `1px solid ${isSelected ? "rgba(190,24,105,0.5)" : "rgba(255,255,255,0.08)"}`,
+                                color: isSelected ? "#fff" : "rgba(255,255,255,0.6)",
+                              }}
+                            >
+                              {slot.display_time}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
               <div ref={messagesEndRef} />
             </div>
-            <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
-              <input
-                type="email"
-                value={nurturingEmail}
-                onChange={(e) => setNurturingEmail(e.target.value)}
-                placeholder="Tu correo electrónico"
-                className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
-                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
-              />
+            <div className="px-4 pb-4 pt-2">
               <button
-                onClick={handleNurturingSubmit}
-                disabled={!nurturingEmail.trim()}
-                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                onClick={() => setScreen(6)}
+                disabled={!selectedSlot}
+                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
                 style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
               >
-                Enviar →
+                {selectedSlot ? `Confirmar ${selectedSlot.display_date} a las ${selectedSlot.display_time} →` : "Selecciona un horario"}
               </button>
             </div>
           </motion.div>
         );
 
-      /* ── Screen 7: Name + Email (calificado/tibio) ── */
-      case 7:
+      /* ── Screen 6: Name + Email ── */
+      case 6:
         return (
-          <motion.div key="s7" {...screenVariants} className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
-              {messages.map((m, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-                  {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
-                </motion.div>
-              ))}
-              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
-                <AIBubble>Perfecto. ¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión.</AIBubble>
+          <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3 justify-center">
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                <AIBubble>
+                  {selectedSlot
+                    ? `Perfecto, ${selectedSlot.display_date} a las ${selectedSlot.display_time}. ¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión.`
+                    : "¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión."}
+                </AIBubble>
               </motion.div>
-              <div ref={messagesEndRef} />
             </div>
             <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
               <input
@@ -631,10 +693,10 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 8: Loading ── */
-      case 8:
+      /* ── Screen 7: Loading ── */
+      case 7:
         return (
-          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s7" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div className="flex items-center gap-3">
               {[0, 1, 2].map((i) => (
                 <span
@@ -647,15 +709,15 @@ const AgenticLandingPage = () => {
             <p className="text-white/70 text-[16px] font-light leading-relaxed max-w-[280px]">
               {leadFlag === "no_calificado"
                 ? "Registrando tu información..."
-                : "Estamos buscando el horario más cercano a tu preferencia..."}
+                : "Agendando tu reunión..."}
             </p>
           </motion.div>
         );
 
-      /* ── Screen 9: Confirmation ── */
-      case 9:
+      /* ── Screen 8: Confirmation ── */
+      case 8:
         return (
-          <motion.div key="s9" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(28,163,152,0.15)", border: "2px solid rgba(28,163,152,0.3)" }}
@@ -680,7 +742,9 @@ const AgenticLandingPage = () => {
                   <span className="text-white/60 font-normal text-[17px]">
                     {meetingDate && meetingTime
                       ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
-                      : "Te contactaremos pronto para confirmar tu reunión."}
+                      : selectedSlot
+                        ? `Te esperamos el ${selectedSlot.display_date} a las ${selectedSlot.display_time}.`
+                        : "Te contactaremos pronto para confirmar tu reunión."}
                   </span>
                 </>
               )}
