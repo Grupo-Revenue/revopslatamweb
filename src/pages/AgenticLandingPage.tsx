@@ -150,11 +150,14 @@ const AgenticLandingPage = () => {
   const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [emailCaptureHandled, setEmailCaptureHandled] = useState(false);
   const [pendingClaudeCall, setPendingClaudeCall] = useState<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
+  const [showQ5Buttons, setShowQ5Buttons] = useState(false);
+  const [q5Options, setQ5Options] = useState<string[]>([]);
+  const [q5FreeText, setQ5FreeText] = useState(false);
   const pendingClaudeCallRef = useRef<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
-  const inputDisabled = isAITyping || isTypewriting || showEmailCapture;
+  const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
 
   // Scroll chat to bottom
   useEffect(() => {
