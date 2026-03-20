@@ -775,7 +775,7 @@ const AgenticLandingPage = () => {
       }}
     >
       <div className="flex items-center justify-center pt-5 pb-2 shrink-0">
-        <img src={LogoBlanco} alt="Revops LATAM" className="h-7 w-auto opacity-40 select-none" />
+        <img src={LogoBlanco} alt="Revops LATAM" className="h-7 w-auto select-none" />
       </div>
 
       <div className="flex-1 w-full max-w-[420px] mx-auto overflow-hidden">
