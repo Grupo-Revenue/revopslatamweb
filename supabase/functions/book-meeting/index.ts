@@ -25,7 +25,6 @@ async function getGoogleAccessToken(serviceAccountJson: string): Promise<string>
     exp: now + 3600,
   })));
 
-  // Import private key
   const pemBody = sa.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/, "")
     .replace(/-----END PRIVATE KEY-----/, "")
@@ -52,6 +51,39 @@ async function getGoogleAccessToken(serviceAccountJson: string): Promise<string>
   return access_token;
 }
 
+/* ─── Check availability using FreeBusy API ─── */
+async function checkAvailability(
+  googleToken: string,
+  calendarId: string,
+  startISO: string,
+  endISO: string
+): Promise<boolean> {
+  const res = await fetch("https://www.googleapis.com/calendar/v3/freeBusy", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${googleToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      timeMin: startISO,
+      timeMax: endISO,
+      timeZone: "America/Santiago",
+      items: [{ id: calendarId }],
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    console.error(`FreeBusy error [${res.status}]:`, err);
+    // If FreeBusy fails, assume available and proceed
+    return true;
+  }
+
+  const data = await res.json();
+  const busy = data.calendars?.[calendarId]?.busy || [];
+  return busy.length === 0;
+}
+
 /* ─── Main handler ─── */
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -61,7 +93,7 @@ serve(async (req) => {
   try {
     const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
     const GOOGLE_SA_JSON = Deno.env.get("GOOGLE_SERVICE_ACCOUNT_JSON");
-    const FEBE_CALENDAR_ID = Deno.env.get("FEBE_CALENDAR_ID");
+    const FEBE_CALENDAR_ID = Deno.env.get("FEBE_CALENDAR_ID"); // febe's email
     const HUBSPOT_API_KEY = Deno.env.get("HUBSPOT_API_KEY");
     const SLACK_WEBHOOK_URL = Deno.env.get("SLACK_WEBHOOK_URL");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
@@ -117,58 +149,45 @@ serve(async (req) => {
     const rawSlot = claudeData.content?.[0]?.text || "";
     let slot: { date: string; startTime: string; endTime: string; display_date: string; display_time: string };
     try {
-      // Extract JSON from response (handle potential wrapping)
       const jsonMatch = rawSlot.match(/\{[\s\S]*\}/);
       slot = JSON.parse(jsonMatch ? jsonMatch[0] : rawSlot);
     } catch {
       throw new Error(`Failed to parse slot JSON: ${rawSlot}`);
     }
 
-    // Default endTime to +30min if missing
     if (!slot.endTime) {
       const [h, m] = slot.startTime.split(":").map(Number);
       const end = new Date(2000, 0, 1, h, m + 30);
       slot.endTime = `${String(end.getHours()).padStart(2, "0")}:${String(end.getMinutes()).padStart(2, "0")}`;
     }
 
-    /* ── PASO 2: Verificar disponibilidad en Google Calendar ── */
+    /* ── PASO 2: Verificar disponibilidad con FreeBusy API ── */
     const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON);
 
     const startDT = `${slot.date}T${slot.startTime}:00`;
     const endDT = `${slot.date}T${slot.endTime}:00`;
+    const startISO = `${startDT}-03:00`;
+    const endISO = `${endDT}-03:00`;
 
-    // Check for conflicts
-    const busyRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(FEBE_CALENDAR_ID)}/events?` +
-      `timeMin=${startDT}-03:00&timeMax=${endDT}-03:00&singleEvents=true&orderBy=startTime`,
-      { headers: { Authorization: `Bearer ${googleToken}` } }
-    );
-
-    if (!busyRes.ok) {
-      const err = await busyRes.text();
-      throw new Error(`Google Calendar freebusy error [${busyRes.status}]: ${err}`);
-    }
-
-    const busyData = await busyRes.json();
     let finalStart = startDT;
     let finalEnd = endDT;
     let finalDisplayDate = slot.display_date;
     let finalDisplayTime = slot.display_time;
 
-    if (busyData.items && busyData.items.length > 0) {
-      // Conflict found — try to find next free 30-min slot same day 9-18
+    const isAvailable = await checkAvailability(googleToken, FEBE_CALENDAR_ID, startISO, endISO);
+
+    if (!isAvailable) {
+      // Conflict — try next slots same day 9-18
       const [h] = slot.startTime.split(":").map(Number);
       let found = false;
       for (let tryH = h + 1; tryH <= 17; tryH++) {
         const tryStart = `${slot.date}T${String(tryH).padStart(2, "0")}:00:00`;
         const tryEnd = `${slot.date}T${String(tryH).padStart(2, "0")}:30:00`;
-        const checkRes = await fetch(
-          `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(FEBE_CALENDAR_ID)}/events?` +
-          `timeMin=${tryStart}-03:00&timeMax=${tryEnd}-03:00&singleEvents=true`,
-          { headers: { Authorization: `Bearer ${googleToken}` } }
+        const tryAvailable = await checkAvailability(
+          googleToken, FEBE_CALENDAR_ID,
+          `${tryStart}-03:00`, `${tryEnd}-03:00`
         );
-        const checkData = await checkRes.json();
-        if (!checkData.items || checkData.items.length === 0) {
+        if (tryAvailable) {
           finalStart = tryStart;
           finalEnd = tryEnd;
           finalDisplayTime = `${String(tryH).padStart(2, "0")}:00`;
@@ -193,12 +212,12 @@ serve(async (req) => {
       }
     }
 
-    /* ── PASO 3: Crear evento en Google Calendar ── */
+    /* ── PASO 3: Crear evento en calendario de la Service Account e invitar a Febe ── */
     const eventBody = {
       summary: `Conversación RevOps LATAM — ${name}`,
       description: `Contexto: ${context}\nResumen IA: ${summary || "Sin resumen"}`,
-      start: { dateTime: `${finalStart}`, timeZone: "America/Santiago" },
-      end: { dateTime: `${finalEnd}`, timeZone: "America/Santiago" },
+      start: { dateTime: finalStart, timeZone: "America/Santiago" },
+      end: { dateTime: finalEnd, timeZone: "America/Santiago" },
       attendees: [
         { email },
         { email: FEBE_CALENDAR_ID },
@@ -206,8 +225,9 @@ serve(async (req) => {
       sendUpdates: "all",
     };
 
+    // Create on SA's own "primary" calendar — no shared-calendar permissions needed
     const createRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(FEBE_CALENDAR_ID)}/events?sendUpdates=all`,
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all`,
       {
         method: "POST",
         headers: {
@@ -221,7 +241,6 @@ serve(async (req) => {
     if (!createRes.ok) {
       const err = await createRes.text();
       console.error(`Google Calendar create error [${createRes.status}]:`, err);
-      // Don't throw — continue with HubSpot + Slack even if calendar fails
     }
 
     /* ── PASO 4: Crear contacto en HubSpot con atribución ── */
@@ -254,7 +273,6 @@ serve(async (req) => {
       });
 
       if (createContactRes.status === 409) {
-        // Contact exists — get ID from error and update
         const errData = await createContactRes.json();
         const existingId = errData?.message?.match(/Existing ID: (\d+)/)?.[1];
         if (existingId) {
