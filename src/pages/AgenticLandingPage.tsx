@@ -162,6 +162,22 @@ const AgenticLandingPage = () => {
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting;
 
+  // Determine if early email field should show (after first user answer, turn >= 2, not yet saved)
+  const showEarlyEmail = turn >= 2 && !earlyEmailSaved && messages.some(m => m.role === "user");
+
+  // Save early email to Supabase
+  const handleEarlyEmailSave = useCallback(async (email: string) => {
+    if (!email.trim() || !conversationId) return;
+    setEarlyEmailSaved(true);
+    // Pre-fill final email fields
+    setEmailInput(email.trim());
+    setNurturingEmail(email.trim());
+    await supabase
+      .from("conversations")
+      .update({ availability_preference: `early_email:${email.trim()}` })
+      .eq("id", conversationId);
+  }, [conversationId]);
+
   // Scroll chat to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
