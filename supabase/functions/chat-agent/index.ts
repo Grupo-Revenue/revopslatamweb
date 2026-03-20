@@ -136,9 +136,9 @@ serve(async (req) => {
   }
 
   try {
-    const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY");
-    if (!ANTHROPIC_API_KEY) {
-      throw new Error("ANTHROPIC_API_KEY is not configured");
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) {
+      throw new Error("LOVABLE_API_KEY is not configured");
     }
 
     const { messages, context, turn } = await req.json();
@@ -173,26 +173,28 @@ serve(async (req) => {
       ? messages
       : [{ role: "user", content: "Comenzar conversación." }];
 
-    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+    // Use Lovable AI gateway with Gemini Flash for speed
+    const aiRes = await fetch("https://ai-gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
+        "Authorization": `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
+        model: "google/gemini-2.5-flash",
         max_tokens: 400,
-        system: fullSystemPrompt,
-        messages: apiMessages,
+        messages: [
+          { role: "system", content: fullSystemPrompt },
+          ...apiMessages,
+        ],
       }),
     });
 
-    if (!anthropicRes.ok) {
-      const errText = await anthropicRes.text();
-      console.error(`Anthropic error [${anthropicRes.status}]:`, errText);
+    if (!aiRes.ok) {
+      const errText = await aiRes.text();
+      console.error(`AI Gateway error [${aiRes.status}]:`, errText);
 
-      if (anthropicRes.status === 429) {
+      if (aiRes.status === 429) {
         return new Response(
           JSON.stringify({ error: "Rate limit exceeded, please try again shortly." }),
           { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -205,8 +207,8 @@ serve(async (req) => {
       );
     }
 
-    const data = await anthropicRes.json();
-    const fullReply = data.content?.[0]?.text || "";
+    const data = await aiRes.json();
+    const fullReply = data.choices?.[0]?.message?.content || "";
 
     // Check if Claude flagged this as a repeat turn (user asked a question instead of answering)
     let repeatTurn = false;
