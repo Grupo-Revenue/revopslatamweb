@@ -66,7 +66,7 @@ const AIBubble = ({ children, isTyping = false }: { children?: React.ReactNode; 
 const UserBubble = ({ children }: { children: React.ReactNode }) => (
   <div className="flex justify-end">
     <div
-      className="rounded-2xl rounded-br-md px-4 py-3 text-[15px] leading-relaxed text-white max-w-[85%]"
+      className="rounded-2xl rounded-br-md px-4 py-3 text-[16px] leading-relaxed text-white max-w-[85%]"
       style={{ background: "rgba(98,36,190,0.35)", border: "1px solid rgba(98,36,190,0.2)" }}
     >
       {children}
