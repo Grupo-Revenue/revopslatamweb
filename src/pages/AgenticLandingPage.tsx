@@ -863,7 +863,7 @@ const AgenticLandingPage = () => {
                     backdropFilter: "blur(12px)",
                   }}
                 >
-                  <p className="text-white/70 text-[13px] leading-snug text-center">
+                  <p className="text-white/70 text-[14px] leading-snug text-center">
                     Así no perdemos el contacto si se corta la conversación
                   </p>
                   <div
