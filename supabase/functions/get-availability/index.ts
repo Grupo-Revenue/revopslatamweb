@@ -12,17 +12,21 @@ function base64url(buf: ArrayBuffer): string {
     .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-async function getGoogleAccessToken(serviceAccountJson: string): Promise<string> {
+async function getGoogleAccessToken(serviceAccountJson: string, impersonateEmail?: string): Promise<string> {
   const sa = JSON.parse(serviceAccountJson);
   const now = Math.floor(Date.now() / 1000);
   const header = base64url(new TextEncoder().encode(JSON.stringify({ alg: "RS256", typ: "JWT" })));
-  const claim = base64url(new TextEncoder().encode(JSON.stringify({
+  const claimPayload: Record<string, unknown> = {
     iss: sa.client_email,
     scope: "https://www.googleapis.com/auth/calendar.readonly",
     aud: "https://oauth2.googleapis.com/token",
     iat: now,
     exp: now + 3600,
-  })));
+  };
+  if (impersonateEmail) {
+    claimPayload.sub = impersonateEmail;
+  }
+  const claim = base64url(new TextEncoder().encode(JSON.stringify(claimPayload)));
 
   const pemBody = sa.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/, "")
@@ -74,7 +78,7 @@ serve(async (req) => {
     if (!GOOGLE_SA_JSON) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON not configured");
     if (!FEBE_CALENDAR_ID) throw new Error("FEBE_CALENDAR_ID not configured");
 
-    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON);
+    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON, FEBE_CALENDAR_ID);
 
     // Look at next 5 business days
     const now = new Date();

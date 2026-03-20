@@ -13,17 +13,22 @@ function base64url(buf: ArrayBuffer): string {
     .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-async function getGoogleAccessToken(serviceAccountJson: string): Promise<string> {
+async function getGoogleAccessToken(serviceAccountJson: string, impersonateEmail?: string): Promise<string> {
   const sa = JSON.parse(serviceAccountJson);
   const now = Math.floor(Date.now() / 1000);
   const header = base64url(new TextEncoder().encode(JSON.stringify({ alg: "RS256", typ: "JWT" })));
-  const claim = base64url(new TextEncoder().encode(JSON.stringify({
+  const claimPayload: Record<string, unknown> = {
     iss: sa.client_email,
     scope: "https://www.googleapis.com/auth/calendar",
     aud: "https://oauth2.googleapis.com/token",
     iat: now,
     exp: now + 3600,
-  })));
+  };
+  // Impersonate the target user via Domain-Wide Delegation
+  if (impersonateEmail) {
+    claimPayload.sub = impersonateEmail;
+  }
+  const claim = base64url(new TextEncoder().encode(JSON.stringify(claimPayload)));
 
   const pemBody = sa.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/, "")
@@ -194,8 +199,8 @@ serve(async (req) => {
     let finalDisplayDate: string;
     let finalDisplayTime: string;
 
-    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON);
-
+    // Impersonate Febe to create event directly on her calendar
+    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON, FEBE_CALENDAR_ID);
     if (selected_slot) {
       // Use the pre-selected slot from the availability picker
       finalStart = `${selected_slot.date}T${selected_slot.startTime}:00`;
@@ -297,14 +302,13 @@ serve(async (req) => {
       end: { dateTime: finalEnd, timeZone: "America/Santiago" },
       attendees: [
         { email },
-        { email: FEBE_CALENDAR_ID },
       ],
       sendUpdates: "all",
     };
 
-    // Create on SA's own "primary" calendar — no shared-calendar permissions needed
+    // Create on Febe's calendar via impersonation
     const createRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all`,
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(FEBE_CALENDAR_ID)}/events?sendUpdates=all`,
       {
         method: "POST",
         headers: {
