@@ -498,10 +498,46 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 6: Name + Email ── */
+      /* ── Screen 6: Nurturing email (no_calificado) ── */
       case 6:
         return (
           <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
+              {messages.map((m, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                  {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
+                </motion.div>
+              ))}
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
+                <AIBubble>Déjame tu correo y te mando recursos útiles para tu situación.</AIBubble>
+              </motion.div>
+              <div ref={messagesEndRef} />
+            </div>
+            <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+              <input
+                type="email"
+                value={nurturingEmail}
+                onChange={(e) => setNurturingEmail(e.target.value)}
+                placeholder="Tu correo electrónico"
+                className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
+              />
+              <button
+                onClick={handleNurturingSubmit}
+                disabled={!nurturingEmail.trim()}
+                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
+              >
+                Enviar →
+              </button>
+            </div>
+          </motion.div>
+        );
+
+      /* ── Screen 7: Name + Email (calificado/tibio) ── */
+      case 7:
+        return (
+          <motion.div key="s7" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
               {messages.map((m, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -542,10 +578,10 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 7: Loading ── */
-      case 7:
+      /* ── Screen 8: Loading ── */
+      case 8:
         return (
-          <motion.div key="s7" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div className="flex items-center gap-3">
               {[0, 1, 2].map((i) => (
                 <span
@@ -556,15 +592,17 @@ const AgenticLandingPage = () => {
               ))}
             </div>
             <p className="text-white/70 text-[16px] font-light leading-relaxed max-w-[280px]">
-              Estamos buscando el horario más cercano a tu preferencia...
+              {leadFlag === "no_calificado"
+                ? "Registrando tu información..."
+                : "Estamos buscando el horario más cercano a tu preferencia..."}
             </p>
           </motion.div>
         );
 
-      /* ── Screen 8: Confirmation ── */
-      case 8:
+      /* ── Screen 9: Confirmation ── */
+      case 9:
         return (
-          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s9" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(28,163,152,0.15)", border: "2px solid rgba(28,163,152,0.3)" }}
@@ -574,16 +612,30 @@ const AgenticLandingPage = () => {
               </svg>
             </div>
             <h2 className="text-[22px] font-semibold text-white leading-snug text-balance">
-              {nameInput || "Visitante"}, está todo listo.
-              <br />
-              <span className="text-white/60 font-normal text-[17px]">
-                {meetingDate && meetingTime
-                  ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
-                  : "Te contactaremos pronto para confirmar tu reunión."}
-              </span>
+              {leadFlag === "no_calificado" ? (
+                <>
+                  ¡Listo!
+                  <br />
+                  <span className="text-white/60 font-normal text-[17px]">
+                    Te enviaremos contenido relevante pronto.
+                  </span>
+                </>
+              ) : (
+                <>
+                  {nameInput || "Visitante"}, está todo listo.
+                  <br />
+                  <span className="text-white/60 font-normal text-[17px]">
+                    {meetingDate && meetingTime
+                      ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
+                      : "Te contactaremos pronto para confirmar tu reunión."}
+                  </span>
+                </>
+              )}
             </h2>
             <p className="text-white/40 text-[14px] font-light max-w-[300px]">
-              Recibirás una invitación en tu correo con todos los detalles.
+              {leadFlag === "no_calificado"
+                ? "Revisa tu bandeja de entrada en los próximos días."
+                : "Recibirás una invitación en tu correo con todos los detalles."}
             </p>
             <div className="mt-8 text-white/20 text-[11px] tracking-wide leading-relaxed">
               Revops LATAM · HubSpot Platinum Partner · 14 años generando Revenue
