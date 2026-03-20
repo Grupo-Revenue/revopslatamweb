@@ -6,15 +6,14 @@ import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
 /* ─── palette per screen ─── */
 const BG_COLORS = [
   "#1A1033", // Screen 0: Welcome Lidia
-  "#1A1033", "#1C1240", "#1E1550", "#16203A",
-  "#0F2030", // Screen 5: chat (availability)
-  "#0A2028", // Screen 6: nurturing email
-  "#0A2028", // Screen 7: name+email (qualified)
-  "#082018", // Screen 8: loading
-  "#0A1F1A", // Screen 9: confirmation
+  "#1C1240", "#1E1550", "#16203A", "#0F2030",
+  "#0A2028", // Screen 5: availability picker / nurturing
+  "#0A2028", // Screen 6: name+email
+  "#082018", // Screen 7: loading
+  "#0A1F1A", // Screen 8: confirmation
 ];
 
-const TOTAL_SCREENS = 10;
+const TOTAL_SCREENS = 9;
 const TYPEWRITER_MS = 30;
 const WELCOME_TYPEWRITER_MS = 25;
 
@@ -149,7 +148,9 @@ const AgenticLandingPage = () => {
   const [turn, setTurn] = useState(0);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
-  const [availabilityPref, setAvailabilityPref] = useState("");
+  const [availabilitySlots, setAvailabilitySlots] = useState<Record<string, { display_date: string; slots: { date: string; startTime: string; endTime: string; display_date: string; display_time: string }[] }>>({});
+  const [selectedSlot, setSelectedSlot] = useState<{ date: string; startTime: string; endTime: string; display_date: string; display_time: string } | null>(null);
+  const [loadingSlots, setLoadingSlots] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
   const [leadScore, setLeadScore] = useState<number | undefined>();
@@ -277,9 +278,9 @@ const AgenticLandingPage = () => {
     [typewriterEffect]
   );
 
-  // Start conversation — Screen 1 → 2
-  const goToScreen2 = useCallback(async () => {
-    setScreen(2);
+  // Start conversation — Screen 0 → 1 (chat)
+  const startChat = useCallback(async () => {
+    setScreen(1);
     const convId = await createConversation();
     const newTurn = 1;
     setTurn(newTurn);
@@ -291,6 +292,20 @@ const AgenticLandingPage = () => {
       if (convId) saveMessages(convId, newMessages);
     }
   }, [createConversation, callClaude, typewriterEffect, saveMessages]);
+
+  // Fetch real availability from Febe's calendar
+  const fetchAvailability = useCallback(async () => {
+    setLoadingSlots(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("get-availability");
+      if (!error && data?.availability) {
+        setAvailabilitySlots(data.availability);
+      }
+    } catch (e) {
+      console.error("get-availability error:", e);
+    }
+    setLoadingSlots(false);
+  }, []);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
@@ -320,29 +335,24 @@ const AgenticLandingPage = () => {
     if (conversationId) {
       const extra: Record<string, string> = {};
       if (result.summary) extra.summary = result.summary;
-      if (result.phase === "complete") extra.availability_preference = val;
       saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
     }
 
     // Phase transitions
     if (result.phase === "nurturing") {
-      // Unqualified — show nurturing email capture (screen 6 repurposed)
       setSummary(result.summary || null);
-      setScreen(6); // nurturing screen
+      setScreen(5); // nurturing screen
     } else if (result.phase === "availability") {
-      // Qualified or tibio — stay in chat for availability response
-      setScreen(5);
-    } else if (result.phase === "complete") {
-      // Got availability response — go to name/email capture
-      setAvailabilityPref(val);
-      setScreen(7); // name+email screen (shifted)
+      // Qualified or tibio — show availability picker
+      fetchAvailability();
+      setScreen(5); // availability picker
     }
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages, fetchAvailability]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
     if (!nurturingEmail.trim()) return;
-    setScreen(8); // loading
+     setScreen(7); // loading
 
     try {
       await supabase.functions.invoke("book-meeting", {
@@ -362,12 +372,12 @@ const AgenticLandingPage = () => {
     } catch (e) {
       console.error("nurturing submit error:", e);
     }
-    setScreen(9); // confirmation
+    setScreen(8); // confirmation
   }, [nurturingEmail, conversationId, summary, leadScore]);
 
   const handleConfirmData = useCallback(async () => {
-    if (!nameInput.trim() || !emailInput.trim()) return;
-    setScreen(8); // loading
+    if (!nameInput.trim() || !emailInput.trim() || !selectedSlot) return;
+    setScreen(7); // loading
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
@@ -376,7 +386,8 @@ const AgenticLandingPage = () => {
           email: emailInput.trim(),
           context: contextRef.current,
           summary,
-          availability_preference: availabilityPref,
+          availability_preference: `${selectedSlot.display_date} a las ${selectedSlot.display_time}`,
+          selected_slot: selectedSlot,
           conversation_id: conversationId,
           score: leadScore,
           flag: leadFlag || "calificado",
@@ -388,18 +399,18 @@ const AgenticLandingPage = () => {
         console.error("book-meeting error:", error, data);
         setMeetingDate("");
         setMeetingTime("");
-        setScreen(9);
+        setScreen(8);
         return;
       }
 
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
-      setScreen(9);
+      setScreen(8);
     } catch (e) {
       console.error("book-meeting exception:", e);
-      setScreen(9);
+      setScreen(8);
     }
-  }, [nameInput, emailInput, conversationId, summary, availabilityPref, leadScore, leadFlag]);
+  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag]);
 
   /* ─── Welcome screen typewriter ─── */
   const [welcomeText, setWelcomeText] = useState("");
@@ -450,7 +461,7 @@ const AgenticLandingPage = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={welcomeDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => setScreen(1)}
+              onClick={() => startChat()}
               disabled={!welcomeDone}
               className="w-full max-w-[320px] py-4 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
               style={{ background: "#BE1869", boxShadow: "0 8px 32px rgba(190,24,105,0.35)" }}
@@ -460,31 +471,11 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 1: Hook ── */
+      /* ── Screens 1–4: Chat ── */
       case 1:
-        return (
-          <motion.div key="s1" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-6">
-            <h1 className="text-[28px] sm:text-[32px] font-semibold leading-[1.15] text-white tracking-tight text-balance">
-              Cada mes se pierden negocios en tu empresa.
-            </h1>
-            <p className="text-white/45 text-[17px] leading-relaxed font-light">
-              Nadie sabe cuántos. Nadie sabe dónde.
-            </p>
-            <button
-              onClick={goToScreen2}
-              className="mt-4 w-full max-w-[320px] py-4 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
-              style={{ background: "#BE1869", boxShadow: "0 8px 32px rgba(190,24,105,0.35)" }}
-            >
-              Así es, eso me pasa →
-            </button>
-          </motion.div>
-        );
-
-      /* ── Screens 2–5: Chat ── */
       case 2:
       case 3:
       case 4:
-      case 5:
         return (
           <motion.div key={`chat`} {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
@@ -560,56 +551,118 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 6: Nurturing email (no_calificado) ── */
-      case 6:
-        return (
-          <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
-              {messages.map((m, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-                  {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
+      /* ── Screen 5: Availability picker (calificado/tibio) OR Nurturing (no_calificado) ── */
+      case 5:
+        if (leadFlag === "no_calificado") {
+          return (
+            <motion.div key="s5-nur" {...screenVariants} className="flex flex-col h-full">
+              <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
+                {messages.map((m, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                    {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
+                  </motion.div>
+                ))}
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
+                  <AIBubble>Déjame tu correo y te mando recursos útiles para tu situación.</AIBubble>
                 </motion.div>
-              ))}
-              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
-                <AIBubble>Déjame tu correo y te mando recursos útiles para tu situación.</AIBubble>
-              </motion.div>
+                <div ref={messagesEndRef} />
+              </div>
+              <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+                <input
+                  type="email"
+                  value={nurturingEmail}
+                  onChange={(e) => setNurturingEmail(e.target.value)}
+                  placeholder="Tu correo electrónico"
+                  className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                  style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
+                />
+                <button
+                  onClick={handleNurturingSubmit}
+                  disabled={!nurturingEmail.trim()}
+                  className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                  style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
+                >
+                  Enviar →
+                </button>
+              </div>
+            </motion.div>
+          );
+        }
+        // Availability picker for qualified/tibio
+        return (
+          <motion.div key="s5-avail" {...screenVariants} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
+              {/* Last AI message */}
+              {messages.length > 0 && (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                  <AIBubble>{messages[messages.length - 1].text}</AIBubble>
+                </motion.div>
+              )}
+
+              {/* Slots */}
+              {loadingSlots ? (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center gap-3 py-6">
+                  <TypingDots />
+                  <span className="text-white/40 text-[13px]">Buscando horarios disponibles...</span>
+                </motion.div>
+              ) : (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="flex flex-col gap-3 mt-2">
+                  <span className="text-[11px] tracking-[0.1em] uppercase text-white/30 font-medium pl-1">
+                    Elige un horario
+                  </span>
+                  {Object.entries(availabilitySlots).map(([dateKey, dayData]) => (
+                    <div key={dateKey} className="flex flex-col gap-1.5">
+                      <span className="text-[13px] text-white/50 font-medium capitalize pl-1">{dayData.display_date}</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {dayData.slots.slice(0, 8).map((slot) => {
+                          const isSelected = selectedSlot?.date === slot.date && selectedSlot?.startTime === slot.startTime;
+                          return (
+                            <button
+                              key={`${slot.date}-${slot.startTime}`}
+                              onClick={() => setSelectedSlot(slot)}
+                              className="px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 active:scale-[0.95]"
+                              style={{
+                                background: isSelected ? "#BE1869" : "rgba(255,255,255,0.06)",
+                                border: `1px solid ${isSelected ? "rgba(190,24,105,0.5)" : "rgba(255,255,255,0.08)"}`,
+                                color: isSelected ? "#fff" : "rgba(255,255,255,0.6)",
+                              }}
+                            >
+                              {slot.display_time}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
               <div ref={messagesEndRef} />
             </div>
-            <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
-              <input
-                type="email"
-                value={nurturingEmail}
-                onChange={(e) => setNurturingEmail(e.target.value)}
-                placeholder="Tu correo electrónico"
-                className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
-                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
-              />
+            <div className="px-4 pb-4 pt-2">
               <button
-                onClick={handleNurturingSubmit}
-                disabled={!nurturingEmail.trim()}
-                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                onClick={() => setScreen(6)}
+                disabled={!selectedSlot}
+                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
                 style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
               >
-                Enviar →
+                {selectedSlot ? `Confirmar ${selectedSlot.display_date} a las ${selectedSlot.display_time} →` : "Selecciona un horario"}
               </button>
             </div>
           </motion.div>
         );
 
-      /* ── Screen 7: Name + Email (calificado/tibio) ── */
-      case 7:
+      /* ── Screen 6: Name + Email ── */
+      case 6:
         return (
-          <motion.div key="s7" {...screenVariants} className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
-              {messages.map((m, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-                  {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
-                </motion.div>
-              ))}
-              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
-                <AIBubble>Perfecto. ¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión.</AIBubble>
+          <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3 justify-center">
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                <AIBubble>
+                  {selectedSlot
+                    ? `Perfecto, ${selectedSlot.display_date} a las ${selectedSlot.display_time}. ¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión.`
+                    : "¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión."}
+                </AIBubble>
               </motion.div>
-              <div ref={messagesEndRef} />
             </div>
             <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
               <input
@@ -640,10 +693,10 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 8: Loading ── */
-      case 8:
+      /* ── Screen 7: Loading ── */
+      case 7:
         return (
-          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s7" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div className="flex items-center gap-3">
               {[0, 1, 2].map((i) => (
                 <span
@@ -656,15 +709,15 @@ const AgenticLandingPage = () => {
             <p className="text-white/70 text-[16px] font-light leading-relaxed max-w-[280px]">
               {leadFlag === "no_calificado"
                 ? "Registrando tu información..."
-                : "Estamos buscando el horario más cercano a tu preferencia..."}
+                : "Agendando tu reunión..."}
             </p>
           </motion.div>
         );
 
-      /* ── Screen 9: Confirmation ── */
-      case 9:
+      /* ── Screen 8: Confirmation ── */
+      case 8:
         return (
-          <motion.div key="s9" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(28,163,152,0.15)", border: "2px solid rgba(28,163,152,0.3)" }}
@@ -689,7 +742,9 @@ const AgenticLandingPage = () => {
                   <span className="text-white/60 font-normal text-[17px]">
                     {meetingDate && meetingTime
                       ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
-                      : "Te contactaremos pronto para confirmar tu reunión."}
+                      : selectedSlot
+                        ? `Te esperamos el ${selectedSlot.display_date} a las ${selectedSlot.display_time}.`
+                        : "Te contactaremos pronto para confirmar tu reunión."}
                   </span>
                 </>
               )}
