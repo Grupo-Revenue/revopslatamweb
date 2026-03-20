@@ -389,7 +389,7 @@ const AgenticLandingPage = () => {
       pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
       const result = await callClaude(pending.messages, pending.turn);
-      if (result) await processClaudeResult(result, pending.messages);
+      if (result) await processClaudeResult(result, pending.messages, pending.turn);
     }
   }, [callClaude, processClaudeResult]);
 
