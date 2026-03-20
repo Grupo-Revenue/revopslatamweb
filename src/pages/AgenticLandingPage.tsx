@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import IsotipoBlanco from "@/assets/Isotipo_blanco.svg";
 
 /* ─── palette per screen ─── */
 const BG_COLORS = [
+  "#1A1033", // Screen 0: Welcome Lidia
   "#1A1033", "#1C1240", "#1E1550", "#16203A",
   "#0F2030", "#0A2028", "#082018", "#0A1F1A",
 ];
 
-const TOTAL_SCREENS = 8;
+const TOTAL_SCREENS = 9;
 const TYPEWRITER_MS = 30;
+const WELCOME_TYPEWRITER_MS = 25;
 
 /* ─── capture UTMs from URL ─── */
 function getUTMParams() {
@@ -249,9 +252,9 @@ const AgenticLandingPage = () => {
     [typewriterEffect]
   );
 
-  // Start conversation — Screen 0 → 1
-  const goToScreen1 = useCallback(async () => {
-    setScreen(1);
+  // Start conversation — Screen 1 → 2
+  const goToScreen2 = useCallback(async () => {
+    setScreen(2);
     const convId = await createConversation();
     const newTurn = 1;
     setTurn(newTurn);
@@ -293,17 +296,17 @@ const AgenticLandingPage = () => {
 
     // Phase transitions
     if (result.phase === "availability") {
-      setScreen(4);
+      setScreen(5);
     } else if (result.phase === "complete") {
       setSummary(result.summary || null);
       setAvailabilityPref(val);
-      setScreen(5);
+      setScreen(6);
     }
   }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages]);
 
   const handleConfirmData = useCallback(async () => {
     if (!nameInput.trim() || !emailInput.trim()) return;
-    setScreen(6);
+    setScreen(7);
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
@@ -323,26 +326,82 @@ const AgenticLandingPage = () => {
         // Fallback: show generic confirmation
         setMeetingDate("");
         setMeetingTime("");
-        setScreen(7);
+        setScreen(8);
         return;
       }
 
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
-      setScreen(7);
+      setScreen(8);
     } catch (e) {
       console.error("book-meeting exception:", e);
-      setScreen(7);
+      setScreen(8);
     }
   }, [nameInput, emailInput, conversationId, summary, availabilityPref]);
+
+  /* ─── Welcome screen typewriter ─── */
+  const [welcomeText, setWelcomeText] = useState("");
+  const [welcomeDone, setWelcomeDone] = useState(false);
+  const welcomeFullText = "Hola, soy Lidia 👋\n\nSoy asistente virtual de Revops LATAM.\n\nEn 4 preguntas voy a entender tu situación comercial y, si tiene sentido, te conectaré con nuestro equipo.\n\n¿Empezamos?";
+
+  useEffect(() => {
+    if (screen !== 0) return;
+    setWelcomeText("");
+    setWelcomeDone(false);
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setWelcomeText(welcomeFullText.slice(0, i));
+      if (i >= welcomeFullText.length) {
+        clearInterval(interval);
+        setWelcomeDone(true);
+      }
+    }, WELCOME_TYPEWRITER_MS);
+    return () => clearInterval(interval);
+  }, [screen]);
 
   /* ─── render current screen ─── */
   const renderScreen = () => {
     switch (screen) {
-      /* ── Screen 0: Hook ── */
+      /* ── Screen 0: Welcome Lidia ── */
       case 0:
         return (
           <motion.div key="s0" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-6">
+            {/* Lidia Avatar */}
+            <div
+              className="w-[72px] h-[72px] rounded-full flex items-center justify-center shrink-0"
+              style={{ background: "linear-gradient(135deg, #6224BE, #BE1869)" }}
+            >
+              <span className="text-white text-[24px] font-medium select-none">L</span>
+            </div>
+
+            {/* Typewriter text */}
+            <div className="text-[16px] leading-relaxed text-white/85 font-light whitespace-pre-line max-w-[320px] min-h-[180px]">
+              {welcomeText}
+              {!welcomeDone && (
+                <span className="inline-block w-[2px] h-[18px] bg-white/50 ml-0.5 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
+              )}
+            </div>
+
+            {/* CTA button — fade in after typewriter */}
+            <motion.button
+              initial={{ opacity: 0, y: 8 }}
+              animate={welcomeDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              onClick={() => setScreen(1)}
+              disabled={!welcomeDone}
+              className="w-full max-w-[320px] py-4 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
+              style={{ background: "#BE1869", boxShadow: "0 8px 32px rgba(190,24,105,0.35)" }}
+            >
+              Empecemos →
+            </motion.button>
+          </motion.div>
+        );
+
+      /* ── Screen 1: Hook ── */
+      case 1:
+        return (
+          <motion.div key="s1" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-6">
             <h1 className="text-[28px] sm:text-[32px] font-semibold leading-[1.15] text-white tracking-tight text-balance">
               Cada mes se pierden negocios en tu empresa.
             </h1>
@@ -350,7 +409,7 @@ const AgenticLandingPage = () => {
               Nadie sabe cuántos. Nadie sabe dónde.
             </p>
             <button
-              onClick={goToScreen1}
+              onClick={goToScreen2}
               className="mt-4 w-full max-w-[320px] py-4 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
               style={{ background: "#BE1869", boxShadow: "0 8px 32px rgba(190,24,105,0.35)" }}
             >
@@ -359,11 +418,11 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screens 1–4: Chat ── */
-      case 1:
+      /* ── Screens 2–5: Chat ── */
       case 2:
       case 3:
       case 4:
+      case 5:
         return (
           <motion.div key={`chat`} {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
@@ -395,17 +454,16 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 5: Name + Email ── */
-      case 5:
+      /* ── Screen 6: Name + Email ── */
+      case 6:
         return (
-          <motion.div key="s5" {...screenVariants} className="flex flex-col h-full">
+          <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
               {messages.map((m, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
                   {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
                 </motion.div>
               ))}
-              {/* Extra AI bubble asking for contact */}
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
                 <AIBubble>Perfecto. ¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión.</AIBubble>
               </motion.div>
@@ -440,10 +498,10 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 6: Loading ── */
-      case 6:
+      /* ── Screen 7: Loading ── */
+      case 7:
         return (
-          <motion.div key="s6" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s7" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div className="flex items-center gap-3">
               {[0, 1, 2].map((i) => (
                 <span
@@ -459,10 +517,10 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 7: Confirmation ── */
-      case 7:
+      /* ── Screen 8: Confirmation ── */
+      case 8:
         return (
-          <motion.div key="s7" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(28,163,152,0.15)", border: "2px solid rgba(28,163,152,0.3)" }}
@@ -504,9 +562,7 @@ const AgenticLandingPage = () => {
       }}
     >
       <div className="flex items-center justify-center pt-5 pb-2 shrink-0">
-        <span className="text-[11px] tracking-[0.2em] uppercase text-white/25 font-medium select-none">
-          Revops LATAM
-        </span>
+        <img src={IsotipoBlanco} alt="Revops LATAM" className="h-5 w-auto opacity-25 select-none" />
       </div>
 
       <div className="flex-1 w-full max-w-[420px] mx-auto overflow-hidden">
@@ -527,6 +583,10 @@ const AgenticLandingPage = () => {
         @keyframes pulseScale {
           0%, 100% { transform: scale(1); opacity: 0.4; }
           50% { transform: scale(1.5); opacity: 1; }
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
         }
       `}</style>
     </div>
