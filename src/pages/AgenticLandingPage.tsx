@@ -7,10 +7,14 @@ import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
 const BG_COLORS = [
   "#1A1033", // Screen 0: Welcome Lidia
   "#1A1033", "#1C1240", "#1E1550", "#16203A",
-  "#0F2030", "#0A2028", "#082018", "#0A1F1A",
+  "#0F2030", // Screen 5: chat (availability)
+  "#0A2028", // Screen 6: nurturing email
+  "#0A2028", // Screen 7: name+email (qualified)
+  "#082018", // Screen 8: loading
+  "#0A1F1A", // Screen 9: confirmation
 ];
 
-const TOTAL_SCREENS = 9;
+const TOTAL_SCREENS = 10;
 const TYPEWRITER_MS = 30;
 const WELCOME_TYPEWRITER_MS = 25;
 
@@ -148,6 +152,9 @@ const AgenticLandingPage = () => {
   const [availabilityPref, setAvailabilityPref] = useState("");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
+  const [leadScore, setLeadScore] = useState<number | undefined>();
+  const [leadFlag, setLeadFlag] = useState<string | undefined>();
+  const [nurturingEmail, setNurturingEmail] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
@@ -241,7 +248,7 @@ const AgenticLandingPage = () => {
           return null;
         }
 
-        return data as { reply: string; phase: string; summary?: string };
+        return data as { reply: string; phase: string; summary?: string; score?: number; flag?: string };
       } catch (e) {
         setIsAITyping(false);
         console.error("chat-agent exception:", e);
@@ -286,6 +293,11 @@ const AgenticLandingPage = () => {
     await typewriterEffect(result.reply);
     const finalMessages = [...updatedMessages, { role: "ai" as const, text: result.reply }];
 
+    // Store score/flag if returned
+    if (result.score !== undefined) setLeadScore(result.score);
+    if (result.flag) setLeadFlag(result.flag);
+    if (result.summary) setSummary(result.summary);
+
     // Save to Supabase
     if (conversationId) {
       const extra: Record<string, string> = {};
@@ -295,18 +307,49 @@ const AgenticLandingPage = () => {
     }
 
     // Phase transitions
-    if (result.phase === "availability") {
+    if (result.phase === "nurturing") {
+      // Unqualified — show nurturing email capture (screen 6 repurposed)
+      setSummary(result.summary || null);
+      setScreen(6); // nurturing screen
+    } else if (result.phase === "availability") {
+      // Qualified or tibio — stay in chat for availability response
       setScreen(5);
     } else if (result.phase === "complete") {
-      setSummary(result.summary || null);
+      // Got availability response — go to name/email capture
       setAvailabilityPref(val);
-      setScreen(6);
+      setScreen(7); // name+email screen (shifted)
     }
   }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages]);
 
+  // Handle nurturing email submit (unqualified leads)
+  const handleNurturingSubmit = useCallback(async () => {
+    if (!nurturingEmail.trim()) return;
+    setScreen(8); // loading
+
+    try {
+      await supabase.functions.invoke("book-meeting", {
+        body: {
+          name: "",
+          email: nurturingEmail.trim(),
+          context: contextRef.current,
+          summary,
+          availability_preference: "",
+          conversation_id: conversationId,
+          score: leadScore,
+          flag: "no_calificado",
+          nurturing_only: true,
+          ...utmRef.current,
+        },
+      });
+    } catch (e) {
+      console.error("nurturing submit error:", e);
+    }
+    setScreen(9); // confirmation
+  }, [nurturingEmail, conversationId, summary, leadScore]);
+
   const handleConfirmData = useCallback(async () => {
     if (!nameInput.trim() || !emailInput.trim()) return;
-    setScreen(7);
+    setScreen(8); // loading
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
@@ -317,27 +360,28 @@ const AgenticLandingPage = () => {
           summary,
           availability_preference: availabilityPref,
           conversation_id: conversationId,
+          score: leadScore,
+          flag: leadFlag || "calificado",
           ...utmRef.current,
         },
       });
 
       if (error || !data?.success) {
         console.error("book-meeting error:", error, data);
-        // Fallback: show generic confirmation
         setMeetingDate("");
         setMeetingTime("");
-        setScreen(8);
+        setScreen(9);
         return;
       }
 
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
-      setScreen(8);
+      setScreen(9);
     } catch (e) {
       console.error("book-meeting exception:", e);
-      setScreen(8);
+      setScreen(9);
     }
-  }, [nameInput, emailInput, conversationId, summary, availabilityPref]);
+  }, [nameInput, emailInput, conversationId, summary, availabilityPref, leadScore, leadFlag]);
 
   /* ─── Welcome screen typewriter ─── */
   const [welcomeText, setWelcomeText] = useState("");
@@ -454,10 +498,46 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 6: Name + Email ── */
+      /* ── Screen 6: Nurturing email (no_calificado) ── */
       case 6:
         return (
           <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
+              {messages.map((m, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+                  {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
+                </motion.div>
+              ))}
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: 0.3 }}>
+                <AIBubble>Déjame tu correo y te mando recursos útiles para tu situación.</AIBubble>
+              </motion.div>
+              <div ref={messagesEndRef} />
+            </div>
+            <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
+              <input
+                type="email"
+                value={nurturingEmail}
+                onChange={(e) => setNurturingEmail(e.target.value)}
+                placeholder="Tu correo electrónico"
+                className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
+              />
+              <button
+                onClick={handleNurturingSubmit}
+                disabled={!nurturingEmail.trim()}
+                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
+              >
+                Enviar →
+              </button>
+            </div>
+          </motion.div>
+        );
+
+      /* ── Screen 7: Name + Email (calificado/tibio) ── */
+      case 7:
+        return (
+          <motion.div key="s7" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
               {messages.map((m, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -498,10 +578,10 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 7: Loading ── */
-      case 7:
+      /* ── Screen 8: Loading ── */
+      case 8:
         return (
-          <motion.div key="s7" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div className="flex items-center gap-3">
               {[0, 1, 2].map((i) => (
                 <span
@@ -512,15 +592,17 @@ const AgenticLandingPage = () => {
               ))}
             </div>
             <p className="text-white/70 text-[16px] font-light leading-relaxed max-w-[280px]">
-              Estamos buscando el horario más cercano a tu preferencia...
+              {leadFlag === "no_calificado"
+                ? "Registrando tu información..."
+                : "Estamos buscando el horario más cercano a tu preferencia..."}
             </p>
           </motion.div>
         );
 
-      /* ── Screen 8: Confirmation ── */
-      case 8:
+      /* ── Screen 9: Confirmation ── */
+      case 9:
         return (
-          <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+          <motion.div key="s9" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center"
               style={{ background: "rgba(28,163,152,0.15)", border: "2px solid rgba(28,163,152,0.3)" }}
@@ -530,16 +612,30 @@ const AgenticLandingPage = () => {
               </svg>
             </div>
             <h2 className="text-[22px] font-semibold text-white leading-snug text-balance">
-              {nameInput || "Visitante"}, está todo listo.
-              <br />
-              <span className="text-white/60 font-normal text-[17px]">
-                {meetingDate && meetingTime
-                  ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
-                  : "Te contactaremos pronto para confirmar tu reunión."}
-              </span>
+              {leadFlag === "no_calificado" ? (
+                <>
+                  ¡Listo!
+                  <br />
+                  <span className="text-white/60 font-normal text-[17px]">
+                    Te enviaremos contenido relevante pronto.
+                  </span>
+                </>
+              ) : (
+                <>
+                  {nameInput || "Visitante"}, está todo listo.
+                  <br />
+                  <span className="text-white/60 font-normal text-[17px]">
+                    {meetingDate && meetingTime
+                      ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
+                      : "Te contactaremos pronto para confirmar tu reunión."}
+                  </span>
+                </>
+              )}
             </h2>
             <p className="text-white/40 text-[14px] font-light max-w-[300px]">
-              Recibirás una invitación en tu correo con todos los detalles.
+              {leadFlag === "no_calificado"
+                ? "Revisa tu bandeja de entrada en los próximos días."
+                : "Recibirás una invitación en tu correo con todos los detalles."}
             </p>
             <div className="mt-8 text-white/20 text-[11px] tracking-wide leading-relaxed">
               Revops LATAM · HubSpot Platinum Partner · 14 años generando Revenue

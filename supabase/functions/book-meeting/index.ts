@@ -107,11 +107,82 @@ serve(async (req) => {
 
     const {
       name, email, context, summary, availability_preference,
-      conversation_id,
+      conversation_id, score, flag, nurturing_only,
       utm_source, utm_medium, utm_campaign, utm_content,
     } = await req.json();
 
-    if (!name || !email || !availability_preference) {
+    if (!email) {
+      return new Response(JSON.stringify({ error: "Missing email" }), {
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    /* ── NURTURING ONLY: no calendar, HubSpot UNQUALIFIED ── */
+    if (nurturing_only) {
+      // Create HubSpot contact with UNQUALIFIED status
+      const hubspotProps: Record<string, string> = {
+        email,
+        hs_lead_status: "UNQUALIFIED",
+        hs_analytics_source: "PAID_SOCIAL",
+        hs_latest_source: "PAID_SOCIAL",
+        hs_latest_source_data_1: "META Ads",
+        hs_latest_source_data_2: utm_campaign || "",
+        hs_content_membership_notes: `Score: ${score || 0} | Flag: no_calificado\n${summary || ""}`,
+      };
+
+      try {
+        const createRes = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ properties: hubspotProps }),
+        });
+        if (createRes.status === 409) {
+          const errData = await createRes.json();
+          const existingId = errData?.message?.match(/Existing ID: (\d+)/)?.[1];
+          if (existingId) {
+            await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${existingId}`, {
+              method: "PATCH",
+              headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
+              body: JSON.stringify({ properties: hubspotProps }),
+            });
+          }
+        }
+      } catch (e) {
+        console.error("HubSpot nurturing error:", e);
+      }
+
+      // Notify Slack
+      if (SLACK_WEBHOOK_URL) {
+        try {
+          await fetch(SLACK_WEBHOOK_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              text: `📋 Lead no calificado (nurturing)\nEmail: ${email}\nScore: ${score || 0}\nFuente: META Ads — ${utm_content || "directo"}\nResumen: ${summary || "Sin resumen"}`,
+            }),
+          });
+        } catch (e) {
+          console.error("Slack nurturing error:", e);
+        }
+      }
+
+      // Update Supabase conversation
+      if (conversation_id && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+        try {
+          const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+          await supabaseAdmin.from("conversations").update({ scheduled: false }).eq("id", conversation_id);
+        } catch (e) {
+          console.error("Supabase nurturing update error:", e);
+        }
+      }
+
+      return new Response(
+        JSON.stringify({ success: true, nurturing: true }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!name || !availability_preference) {
       return new Response(JSON.stringify({ error: "Missing required fields" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -248,16 +319,17 @@ serve(async (req) => {
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
 
+    const hubspotLeadStatus = flag === "tibio" ? "OPEN" : "NEW";
     const hubspotProps = {
       email,
       firstname: firstName,
       lastname: lastName,
-      hs_lead_status: "NEW",
+      hs_lead_status: hubspotLeadStatus,
       hs_analytics_source: "PAID_SOCIAL",
       hs_latest_source: "PAID_SOCIAL",
       hs_latest_source_data_1: "META Ads",
       hs_latest_source_data_2: utm_campaign || "",
-      hs_content_membership_notes: summary || "",
+      hs_content_membership_notes: `Score: ${score || "N/A"} | Flag: ${flag || "N/A"}\n${summary || ""}`,
     };
 
     let contactId: string | null = null;
