@@ -20,7 +20,11 @@ export type Database = {
           context: string
           created_at: string
           id: string
+          meeting_date: string | null
+          meeting_time: string | null
           messages: Json
+          scheduled: boolean
+          scheduled_at: string | null
           summary: string | null
         }
         Insert: {
@@ -28,7 +32,11 @@ export type Database = {
           context?: string
           created_at?: string
           id?: string
+          meeting_date?: string | null
+          meeting_time?: string | null
           messages?: Json
+          scheduled?: boolean
+          scheduled_at?: string | null
           summary?: string | null
         }
         Update: {
@@ -36,7 +44,11 @@ export type Database = {
           context?: string
           created_at?: string
           id?: string
+          meeting_date?: string | null
+          meeting_time?: string | null
           messages?: Json
+          scheduled?: boolean
+          scheduled_at?: string | null
           summary?: string | null
         }
         Relationships: []
