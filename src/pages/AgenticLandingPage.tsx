@@ -326,13 +326,13 @@ const AgenticLandingPage = () => {
         // Fallback: show generic confirmation
         setMeetingDate("");
         setMeetingTime("");
-        setScreen(7);
+        setScreen(8);
         return;
       }
 
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
-      setScreen(7);
+      setScreen(8);
     } catch (e) {
       console.error("book-meeting exception:", e);
       setScreen(7);
