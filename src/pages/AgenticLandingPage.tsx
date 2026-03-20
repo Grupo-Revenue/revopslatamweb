@@ -374,7 +374,7 @@ const AgenticLandingPage = () => {
       await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
       const result = await callClaude(pending.messages, pending.turn);
       if (result) {
-        await processClaudeResult(result, pending.messages);
+        await processClaudeResult(result, pending.messages, pending.turn);
       }
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect]);
