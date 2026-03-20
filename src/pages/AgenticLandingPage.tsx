@@ -335,7 +335,7 @@ const AgenticLandingPage = () => {
       setScreen(8);
     } catch (e) {
       console.error("book-meeting exception:", e);
-      setScreen(7);
+      setScreen(8);
     }
   }, [nameInput, emailInput, conversationId, summary, availabilityPref]);
 
