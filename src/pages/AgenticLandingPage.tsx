@@ -1108,7 +1108,7 @@ const AgenticLandingPage = () => {
               <button
                 onClick={handleConfirmData}
                 disabled={!nameInput.trim() || !emailInput.trim()}
-                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                className="w-full py-3.5 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
                 style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
               >
                 Confirmar →
