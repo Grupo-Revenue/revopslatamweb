@@ -162,8 +162,12 @@ serve(async (req) => {
     let score: number | undefined;
     let flag: string | undefined;
 
-    if (turn >= 5) {
-      // Parse the reply to extract summary and score
+    if (turn >= 6) {
+      // User has responded with availability preference — this is the completion
+      phase = "complete";
+      // The reply here is just a confirmation, summary was already extracted in turn 5
+    } else if (turn >= 5) {
+      // After 4 questions answered, Claude calculates score
       const summaryMatch = fullReply.split("---SUMMARY---");
       if (summaryMatch.length > 1) {
         reply = summaryMatch[0].trim();
@@ -175,7 +179,6 @@ serve(async (req) => {
         if (scoreMatch) {
           score = parseInt(scoreMatch[1]);
           flag = flagMatch?.[1] || (score >= 70 ? "calificado" : score >= 40 ? "tibio" : "no_calificado");
-          // Extract summary block
           const summaryStart = fullReply.indexOf("Cargo:");
           if (summaryStart !== -1) {
             summary = fullReply.slice(summaryStart).trim();
@@ -186,10 +189,10 @@ serve(async (req) => {
 
       // Parse score from summary
       if (summary) {
-        const scoreMatch = summary.match(/Score:\s*(\d+)/i);
-        const flagMatch = summary.match(/Flag:\s*(calificado|tibio|no_calificado)/i);
-        if (scoreMatch) score = parseInt(scoreMatch[1]);
-        if (flagMatch) flag = flagMatch[1];
+        const scoreMatch2 = summary.match(/Score:\s*(\d+)/i);
+        const flagMatch2 = summary.match(/Flag:\s*(calificado|tibio|no_calificado)/i);
+        if (scoreMatch2) score = parseInt(scoreMatch2[1]);
+        if (flagMatch2) flag = flagMatch2[1];
       }
 
       // Determine phase based on score
@@ -201,7 +204,7 @@ serve(async (req) => {
         }
         flag = flag || (score >= 70 ? "calificado" : score >= 40 ? "tibio" : "no_calificado");
       } else {
-        // Fallback: check reply content for phase hints
+        // Fallback: check reply content
         if (reply.includes("contenido relevante") || reply.includes("mandar contenido")) {
           phase = "nurturing";
           flag = "no_calificado";
@@ -210,8 +213,6 @@ serve(async (req) => {
           flag = "calificado";
         }
       }
-    } else if (turn >= 6) {
-      phase = "complete";
     }
 
     return new Response(
