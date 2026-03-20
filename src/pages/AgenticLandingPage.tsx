@@ -245,7 +245,7 @@ const AgenticLandingPage = () => {
           await typewriterEffect("Disculpa, tuve un problema técnico. ¿Podrías intentar de nuevo?");
           return null;
         }
-        return data as { reply: string; phase: string; summary?: string; score?: number; flag?: string };
+        return data as { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean };
       } catch (e) {
         setIsAITyping(false);
         console.error("chat-agent exception:", e);
