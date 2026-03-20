@@ -148,7 +148,9 @@ const AgenticLandingPage = () => {
   const [turn, setTurn] = useState(0);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
-  const [availabilityPref, setAvailabilityPref] = useState("");
+  const [availabilitySlots, setAvailabilitySlots] = useState<Record<string, { display_date: string; slots: { date: string; startTime: string; endTime: string; display_date: string; display_time: string }[] }>>({});
+  const [selectedSlot, setSelectedSlot] = useState<{ date: string; startTime: string; endTime: string; display_date: string; display_time: string } | null>(null);
+  const [loadingSlots, setLoadingSlots] = useState(false);
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
   const [leadScore, setLeadScore] = useState<number | undefined>();
