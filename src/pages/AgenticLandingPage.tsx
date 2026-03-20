@@ -882,7 +882,7 @@ const AgenticLandingPage = () => {
                         if (e.key === "Enter" && earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
                       }}
                       placeholder="tu@email.com"
-                      className="flex-1 bg-transparent text-white text-[15px] placeholder:text-white/30 outline-none font-[Lexend]"
+                      className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
                       autoFocus
                     />
                   </div>
