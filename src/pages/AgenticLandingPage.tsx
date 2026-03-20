@@ -356,6 +356,8 @@ const AgenticLandingPage = () => {
           summary,
           availability_preference: availabilityPref,
           conversation_id: conversationId,
+          score: leadScore,
+          flag: leadFlag || "calificado",
           ...utmRef.current,
         },
       });
