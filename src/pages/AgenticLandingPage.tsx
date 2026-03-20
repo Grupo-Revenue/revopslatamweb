@@ -252,9 +252,9 @@ const AgenticLandingPage = () => {
     [typewriterEffect]
   );
 
-  // Start conversation — Screen 0 → 1
-  const goToScreen1 = useCallback(async () => {
-    setScreen(1);
+  // Start conversation — Screen 1 → 2
+  const goToScreen2 = useCallback(async () => {
+    setScreen(2);
     const convId = await createConversation();
     const newTurn = 1;
     setTurn(newTurn);
