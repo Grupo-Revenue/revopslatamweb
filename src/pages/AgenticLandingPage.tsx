@@ -203,18 +203,18 @@ const AgenticLandingPage = () => {
     []
   );
 
-  // Typewriter effect
+  // Typewriter effect — optionally mark message as meta (not sent to AI)
   const typewriterEffect = useCallback(
-    (text: string): Promise<void> =>
+    (text: string, meta = false): Promise<void> =>
       new Promise((resolve) => {
         setIsTypewriting(true);
         let i = 0;
-        setMessages((prev) => [...prev, { role: "ai", text: "" }]);
+        setMessages((prev) => [...prev, { role: "ai", text: "", meta }]);
         const interval = setInterval(() => {
           i++;
           setMessages((prev) => {
             const copy = [...prev];
-            copy[copy.length - 1] = { role: "ai", text: text.slice(0, i) };
+            copy[copy.length - 1] = { role: "ai", text: text.slice(0, i), meta };
             return copy;
           });
           if (i >= text.length) {
@@ -227,14 +227,16 @@ const AgenticLandingPage = () => {
     []
   );
 
-  // Call Claude via edge function
+  // Call Claude via edge function — filters out meta messages
   const callClaude = useCallback(
-    async (allMessages: { role: "ai" | "user"; text: string }[], currentTurn: number) => {
+    async (allMessages: { role: "ai" | "user"; text: string; meta?: boolean }[], currentTurn: number) => {
       setIsAITyping(true);
-      const anthropicMessages = allMessages.map((m) => ({
-        role: m.role === "ai" ? "assistant" as const : "user" as const,
-        content: m.text,
-      }));
+      const anthropicMessages = allMessages
+        .filter((m) => !m.meta)
+        .map((m) => ({
+          role: m.role === "ai" ? "assistant" as const : "user" as const,
+          content: m.text,
+        }));
       try {
         const { data, error } = await supabase.functions.invoke("chat-agent", {
           body: { messages: anthropicMessages, context: contextRef.current, turn: currentTurn },
