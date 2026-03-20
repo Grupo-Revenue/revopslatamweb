@@ -435,7 +435,7 @@ const AgenticLandingPage = () => {
         return null;
       }
     },
-    [typewriterEffect]
+    [typewriterEffect, visitorName]
   );
 
   // Fetch real availability from Febe's calendar
