@@ -349,7 +349,7 @@ const AgenticLandingPage = () => {
 
   const handleConfirmData = useCallback(async () => {
     if (!nameInput.trim() || !emailInput.trim()) return;
-    setScreen(7);
+    setScreen(8); // loading
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
@@ -368,21 +368,20 @@ const AgenticLandingPage = () => {
 
       if (error || !data?.success) {
         console.error("book-meeting error:", error, data);
-        // Fallback: show generic confirmation
         setMeetingDate("");
         setMeetingTime("");
-        setScreen(8);
+        setScreen(9);
         return;
       }
 
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
-      setScreen(8);
+      setScreen(9);
     } catch (e) {
       console.error("book-meeting exception:", e);
-      setScreen(8);
+      setScreen(9);
     }
-  }, [nameInput, emailInput, conversationId, summary, availabilityPref]);
+  }, [nameInput, emailInput, conversationId, summary, availabilityPref, leadScore, leadFlag]);
 
   /* ─── Welcome screen typewriter ─── */
   const [welcomeText, setWelcomeText] = useState("");
