@@ -1173,7 +1173,7 @@ const AgenticLandingPage = () => {
                 </>
               )}
             </h2>
-            <p className="text-white/40 text-[14px] font-light max-w-[300px]">
+            <p className="text-white/40 text-[15px] font-light max-w-[300px]">
               {leadFlag === "no_calificado"
                 ? "Revisa tu bandeja de entrada en los próximos días."
                 : "Recibirás una invitación en tu correo con todos los detalles."}
