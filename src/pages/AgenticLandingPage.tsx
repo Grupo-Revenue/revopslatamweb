@@ -887,9 +887,12 @@ const AgenticLandingPage = () => {
                     />
                   </div>
                   <button
-                    onClick={() => handleEarlyEmailSave(earlyEmail)}
+                    onPointerDown={(e) => {
+                      e.preventDefault();
+                      if (earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
+                    }}
                     disabled={!earlyEmail.trim()}
-                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
+                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
                     Continuar →
