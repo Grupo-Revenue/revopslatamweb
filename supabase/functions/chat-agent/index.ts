@@ -16,8 +16,34 @@ Tu objetivo es hacer EXACTAMENTE 5 preguntas para entender la situación del vis
 FLUJO DE CONVERSACIÓN — 5 PREGUNTAS EN ORDEN
 ═══════════════════════════════
 
-PREGUNTA 1 — CARGO:
-"Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?"
+PREGUNTA 1 — CARGO + EMPRESA:
+"Bueno {nombre del visitante}, vamos directo al grano — ¿cuál es tu cargo y en qué empresa trabajas?"
+
+Analiza la respuesta del visitante:
+
+CASO A — Dio solo el cargo, no la empresa:
+Ejemplo: "Soy gerente comercial"
+Responde con 1 línea específica sobre el cargo + pregunta: "¿Y en qué empresa?"
+Espera respuesta con la empresa. Luego continúa a Pregunta 2.
+Agrega "---REPEAT_TURN---" al final para indicar que la pregunta no está completa.
+
+CASO B — Dio solo la empresa, no el cargo:
+Ejemplo: "Trabajo en Constructora XYZ"
+Responde: "Perfecto, ¿y cuál es tu rol en Constructora XYZ?"
+Espera respuesta con el cargo. Luego continúa a Pregunta 2.
+Agrega "---REPEAT_TURN---" al final para indicar que la pregunta no está completa.
+
+CASO C — Dio ambos en una sola respuesta:
+Ejemplo: "Soy gerente comercial en Constructora XYZ"
+Responde con 1 línea específica sobre el cargo y continúa directo a Pregunta 2.
+
+CASO D — Respuesta ambigua o muy corta:
+Ejemplo: "hola" o respuesta sin relación
+
+Responde: "Cuéntame, ¿cuál es tu cargo y en qué empresa trabajas?"
+Reformula una vez. Si sigue siendo ambigua, toma lo que haya y avanza.
+Agrega "---REPEAT_TURN---" al final.
+
 Detecta el cargo y mapéalo internamente:
 - Dueño / Socio / Founder → +5 pts
 - CEO / Gerente General → +10 pts
@@ -27,7 +53,13 @@ Detecta el cargo y mapéalo internamente:
 - Vendedor / Ejecutivo Comercial → 0 pts
 - Otro / no claro → 0 pts
 
-Antes de la siguiente pregunta responde con 1 línea que refleje ESPECÍFICAMENTE su cargo. Ejemplos:
+Detecta también el nombre de la empresa (texto libre) y guárdalo como empresa_detectada.
+
+En todos los casos, antes de continuar a Pregunta 2, debes tener:
+  cargo_detectado → mapeado a nivel_del_cargo
+  empresa_detectada → texto libre
+
+Antes de pasar a Pregunta 2, responde con 1 línea que refleje ESPECÍFICAMENTE su cargo. Ejemplos:
 - "Un gerente comercial lo ve todo — lo que funciona y lo que no."
 - "Como CEO tienes la visión completa de lo que frena el crecimiento."
 - "Perfecto, los dueños suelen ser los primeros en sentir cuando algo no escala."
@@ -236,7 +268,9 @@ serve(async (req) => {
       ? "\n\nIMPORTANTE: Ya tienes las 5 respuestas. Ahora calcula el score y responde según la sección CÁLCULO DEL SCORE Y DECISIÓN FINAL. Incluye el summary al final de tu respuesta separado por '---SUMMARY---'. El formato del summary debe ir DESPUÉS de ese separador."
       : `\n\nIMPORTANTE: Llevas ${turn} turno(s) de conversación. Aún NO has completado las 5 preguntas obligatorias. PROHIBIDO calcular score, dar resumen, mencionar "contenido relevante", ofrecer agendar reunión o despedirte. Tu ÚNICA tarea ahora es hacer la siguiente pregunta del diagnóstico (o repetir la actual si el visitante no la respondió). NO saltes preguntas, NO combines preguntas, haz UNA sola pregunta a la vez.\n\nSi el visitante hizo una PREGUNTA en vez de responder tu pregunta pendiente, agrega "---REPEAT_TURN---" al final de tu respuesta (después de todo el texto visible). Esto indica que la pregunta del diagnóstico no fue contestada y debe repetirse en el mismo turno.`;
 
-    const firstQuestionText = "¿Y cuál es tu cargo o rol en la empresa?";
+    const firstQuestionText = visitorName
+      ? `Bueno ${visitorName}, vamos directo al grano — ¿cuál es tu cargo y en qué empresa trabajas?`
+      : "Vamos directo al grano — ¿cuál es tu cargo y en qué empresa trabajas?";
 
     const firstMsgInstruction = "\n\nIMPORTANTE PARA EL PRIMER MENSAJE: Si es tu primera intervención (turn 1, sin mensajes previos del visitante), ve directo a la primera pregunta sin saludos, sin presentación, sin emojis. Usa exactamente este texto: \"" + firstQuestionText + "\"";
 

@@ -297,8 +297,16 @@ const AgenticLandingPage = () => {
     const buf = answersBufferRef.current;
 
     switch (answerTurn) {
-      case 2: { // User answered Q1 (cargo) — turn 2 = first user answer
+      case 2: { // User answered Q1 (cargo+empresa) — turn 2 = first user answer
         buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
+        // Try to extract company name from the same answer
+        const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
+        if (companyMatch && companyMatch[1]) {
+          buf.company = companyMatch[1].trim();
+        } else if (!buf.company) {
+          // If no company extracted and no previous company, the follow-up will provide it
+          // Next turn (still turn 2 after repeat_turn) will try again
+        }
         break;
       }
       case 3: { // User answered Q2 (rubro)
@@ -604,8 +612,8 @@ const AgenticLandingPage = () => {
 
       setNameCollected(true);
 
-      // Now show Q1 (cargo) via typewriter — this IS sent to Claude
-      const firstQuestion = "¿Y cuál es tu cargo o rol en la empresa?";
+      // Now show Q1 (cargo+empresa) via typewriter — this IS sent to Claude
+      const firstQuestion = `Bueno ${firstName}, vamos directo al grano — ¿cuál es tu cargo y en qué empresa trabajas?`;
       setTurn(1);
       await typewriterEffect(firstQuestion);
       if (conversationId) {
