@@ -292,13 +292,19 @@ const AgenticLandingPage = () => {
     const convId = await createConversation();
     const newTurn = 1;
     setTurn(newTurn);
-    const result = await callClaude([], newTurn);
-    if (result) {
-      await typewriterEffect(result.reply);
-      const newMessages = [{ role: "ai" as const, text: result.reply }];
-      if (convId) saveMessages(convId, newMessages);
-    }
-  }, [createConversation, callClaude, typewriterEffect, saveMessages]);
+    // First question is deterministic — show instantly without API call
+    const ctx = contextRef.current;
+    const firstQuestion = ctx === "hubspot"
+      ? "Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?"
+      : "Para entender bien tu situación, ¿cuál es tu cargo o rol en la empresa?";
+    await typewriterEffect(firstQuestion);
+    const newMessages = [{ role: "ai" as const, text: firstQuestion }];
+    setMessages((prev) => {
+      // typewriterEffect already added the message, just use current state
+      return prev;
+    });
+    if (convId) saveMessages(convId, newMessages);
+  }, [createConversation, typewriterEffect, saveMessages]);
 
   // Save early email to Supabase and continue flow
   const handleEarlyEmailSave = useCallback(async (email: string) => {
