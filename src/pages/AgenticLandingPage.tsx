@@ -114,18 +114,6 @@ const ChatInput = ({
   </div>
 );
 
-/* ─── progress dots ─── */
-const ProgressDots = ({ current, total }: { current: number; total: number }) => (
-  <div className="flex items-center gap-2 justify-center">
-    {Array.from({ length: total }).map((_, i) => (
-      <div
-        key={i}
-        className="rounded-full transition-all duration-500"
-        style={{ width: i === current ? 20 : 6, height: 6, background: i === current ? "#fff" : "rgba(255,255,255,0.2)" }}
-      />
-    ))}
-  </div>
-);
 
 /* ─── screen transition wrapper ─── */
 const screenVariants = {
