@@ -562,9 +562,7 @@ const AgenticLandingPage = () => {
       }}
     >
       <div className="flex items-center justify-center pt-5 pb-2 shrink-0">
-        <span className="text-[11px] tracking-[0.2em] uppercase text-white/25 font-medium select-none">
-          Revops LATAM
-        </span>
+        <img src={IsotipoBlanco} alt="Revops LATAM" className="h-5 w-auto opacity-25 select-none" />
       </div>
 
       <div className="flex-1 w-full max-w-[420px] mx-auto overflow-hidden">
