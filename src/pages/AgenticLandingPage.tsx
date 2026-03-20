@@ -489,7 +489,12 @@ const AgenticLandingPage = () => {
       if (result.repeat_turn) {
         setTurn((prev) => Math.max(prev - 1, 1));
       }
-      if (result.score !== undefined) setLeadScore(result.score);
+      if (result.score !== undefined) {
+        setLeadScore(result.score);
+        const f = result.flag || (result.score >= 65 ? "alta" : result.score >= 40 ? "media" : "baja");
+        const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || nurturingEmail || null;
+        syncScoreToHubSpot(result.score, f, currentEmail);
+      }
       if (result.flag) setLeadFlag(result.flag);
       if (result.summary) setSummary(result.summary);
       if (conversationId) {
