@@ -337,17 +337,9 @@ serve(async (req) => {
       endTime: finalEnd,
     });
 
-    // Step 5: Create HubSpot contact (non-blocking)
-    console.log("Step 5: Creating HubSpot contact...");
-    createHubSpotContact({
-      name,
-      email,
-      context: context || "diagnostico",
-      summary: summary || "",
-    }).catch((e) => console.error("HubSpot error (non-blocking):", e));
+    // Step 5: Notify Slack (non-blocking)
+    console.log("Step 5: Notifying Slack...");
 
-    // Step 6: Notify Slack (non-blocking)
-    console.log("Step 6: Notifying Slack...");
     notifySlack({
       name,
       email,
