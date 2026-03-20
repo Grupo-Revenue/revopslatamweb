@@ -278,9 +278,9 @@ const AgenticLandingPage = () => {
     [typewriterEffect]
   );
 
-  // Start conversation — Screen 1 → 2
-  const goToScreen2 = useCallback(async () => {
-    setScreen(2);
+  // Start conversation — Screen 0 → 1 (chat)
+  const startChat = useCallback(async () => {
+    setScreen(1);
     const convId = await createConversation();
     const newTurn = 1;
     setTurn(newTurn);
@@ -292,6 +292,20 @@ const AgenticLandingPage = () => {
       if (convId) saveMessages(convId, newMessages);
     }
   }, [createConversation, callClaude, typewriterEffect, saveMessages]);
+
+  // Fetch real availability from Febe's calendar
+  const fetchAvailability = useCallback(async () => {
+    setLoadingSlots(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("get-availability");
+      if (!error && data?.availability) {
+        setAvailabilitySlots(data.availability);
+      }
+    } catch (e) {
+      console.error("get-availability error:", e);
+    }
+    setLoadingSlots(false);
+  }, []);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
@@ -321,24 +335,19 @@ const AgenticLandingPage = () => {
     if (conversationId) {
       const extra: Record<string, string> = {};
       if (result.summary) extra.summary = result.summary;
-      if (result.phase === "complete") extra.availability_preference = val;
       saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
     }
 
     // Phase transitions
     if (result.phase === "nurturing") {
-      // Unqualified — show nurturing email capture (screen 6 repurposed)
       setSummary(result.summary || null);
-      setScreen(6); // nurturing screen
+      setScreen(5); // nurturing screen
     } else if (result.phase === "availability") {
-      // Qualified or tibio — stay in chat for availability response
-      setScreen(5);
-    } else if (result.phase === "complete") {
-      // Got availability response — go to name/email capture
-      setAvailabilityPref(val);
-      setScreen(7); // name+email screen (shifted)
+      // Qualified or tibio — show availability picker
+      fetchAvailability();
+      setScreen(5); // availability picker
     }
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages, fetchAvailability]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
