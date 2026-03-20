@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      conversations: {
+        Row: {
+          availability_preference: string | null
+          context: string
+          created_at: string
+          id: string
+          messages: Json
+          summary: string | null
+        }
+        Insert: {
+          availability_preference?: string | null
+          context?: string
+          created_at?: string
+          id?: string
+          messages?: Json
+          summary?: string | null
+        }
+        Update: {
+          availability_preference?: string | null
+          context?: string
+          created_at?: string
+          id?: string
+          messages?: Json
+          summary?: string | null
+        }
+        Relationships: []
+      }
       cta_styles: {
         Row: {
           created_at: string
