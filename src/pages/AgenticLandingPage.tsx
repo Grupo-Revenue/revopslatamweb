@@ -1178,7 +1178,7 @@ const AgenticLandingPage = () => {
                 ? "Revisa tu bandeja de entrada en los próximos días."
                 : "Recibirás una invitación en tu correo con todos los detalles."}
             </p>
-            <div className="mt-8 text-white/20 text-[11px] tracking-wide leading-relaxed">
+            <div className="mt-8 text-white/20 text-[12px] tracking-wide leading-relaxed">
               Revops LATAM · HubSpot Platinum Partner · 14 años generando Revenue
             </div>
           </motion.div>
