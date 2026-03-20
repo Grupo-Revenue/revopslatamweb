@@ -267,7 +267,6 @@ serve(async (req) => {
         phase = "availability";
         flag = "calificado";
       }
-      }
     }
 
     return new Response(
