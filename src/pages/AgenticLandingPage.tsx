@@ -543,18 +543,21 @@ const AgenticLandingPage = () => {
     if (convId) saveMessages(convId, newMessages);
   }, [createConversation, typewriterEffect, saveMessages]);
 
-  // Save early email to Supabase and continue flow
+  // Save early email to Supabase, create HubSpot contact with buffer, and continue flow
   const handleEarlyEmailSave = useCallback(async (email: string) => {
     if (!email.trim() || !conversationId) return;
+    const trimmedEmail = email.trim();
     setEarlyEmailSaved(true);
     setShowEmailCapture(false);
     setEmailCaptureHandled(true);
-    setEmailInput(email.trim());
-    setNurturingEmail(email.trim());
+    setEmailInput(trimmedEmail);
+    setNurturingEmail(trimmedEmail);
     await supabase
       .from("conversations")
-      .update({ availability_preference: `early_email:${email.trim()}` })
+      .update({ availability_preference: `early_email:${trimmedEmail}` })
       .eq("id", conversationId);
+    // Create or update HubSpot contact with everything accumulated so far
+    syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true);
     // Now call Claude to continue the conversation (empathy + next question)
     const pending = pendingClaudeCallRef.current;
     if (pending) {
@@ -567,7 +570,7 @@ const AgenticLandingPage = () => {
         await processClaudeResult(result, pending.messages, pending.turn);
       }
     }
-  }, [conversationId, callClaude, processClaudeResult, typewriterEffect]);
+  }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
