@@ -419,7 +419,7 @@ const AgenticLandingPage = () => {
         }));
       try {
         const { data, error } = await supabase.functions.invoke("chat-agent", {
-          body: { messages: anthropicMessages, context: contextRef.current, turn: currentTurn },
+          body: { messages: anthropicMessages, context: contextRef.current, turn: currentTurn, visitorName },
         });
         setIsAITyping(false);
         if (error || !data?.reply) {
