@@ -13,17 +13,22 @@ function base64url(buf: ArrayBuffer): string {
     .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-async function getGoogleAccessToken(serviceAccountJson: string): Promise<string> {
+async function getGoogleAccessToken(serviceAccountJson: string, impersonateEmail?: string): Promise<string> {
   const sa = JSON.parse(serviceAccountJson);
   const now = Math.floor(Date.now() / 1000);
   const header = base64url(new TextEncoder().encode(JSON.stringify({ alg: "RS256", typ: "JWT" })));
-  const claim = base64url(new TextEncoder().encode(JSON.stringify({
+  const claimPayload: Record<string, unknown> = {
     iss: sa.client_email,
     scope: "https://www.googleapis.com/auth/calendar",
     aud: "https://oauth2.googleapis.com/token",
     iat: now,
     exp: now + 3600,
-  })));
+  };
+  // Impersonate the target user via Domain-Wide Delegation
+  if (impersonateEmail) {
+    claimPayload.sub = impersonateEmail;
+  }
+  const claim = base64url(new TextEncoder().encode(JSON.stringify(claimPayload)));
 
   const pemBody = sa.private_key
     .replace(/-----BEGIN PRIVATE KEY-----/, "")
