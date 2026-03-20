@@ -972,7 +972,7 @@ const AgenticLandingPage = () => {
                   value={nurturingEmail}
                   onChange={(e) => setNurturingEmail(e.target.value)}
                   placeholder="Tu correo electrónico"
-                  className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                   className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
                   style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
                 />
                 <button
