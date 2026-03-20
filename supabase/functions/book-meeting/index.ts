@@ -302,14 +302,13 @@ serve(async (req) => {
       end: { dateTime: finalEnd, timeZone: "America/Santiago" },
       attendees: [
         { email },
-        { email: FEBE_CALENDAR_ID },
       ],
       sendUpdates: "all",
     };
 
-    // Create on SA's own "primary" calendar — no shared-calendar permissions needed
+    // Create on Febe's calendar via impersonation
     const createRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events?sendUpdates=all`,
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(FEBE_CALENDAR_ID)}/events?sendUpdates=all`,
       {
         method: "POST",
         headers: {
