@@ -523,18 +523,36 @@ const AgenticLandingPage = () => {
                   <AIBubble isTyping />
                 </motion.div>
               )}
-              {/* Email capture — shown as a dedicated step */}
-              {showEmailCapture && !isAITyping && !isTypewriting && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="flex flex-col gap-3 mt-1"
+              <div ref={messagesEndRef} />
+            </div>
+
+            {/* Email capture overlay — replaces the chat input area */}
+            {showEmailCapture && !isAITyping && !isTypewriting ? (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="px-4 pb-4 pt-3"
+              >
+                <div
+                  className="rounded-2xl p-5 flex flex-col gap-3"
+                  style={{
+                    background: "rgba(98,36,190,0.12)",
+                    border: "1px solid rgba(98,36,190,0.25)",
+                    backdropFilter: "blur(12px)",
+                  }}
                 >
+                  <p className="text-white/70 text-[13px] leading-snug text-center">
+                    Así no perdemos el contacto si se corta la conversación
+                  </p>
                   <div
-                    className="flex items-center gap-2 rounded-xl px-3 py-3"
-                    style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)" }}
+                    className="flex items-center gap-2 rounded-xl px-4 py-3"
+                    style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
                   >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
                     <input
                       type="email"
                       value={earlyEmail}
@@ -546,34 +564,33 @@ const AgenticLandingPage = () => {
                       className="flex-1 bg-transparent text-white text-[15px] placeholder:text-white/30 outline-none font-[Lexend]"
                       autoFocus
                     />
-                    {earlyEmail.trim() && (
-                      <button
-                        onClick={() => handleEarlyEmailSave(earlyEmail)}
-                        className="text-[13px] text-white font-medium shrink-0 px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
-                        style={{ background: "#6224BE" }}
-                      >
-                        Enviar
-                      </button>
-                    )}
                   </div>
                   <button
-                    onClick={handleSkipEmail}
-                    className="text-[12px] text-white/30 hover:text-white/50 transition-colors self-center"
+                    onClick={() => handleEarlyEmailSave(earlyEmail)}
+                    disabled={!earlyEmail.trim()}
+                    className="w-full py-3 rounded-full text-white font-medium text-[14px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
+                    style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
-                    Prefiero no darlo ahora →
+                    Continuar →
                   </button>
-                </motion.div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-            <div className="px-4 pb-4 pt-2">
-              <ChatInput
-                value={chatInput}
-                onChange={setChatInput}
-                onSend={handleUserSend}
-                disabled={inputDisabled}
-              />
-            </div>
+                  <button
+                    onClick={handleSkipEmail}
+                    className="text-[12px] text-white/25 hover:text-white/45 transition-colors self-center"
+                  >
+                    Prefiero no darlo ahora
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <div className="px-4 pb-4 pt-2">
+                <ChatInput
+                  value={chatInput}
+                  onChange={setChatInput}
+                  onSend={handleUserSend}
+                  disabled={inputDisabled}
+                />
+              </div>
+            )}
           </motion.div>
         );
 
