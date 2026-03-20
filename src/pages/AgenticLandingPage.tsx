@@ -376,8 +376,8 @@ const AgenticLandingPage = () => {
   }, [nurturingEmail, conversationId, summary, leadScore]);
 
   const handleConfirmData = useCallback(async () => {
-    if (!nameInput.trim() || !emailInput.trim()) return;
-    setScreen(8); // loading
+    if (!nameInput.trim() || !emailInput.trim() || !selectedSlot) return;
+    setScreen(7); // loading
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
@@ -386,7 +386,8 @@ const AgenticLandingPage = () => {
           email: emailInput.trim(),
           context: contextRef.current,
           summary,
-          availability_preference: availabilityPref,
+          availability_preference: `${selectedSlot.display_date} a las ${selectedSlot.display_time}`,
+          selected_slot: selectedSlot,
           conversation_id: conversationId,
           score: leadScore,
           flag: leadFlag || "calificado",
@@ -398,18 +399,18 @@ const AgenticLandingPage = () => {
         console.error("book-meeting error:", error, data);
         setMeetingDate("");
         setMeetingTime("");
-        setScreen(9);
+        setScreen(8);
         return;
       }
 
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
-      setScreen(9);
+      setScreen(8);
     } catch (e) {
       console.error("book-meeting exception:", e);
-      setScreen(9);
+      setScreen(8);
     }
-  }, [nameInput, emailInput, conversationId, summary, availabilityPref, leadScore, leadFlag]);
+  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag]);
 
   /* ─── Welcome screen typewriter ─── */
   const [welcomeText, setWelcomeText] = useState("");
