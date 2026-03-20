@@ -1021,7 +1021,7 @@ const AgenticLandingPage = () => {
                         }}
                       >
                         📅 {dayData.display_date}
-                        <span className="text-white/30 text-[12px] ml-2">
+                        <span className="text-white/30 text-[13px] ml-2">
                           ({dayData.slots.length} horarios)
                         </span>
                       </button>
