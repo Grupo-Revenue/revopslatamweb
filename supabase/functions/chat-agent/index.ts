@@ -152,7 +152,7 @@ serve(async (req) => {
 
     const phaseInstruction = turn >= 5
       ? "\n\nIMPORTANTE: Ya tienes las 4 respuestas. Ahora calcula el score y responde según la FASE 3. Incluye el summary al final de tu respuesta separado por '---SUMMARY---'. El formato del summary debe ir DESPUÉS de ese separador."
-      : "";
+      : `\n\nIMPORTANTE: Llevas ${turn} turno(s) de conversación. Aún NO has completado las 4 preguntas obligatorias. PROHIBIDO calcular score, dar resumen, mencionar "contenido relevante", ofrecer agendar reunión o despedirte. Tu ÚNICA tarea ahora es hacer la siguiente pregunta del diagnóstico. NO saltes preguntas, NO combines preguntas, haz UNA sola pregunta a la vez.`;
 
     const firstQuestionText = context === "hubspot"
       ? "Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?"
