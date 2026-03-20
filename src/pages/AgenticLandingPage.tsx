@@ -326,12 +326,14 @@ const AgenticLandingPage = () => {
   const handleSkipEmail = useCallback(async () => {
     setShowEmailCapture(false);
     setEmailCaptureHandled(true);
-    if (pendingClaudeCall) {
-      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
-      if (result) await processClaudeResult(result, pendingClaudeCall.messages);
+    const pending = pendingClaudeCallRef.current;
+    if (pending) {
+      pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
+      const result = await callClaude(pending.messages, pending.turn);
+      if (result) await processClaudeResult(result, pending.messages);
     }
-  }, [pendingClaudeCall, callClaude, processClaudeResult]);
+  }, [callClaude, processClaudeResult]);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
