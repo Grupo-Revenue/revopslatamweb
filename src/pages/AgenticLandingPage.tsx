@@ -140,7 +140,7 @@ const screenVariants = {
 const AgenticLandingPage = () => {
   const [screen, setScreen] = useState(0);
   const [chatInput, setChatInput] = useState("");
-  const [messages, setMessages] = useState<{ role: "ai" | "user"; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ role: "ai" | "user"; text: string; meta?: boolean }[]>([]);
   const [isAITyping, setIsAITyping] = useState(false);
   const [isTypewriting, setIsTypewriting] = useState(false);
   const [nameInput, setNameInput] = useState("");
@@ -203,18 +203,18 @@ const AgenticLandingPage = () => {
     []
   );
 
-  // Typewriter effect
+  // Typewriter effect — optionally mark message as meta (not sent to AI)
   const typewriterEffect = useCallback(
-    (text: string): Promise<void> =>
+    (text: string, meta = false): Promise<void> =>
       new Promise((resolve) => {
         setIsTypewriting(true);
         let i = 0;
-        setMessages((prev) => [...prev, { role: "ai", text: "" }]);
+        setMessages((prev) => [...prev, { role: "ai", text: "", meta }]);
         const interval = setInterval(() => {
           i++;
           setMessages((prev) => {
             const copy = [...prev];
-            copy[copy.length - 1] = { role: "ai", text: text.slice(0, i) };
+            copy[copy.length - 1] = { role: "ai", text: text.slice(0, i), meta };
             return copy;
           });
           if (i >= text.length) {
@@ -227,14 +227,16 @@ const AgenticLandingPage = () => {
     []
   );
 
-  // Call Claude via edge function
+  // Call Claude via edge function — filters out meta messages
   const callClaude = useCallback(
-    async (allMessages: { role: "ai" | "user"; text: string }[], currentTurn: number) => {
+    async (allMessages: { role: "ai" | "user"; text: string; meta?: boolean }[], currentTurn: number) => {
       setIsAITyping(true);
-      const anthropicMessages = allMessages.map((m) => ({
-        role: m.role === "ai" ? "assistant" as const : "user" as const,
-        content: m.text,
-      }));
+      const anthropicMessages = allMessages
+        .filter((m) => !m.meta)
+        .map((m) => ({
+          role: m.role === "ai" ? "assistant" as const : "user" as const,
+          content: m.text,
+        }));
       try {
         const { data, error } = await supabase.functions.invoke("chat-agent", {
           body: { messages: anthropicMessages, context: contextRef.current, turn: currentTurn },
@@ -270,7 +272,7 @@ const AgenticLandingPage = () => {
 
   // Helper to process Claude result and handle phase transitions
   const processClaudeResult = useCallback(
-    async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string }[]) => {
+    async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string; meta?: boolean }[]) => {
       await typewriterEffect(result.reply);
       const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
       // If repeat_turn, roll back the turn counter so the question doesn't count
@@ -328,12 +330,11 @@ const AgenticLandingPage = () => {
     if (pending) {
       pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
-      // Show a brief thank-you, then get Claude's response
-      await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...");
+      // Show a brief thank-you (meta — not sent to AI), then get Claude's response
+      await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
       const result = await callClaude(pending.messages, pending.turn);
       if (result) {
-        const msgsWithThankYou = [...pending.messages, { role: "ai" as const, text: "Gracias por compartirlo 🙌 Ahora sigamos..." }];
-        await processClaudeResult(result, msgsWithThankYou);
+        await processClaudeResult(result, pending.messages);
       }
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect]);
@@ -373,7 +374,7 @@ const AgenticLandingPage = () => {
       setPendingClaudeCall(pending);
       // Ask for email naturally
       const emailAsk = "Perfecto, gracias por contarme. Antes de seguir, ¿me darías tu email? Así no perdemos el contacto 😊";
-      await typewriterEffect(emailAsk);
+      await typewriterEffect(emailAsk, true);
       setShowEmailCapture(true);
       return;
     }
