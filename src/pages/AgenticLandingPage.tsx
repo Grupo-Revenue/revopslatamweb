@@ -421,8 +421,42 @@ const AgenticLandingPage = () => {
 
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
-    await processClaudeResult(result, updatedMessages);
+    await processClaudeResult(result, updatedMessages, newTurn);
   }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved]);
+
+  // Handle Q5 button click
+  const handleQ5ButtonClick = useCallback(async (option: string) => {
+    if (option === "Otro — cuéntame con tus palabras") {
+      setShowQ5Buttons(false);
+      setQ5FreeText(true);
+      return;
+    }
+    setShowQ5Buttons(false);
+    const userMsg = { role: "user" as const, text: option };
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
+    const newTurn = turn + 1;
+    setTurn(newTurn);
+    const result = await callClaude(updatedMessages, newTurn);
+    if (!result) return;
+    await processClaudeResult(result, updatedMessages, newTurn);
+  }, [messages, turn, callClaude, processClaudeResult]);
+
+  // Handle Q5 free text send
+  const handleQ5FreeTextSend = useCallback(async () => {
+    const val = chatInput.trim();
+    if (!val) return;
+    setQ5FreeText(false);
+    const userMsg = { role: "user" as const, text: val };
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
+    setChatInput("");
+    const newTurn = turn + 1;
+    setTurn(newTurn);
+    const result = await callClaude(updatedMessages, newTurn);
+    if (!result) return;
+    await processClaudeResult(result, updatedMessages, newTurn);
+  }, [chatInput, messages, turn, callClaude, processClaudeResult]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
