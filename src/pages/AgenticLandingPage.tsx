@@ -1054,7 +1054,7 @@ const AgenticLandingPage = () => {
                   </div>
                   <button
                     onClick={() => { setSelectedDay(null); setSelectedSlot(null); }}
-                    className="text-[12px] text-white/30 hover:text-white/50 transition-colors self-start pl-1 mt-1"
+                    className="text-[13px] text-white/30 hover:text-white/50 transition-colors self-start pl-1 mt-1"
                   >
                     ← Elegir otro día
                   </button>
