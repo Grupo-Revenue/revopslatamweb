@@ -1,15 +1,18 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import IsotipoBlanco from "@/assets/Isotipo_blanco.svg";
 
 /* ─── palette per screen ─── */
 const BG_COLORS = [
+  "#1A1033", // Screen 0: Welcome Lidia
   "#1A1033", "#1C1240", "#1E1550", "#16203A",
   "#0F2030", "#0A2028", "#082018", "#0A1F1A",
 ];
 
-const TOTAL_SCREENS = 8;
+const TOTAL_SCREENS = 9;
 const TYPEWRITER_MS = 30;
+const WELCOME_TYPEWRITER_MS = 25;
 
 /* ─── capture UTMs from URL ─── */
 function getUTMParams() {
