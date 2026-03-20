@@ -388,6 +388,7 @@ const AgenticLandingPage = () => {
           score: leadScore,
           flag: "no_calificado",
           nurturing_only: true,
+          conversation_messages: messages,
           ...utmRef.current,
         },
       });
@@ -413,6 +414,7 @@ const AgenticLandingPage = () => {
           conversation_id: conversationId,
           score: leadScore,
           flag: leadFlag || "calificado",
+          conversation_messages: messages,
           ...utmRef.current,
         },
       });

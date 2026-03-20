@@ -114,7 +114,18 @@ serve(async (req) => {
       name, email, context, summary, availability_preference,
       selected_slot, conversation_id, score, flag, nurturing_only,
       utm_source, utm_medium, utm_campaign, utm_content,
+      conversation_messages,
     } = await req.json();
+
+    // Format conversation transcript for HubSpot notes
+    const formatTranscript = (msgs: { role: string; text: string }[] | undefined): string => {
+      if (!msgs || msgs.length === 0) return "Sin conversación registrada";
+      return msgs.map((m) => {
+        const speaker = m.role === "ai" ? "Lidia" : "Visitante";
+        return `${speaker}: ${m.text}`;
+      }).join("\n");
+    };
+    const transcript = formatTranscript(conversation_messages);
 
     if (!email) {
       return new Response(JSON.stringify({ error: "Missing email" }), {
@@ -125,12 +136,11 @@ serve(async (req) => {
     /* ── NURTURING ONLY: no calendar, HubSpot UNQUALIFIED ── */
     if (nurturing_only) {
       // Create HubSpot contact with UNQUALIFIED status
-      const hubspotProps: Record<string, string> = {
+      const hubspotNurturingProps: Record<string, string> = {
         email,
-        hs_lead_status: "UNQUALIFIED",
+        hs_lead_status: "OPEN",
         hs_analytics_source: "PAID_SOCIAL",
         hs_latest_source: "PAID_SOCIAL",
-        hs_latest_source_data_1: "META Ads",
         hs_latest_source_data_2: utm_campaign || "",
         hs_content_membership_notes: `Score: ${score || 0} | Flag: no_calificado\n${summary || ""}`,
       };
@@ -139,18 +149,40 @@ serve(async (req) => {
         const createRes = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
           method: "POST",
           headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ properties: hubspotProps }),
+          body: JSON.stringify({ properties: hubspotNurturingProps }),
         });
+        let nurturingContactId: string | null = null;
         if (createRes.status === 409) {
           const errData = await createRes.json();
           const existingId = errData?.message?.match(/Existing ID: (\d+)/)?.[1];
           if (existingId) {
+            nurturingContactId = existingId;
             await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${existingId}`, {
               method: "PATCH",
               headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
-              body: JSON.stringify({ properties: hubspotProps }),
+              body: JSON.stringify({ properties: hubspotNurturingProps }),
             });
           }
+        } else if (createRes.ok) {
+          const contactData = await createRes.json();
+          nurturingContactId = contactData.id;
+        } else {
+          const err = await createRes.text();
+          console.error(`HubSpot nurturing create error [${createRes.status}]:`, err);
+        }
+
+        // Create note with full conversation transcript for nurturing contact
+        if (nurturingContactId) {
+          const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: META Ads — ${utm_content || "directo"}\nScore: ${score || 0} | Flag: no_calificado\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
+          const noteRes = await fetch("https://api.hubapi.com/crm/v3/objects/notes", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              properties: { hs_note_body: noteBody, hs_timestamp: String(Date.now()) },
+              associations: [{ to: { id: nurturingContactId }, types: [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 202 }] }],
+            }),
+          });
+          if (!noteRes.ok) console.error(`HubSpot nurturing note error [${noteRes.status}]:`, await noteRes.text());
         }
       } catch (e) {
         console.error("HubSpot nurturing error:", e);
@@ -329,15 +361,14 @@ serve(async (req) => {
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
 
-    const hubspotLeadStatus = flag === "tibio" ? "OPEN" : "NEW";
-    const hubspotProps = {
+    const hubspotLeadStatus = flag === "tibio" ? "OPEN" : "Agendado";
+    const hubspotProps: Record<string, string> = {
       email,
       firstname: firstName,
       lastname: lastName,
       hs_lead_status: hubspotLeadStatus,
       hs_analytics_source: "PAID_SOCIAL",
       hs_latest_source: "PAID_SOCIAL",
-      hs_latest_source_data_1: "META Ads",
       hs_latest_source_data_2: utm_campaign || "",
       hs_content_membership_notes: `Score: ${score || "N/A"} | Flag: ${flag || "N/A"}\n${summary || ""}`,
     };
@@ -382,7 +413,7 @@ serve(async (req) => {
     // Create note associated to contact
     if (contactId) {
       try {
-        const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: META Ads — ${utm_content || "directo"}\nPreferencia horario: ${availability_preference}\nReunión agendada: ${finalDisplayDate} ${finalDisplayTime}\n\nResumen IA:\n${summary || "Sin resumen"}`;
+        const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: META Ads — ${utm_content || "directo"}\nPreferencia horario: ${availability_preference}\nReunión agendada: ${finalDisplayDate} ${finalDisplayTime}\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
 
         const noteRes = await fetch("https://api.hubapi.com/crm/v3/objects/notes", {
           method: "POST",
