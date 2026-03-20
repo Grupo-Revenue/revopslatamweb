@@ -414,6 +414,7 @@ const AgenticLandingPage = () => {
           conversation_id: conversationId,
           score: leadScore,
           flag: leadFlag || "calificado",
+          conversation_messages: messages,
           ...utmRef.current,
         },
       });
