@@ -330,12 +330,11 @@ const AgenticLandingPage = () => {
     if (pending) {
       pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
-      // Show a brief thank-you, then get Claude's response
-      await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...");
+      // Show a brief thank-you (meta — not sent to AI), then get Claude's response
+      await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
       const result = await callClaude(pending.messages, pending.turn);
       if (result) {
-        const msgsWithThankYou = [...pending.messages, { role: "ai" as const, text: "Gracias por compartirlo 🙌 Ahora sigamos..." }];
-        await processClaudeResult(result, msgsWithThankYou);
+        await processClaudeResult(result, pending.messages);
       }
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect]);
