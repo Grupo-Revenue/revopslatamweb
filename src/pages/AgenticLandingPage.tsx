@@ -296,11 +296,11 @@ const AgenticLandingPage = () => {
 
     // Phase transitions
     if (result.phase === "availability") {
-      setScreen(4);
+      setScreen(5);
     } else if (result.phase === "complete") {
       setSummary(result.summary || null);
       setAvailabilityPref(val);
-      setScreen(5);
+      setScreen(6);
     }
   }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, conversationId, saveMessages]);
 
