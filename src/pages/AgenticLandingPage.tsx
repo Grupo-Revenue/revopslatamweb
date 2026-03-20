@@ -255,6 +255,8 @@ const AgenticLandingPage = () => {
   const [q5FreeText, setQ5FreeText] = useState(false);
   const pendingClaudeCallRef = useRef<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const earlyEmailInputRef = useRef<HTMLInputElement>(null);
+  const earlyEmailSubmittingRef = useRef(false);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
@@ -546,33 +548,43 @@ const AgenticLandingPage = () => {
   }, [createConversation, typewriterEffect, saveMessages]);
 
   // Save early email to Supabase, create HubSpot contact with buffer, and continue flow
-  const handleEarlyEmailSave = useCallback(async (email: string) => {
-    if (!email.trim() || !conversationId) return;
-    const trimmedEmail = email.trim();
-    setEarlyEmailSaved(true);
-    setShowEmailCapture(false);
-    setEmailCaptureHandled(true);
-    setEmailInput(trimmedEmail);
-    setNurturingEmail(trimmedEmail);
-    await supabase
-      .from("conversations")
-      .update({ availability_preference: `early_email:${trimmedEmail}` })
-      .eq("id", conversationId);
-    // Create or update HubSpot contact with everything accumulated so far
-    syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true);
-    // Now call Claude to continue the conversation (empathy + next question)
-    const pending = pendingClaudeCallRef.current;
-    if (pending) {
-      pendingClaudeCallRef.current = null;
-      setPendingClaudeCall(null);
-      // Show a brief thank-you (meta — not sent to AI), then get Claude's response
-      await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
-      const result = await callClaude(pending.messages, pending.turn);
-      if (result) {
-        await processClaudeResult(result, pending.messages, pending.turn);
+  const handleEarlyEmailSave = useCallback(async (email?: string) => {
+    const nativeValue = earlyEmailInputRef.current?.value ?? "";
+    const trimmedEmail = (email ?? nativeValue ?? earlyEmail).trim();
+
+    if (!trimmedEmail || !conversationId || earlyEmailSubmittingRef.current) return;
+
+    earlyEmailSubmittingRef.current = true;
+    setEarlyEmail(trimmedEmail);
+
+    try {
+      setEarlyEmailSaved(true);
+      setShowEmailCapture(false);
+      setEmailCaptureHandled(true);
+      setEmailInput(trimmedEmail);
+      setNurturingEmail(trimmedEmail);
+      await supabase
+        .from("conversations")
+        .update({ availability_preference: `early_email:${trimmedEmail}` })
+        .eq("id", conversationId);
+      // Create or update HubSpot contact with everything accumulated so far
+      syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true);
+      // Now call Claude to continue the conversation (empathy + next question)
+      const pending = pendingClaudeCallRef.current;
+      if (pending) {
+        pendingClaudeCallRef.current = null;
+        setPendingClaudeCall(null);
+        // Show a brief thank-you (meta — not sent to AI), then get Claude's response
+        await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
+        const result = await callClaude(pending.messages, pending.turn);
+        if (result) {
+          await processClaudeResult(result, pending.messages, pending.turn);
+        }
       }
+    } finally {
+      earlyEmailSubmittingRef.current = false;
     }
-  }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot]);
+  }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot, earlyEmail]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
@@ -856,7 +868,7 @@ const AgenticLandingPage = () => {
                 className="px-4 pb-4 pt-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  if (earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
+                  handleEarlyEmailSave();
                 }}
               >
                 <div
@@ -879,11 +891,16 @@ const AgenticLandingPage = () => {
                       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                     </svg>
                     <input
+                      ref={earlyEmailInputRef}
                       type="email"
                       value={earlyEmail}
                       onChange={(e) => setEarlyEmail(e.target.value)}
+                      onInput={(e) => setEarlyEmail((e.target as HTMLInputElement).value)}
                       onKeyDown={(e) => {
-                        if (e.key === "Enter" && earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleEarlyEmailSave();
+                        }
                       }}
                       placeholder="tu@email.com"
                       className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
@@ -896,14 +913,12 @@ const AgenticLandingPage = () => {
                   </div>
                   <button
                     type="submit"
-                    onTouchStart={() => {
-                      if (earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
+                    onPointerDown={(e) => {
+                      e.preventDefault();
+                      handleEarlyEmailSave();
                     }}
-                    onMouseDown={() => {
-                      if (earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
-                    }}
-                    disabled={!earlyEmail.trim()}
-                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
+                    aria-disabled={!earlyEmail.trim()}
+                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] aria-disabled:opacity-30 touch-manipulation"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
                     Continuar →
