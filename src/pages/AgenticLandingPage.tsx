@@ -150,11 +150,14 @@ const AgenticLandingPage = () => {
   const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [emailCaptureHandled, setEmailCaptureHandled] = useState(false);
   const [pendingClaudeCall, setPendingClaudeCall] = useState<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
+  const [showQ5Buttons, setShowQ5Buttons] = useState(false);
+  const [q5Options, setQ5Options] = useState<string[]>([]);
+  const [q5FreeText, setQ5FreeText] = useState(false);
   const pendingClaudeCallRef = useRef<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
-  const inputDisabled = isAITyping || isTypewriting || showEmailCapture;
+  const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
 
   // Scroll chat to bottom
   useEffect(() => {
@@ -258,9 +261,43 @@ const AgenticLandingPage = () => {
     setLoadingSlots(false);
   }, []);
 
+  // Detect crm_status from user's Q4 answer
+  const detectCrmStatus = useCallback((userAnswer: string): "sin_crm" | "hubspot" | "otro_crm" => {
+    const lower = userAnswer.toLowerCase();
+    if (/hubspot/.test(lower)) return "hubspot";
+    if (/excel|whatsapp|nada|no\s+(tenemos|usamos|tienen)|ninguna|no\s+uso|cuaderno|libreta|agenda/.test(lower)) return "sin_crm";
+    if (/salesforce|zoho|pipedrive|monday|bitrix|odoo|dynamics|freshsales|crm|sistema/.test(lower)) return "otro_crm";
+    return "sin_crm";
+  }, []);
+
+  const Q5_OPTIONS: Record<string, string[]> = {
+    sin_crm: [
+      "Clientes en Excel/WhatsApp desordenado",
+      "No tenemos visibilidad del funnel",
+      "Perdemos oportunidades por falta de seguimiento",
+      "Queremos profesionalizar el proceso",
+      "Queremos comenzar con HubSpot",
+    ],
+    hubspot: [
+      "HubSpot no está bien configurado",
+      "No estamos aprovechando la herramienta",
+      "Reporting / pipelines desordenados",
+      "Automatizaciones mal diseñadas",
+      "Necesitamos mejores prácticas de RevOps",
+      "Problemas de integraciones",
+    ],
+    otro_crm: [
+      "El CRM actual es limitado o difícil de usar",
+      "No se integra con nuestras herramientas",
+      "No tenemos reporting ni visibilidad",
+      "El CRM no se adapta al proceso comercial",
+      "Queremos migrar a HubSpot",
+    ],
+  };
+
   // Helper to process Claude result and handle phase transitions
   const processClaudeResult = useCallback(
-    async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string; meta?: boolean }[]) => {
+    async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string; meta?: boolean }[], currentTurn?: number) => {
       await typewriterEffect(result.reply);
       const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
       // If repeat_turn, roll back the turn counter so the question doesn't count
@@ -275,10 +312,25 @@ const AgenticLandingPage = () => {
         if (result.summary) extra.summary = result.summary;
         saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
       }
+
+      // Detect if this is Q5 — AI just asked the problem question after user answered Q4
+      // Turn 5 = user answered Q4, AI responds with Q5
+      const effectiveTurn = currentTurn ?? 0;
+      if (effectiveTurn === 5 && result.phase === "conversation" && !result.repeat_turn) {
+        // Find the user's last message (Q4 answer) to detect crm_status
+        const lastUserMsg = baseMsgs.filter(m => m.role === "user" && !m.meta).pop();
+        if (lastUserMsg) {
+          const crmStatus = detectCrmStatus(lastUserMsg.text);
+          setQ5Options([...Q5_OPTIONS[crmStatus], "Otro — cuéntame con tus palabras"]);
+          setShowQ5Buttons(true);
+          setQ5FreeText(false);
+        }
+      }
+
       if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
       else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
     },
-    [typewriterEffect, conversationId, saveMessages, fetchAvailability]
+    [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus]
   );
 
   // Start conversation — Screen 0 → 1 (chat)
@@ -322,7 +374,7 @@ const AgenticLandingPage = () => {
       await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
       const result = await callClaude(pending.messages, pending.turn);
       if (result) {
-        await processClaudeResult(result, pending.messages);
+        await processClaudeResult(result, pending.messages, pending.turn);
       }
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect]);
@@ -337,7 +389,7 @@ const AgenticLandingPage = () => {
       pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
       const result = await callClaude(pending.messages, pending.turn);
-      if (result) await processClaudeResult(result, pending.messages);
+      if (result) await processClaudeResult(result, pending.messages, pending.turn);
     }
   }, [callClaude, processClaudeResult]);
 
@@ -369,8 +421,42 @@ const AgenticLandingPage = () => {
 
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
-    await processClaudeResult(result, updatedMessages);
+    await processClaudeResult(result, updatedMessages, newTurn);
   }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved]);
+
+  // Handle Q5 button click
+  const handleQ5ButtonClick = useCallback(async (option: string) => {
+    if (option === "Otro — cuéntame con tus palabras") {
+      setShowQ5Buttons(false);
+      setQ5FreeText(true);
+      return;
+    }
+    setShowQ5Buttons(false);
+    const userMsg = { role: "user" as const, text: option };
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
+    const newTurn = turn + 1;
+    setTurn(newTurn);
+    const result = await callClaude(updatedMessages, newTurn);
+    if (!result) return;
+    await processClaudeResult(result, updatedMessages, newTurn);
+  }, [messages, turn, callClaude, processClaudeResult]);
+
+  // Handle Q5 free text send
+  const handleQ5FreeTextSend = useCallback(async () => {
+    const val = chatInput.trim();
+    if (!val) return;
+    setQ5FreeText(false);
+    const userMsg = { role: "user" as const, text: val };
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
+    setChatInput("");
+    const newTurn = turn + 1;
+    setTurn(newTurn);
+    const result = await callClaude(updatedMessages, newTurn);
+    if (!result) return;
+    await processClaudeResult(result, updatedMessages, newTurn);
+  }, [chatInput, messages, turn, callClaude, processClaudeResult]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
@@ -577,6 +663,41 @@ const AgenticLandingPage = () => {
                   </button>
                 </div>
               </motion.div>
+            ) : showQ5Buttons && !isAITyping && !isTypewriting ? (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="px-4 pb-4 pt-2 flex flex-col gap-2"
+              >
+                {q5Options.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => handleQ5ButtonClick(option)}
+                    className="w-full text-left text-[14px] text-white transition-all duration-200 active:scale-[0.98]"
+                    style={{
+                      background: "rgba(255,255,255,0.08)",
+                      border: "0.5px solid rgba(255,255,255,0.2)",
+                      borderRadius: "12px",
+                      padding: "14px 16px",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </motion.div>
+            ) : q5FreeText ? (
+              <div className="px-4 pb-4 pt-2">
+                <ChatInput
+                  value={chatInput}
+                  onChange={setChatInput}
+                  onSend={handleQ5FreeTextSend}
+                  placeholder="Cuéntame con tus palabras..."
+                  disabled={isAITyping || isTypewriting}
+                />
+              </div>
             ) : (
               <div className="px-4 pb-4 pt-2">
                 <ChatInput
