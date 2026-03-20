@@ -155,10 +155,28 @@ const AgenticLandingPage = () => {
   const [leadScore, setLeadScore] = useState<number | undefined>();
   const [leadFlag, setLeadFlag] = useState<string | undefined>();
   const [nurturingEmail, setNurturingEmail] = useState("");
+  const [earlyEmail, setEarlyEmail] = useState("");
+  const [earlyEmailSaved, setEarlyEmailSaved] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting;
+
+  // Determine if early email field should show (after first user answer, turn >= 2, not yet saved)
+  const showEarlyEmail = turn >= 2 && !earlyEmailSaved && messages.some(m => m.role === "user");
+
+  // Save early email to Supabase
+  const handleEarlyEmailSave = useCallback(async (email: string) => {
+    if (!email.trim() || !conversationId) return;
+    setEarlyEmailSaved(true);
+    // Pre-fill final email fields
+    setEmailInput(email.trim());
+    setNurturingEmail(email.trim());
+    await supabase
+      .from("conversations")
+      .update({ availability_preference: `early_email:${email.trim()}` })
+      .eq("id", conversationId);
+  }, [conversationId]);
 
   // Scroll chat to bottom
   useEffect(() => {
@@ -483,6 +501,50 @@ const AgenticLandingPage = () => {
               {isAITyping && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                   <AIBubble isTyping />
+                </motion.div>
+              )}
+              {/* Early email capture — after first answer */}
+              {showEarlyEmail && !isAITyping && !isTypewriting && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="flex flex-col gap-1.5 mt-1"
+                >
+                  <span className="text-[11px] text-white/30 pl-1">
+                    Por si nos perdemos en el camino 😊
+                  </span>
+                  <div
+                    className="flex items-center gap-2 rounded-xl px-3 py-2.5"
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+                  >
+                    <input
+                      type="email"
+                      value={earlyEmail}
+                      onChange={(e) => setEarlyEmail(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
+                      }}
+                      placeholder="Tu email (opcional por ahora)"
+                      className="flex-1 bg-transparent text-white/70 text-[13px] placeholder:text-white/20 outline-none font-[Lexend]"
+                    />
+                    {earlyEmail.trim() && (
+                      <button
+                        onClick={() => handleEarlyEmailSave(earlyEmail)}
+                        className="text-[11px] text-white/40 hover:text-white/70 transition-colors shrink-0 px-2 py-1 rounded-lg"
+                        style={{ background: "rgba(255,255,255,0.06)" }}
+                      >
+                        Guardar
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+              {earlyEmailSaved && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-1">
+                  <span className="text-[11px] text-white/25 pl-1">
+                    ✓ Email guardado
+                  </span>
                 </motion.div>
               )}
               <div ref={messagesEndRef} />
