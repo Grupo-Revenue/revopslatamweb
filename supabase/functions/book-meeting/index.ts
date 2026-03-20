@@ -370,6 +370,7 @@ serve(async (req) => {
       email,
       firstname: firstName,
       lastname: lastName,
+      jobtitle: jobTitle,
       hs_lead_status: hubspotLeadStatus,
       hs_analytics_source: "PAID_SOCIAL",
       hs_latest_source: "PAID_SOCIAL",
