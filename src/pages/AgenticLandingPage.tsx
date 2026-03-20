@@ -259,6 +259,10 @@ const AgenticLandingPage = () => {
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
 
+  // Visitor name state (collected before diagnostic)
+  const [visitorName, setVisitorName] = useState("");
+  const [nameCollected, setNameCollected] = useState(false);
+
   // HubSpot real-time sync state
   const [hubspotContactId, setHubspotContactId] = useState<string | null>(null);
   const answersBufferRef = useRef<Record<string, string>>({});
@@ -415,7 +419,7 @@ const AgenticLandingPage = () => {
         }));
       try {
         const { data, error } = await supabase.functions.invoke("chat-agent", {
-          body: { messages: anthropicMessages, context: contextRef.current, turn: currentTurn },
+          body: { messages: anthropicMessages, context: contextRef.current, turn: currentTurn, visitorName },
         });
         setIsAITyping(false);
         if (error || !data?.reply) {
@@ -431,7 +435,7 @@ const AgenticLandingPage = () => {
         return null;
       }
     },
-    [typewriterEffect]
+    [typewriterEffect, visitorName]
   );
 
   // Fetch real availability from Febe's calendar
@@ -523,24 +527,14 @@ const AgenticLandingPage = () => {
     [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
   );
 
-  // Start conversation — Screen 0 → 1 (chat)
+  // Start conversation — Screen 0 → 1 (ask name first)
   const startChat = useCallback(async () => {
     setScreen(1);
     const convId = await createConversation();
-    const newTurn = 1;
-    setTurn(newTurn);
-    // First question is deterministic — show instantly without API call
-    const ctx = contextRef.current;
-    const firstQuestion = ctx === "hubspot"
-      ? "Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?"
-      : "Para entender bien tu situación, ¿cuál es tu cargo o rol en la empresa?";
-    await typewriterEffect(firstQuestion);
-    const newMessages = [{ role: "ai" as const, text: firstQuestion }];
-    setMessages((prev) => {
-      // typewriterEffect already added the message, just use current state
-      return prev;
-    });
-    if (convId) saveMessages(convId, newMessages);
+    setTurn(0); // Turn 0 = name step (not counted for Claude)
+    const nameQuestion = "Para comenzar, ¿cómo te llamas?";
+    await typewriterEffect(nameQuestion, true); // meta — not sent to Claude
+    if (convId) saveMessages(convId, [{ role: "ai", text: nameQuestion }]);
   }, [createConversation, typewriterEffect, saveMessages]);
 
   // Save early email to Supabase, create HubSpot contact with buffer, and continue flow
@@ -591,6 +585,38 @@ const AgenticLandingPage = () => {
     const val = chatInput.trim();
     if (!val || inputDisabled) return;
 
+    // ── Name step: before diagnostic ──
+    if (!nameCollected) {
+      const userMsg = { role: "user" as const, text: val, meta: true }; // meta — not sent to Claude
+      setMessages((prev) => [...prev, userMsg]);
+      setChatInput("");
+
+      // Parse first/last name
+      const parts = val.split(/\s+/);
+      const firstName = parts[0] || val;
+      const lastName = parts.slice(1).join(" ") || "";
+      setVisitorName(firstName);
+      setNameInput(val); // pre-fill for booking screen
+
+      // Save to HubSpot buffer
+      answersBufferRef.current.firstname = firstName;
+      if (lastName) answersBufferRef.current.lastname = lastName;
+
+      setNameCollected(true);
+
+      // Now show Q1 (cargo) via typewriter — this IS sent to Claude
+      const firstQuestion = "¿Y cuál es tu cargo o rol en la empresa?";
+      setTurn(1);
+      await typewriterEffect(firstQuestion);
+      if (conversationId) {
+        saveMessages(conversationId, [
+          ...messages, userMsg,
+          { role: "ai", text: firstQuestion },
+        ]);
+      }
+      return;
+    }
+
     const userMsg = { role: "user" as const, text: val };
     const updatedMessages = [...messages, userMsg];
     setMessages(updatedMessages);
@@ -619,7 +645,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, earlyEmail, emailInput]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, earlyEmail, emailInput, nameCollected, conversationId, saveMessages]);
 
   // Handle Q5 button click
   const handleQ5ButtonClick = useCallback(async (option: string) => {

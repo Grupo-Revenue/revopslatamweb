@@ -211,7 +211,7 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const { messages, context, turn } = await req.json();
+    const { messages, context, turn, visitorName } = await req.json();
 
     if (!Array.isArray(messages)) {
       return new Response(
@@ -219,6 +219,11 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    // Visitor name instruction
+    const nameInstruction = visitorName
+      ? `\n\nEl visitante te dijo su nombre: ${visitorName}. Úsalo naturalmente en la conversación — no en cada mensaje, solo cuando refuerce la cercanía o el contexto. Nunca digas 'Hola ${visitorName}' al inicio de cada respuesta — eso suena a chatbot. Úsalo dentro de las frases, como lo haría un colega.`
+      : "";
 
     // Build context-aware system prompt
     const contextDetail =
@@ -231,13 +236,11 @@ serve(async (req) => {
       ? "\n\nIMPORTANTE: Ya tienes las 5 respuestas. Ahora calcula el score y responde según la sección CÁLCULO DEL SCORE Y DECISIÓN FINAL. Incluye el summary al final de tu respuesta separado por '---SUMMARY---'. El formato del summary debe ir DESPUÉS de ese separador."
       : `\n\nIMPORTANTE: Llevas ${turn} turno(s) de conversación. Aún NO has completado las 5 preguntas obligatorias. PROHIBIDO calcular score, dar resumen, mencionar "contenido relevante", ofrecer agendar reunión o despedirte. Tu ÚNICA tarea ahora es hacer la siguiente pregunta del diagnóstico (o repetir la actual si el visitante no la respondió). NO saltes preguntas, NO combines preguntas, haz UNA sola pregunta a la vez.\n\nSi el visitante hizo una PREGUNTA en vez de responder tu pregunta pendiente, agrega "---REPEAT_TURN---" al final de tu respuesta (después de todo el texto visible). Esto indica que la pregunta del diagnóstico no fue contestada y debe repetirse en el mismo turno.`;
 
-    const firstQuestionText = context === "hubspot"
-      ? "Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?"
-      : "Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?";
+    const firstQuestionText = "¿Y cuál es tu cargo o rol en la empresa?";
 
     const firstMsgInstruction = "\n\nIMPORTANTE PARA EL PRIMER MENSAJE: Si es tu primera intervención (turn 1, sin mensajes previos del visitante), ve directo a la primera pregunta sin saludos, sin presentación, sin emojis. Usa exactamente este texto: \"" + firstQuestionText + "\"";
 
-    const fullSystemPrompt = `${SYSTEM_PROMPT}\n\nContexto del visitante: ${contextDetail}\n\nTurn actual: ${turn}${phaseInstruction}${turn <= 1 ? firstMsgInstruction : ""}`;
+    const fullSystemPrompt = `${SYSTEM_PROMPT}${nameInstruction}\n\nContexto del visitante: ${contextDetail}\n\nTurn actual: ${turn}${phaseInstruction}${turn <= 1 ? firstMsgInstruction : ""}`;
 
     // Ensure messages array is never empty
     const apiMessages = messages.length > 0
