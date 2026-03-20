@@ -361,15 +361,14 @@ serve(async (req) => {
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
 
-    const hubspotLeadStatus = flag === "tibio" ? "OPEN" : "NEW";
-    const hubspotProps = {
+    const hubspotLeadStatus = flag === "tibio" ? "OPEN" : "Agendado";
+    const hubspotProps: Record<string, string> = {
       email,
       firstname: firstName,
       lastname: lastName,
       hs_lead_status: hubspotLeadStatus,
       hs_analytics_source: "PAID_SOCIAL",
       hs_latest_source: "PAID_SOCIAL",
-      hs_latest_source_data_1: "META Ads",
       hs_latest_source_data_2: utm_campaign || "",
       hs_content_membership_notes: `Score: ${score || "N/A"} | Flag: ${flag || "N/A"}\n${summary || ""}`,
     };
