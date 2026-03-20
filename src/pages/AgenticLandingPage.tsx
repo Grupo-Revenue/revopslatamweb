@@ -462,7 +462,9 @@ const AgenticLandingPage = () => {
               {nameInput || "Visitante"}, está todo listo.
               <br />
               <span className="text-white/60 font-normal text-[17px]">
-                Te contactaremos pronto para confirmar tu reunión.
+                {meetingDate && meetingTime
+                  ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
+                  : "Te contactaremos pronto para confirmar tu reunión."}
               </span>
             </h2>
             <p className="text-white/40 text-[14px] font-light max-w-[300px]">
