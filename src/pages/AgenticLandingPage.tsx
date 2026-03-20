@@ -134,6 +134,8 @@ const AgenticLandingPage = () => {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [availabilityPref, setAvailabilityPref] = useState("");
+  const [meetingDate, setMeetingDate] = useState("");
+  const [meetingTime, setMeetingTime] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const inputDisabled = isAITyping || isTypewriting;
@@ -293,17 +295,33 @@ const AgenticLandingPage = () => {
     if (!nameInput.trim() || !emailInput.trim()) return;
     setScreen(6);
 
-    // Save contact info
-    if (conversationId) {
-      await saveMessages(conversationId, messages, {
-        summary: `${summary}\n\nContacto: ${nameInput.trim()} - ${emailInput.trim()}`,
-        availability_preference: availabilityPref,
+    try {
+      const { data, error } = await supabase.functions.invoke("book-meeting", {
+        body: {
+          name: nameInput.trim(),
+          email: emailInput.trim(),
+          context: contextRef.current,
+          summary: summary || "",
+          availability_preference: availabilityPref,
+          conversation_id: conversationId,
+        },
       });
-    }
 
-    // Simulate booking (placeholder — will be replaced by HubSpot API)
-    setTimeout(() => setScreen(7), 3000);
-  }, [nameInput, emailInput, conversationId, messages, summary, availabilityPref, saveMessages]);
+      if (error || !data?.success) {
+        console.error("book-meeting error:", error, data);
+        // Fallback — still show confirmation
+        setScreen(7);
+        return;
+      }
+
+      setMeetingDate(data.display_date || "");
+      setMeetingTime(data.display_time || "");
+      setScreen(7);
+    } catch (e) {
+      console.error("book-meeting exception:", e);
+      setScreen(7);
+    }
+  }, [nameInput, emailInput, conversationId, summary, availabilityPref]);
 
   /* ─── render current screen ─── */
   const renderScreen = () => {
@@ -444,7 +462,9 @@ const AgenticLandingPage = () => {
               {nameInput || "Visitante"}, está todo listo.
               <br />
               <span className="text-white/60 font-normal text-[17px]">
-                Te contactaremos pronto para confirmar tu reunión.
+                {meetingDate && meetingTime
+                  ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
+                  : "Te contactaremos pronto para confirmar tu reunión."}
               </span>
             </h2>
             <p className="text-white/40 text-[14px] font-light max-w-[300px]">
