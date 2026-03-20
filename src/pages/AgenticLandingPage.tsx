@@ -896,7 +896,7 @@ const AgenticLandingPage = () => {
                   </button>
                   <button
                     onClick={handleSkipEmail}
-                    className="text-[12px] text-white/25 hover:text-white/45 transition-colors self-center"
+                    className="text-[13px] text-white/25 hover:text-white/45 transition-colors self-center"
                   >
                     Prefiero no darlo ahora
                   </button>
