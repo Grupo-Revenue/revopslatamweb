@@ -136,12 +136,11 @@ serve(async (req) => {
     /* ── NURTURING ONLY: no calendar, HubSpot UNQUALIFIED ── */
     if (nurturing_only) {
       // Create HubSpot contact with UNQUALIFIED status
-      const hubspotProps: Record<string, string> = {
+      const hubspotNurturingProps: Record<string, string> = {
         email,
-        hs_lead_status: "UNQUALIFIED",
+        hs_lead_status: "OPEN",
         hs_analytics_source: "PAID_SOCIAL",
         hs_latest_source: "PAID_SOCIAL",
-        hs_latest_source_data_1: "META Ads",
         hs_latest_source_data_2: utm_campaign || "",
         hs_content_membership_notes: `Score: ${score || 0} | Flag: no_calificado\n${summary || ""}`,
       };
@@ -150,18 +149,24 @@ serve(async (req) => {
         const createRes = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
           method: "POST",
           headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ properties: hubspotProps }),
+          body: JSON.stringify({ properties: hubspotNurturingProps }),
         });
+        let nurturingContactId: string | null = null;
         if (createRes.status === 409) {
           const errData = await createRes.json();
           const existingId = errData?.message?.match(/Existing ID: (\d+)/)?.[1];
           if (existingId) {
+            nurturingContactId = existingId;
             await fetch(`https://api.hubapi.com/crm/v3/objects/contacts/${existingId}`, {
               method: "PATCH",
               headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
-              body: JSON.stringify({ properties: hubspotProps }),
+              body: JSON.stringify({ properties: hubspotNurturingProps }),
             });
           }
+        } else if (createRes.ok) {
+          const contactData = await createRes.json();
+          nurturingContactId = contactData.id;
+        }
         }
       } catch (e) {
         console.error("HubSpot nurturing error:", e);
