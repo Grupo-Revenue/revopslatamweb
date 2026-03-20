@@ -323,28 +323,19 @@ const AgenticLandingPage = () => {
       .from("conversations")
       .update({ availability_preference: `early_email:${email.trim()}` })
       .eq("id", conversationId);
-    // Continue with pending call (use ref to avoid stale closure)
-    const pending = pendingClaudeCallRef.current;
-    if (pending) {
-      pendingClaudeCallRef.current = null;
-      setPendingClaudeCall(null);
-      const result = await callClaude(pending.messages, pending.turn);
-      if (result) await processClaudeResult(result, pending.messages);
-    }
-  }, [conversationId, callClaude, processClaudeResult]);
+    // Claude already replied before email capture — just clear pending
+    pendingClaudeCallRef.current = null;
+    setPendingClaudeCall(null);
+  }, [conversationId]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
     setShowEmailCapture(false);
     setEmailCaptureHandled(true);
-    const pending = pendingClaudeCallRef.current;
-    if (pending) {
-      pendingClaudeCallRef.current = null;
-      setPendingClaudeCall(null);
-      const result = await callClaude(pending.messages, pending.turn);
-      if (result) await processClaudeResult(result, pending.messages);
-    }
-  }, [callClaude, processClaudeResult]);
+    // Claude already replied before email capture — just clear pending
+    pendingClaudeCallRef.current = null;
+    setPendingClaudeCall(null);
+  }, []);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
