@@ -461,7 +461,7 @@ const AgenticLandingPage = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={welcomeDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => setScreen(1)}
+              onClick={() => startChat()}
               disabled={!welcomeDone}
               className="w-full max-w-[320px] py-4 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
               style={{ background: "#BE1869", boxShadow: "0 8px 32px rgba(190,24,105,0.35)" }}
