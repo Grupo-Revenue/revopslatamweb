@@ -155,6 +155,8 @@ const AgenticLandingPage = () => {
   const [leadScore, setLeadScore] = useState<number | undefined>();
   const [leadFlag, setLeadFlag] = useState<string | undefined>();
   const [nurturingEmail, setNurturingEmail] = useState("");
+  const [earlyEmail, setEarlyEmail] = useState("");
+  const [earlyEmailSaved, setEarlyEmailSaved] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
