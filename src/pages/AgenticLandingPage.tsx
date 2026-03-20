@@ -50,11 +50,11 @@ const TypingDots = () => (
 /* ─── AI bubble ─── */
 const AIBubble = ({ children, isTyping = false }: { children?: React.ReactNode; isTyping?: boolean }) => (
   <div className="flex flex-col gap-1.5 max-w-[92%]">
-    <span className="text-[10px] tracking-[0.12em] uppercase text-white/35 font-medium pl-1">
+    <span className="text-[11px] tracking-[0.12em] uppercase text-white/35 font-medium pl-1">
       Revops LATAM
     </span>
     <div
-      className="rounded-2xl rounded-bl-md px-4 py-3 text-[15px] leading-relaxed text-white/90"
+      className="rounded-2xl rounded-bl-md px-4 py-3 text-[16px] leading-relaxed text-white/90"
       style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.06)", backdropFilter: "blur(8px)" }}
     >
       {isTyping ? <TypingDots /> : children}
@@ -66,7 +66,7 @@ const AIBubble = ({ children, isTyping = false }: { children?: React.ReactNode; 
 const UserBubble = ({ children }: { children: React.ReactNode }) => (
   <div className="flex justify-end">
     <div
-      className="rounded-2xl rounded-br-md px-4 py-3 text-[15px] leading-relaxed text-white max-w-[85%]"
+      className="rounded-2xl rounded-br-md px-4 py-3 text-[16px] leading-relaxed text-white max-w-[85%]"
       style={{ background: "rgba(98,36,190,0.35)", border: "1px solid rgba(98,36,190,0.2)" }}
     >
       {children}
@@ -99,7 +99,7 @@ const ChatInput = ({
       onKeyDown={(e) => e.key === "Enter" && value.trim() && !disabled && onSend()}
       placeholder={placeholder}
       disabled={disabled}
-      className="flex-1 bg-transparent text-white text-[15px] placeholder:text-white/30 outline-none font-[Lexend] disabled:opacity-40"
+      className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend] disabled:opacity-40"
     />
     <button
       onClick={onSend}
@@ -863,7 +863,7 @@ const AgenticLandingPage = () => {
                     backdropFilter: "blur(12px)",
                   }}
                 >
-                  <p className="text-white/70 text-[13px] leading-snug text-center">
+                  <p className="text-white/70 text-[14px] leading-snug text-center">
                     Así no perdemos el contacto si se corta la conversación
                   </p>
                   <div
@@ -882,21 +882,21 @@ const AgenticLandingPage = () => {
                         if (e.key === "Enter" && earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
                       }}
                       placeholder="tu@email.com"
-                      className="flex-1 bg-transparent text-white text-[15px] placeholder:text-white/30 outline-none font-[Lexend]"
+                      className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
                       autoFocus
                     />
                   </div>
                   <button
                     onClick={() => handleEarlyEmailSave(earlyEmail)}
                     disabled={!earlyEmail.trim()}
-                    className="w-full py-3 rounded-full text-white font-medium text-[14px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
+                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
                     Continuar →
                   </button>
                   <button
                     onClick={handleSkipEmail}
-                    className="text-[12px] text-white/25 hover:text-white/45 transition-colors self-center"
+                    className="text-[13px] text-white/25 hover:text-white/45 transition-colors self-center"
                   >
                     Prefiero no darlo ahora
                   </button>
@@ -913,7 +913,7 @@ const AgenticLandingPage = () => {
                   <button
                     key={option}
                     onClick={() => handleQ5ButtonClick(option)}
-                    className="w-full text-left text-[14px] text-white transition-all duration-200 active:scale-[0.98]"
+                    className="w-full text-left text-[15px] text-white transition-all duration-200 active:scale-[0.98]"
                     style={{
                       background: "rgba(255,255,255,0.08)",
                       border: "0.5px solid rgba(255,255,255,0.2)",
@@ -972,13 +972,13 @@ const AgenticLandingPage = () => {
                   value={nurturingEmail}
                   onChange={(e) => setNurturingEmail(e.target.value)}
                   placeholder="Tu correo electrónico"
-                  className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                   className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
                   style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
                 />
                 <button
                   onClick={handleNurturingSubmit}
                   disabled={!nurturingEmail.trim()}
-                  className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                   className="w-full py-3.5 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
                   style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
                 >
                   Enviar →
@@ -1013,7 +1013,7 @@ const AgenticLandingPage = () => {
                       <button
                         key={dateKey}
                         onClick={() => setSelectedDay(dateKey)}
-                        className="px-4 py-3 rounded-xl text-left text-[14px] font-medium capitalize transition-all duration-200 active:scale-[0.97] hover:scale-[1.01]"
+                        className="px-4 py-3 rounded-xl text-left text-[15px] font-medium capitalize transition-all duration-200 active:scale-[0.97] hover:scale-[1.01]"
                         style={{
                           background: "rgba(255,255,255,0.06)",
                           border: "1px solid rgba(255,255,255,0.08)",
@@ -1021,7 +1021,7 @@ const AgenticLandingPage = () => {
                         }}
                       >
                         📅 {dayData.display_date}
-                        <span className="text-white/30 text-[12px] ml-2">
+                        <span className="text-white/30 text-[13px] ml-2">
                           ({dayData.slots.length} horarios)
                         </span>
                       </button>
@@ -1040,7 +1040,7 @@ const AgenticLandingPage = () => {
                         <button
                           key={`${slot.date}-${slot.startTime}`}
                           onClick={() => setSelectedSlot(slot)}
-                          className="px-4 py-2 rounded-xl text-[14px] font-medium transition-all duration-200 active:scale-[0.95]"
+                          className="px-4 py-2 rounded-xl text-[15px] font-medium transition-all duration-200 active:scale-[0.95]"
                           style={{
                             background: isSelected ? "#BE1869" : "rgba(255,255,255,0.06)",
                             border: `1px solid ${isSelected ? "rgba(190,24,105,0.5)" : "rgba(255,255,255,0.08)"}`,
@@ -1054,7 +1054,7 @@ const AgenticLandingPage = () => {
                   </div>
                   <button
                     onClick={() => { setSelectedDay(null); setSelectedSlot(null); }}
-                    className="text-[12px] text-white/30 hover:text-white/50 transition-colors self-start pl-1 mt-1"
+                    className="text-[13px] text-white/30 hover:text-white/50 transition-colors self-start pl-1 mt-1"
                   >
                     ← Elegir otro día
                   </button>
@@ -1066,7 +1066,7 @@ const AgenticLandingPage = () => {
               <button
                 onClick={() => setScreen(6)}
                 disabled={!selectedSlot}
-                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
+                className="w-full py-3.5 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30"
                 style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
               >
                 {selectedSlot ? `Confirmar ${selectedSlot.display_date} a las ${selectedSlot.display_time} →` : "Selecciona un horario"}
@@ -1094,7 +1094,7 @@ const AgenticLandingPage = () => {
                 value={nameInput}
                 onChange={(e) => setNameInput(e.target.value)}
                 placeholder="Tu nombre"
-                className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
                 style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
               />
               <input
@@ -1102,13 +1102,13 @@ const AgenticLandingPage = () => {
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
                 placeholder="Tu correo electrónico"
-                className="w-full rounded-xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
                 style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
               />
               <button
                 onClick={handleConfirmData}
                 disabled={!nameInput.trim() || !emailInput.trim()}
-                className="w-full py-3.5 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
+                className="w-full py-3.5 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
                 style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
               >
                 Confirmar →
@@ -1173,12 +1173,12 @@ const AgenticLandingPage = () => {
                 </>
               )}
             </h2>
-            <p className="text-white/40 text-[14px] font-light max-w-[300px]">
+            <p className="text-white/40 text-[15px] font-light max-w-[300px]">
               {leadFlag === "no_calificado"
                 ? "Revisa tu bandeja de entrada en los próximos días."
                 : "Recibirás una invitación en tu correo con todos los detalles."}
             </p>
-            <div className="mt-8 text-white/20 text-[11px] tracking-wide leading-relaxed">
+            <div className="mt-8 text-white/20 text-[12px] tracking-wide leading-relaxed">
               Revops LATAM · HubSpot Platinum Partner · 14 años generando Revenue
             </div>
           </motion.div>
