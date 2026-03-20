@@ -114,7 +114,18 @@ serve(async (req) => {
       name, email, context, summary, availability_preference,
       selected_slot, conversation_id, score, flag, nurturing_only,
       utm_source, utm_medium, utm_campaign, utm_content,
+      conversation_messages,
     } = await req.json();
+
+    // Format conversation transcript for HubSpot notes
+    const formatTranscript = (msgs: { role: string; text: string }[] | undefined): string => {
+      if (!msgs || msgs.length === 0) return "Sin conversación registrada";
+      return msgs.map((m) => {
+        const speaker = m.role === "ai" ? "Lidia" : "Visitante";
+        return `${speaker}: ${m.text}`;
+      }).join("\n");
+    };
+    const transcript = formatTranscript(conversation_messages);
 
     if (!email) {
       return new Response(JSON.stringify({ error: "Missing email" }), {
