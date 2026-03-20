@@ -134,6 +134,8 @@ const AgenticLandingPage = () => {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [availabilityPref, setAvailabilityPref] = useState("");
+  const [meetingDate, setMeetingDate] = useState("");
+  const [meetingTime, setMeetingTime] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const inputDisabled = isAITyping || isTypewriting;
