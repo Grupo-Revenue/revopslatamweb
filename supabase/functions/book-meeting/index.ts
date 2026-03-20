@@ -188,102 +188,108 @@ serve(async (req) => {
       });
     }
 
-    /* ── PASO 1: Interpretar disponibilidad con Claude ── */
-    const today = new Date();
-    const dayNames = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
-    const todayStr = today.toISOString().split("T")[0];
-    const dayOfWeek = dayNames[today.getDay()];
+    /* ── PASO 1: Determine the meeting slot ── */
+    let finalStart: string;
+    let finalEnd: string;
+    let finalDisplayDate: string;
+    let finalDisplayTime: string;
 
-    const claudeRes = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "x-api-key": ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 150,
-        messages: [{
-          role: "user",
-          content: `El visitante dijo que prefiere: "${availability_preference}". Hoy es ${todayStr}, día ${dayOfWeek}. Horario de trabajo: lunes a viernes, 9:00 a 18:00, zona horaria America/Santiago. Genera el próximo slot disponible que mejor coincida. Responde SOLO con este JSON sin texto adicional: {"date": "YYYY-MM-DD", "startTime": "HH:MM", "endTime": "HH:MM", "display_date": "lunes 24 de marzo", "display_time": "10:00"}`,
-        }],
-      }),
-    });
-
-    if (!claudeRes.ok) {
-      const err = await claudeRes.text();
-      throw new Error(`Claude slot interpretation error [${claudeRes.status}]: ${err}`);
-    }
-
-    const claudeData = await claudeRes.json();
-    const rawSlot = claudeData.content?.[0]?.text || "";
-    let slot: { date: string; startTime: string; endTime: string; display_date: string; display_time: string };
-    try {
-      const jsonMatch = rawSlot.match(/\{[\s\S]*\}/);
-      slot = JSON.parse(jsonMatch ? jsonMatch[0] : rawSlot);
-    } catch {
-      throw new Error(`Failed to parse slot JSON: ${rawSlot}`);
-    }
-
-    if (!slot.endTime) {
-      const [h, m] = slot.startTime.split(":").map(Number);
-      const end = new Date(2000, 0, 1, h, m + 30);
-      slot.endTime = `${String(end.getHours()).padStart(2, "0")}:${String(end.getMinutes()).padStart(2, "0")}`;
-    }
-
-    /* ── PASO 2: Verificar disponibilidad con FreeBusy API ── */
     const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON);
 
-    const startDT = `${slot.date}T${slot.startTime}:00`;
-    const endDT = `${slot.date}T${slot.endTime}:00`;
-    const startISO = `${startDT}-03:00`;
-    const endISO = `${endDT}-03:00`;
+    if (selected_slot) {
+      // Use the pre-selected slot from the availability picker
+      finalStart = `${selected_slot.date}T${selected_slot.startTime}:00`;
+      finalEnd = `${selected_slot.date}T${selected_slot.endTime}:00`;
+      finalDisplayDate = selected_slot.display_date;
+      finalDisplayTime = selected_slot.display_time;
+    } else {
+      // Fallback: interpret with Claude (legacy path)
+      const today = new Date();
+      const dayNames = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+      const todayStr = today.toISOString().split("T")[0];
+      const dayOfWeek = dayNames[today.getDay()];
 
-    let finalStart = startDT;
-    let finalEnd = endDT;
-    let finalDisplayDate = slot.display_date;
-    let finalDisplayTime = slot.display_time;
+      const claudeRes = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "x-api-key": ANTHROPIC_API_KEY,
+          "anthropic-version": "2023-06-01",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 150,
+          messages: [{
+            role: "user",
+            content: `El visitante dijo que prefiere: "${availability_preference}". Hoy es ${todayStr}, día ${dayOfWeek}. Horario de trabajo: lunes a viernes, 9:00 a 18:00, zona horaria America/Santiago. Genera el próximo slot disponible que mejor coincida. Responde SOLO con este JSON sin texto adicional: {"date": "YYYY-MM-DD", "startTime": "HH:MM", "endTime": "HH:MM", "display_date": "lunes 24 de marzo", "display_time": "10:00"}`,
+          }],
+        }),
+      });
 
-    const isAvailable = await checkAvailability(googleToken, FEBE_CALENDAR_ID, startISO, endISO);
-
-    if (!isAvailable) {
-      // Conflict — try next slots same day 9-18
-      const [h] = slot.startTime.split(":").map(Number);
-      let found = false;
-      for (let tryH = h + 1; tryH <= 17; tryH++) {
-        const tryStart = `${slot.date}T${String(tryH).padStart(2, "0")}:00:00`;
-        const tryEnd = `${slot.date}T${String(tryH).padStart(2, "0")}:30:00`;
-        const tryAvailable = await checkAvailability(
-          googleToken, FEBE_CALENDAR_ID,
-          `${tryStart}-03:00`, `${tryEnd}-03:00`
-        );
-        if (tryAvailable) {
-          finalStart = tryStart;
-          finalEnd = tryEnd;
-          finalDisplayTime = `${String(tryH).padStart(2, "0")}:00`;
-          found = true;
-          break;
-        }
+      if (!claudeRes.ok) {
+        const err = await claudeRes.text();
+        throw new Error(`Claude slot interpretation error [${claudeRes.status}]: ${err}`);
       }
-      if (!found) {
-        // Try next business day at 9:00
-        const nextDay = new Date(slot.date);
-        do {
-          nextDay.setDate(nextDay.getDate() + 1);
-        } while (nextDay.getDay() === 0 || nextDay.getDay() === 6);
-        const nextDateStr = nextDay.toISOString().split("T")[0];
-        const nextDayName = dayNames[nextDay.getDay()];
-        const dayNum = nextDay.getDate();
-        const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
-        finalStart = `${nextDateStr}T09:00:00`;
-        finalEnd = `${nextDateStr}T09:30:00`;
-        finalDisplayDate = `${nextDayName} ${dayNum} de ${monthNames[nextDay.getMonth()]}`;
-        finalDisplayTime = "09:00";
+
+      const claudeData = await claudeRes.json();
+      const rawSlot = claudeData.content?.[0]?.text || "";
+      let slot: { date: string; startTime: string; endTime: string; display_date: string; display_time: string };
+      try {
+        const jsonMatch = rawSlot.match(/\{[\s\S]*\}/);
+        slot = JSON.parse(jsonMatch ? jsonMatch[0] : rawSlot);
+      } catch {
+        throw new Error(`Failed to parse slot JSON: ${rawSlot}`);
+      }
+
+      if (!slot.endTime) {
+        const [h, m] = slot.startTime.split(":").map(Number);
+        const end = new Date(2000, 0, 1, h, m + 30);
+        slot.endTime = `${String(end.getHours()).padStart(2, "0")}:${String(end.getMinutes()).padStart(2, "0")}`;
+      }
+
+      finalStart = `${slot.date}T${slot.startTime}:00`;
+      finalEnd = `${slot.date}T${slot.endTime}:00`;
+      finalDisplayDate = slot.display_date;
+      finalDisplayTime = slot.display_time;
+
+      // Check availability
+      const startISO = `${finalStart}-03:00`;
+      const endISO = `${finalEnd}-03:00`;
+      const isAvailable = await checkAvailability(googleToken, FEBE_CALENDAR_ID, startISO, endISO);
+
+      if (!isAvailable) {
+        const [h] = slot.startTime.split(":").map(Number);
+        let found = false;
+        for (let tryH = h + 1; tryH <= 17; tryH++) {
+          const tryStart = `${slot.date}T${String(tryH).padStart(2, "0")}:00:00`;
+          const tryEnd = `${slot.date}T${String(tryH).padStart(2, "0")}:30:00`;
+          const tryAvailable = await checkAvailability(
+            googleToken, FEBE_CALENDAR_ID,
+            `${tryStart}-03:00`, `${tryEnd}-03:00`
+          );
+          if (tryAvailable) {
+            finalStart = tryStart;
+            finalEnd = tryEnd;
+            finalDisplayTime = `${String(tryH).padStart(2, "0")}:00`;
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          const nextDay = new Date(slot.date);
+          do { nextDay.setDate(nextDay.getDate() + 1); } while (nextDay.getDay() === 0 || nextDay.getDay() === 6);
+          const nextDateStr = nextDay.toISOString().split("T")[0];
+          const nextDayName = dayNames[nextDay.getDay()];
+          const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+          finalStart = `${nextDateStr}T09:00:00`;
+          finalEnd = `${nextDateStr}T09:30:00`;
+          finalDisplayDate = `${nextDayName} ${nextDay.getDate()} de ${monthNames[nextDay.getMonth()]}`;
+          finalDisplayTime = "09:00";
+        }
       }
     }
 
-    /* ── PASO 3: Crear evento en calendario de la Service Account e invitar a Febe ── */
+    /* ── PASO 2: Crear evento en calendario ── */
     const eventBody = {
       summary: `Conversación RevOps LATAM — ${name}`,
       description: `Contexto: ${context}\nResumen IA: ${summary || "Sin resumen"}`,
