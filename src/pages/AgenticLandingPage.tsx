@@ -604,8 +604,8 @@ const AgenticLandingPage = () => {
 
       setNameCollected(true);
 
-      // Now show Q1 (cargo) via typewriter — this IS sent to Claude
-      const firstQuestion = "¿Y cuál es tu cargo o rol en la empresa?";
+      // Now show Q1 (cargo+empresa) via typewriter — this IS sent to Claude
+      const firstQuestion = `Bueno ${firstName}, vamos directo al grano — ¿cuál es tu cargo y en qué empresa trabajas?`;
       setTurn(1);
       await typewriterEffect(firstQuestion);
       if (conversationId) {
