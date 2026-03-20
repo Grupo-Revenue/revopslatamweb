@@ -599,6 +599,10 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
 
+    // Process answer for HubSpot sync
+    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
+    processAnswerForHubSpot(val, newTurn, currentEmail);
+
     // After 2nd user answer (turn 3), show email capture BEFORE calling Claude
     if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
       // Store pending call — Claude will be called AFTER email
@@ -615,7 +619,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, earlyEmail, emailInput]);
 
   // Handle Q5 button click
   const handleQ5ButtonClick = useCallback(async (option: string) => {
