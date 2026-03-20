@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
-import IsotipoBlanco from "@/assets/Isotipo_blanco.svg";
+import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
 
 /* ─── palette per screen ─── */
 const BG_COLORS = [
