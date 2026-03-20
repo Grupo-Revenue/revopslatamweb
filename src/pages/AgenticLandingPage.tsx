@@ -1040,7 +1040,7 @@ const AgenticLandingPage = () => {
                         <button
                           key={`${slot.date}-${slot.startTime}`}
                           onClick={() => setSelectedSlot(slot)}
-                          className="px-4 py-2 rounded-xl text-[14px] font-medium transition-all duration-200 active:scale-[0.95]"
+                          className="px-4 py-2 rounded-xl text-[15px] font-medium transition-all duration-200 active:scale-[0.95]"
                           style={{
                             background: isSelected ? "#BE1869" : "rgba(255,255,255,0.06)",
                             border: `1px solid ${isSelected ? "rgba(190,24,105,0.5)" : "rgba(255,255,255,0.08)"}`,
