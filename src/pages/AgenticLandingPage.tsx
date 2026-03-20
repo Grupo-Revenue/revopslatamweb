@@ -312,13 +312,15 @@ const AgenticLandingPage = () => {
       .from("conversations")
       .update({ availability_preference: `early_email:${email.trim()}` })
       .eq("id", conversationId);
-    // Continue with pending call
-    if (pendingClaudeCall) {
-      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
-      if (result) await processClaudeResult(result, pendingClaudeCall.messages);
+    // Continue with pending call (use ref to avoid stale closure)
+    const pending = pendingClaudeCallRef.current;
+    if (pending) {
+      pendingClaudeCallRef.current = null;
       setPendingClaudeCall(null);
+      const result = await callClaude(pending.messages, pending.turn);
+      if (result) await processClaudeResult(result, pending.messages);
     }
-  }, [conversationId, pendingClaudeCall, callClaude, processClaudeResult]);
+  }, [conversationId, callClaude, processClaudeResult]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
