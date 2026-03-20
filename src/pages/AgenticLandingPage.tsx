@@ -848,9 +848,6 @@ const AgenticLandingPage = () => {
         </AnimatePresence>
       </div>
 
-      <div className="pb-5 pt-2 shrink-0">
-        <ProgressDots current={screen} total={TOTAL_SCREENS} />
-      </div>
 
       <style>{`
         @keyframes typingBounce {
