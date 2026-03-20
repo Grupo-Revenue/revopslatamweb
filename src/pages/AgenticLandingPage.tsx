@@ -527,24 +527,14 @@ const AgenticLandingPage = () => {
     [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
   );
 
-  // Start conversation — Screen 0 → 1 (chat)
+  // Start conversation — Screen 0 → 1 (ask name first)
   const startChat = useCallback(async () => {
     setScreen(1);
     const convId = await createConversation();
-    const newTurn = 1;
-    setTurn(newTurn);
-    // First question is deterministic — show instantly without API call
-    const ctx = contextRef.current;
-    const firstQuestion = ctx === "hubspot"
-      ? "Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?"
-      : "Para entender bien tu situación, ¿cuál es tu cargo o rol en la empresa?";
-    await typewriterEffect(firstQuestion);
-    const newMessages = [{ role: "ai" as const, text: firstQuestion }];
-    setMessages((prev) => {
-      // typewriterEffect already added the message, just use current state
-      return prev;
-    });
-    if (convId) saveMessages(convId, newMessages);
+    setTurn(0); // Turn 0 = name step (not counted for Claude)
+    const nameQuestion = "Para comenzar, ¿cómo te llamas?";
+    await typewriterEffect(nameQuestion, true); // meta — not sent to Claude
+    if (convId) saveMessages(convId, [{ role: "ai", text: nameQuestion }]);
   }, [createConversation, typewriterEffect, saveMessages]);
 
   // Save early email to Supabase, create HubSpot contact with buffer, and continue flow
