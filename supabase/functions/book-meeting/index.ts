@@ -166,7 +166,23 @@ serve(async (req) => {
         } else if (createRes.ok) {
           const contactData = await createRes.json();
           nurturingContactId = contactData.id;
+        } else {
+          const err = await createRes.text();
+          console.error(`HubSpot nurturing create error [${createRes.status}]:`, err);
         }
+
+        // Create note with full conversation transcript for nurturing contact
+        if (nurturingContactId) {
+          const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: META Ads — ${utm_content || "directo"}\nScore: ${score || 0} | Flag: no_calificado\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
+          const noteRes = await fetch("https://api.hubapi.com/crm/v3/objects/notes", {
+            method: "POST",
+            headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({
+              properties: { hs_note_body: noteBody, hs_timestamp: String(Date.now()) },
+              associations: [{ to: { id: nurturingContactId }, types: [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 202 }] }],
+            }),
+          });
+          if (!noteRes.ok) console.error(`HubSpot nurturing note error [${noteRes.status}]:`, await noteRes.text());
         }
       } catch (e) {
         console.error("HubSpot nurturing error:", e);
