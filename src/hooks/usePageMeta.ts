@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const BASE_URL = "https://revopslatamweb.lovable.app";
+const BASE_URL = "https://revopslatam.com";
 const DEFAULT_OG_IMAGE = "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ed8de748-17bb-4794-bd83-942f221cb1e1/id-preview-a1ce22e9--4814bcb9-c9f2-44d2-8ea5-4ce10dee1e68.lovable.app-1772049755037.png";
 
 interface PageMeta {

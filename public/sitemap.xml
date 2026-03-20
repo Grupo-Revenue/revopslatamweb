@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://revopslatamweb.lovable.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/nosotros</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/que-hacemos</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/hubspot-partner-chile</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://revopslatam.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://revopslatam.com/nosotros</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://revopslatam.com/que-hacemos</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://revopslatam.com/hubspot-partner-chile</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
 
   <!-- Roles -->
-  <url><loc>https://revopslatamweb.lovable.app/para-ceos-y-gerentes-generales</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/para-directores-comerciales</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/para-directores-y-gerentes-de-marketing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/para-customer-success-y-servicio-al-cliente</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/para-los-que-operan-el-negocio-sin-el-titulo</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://revopslatam.com/para-ceos-y-gerentes-generales</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://revopslatam.com/para-directores-comerciales</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://revopslatam.com/para-directores-y-gerentes-de-marketing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://revopslatam.com/para-customer-success-y-servicio-al-cliente</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://revopslatam.com/para-los-que-operan-el-negocio-sin-el-titulo</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
   <!-- Hub: Conoce tu Pista -->
-  <url><loc>https://revopslatamweb.lovable.app/conoce-tu-pista</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/revops-checkup</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/diagnostico-revops</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/motor-de-ingresos</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/conoce-tu-pista</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://revopslatam.com/revops-checkup</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/diagnostico-revops</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/motor-de-ingresos</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Hub: Diseña y Construye -->
-  <url><loc>https://revopslatamweb.lovable.app/dise%C3%B1a-y-construye-tu-pista</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/dise%C3%B1o-de-procesos</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/onboarding-hubspot</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/implementacion-hubspot</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/personalizacion-crm</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/integraciones-desarrollo</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/dise%C3%B1a-y-construye-tu-pista</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://revopslatam.com/dise%C3%B1o-de-procesos</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/onboarding-hubspot</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/implementacion-hubspot</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/personalizacion-crm</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/integraciones-desarrollo</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Hub: Opera tu Pista -->
-  <url><loc>https://revopslatamweb.lovable.app/opera-tu-pista</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/revops-as-a-service</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/marketing-ops</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://revopslatamweb.lovable.app/soporte-hubspot</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/opera-tu-pista</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://revopslatam.com/revops-as-a-service</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://revopslatam.com/marketing-ops</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://revopslatam.com/soporte-hubspot</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 
   <!-- Hub: Potencia con IA -->
-  <url><loc>https://revopslatamweb.lovable.app/potencia-con-ia</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://revopslatam.com/potencia-con-ia</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
