@@ -199,8 +199,8 @@ serve(async (req) => {
     let finalDisplayDate: string;
     let finalDisplayTime: string;
 
-    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON);
-
+    // Impersonate Febe to create event directly on her calendar
+    const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON, FEBE_CALENDAR_ID);
     if (selected_slot) {
       // Use the pre-selected slot from the availability picker
       finalStart = `${selected_slot.date}T${selected_slot.startTime}:00`;
