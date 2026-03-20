@@ -350,7 +350,9 @@ const AgenticLandingPage = () => {
 
     // After 2nd user answer (turn 3), show email capture before continuing
     if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
-      setPendingClaudeCall({ messages: updatedMessages, turn: newTurn });
+      const pending = { messages: updatedMessages, turn: newTurn };
+      pendingClaudeCallRef.current = pending;
+      setPendingClaudeCall(pending);
       // Show Lidia's email request as a typewriter bubble
       const emailAsk = "¿Me darías tu email para que no perdamos el contacto? 😊";
       await typewriterEffect(emailAsk);
