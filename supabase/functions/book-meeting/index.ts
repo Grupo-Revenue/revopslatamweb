@@ -127,6 +127,9 @@ serve(async (req) => {
     };
     const transcript = formatTranscript(conversation_messages);
 
+    // Extract job title from first user message (answer to "¿cuál es tu cargo?")
+    const jobTitle = conversation_messages?.find((m: { role: string }) => m.role === "user")?.text || "";
+
     if (!email) {
       return new Response(JSON.stringify({ error: "Missing email" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
