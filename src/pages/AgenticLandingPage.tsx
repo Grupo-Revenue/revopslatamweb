@@ -503,20 +503,17 @@ const AgenticLandingPage = () => {
                   <AIBubble isTyping />
                 </motion.div>
               )}
-              {/* Early email capture — after first answer */}
-              {showEarlyEmail && !isAITyping && !isTypewriting && (
+              {/* Email capture — shown as a dedicated step */}
+              {showEmailCapture && !isAITyping && !isTypewriting && (
                 <motion.div
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="flex flex-col gap-1.5 mt-1"
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="flex flex-col gap-3 mt-1"
                 >
-                  <span className="text-[11px] text-white/30 pl-1">
-                    Por si nos perdemos en el camino 😊
-                  </span>
                   <div
-                    className="flex items-center gap-2 rounded-xl px-3 py-2.5"
-                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+                    className="flex items-center gap-2 rounded-xl px-3 py-3"
+                    style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)" }}
                   >
                     <input
                       type="email"
@@ -525,26 +522,26 @@ const AgenticLandingPage = () => {
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && earlyEmail.trim()) handleEarlyEmailSave(earlyEmail);
                       }}
-                      placeholder="Tu email (opcional por ahora)"
-                      className="flex-1 bg-transparent text-white/70 text-[13px] placeholder:text-white/20 outline-none font-[Lexend]"
+                      placeholder="tu@email.com"
+                      className="flex-1 bg-transparent text-white text-[15px] placeholder:text-white/30 outline-none font-[Lexend]"
+                      autoFocus
                     />
                     {earlyEmail.trim() && (
                       <button
                         onClick={() => handleEarlyEmailSave(earlyEmail)}
-                        className="text-[11px] text-white/40 hover:text-white/70 transition-colors shrink-0 px-2 py-1 rounded-lg"
-                        style={{ background: "rgba(255,255,255,0.06)" }}
+                        className="text-[13px] text-white font-medium shrink-0 px-4 py-1.5 rounded-full transition-all duration-200 hover:scale-[1.03] active:scale-[0.97]"
+                        style={{ background: "#6224BE" }}
                       >
-                        Guardar
+                        Enviar
                       </button>
                     )}
                   </div>
-                </motion.div>
-              )}
-              {earlyEmailSaved && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-1">
-                  <span className="text-[11px] text-white/25 pl-1">
-                    ✓ Email guardado
-                  </span>
+                  <button
+                    onClick={handleSkipEmail}
+                    className="text-[12px] text-white/30 hover:text-white/50 transition-colors self-center"
+                  >
+                    Prefiero no darlo ahora →
+                  </button>
                 </motion.div>
               )}
               <div ref={messagesEndRef} />
