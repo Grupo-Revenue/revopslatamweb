@@ -352,7 +352,7 @@ const AgenticLandingPage = () => {
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
     if (!nurturingEmail.trim()) return;
-    setScreen(8); // loading
+     setScreen(7); // loading
 
     try {
       await supabase.functions.invoke("book-meeting", {
@@ -372,7 +372,7 @@ const AgenticLandingPage = () => {
     } catch (e) {
       console.error("nurturing submit error:", e);
     }
-    setScreen(9); // confirmation
+    setScreen(8); // confirmation
   }, [nurturingEmail, conversationId, summary, leadScore]);
 
   const handleConfirmData = useCallback(async () => {
