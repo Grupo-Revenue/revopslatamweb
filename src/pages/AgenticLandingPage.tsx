@@ -125,6 +125,106 @@ const screenVariants = {
 /* ════════════════════════════════════════════ */
 /*  MAIN COMPONENT                             */
 /* ════════════════════════════════════════════ */
+/* ─── HubSpot property mappers (client-side) ─── */
+function mapCargoToHubSpot(raw: string): string {
+  const l = raw.toLowerCase();
+  if (/due[ñn]o|socio|founder|fundador|co-?founder/.test(l)) return "Dueño / Socio / Founder";
+  if (/ceo|gerente general|director general/.test(l)) return "CEO / Gerente General";
+  if (/gerente.*(comercial|ventas)|director.*(comercial|ventas)|vp.*(ventas|comercial)/.test(l)) return "Gerente Comercial / Ventas";
+  if (/gerente.*(marketing|growth|revops)|director.*(marketing|growth|revops)|cmo|cro/.test(l)) return "Gerente Marketing / Growth / RevOps";
+  if (/jefe.*(ventas|comercial)|supervisor|coordinador.*(ventas|comercial)/.test(l)) return "Jefe de Ventas / Supervisor Comercial";
+  if (/vendedor|ejecutivo|asesor|representante|sdr|bdr|account.executive/.test(l)) return "Vendedor / Ejecutivo Comercial";
+  return "Otro";
+}
+
+function mapRubroToHubSpot(raw: string): string {
+  const l = raw.toLowerCase();
+  if (/saas|software/.test(l)) return "SaaS B2B";
+  if (/servicio.*b2c|b2c.*servicio/.test(l)) return "Servicios B2C";
+  if (/servicio|consultor|agencia/.test(l)) return "Servicios B2B";
+  if (/producto.*b2b|b2b.*producto|manufactura|industrial|distribuci/.test(l)) return "Venta de productos B2B";
+  if (/educaci[oó]n|universidad|instituto|capacitaci/.test(l)) return "Educación Superior";
+  if (/broker|corredor/.test(l)) return "Broker Inmobiliario";
+  if (/inmobili|propiedad|bienes.ra[ií]ces/.test(l)) return "Inmobiliaria";
+  if (/retail|tienda/.test(l)) return "Retail";
+  if (/e-?commerce|comercio.electr[oó]nico|tienda.online/.test(l)) return "E-commerce";
+  if (/salud|cl[ií]nica|hospital|m[eé]dico/.test(l)) return "Salud";
+  return raw.trim().slice(0, 50);
+}
+
+function mapEquipoToHubSpot(raw: string): string {
+  const l = raw.toLowerCase();
+  if (/solo.*due[ñn]o|yo (solo|mismo)|nadie|no tenemos/.test(l)) return "Solo el dueño vende";
+  if (/\b1\b|uno\b|un vendedor/.test(l)) return "1 vendedor";
+  if (/\b[23]\b|dos|tres|2-?3|un par/.test(l)) return "2-3 vendedores";
+  if (/\b([4-9]|10)\b|cuatro|cinco|seis|siete|ocho|nueve|diez|4-?10/.test(l)) return "4-10 vendedores";
+  if (/\b(1[1-9]|[2-9]\d|\d{3,})\b|m[aá]s de 10|m[aá]s de diez|10\+|muchos|grande/.test(l)) return "10+ vendedores";
+  return raw.trim().slice(0, 50);
+}
+
+function mapCrmToHubSpot(raw: string): { value: string; status: "sin_crm" | "hubspot" | "otro_crm" } {
+  const l = raw.toLowerCase();
+  if (/hubspot/.test(l)) return { value: "Sí, usamos HubSpot", status: "hubspot" };
+  if (/excel|whatsapp|nada|no\s+(tenemos|usamos)|ninguna|cuaderno|libreta/.test(l))
+    return { value: "No, usamos Excel / WhatsApp / herramientas básicas", status: "sin_crm" };
+  return { value: "Sí, usamos otro CRM", status: "otro_crm" };
+}
+
+function getQ5PropertyName(crmStatus: string): string {
+  if (crmStatus === "hubspot") return "problema_principal__usan_hubspot";
+  if (crmStatus === "sin_crm") return "problema_principal__no_usan_crm";
+  return "problema_principal";
+}
+
+/* ─── Q5 exact value maps ─── */
+const Q5_EXACT_VALUES: Record<string, string[]> = {
+  sin_crm: [
+    "Llevamos clientes en Excel/WhatsApp y está desordenado",
+    "No tenemos visibilidad del funnel",
+    "Perdemos oportunidades por falta de seguimiento",
+    "Queremos profesionalizar el proceso comercial",
+    "Queremos comenzar con HubSpot como nuestro CRM",
+    "Solo estoy explorando, no es prioridad",
+  ],
+  hubspot: [
+    "HubSpot no está bien configurado",
+    "No estamos aprovechando la herramienta",
+    "Reporting / pipelines desordenados",
+    "Automatizaciones mal diseñadas",
+    "Necesitamos mejores prácticas de RevOps",
+    "Problemas de integraciones",
+    "Solo estoy explorando, no es prioridad",
+  ],
+  otro_crm: [
+    "El CRM actual es limitado o difícil de usar",
+    "No se integra con nuestras herramientas",
+    "No tenemos reporting ni visibilidad",
+    "El CRM no se adapta al proceso comercial",
+    "Queremos migrarnos a HubSpot",
+    "Solo estoy explorando, no es prioridad",
+  ],
+};
+
+/* Maps button label → exact HubSpot value */
+const Q5_BUTTON_TO_EXACT: Record<string, string> = {
+  "Clientes en Excel/WhatsApp desordenado": "Llevamos clientes en Excel/WhatsApp y está desordenado",
+  "No tenemos visibilidad del funnel": "No tenemos visibilidad del funnel",
+  "Perdemos oportunidades por falta de seguimiento": "Perdemos oportunidades por falta de seguimiento",
+  "Queremos profesionalizar el proceso": "Queremos profesionalizar el proceso comercial",
+  "Queremos comenzar con HubSpot": "Queremos comenzar con HubSpot como nuestro CRM",
+  "HubSpot no está bien configurado": "HubSpot no está bien configurado",
+  "No estamos aprovechando la herramienta": "No estamos aprovechando la herramienta",
+  "Reporting / pipelines desordenados": "Reporting / pipelines desordenados",
+  "Automatizaciones mal diseñadas": "Automatizaciones mal diseñadas",
+  "Necesitamos mejores prácticas de RevOps": "Necesitamos mejores prácticas de RevOps",
+  "Problemas de integraciones": "Problemas de integraciones",
+  "El CRM actual es limitado o difícil de usar": "El CRM actual es limitado o difícil de usar",
+  "No se integra con nuestras herramientas": "No se integra con nuestras herramientas",
+  "No tenemos reporting ni visibilidad": "No tenemos reporting ni visibilidad",
+  "El CRM no se adapta al proceso comercial": "El CRM no se adapta al proceso comercial",
+  "Queremos migrar a HubSpot": "Queremos migrarnos a HubSpot",
+};
+
 const AgenticLandingPage = () => {
   const [screen, setScreen] = useState(0);
   const [chatInput, setChatInput] = useState("");
@@ -158,6 +258,91 @@ const AgenticLandingPage = () => {
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
+
+  // HubSpot real-time sync state
+  const [hubspotContactId, setHubspotContactId] = useState<string | null>(null);
+  const answersBufferRef = useRef<Record<string, string>>({});
+  const detectedCrmStatusRef = useRef<"sin_crm" | "hubspot" | "otro_crm">("sin_crm");
+
+  // Silent HubSpot sync — never interrupts the conversation
+  const syncToHubSpot = useCallback(async (email: string, properties: Record<string, string>, createIfNotExists = false) => {
+    try {
+      const { data, error } = await supabase.functions.invoke("update-contact", {
+        body: { email, properties, createIfNotExists },
+      });
+      if (error) {
+        console.error("update-contact invoke error:", error);
+        return null;
+      }
+      if (data?.success && data?.contactId) {
+        setHubspotContactId(data.contactId);
+        return data.contactId;
+      }
+      if (!data?.success && data?.error) {
+        console.error("update-contact error:", data.error);
+      }
+      return null;
+    } catch (e) {
+      console.error("syncToHubSpot exception:", e);
+      return null;
+    }
+  }, []);
+
+  // Process user answer and sync to HubSpot based on turn
+  const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number, currentEmail: string | null) => {
+    const buf = answersBufferRef.current;
+
+    switch (answerTurn) {
+      case 2: { // User answered Q1 (cargo) — turn 2 = first user answer
+        buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
+        break;
+      }
+      case 3: { // User answered Q2 (rubro)
+        buf.rubro = mapRubroToHubSpot(userAnswer);
+        break;
+      }
+      case 4: { // User answered Q3 (equipo)
+        buf.cantidad_de_vendedores = mapEquipoToHubSpot(userAnswer);
+        break;
+      }
+      case 5: { // User answered Q4 (CRM)
+        const mapped = mapCrmToHubSpot(userAnswer);
+        buf.cuenta_con_crm = mapped.value;
+        detectedCrmStatusRef.current = mapped.status;
+        break;
+      }
+      case 6: { // User answered Q5 (problema)
+        const propName = getQ5PropertyName(detectedCrmStatusRef.current);
+        // Check if it's a known button value
+        const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
+        buf[propName] = exactValue;
+        break;
+      }
+    }
+
+    // If we have an email and contactId, sync immediately
+    if (currentEmail && hubspotContactId) {
+      syncToHubSpot(currentEmail, { ...buf }, false);
+    }
+  }, [hubspotContactId, syncToHubSpot]);
+
+  // Sync score and lead status to HubSpot
+  const syncScoreToHubSpot = useCallback((score: number, flag: string, email: string | null) => {
+    const statusMap: Record<string, string> = {
+      alta: "IN_PROGRESS",
+      media: "OPEN",
+      baja: "UNQUALIFIED",
+      no_calificado: "UNQUALIFIED",
+    };
+    const props: Record<string, string> = {
+      lead_score_ia: String(score),
+      hs_lead_status: statusMap[flag] || "OPEN",
+    };
+    answersBufferRef.current = { ...answersBufferRef.current, ...props };
+    if (email && hubspotContactId) {
+      syncToHubSpot(email, props, false);
+    }
+  }, [hubspotContactId, syncToHubSpot]);
 
   // Scroll chat to bottom
   useEffect(() => {
@@ -304,7 +489,12 @@ const AgenticLandingPage = () => {
       if (result.repeat_turn) {
         setTurn((prev) => Math.max(prev - 1, 1));
       }
-      if (result.score !== undefined) setLeadScore(result.score);
+      if (result.score !== undefined) {
+        setLeadScore(result.score);
+        const f = result.flag || (result.score >= 65 ? "alta" : result.score >= 40 ? "media" : "baja");
+        const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || nurturingEmail || null;
+        syncScoreToHubSpot(result.score, f, currentEmail);
+      }
       if (result.flag) setLeadFlag(result.flag);
       if (result.summary) setSummary(result.summary);
       if (conversationId) {
@@ -330,7 +520,7 @@ const AgenticLandingPage = () => {
       if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
       else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
     },
-    [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus]
+    [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
   );
 
   // Start conversation — Screen 0 → 1 (chat)
@@ -353,18 +543,21 @@ const AgenticLandingPage = () => {
     if (convId) saveMessages(convId, newMessages);
   }, [createConversation, typewriterEffect, saveMessages]);
 
-  // Save early email to Supabase and continue flow
+  // Save early email to Supabase, create HubSpot contact with buffer, and continue flow
   const handleEarlyEmailSave = useCallback(async (email: string) => {
     if (!email.trim() || !conversationId) return;
+    const trimmedEmail = email.trim();
     setEarlyEmailSaved(true);
     setShowEmailCapture(false);
     setEmailCaptureHandled(true);
-    setEmailInput(email.trim());
-    setNurturingEmail(email.trim());
+    setEmailInput(trimmedEmail);
+    setNurturingEmail(trimmedEmail);
     await supabase
       .from("conversations")
-      .update({ availability_preference: `early_email:${email.trim()}` })
+      .update({ availability_preference: `early_email:${trimmedEmail}` })
       .eq("id", conversationId);
+    // Create or update HubSpot contact with everything accumulated so far
+    syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true);
     // Now call Claude to continue the conversation (empathy + next question)
     const pending = pendingClaudeCallRef.current;
     if (pending) {
@@ -377,7 +570,7 @@ const AgenticLandingPage = () => {
         await processClaudeResult(result, pending.messages, pending.turn);
       }
     }
-  }, [conversationId, callClaude, processClaudeResult, typewriterEffect]);
+  }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
@@ -406,6 +599,10 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
 
+    // Process answer for HubSpot sync
+    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
+    processAnswerForHubSpot(val, newTurn, currentEmail);
+
     // After 2nd user answer (turn 3), show email capture BEFORE calling Claude
     if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
       // Store pending call — Claude will be called AFTER email
@@ -422,7 +619,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, earlyEmail, emailInput]);
 
   // Handle Q5 button click
   const handleQ5ButtonClick = useCallback(async (option: string) => {
@@ -437,10 +634,13 @@ const AgenticLandingPage = () => {
     setMessages(updatedMessages);
     const newTurn = turn + 1;
     setTurn(newTurn);
+    // Process Q5 answer for HubSpot
+    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
+    processAnswerForHubSpot(option, newTurn, currentEmail);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [messages, turn, callClaude, processClaudeResult]);
+  }, [messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
 
   // Handle Q5 free text send
   const handleQ5FreeTextSend = useCallback(async () => {
@@ -453,10 +653,13 @@ const AgenticLandingPage = () => {
     setChatInput("");
     const newTurn = turn + 1;
     setTurn(newTurn);
+    // Process Q5 free text for HubSpot
+    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
+    processAnswerForHubSpot(val, newTurn, currentEmail);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, messages, turn, callClaude, processClaudeResult]);
+  }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
@@ -476,6 +679,7 @@ const AgenticLandingPage = () => {
           flag: "no_calificado",
           nurturing_only: true,
           conversation_messages: messages,
+          answers_buffer: answersBufferRef.current,
           ...utmRef.current,
         },
       });
@@ -502,6 +706,7 @@ const AgenticLandingPage = () => {
           score: leadScore,
           flag: leadFlag || "calificado",
           conversation_messages: messages,
+          answers_buffer: answersBufferRef.current,
           ...utmRef.current,
         },
       });
