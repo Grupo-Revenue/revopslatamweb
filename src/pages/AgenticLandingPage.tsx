@@ -306,7 +306,7 @@ const AgenticLandingPage = () => {
 
   const handleConfirmData = useCallback(async () => {
     if (!nameInput.trim() || !emailInput.trim()) return;
-    setScreen(6);
+    setScreen(7);
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
