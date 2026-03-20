@@ -28,7 +28,7 @@ Pregunta 4 (urgencia):
 "¿Esto es algo que necesitas resolver pronto o todavía estás explorando opciones?"
 → Espera respuesta libre
 
-ANTES de cada pregunta, responde con 1 línea empática a lo que dijo el visitante. Máximo 1 línea — no expliques ni vendas nada.
+ANTES de cada pregunta (excepto la primera), responde con 1 línea empática a lo que dijo el visitante. Máximo 1 línea — no expliques ni vendas nada.
 Ejemplo: "Entiendo, eso es más común de lo que parece." o "Tiene sentido."
 
 Habla como colega chileno: directo, sin floreos, sin tecnicismos. Nunca menciones que eres IA salvo que pregunten directamente — en ese caso di: "Soy un asistente virtual de Revops LATAM."
@@ -147,12 +147,18 @@ serve(async (req) => {
       ? "\n\nIMPORTANTE: Ya tienes las 4 respuestas. Ahora calcula el score y responde según la FASE 3. Incluye el summary al final de tu respuesta separado por '---SUMMARY---'. El formato del summary debe ir DESPUÉS de ese separador."
       : "";
 
-    const fullSystemPrompt = `${SYSTEM_PROMPT}\n\nContexto del visitante: ${contextDetail}\n\nTurn actual: ${turn}${phaseInstruction}`;
+    const firstQuestionText = context === "hubspot"
+      ? "Para orientarte bien, ¿cuál es tu cargo o rol en la empresa?"
+      : "Para entender bien tu situación, ¿cuál es tu cargo o rol en la empresa?";
+
+    const firstMsgInstruction = "\n\nIMPORTANTE PARA EL PRIMER MENSAJE: Si es tu primera intervención (turn 1, sin mensajes previos del visitante), ve directo a la primera pregunta sin saludos, sin presentación, sin emojis. Usa exactamente este texto: \"" + firstQuestionText + "\"";
+
+    const fullSystemPrompt = `${SYSTEM_PROMPT}\n\nContexto del visitante: ${contextDetail}\n\nTurn actual: ${turn}${phaseInstruction}${turn <= 1 ? firstMsgInstruction : ""}`;
 
     // Ensure messages array is never empty
     const apiMessages = messages.length > 0
       ? messages
-      : [{ role: "user", content: "Hola, acabo de llegar. Hazme tu primera pregunta." }];
+      : [{ role: "user", content: "Comenzar conversación." }];
 
     const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
