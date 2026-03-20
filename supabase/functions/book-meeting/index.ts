@@ -141,6 +141,7 @@ serve(async (req) => {
       // Create HubSpot contact with UNQUALIFIED status
       const hubspotNurturingProps: Record<string, string> = {
         email,
+        jobtitle: jobTitle,
         hs_lead_status: "OPEN",
         hs_analytics_source: "PAID_SOCIAL",
         hs_latest_source: "PAID_SOCIAL",
