@@ -127,6 +127,9 @@ serve(async (req) => {
     };
     const transcript = formatTranscript(conversation_messages);
 
+    // Extract job title from first user message (answer to "¿cuál es tu cargo?")
+    const jobTitle = conversation_messages?.find((m: { role: string }) => m.role === "user")?.text || "";
+
     if (!email) {
       return new Response(JSON.stringify({ error: "Missing email" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -138,6 +141,7 @@ serve(async (req) => {
       // Create HubSpot contact with UNQUALIFIED status
       const hubspotNurturingProps: Record<string, string> = {
         email,
+        jobtitle: jobTitle,
         hs_lead_status: "OPEN",
         hs_analytics_source: "PAID_SOCIAL",
         hs_latest_source: "PAID_SOCIAL",
@@ -366,6 +370,7 @@ serve(async (req) => {
       email,
       firstname: firstName,
       lastname: lastName,
+      jobtitle: jobTitle,
       hs_lead_status: hubspotLeadStatus,
       hs_analytics_source: "PAID_SOCIAL",
       hs_latest_source: "PAID_SOCIAL",
