@@ -471,31 +471,11 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 1: Hook ── */
+      /* ── Screens 1–4: Chat ── */
       case 1:
-        return (
-          <motion.div key="s1" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-6">
-            <h1 className="text-[28px] sm:text-[32px] font-semibold leading-[1.15] text-white tracking-tight text-balance">
-              Cada mes se pierden negocios en tu empresa.
-            </h1>
-            <p className="text-white/45 text-[17px] leading-relaxed font-light">
-              Nadie sabe cuántos. Nadie sabe dónde.
-            </p>
-            <button
-              onClick={goToScreen2}
-              className="mt-4 w-full max-w-[320px] py-4 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
-              style={{ background: "#BE1869", boxShadow: "0 8px 32px rgba(190,24,105,0.35)" }}
-            >
-              Así es, eso me pasa →
-            </button>
-          </motion.div>
-        );
-
-      /* ── Screens 2–5: Chat ── */
       case 2:
       case 3:
       case 4:
-      case 5:
         return (
           <motion.div key={`chat`} {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
