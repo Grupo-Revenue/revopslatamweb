@@ -63,7 +63,7 @@ Detecta y mapea:
 
 ═══════════════════════════════
 PREGUNTA 4 — CRM:
-"¿Qué herramienta usan hoy para gestionar sus ventas y clientes?"
+"¿Trabajan con algún CRM como HubSpot, Salesforce u otro, o gestionan las ventas en Excel o WhatsApp?"
 Detecta si tienen CRM y cuál:
 → NO tienen CRM (usan Excel/WhatsApp/nada): guarda crm_status = "sin_crm"
 → Tienen HubSpot: guarda crm_status = "hubspot"
