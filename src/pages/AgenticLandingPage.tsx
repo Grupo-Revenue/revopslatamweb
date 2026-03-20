@@ -520,7 +520,7 @@ const AgenticLandingPage = () => {
       if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
       else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
     },
-    [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus]
+    [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
   );
 
   // Start conversation — Screen 0 → 1 (chat)
