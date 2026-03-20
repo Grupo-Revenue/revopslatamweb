@@ -107,7 +107,7 @@ serve(async (req) => {
 
     const {
       name, email, context, summary, availability_preference,
-      conversation_id, score, flag, nurturing_only,
+      selected_slot, conversation_id, score, flag, nurturing_only,
       utm_source, utm_medium, utm_campaign, utm_content,
     } = await req.json();
 
