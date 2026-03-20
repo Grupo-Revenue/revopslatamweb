@@ -161,6 +161,7 @@ const AgenticLandingPage = () => {
   const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [emailCaptureHandled, setEmailCaptureHandled] = useState(false);
   const [pendingClaudeCall, setPendingClaudeCall] = useState<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
+  const pendingClaudeCallRef = useRef<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
