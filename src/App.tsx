@@ -39,6 +39,7 @@ const QueHacemos = lazy(() => import("./pages/QueHacemos"));
 const HubspotPartnerChile = lazy(() => import("./pages/HubspotPartnerChile"));
 const ConoceTuPistaLanding = lazy(() => import("./pages/ConoceTuPistaLanding"));
 const ImplementacionHubspotLanding = lazy(() => import("./pages/ImplementacionHubspotLanding"));
+const AgenticLandingPage = lazy(() => import("./pages/AgenticLandingPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PoliticaPrivacidad = lazy(() => import("./pages/PoliticaPrivacidad"));
 
