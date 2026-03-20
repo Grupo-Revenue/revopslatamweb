@@ -913,7 +913,7 @@ const AgenticLandingPage = () => {
                   <button
                     key={option}
                     onClick={() => handleQ5ButtonClick(option)}
-                    className="w-full text-left text-[14px] text-white transition-all duration-200 active:scale-[0.98]"
+                    className="w-full text-left text-[15px] text-white transition-all duration-200 active:scale-[0.98]"
                     style={{
                       background: "rgba(255,255,255,0.08)",
                       border: "0.5px solid rgba(255,255,255,0.2)",
