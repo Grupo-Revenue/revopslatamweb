@@ -452,7 +452,7 @@ const AgenticLandingPage = () => {
   /* ─── Welcome screen typewriter ─── */
   const [welcomeText, setWelcomeText] = useState("");
   const [welcomeDone, setWelcomeDone] = useState(false);
-  const welcomeFullText = "Hola, soy Lidia 👋\n\nSoy asistente virtual de Revops LATAM.\n\nEn 4 preguntas voy a entender tu situación comercial y, si tiene sentido, te conectaré con nuestro equipo.\n\n¿Empezamos?";
+  const welcomeFullText = "Hola, soy Lidia 👋\n\nSoy asistente virtual de Revops LATAM.\n\nEn 5 preguntas voy a entender tu situación comercial y, si tiene sentido, te conectaré con nuestro equipo.\n\n¿Empezamos?";
 
   useEffect(() => {
     if (screen !== 0) return;
