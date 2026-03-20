@@ -245,7 +245,7 @@ const AgenticLandingPage = () => {
           await typewriterEffect("Disculpa, tuve un problema técnico. ¿Podrías intentar de nuevo?");
           return null;
         }
-        return data as { reply: string; phase: string; summary?: string; score?: number; flag?: string };
+        return data as { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean };
       } catch (e) {
         setIsAITyping(false);
         console.error("chat-agent exception:", e);
@@ -323,28 +323,19 @@ const AgenticLandingPage = () => {
       .from("conversations")
       .update({ availability_preference: `early_email:${email.trim()}` })
       .eq("id", conversationId);
-    // Continue with pending call (use ref to avoid stale closure)
-    const pending = pendingClaudeCallRef.current;
-    if (pending) {
-      pendingClaudeCallRef.current = null;
-      setPendingClaudeCall(null);
-      const result = await callClaude(pending.messages, pending.turn);
-      if (result) await processClaudeResult(result, pending.messages);
-    }
-  }, [conversationId, callClaude, processClaudeResult]);
+    // Claude already replied before email capture — just clear pending
+    pendingClaudeCallRef.current = null;
+    setPendingClaudeCall(null);
+  }, [conversationId]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
     setShowEmailCapture(false);
     setEmailCaptureHandled(true);
-    const pending = pendingClaudeCallRef.current;
-    if (pending) {
-      pendingClaudeCallRef.current = null;
-      setPendingClaudeCall(null);
-      const result = await callClaude(pending.messages, pending.turn);
-      if (result) await processClaudeResult(result, pending.messages);
-    }
-  }, [callClaude, processClaudeResult]);
+    // Claude already replied before email capture — just clear pending
+    pendingClaudeCallRef.current = null;
+    setPendingClaudeCall(null);
+  }, []);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
@@ -359,12 +350,31 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
 
-    // After 2nd user answer (turn 3), show email capture before continuing
+    // After 2nd user answer (turn 3), call Claude FIRST, then show email capture
     if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
-      const pending = { messages: updatedMessages, turn: newTurn };
+      // Get Claude's reply first so the conversation feels natural
+      const result = await callClaude(updatedMessages, newTurn);
+      if (!result) return;
+
+      // If repeat_turn, roll back
+      if (result.repeat_turn) {
+        setTurn((prev) => Math.max(prev - 1, 1));
+      }
+
+      // Show Claude's response
+      await typewriterEffect(result.reply);
+      const msgsAfterReply = [...updatedMessages, { role: "ai" as const, text: result.reply }];
+
+      // Save to Supabase
+      if (conversationId) {
+        saveMessages(conversationId, msgsAfterReply);
+      }
+
+      // Now ask for email — pending call will continue the flow after
+      const pendingTurn = result.repeat_turn ? Math.max(newTurn - 1, 1) : newTurn;
+      const pending = { messages: msgsAfterReply, turn: pendingTurn };
       pendingClaudeCallRef.current = pending;
       setPendingClaudeCall(pending);
-      // Show Lidia's email request as a typewriter bubble
       const emailAsk = "¿Me darías tu email para que no perdamos el contacto? 😊";
       await typewriterEffect(emailAsk);
       setShowEmailCapture(true);
@@ -374,7 +384,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages);
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, conversationId, saveMessages]);
 
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
