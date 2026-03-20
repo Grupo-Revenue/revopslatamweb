@@ -11,10 +11,19 @@ const BG_COLORS = [
 const TOTAL_SCREENS = 8;
 const TYPEWRITER_MS = 30;
 
-/* ─── detect context from UTM ─── */
-function getContextFromURL(): "diagnostico" | "hubspot" {
+/* ─── capture UTMs from URL ─── */
+function getUTMParams() {
   const params = new URLSearchParams(window.location.search);
-  const utmContent = params.get("utm_content") || "";
+  return {
+    utm_source: params.get("utm_source") || "",
+    utm_medium: params.get("utm_medium") || "",
+    utm_campaign: params.get("utm_campaign") || "",
+    utm_content: params.get("utm_content") || "",
+  };
+}
+
+function getContextFromURL(): "diagnostico" | "hubspot" {
+  const utmContent = getUTMParams().utm_content;
   if (utmContent === "reel2") return "hubspot";
   return "diagnostico";
 }
