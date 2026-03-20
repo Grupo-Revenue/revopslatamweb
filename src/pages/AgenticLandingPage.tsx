@@ -158,13 +158,13 @@ const AgenticLandingPage = () => {
   const [nurturingEmail, setNurturingEmail] = useState("");
   const [earlyEmail, setEarlyEmail] = useState("");
   const [earlyEmailSaved, setEarlyEmailSaved] = useState(false);
+  const [showEmailCapture, setShowEmailCapture] = useState(false);
+  const [emailCaptureHandled, setEmailCaptureHandled] = useState(false);
+  const [pendingClaudeCall, setPendingClaudeCall] = useState<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
-  const inputDisabled = isAITyping || isTypewriting;
-
-  // Determine if early email field should show (after first user answer, turn >= 2, not yet saved)
-  const showEarlyEmail = turn >= 2 && !earlyEmailSaved && messages.some(m => m.role === "user");
+  const inputDisabled = isAITyping || isTypewriting || showEmailCapture;
 
   // Save early email to Supabase
   const handleEarlyEmailSave = useCallback(async (email: string) => {
