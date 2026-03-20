@@ -148,6 +148,9 @@ const AgenticLandingPage = () => {
   const [availabilityPref, setAvailabilityPref] = useState("");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
+  const [leadScore, setLeadScore] = useState<number | undefined>();
+  const [leadFlag, setLeadFlag] = useState<string | undefined>();
+  const [nurturingEmail, setNurturingEmail] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
