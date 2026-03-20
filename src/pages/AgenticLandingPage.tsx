@@ -244,7 +244,7 @@ const AgenticLandingPage = () => {
           return null;
         }
 
-        return data as { reply: string; phase: string; summary?: string };
+        return data as { reply: string; phase: string; summary?: string; score?: number; flag?: string };
       } catch (e) {
         setIsAITyping(false);
         console.error("chat-agent exception:", e);
