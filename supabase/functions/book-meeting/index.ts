@@ -246,63 +246,6 @@ async function createCalendarEvent(
   return data;
 }
 
-/* ── HubSpot contact ── */
-async function createHubSpotContact(params: {
-  name: string;
-  email: string;
-  context: string;
-  summary: string;
-}) {
-  const HUBSPOT_API_KEY = Deno.env.get("HUBSPOT_API_KEY");
-  if (!HUBSPOT_API_KEY) {
-    console.warn("HUBSPOT_API_KEY not set, skipping HubSpot contact creation");
-    return;
-  }
-
-  const [firstName, ...lastParts] = params.name.trim().split(" ");
-  const lastName = lastParts.join(" ") || "";
-
-  // Create or update contact
-  try {
-    const res = await fetch("https://api.hubapi.com/crm/v3/objects/contacts", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${HUBSPOT_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        properties: {
-          email: params.email,
-          firstname: firstName,
-          lastname: lastName,
-        },
-      }),
-    });
-
-    if (res.status === 409) {
-      // Contact exists — update
-      const existing = await res.json();
-      const contactId = existing?.message?.match(/ID: (\d+)/)?.[1];
-      if (contactId) {
-        await fetch(
-          `https://api.hubapi.com/crm/v3/objects/contacts/${contactId}`,
-          {
-            method: "PATCH",
-            headers: {
-              Authorization: `Bearer ${HUBSPOT_API_KEY}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              properties: { firstname: firstName, lastname: lastName },
-            }),
-          }
-        );
-      }
-    }
-  } catch (e) {
-    console.error("HubSpot contact error:", e);
-  }
-}
 
 /* ── Slack notification ── */
 async function notifySlack(params: {
@@ -394,17 +337,9 @@ serve(async (req) => {
       endTime: finalEnd,
     });
 
-    // Step 5: Create HubSpot contact (non-blocking)
-    console.log("Step 5: Creating HubSpot contact...");
-    createHubSpotContact({
-      name,
-      email,
-      context: context || "diagnostico",
-      summary: summary || "",
-    }).catch((e) => console.error("HubSpot error (non-blocking):", e));
+    // Step 5: Notify Slack (non-blocking)
+    console.log("Step 5: Notifying Slack...");
 
-    // Step 6: Notify Slack (non-blocking)
-    console.log("Step 6: Notifying Slack...");
     notifySlack({
       name,
       email,
@@ -414,9 +349,9 @@ serve(async (req) => {
       display_time: finalDisplayTime,
     }).catch((e) => console.error("Slack error (non-blocking):", e));
 
-    // Step 7: Update Supabase conversation
+    // Step 6: Update Supabase conversation
     if (conversation_id) {
-      console.log("Step 7: Updating Supabase conversation...");
+      console.log("Step 6: Updating Supabase conversation...");
       const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
       const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
       const supabase = createClient(supabaseUrl, supabaseKey);
