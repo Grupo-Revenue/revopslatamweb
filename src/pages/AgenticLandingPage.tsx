@@ -663,6 +663,41 @@ const AgenticLandingPage = () => {
                   </button>
                 </div>
               </motion.div>
+            ) : showQ5Buttons && !isAITyping && !isTypewriting ? (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="px-4 pb-4 pt-2 flex flex-col gap-2"
+              >
+                {q5Options.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => handleQ5ButtonClick(option)}
+                    className="w-full text-left text-[14px] text-white transition-all duration-200 active:scale-[0.98]"
+                    style={{
+                      background: "rgba(255,255,255,0.08)",
+                      border: "0.5px solid rgba(255,255,255,0.2)",
+                      borderRadius: "12px",
+                      padding: "14px 16px",
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </motion.div>
+            ) : q5FreeText ? (
+              <div className="px-4 pb-4 pt-2">
+                <ChatInput
+                  value={chatInput}
+                  onChange={setChatInput}
+                  onSend={handleQ5FreeTextSend}
+                  placeholder="Cuéntame con tus palabras..."
+                  disabled={isAITyping || isTypewriting}
+                />
+              </div>
             ) : (
               <div className="px-4 pb-4 pt-2">
                 <ChatInput
