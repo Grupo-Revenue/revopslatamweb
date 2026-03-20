@@ -170,14 +170,66 @@ const AgenticLandingPage = () => {
   const handleEarlyEmailSave = useCallback(async (email: string) => {
     if (!email.trim() || !conversationId) return;
     setEarlyEmailSaved(true);
+    setShowEmailCapture(false);
+    setEmailCaptureHandled(true);
     // Pre-fill final email fields
     setEmailInput(email.trim());
     setNurturingEmail(email.trim());
+    // Add as user bubble
+    const emailMsg = { role: "user" as const, text: email.trim() };
+    setMessages(prev => [...prev, emailMsg]);
     await supabase
       .from("conversations")
       .update({ availability_preference: `early_email:${email.trim()}` })
       .eq("id", conversationId);
-  }, [conversationId]);
+    // Continue with the pending Claude call
+    if (pendingClaudeCall) {
+      const updatedMsgs = [...pendingClaudeCall.messages, emailMsg];
+      const result = await callClaude(updatedMsgs, pendingClaudeCall.turn);
+      if (result) {
+        await typewriterEffect(result.reply);
+        const finalMsgs = [...updatedMsgs, { role: "ai" as const, text: result.reply }];
+        setMessages(finalMsgs);
+        if (result.score !== undefined) setLeadScore(result.score);
+        if (result.flag) setLeadFlag(result.flag);
+        if (result.summary) setSummary(result.summary);
+        if (conversationId) {
+          const extra: Record<string, string> = {};
+          if (result.summary) extra.summary = result.summary;
+          saveMessages(conversationId, finalMsgs, Object.keys(extra).length ? extra : undefined);
+        }
+        if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
+        else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
+      }
+      setPendingClaudeCall(null);
+    }
+  }, [conversationId, pendingClaudeCall, callClaude, typewriterEffect, saveMessages, fetchAvailability]);
+
+  // Skip email capture
+  const handleSkipEmail = useCallback(async () => {
+    setShowEmailCapture(false);
+    setEmailCaptureHandled(true);
+    // Continue with the pending Claude call
+    if (pendingClaudeCall) {
+      const result = await callClaude(pendingClaudeCall.messages, pendingClaudeCall.turn);
+      if (result) {
+        await typewriterEffect(result.reply);
+        const finalMsgs = [...pendingClaudeCall.messages, { role: "ai" as const, text: result.reply }];
+        setMessages(finalMsgs);
+        if (result.score !== undefined) setLeadScore(result.score);
+        if (result.flag) setLeadFlag(result.flag);
+        if (result.summary) setSummary(result.summary);
+        if (conversationId) {
+          const extra: Record<string, string> = {};
+          if (result.summary) extra.summary = result.summary;
+          saveMessages(conversationId, finalMsgs, Object.keys(extra).length ? extra : undefined);
+        }
+        if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
+        else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
+      }
+      setPendingClaudeCall(null);
+    }
+  }, [pendingClaudeCall, callClaude, typewriterEffect, conversationId, saveMessages, fetchAvailability]);
 
   // Scroll chat to bottom
   useEffect(() => {
