@@ -14,8 +14,8 @@ const BG_COLORS = [
 ];
 
 const TOTAL_SCREENS = 9;
-const TYPEWRITER_MS = 30;
-const WELCOME_TYPEWRITER_MS = 25;
+const TYPEWRITER_MS = 18;
+const WELCOME_TYPEWRITER_MS = 15;
 
 /* ─── capture UTMs from URL ─── */
 function getUTMParams() {
