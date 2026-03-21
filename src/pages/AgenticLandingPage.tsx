@@ -764,6 +764,11 @@ const AgenticLandingPage = () => {
 
       setNameCollected(true);
 
+      // Save visitor name to conversation
+      if (conversationId) {
+        void saveConversationMeta(conversationId, { visitor_name: normalizedFull });
+      }
+
       // Now show Q1 (cargo+empresa) via typewriter — this IS sent to Claude
       const firstQuestion = `Qué bueno tenerte aquí, ${firstName}. Cuéntame, ¿cuál es tu cargo y en qué empresa trabajas?`;
       setTurn(1);
