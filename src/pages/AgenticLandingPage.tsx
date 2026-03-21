@@ -257,7 +257,6 @@ const AgenticLandingPage = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const earlyEmailInputRef = useRef<HTMLInputElement>(null);
   const earlyEmailSubmittingRef = useRef(false);
-  const earlyEmailSubmitIntentRef = useRef(false);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
@@ -567,9 +566,17 @@ const AgenticLandingPage = () => {
       await supabase
         .from("conversations")
         .update({ availability_preference: `early_email:${trimmedEmail}` })
-        .eq("id", conversationId);
-      // Create or update HubSpot contact with everything accumulated so far
-      syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true);
+        .eq("id", conversationId)
+        .then(({ error }) => {
+          if (error) {
+            console.error("early email conversation update error:", error);
+          }
+        });
+
+      syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true).catch((error) => {
+        console.error("early email HubSpot sync error:", error);
+      });
+
       // Now call Claude to continue the conversation (empathy + next question)
       const pending = pendingClaudeCallRef.current;
       if (pending) {
@@ -586,23 +593,6 @@ const AgenticLandingPage = () => {
       earlyEmailSubmittingRef.current = false;
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot, earlyEmail]);
-
-  const requestEarlyEmailSubmit = useCallback(() => {
-    if (earlyEmailSubmittingRef.current) return;
-
-    earlyEmailSubmitIntentRef.current = true;
-
-    const activeElement = document.activeElement;
-    if (activeElement instanceof HTMLElement) {
-      activeElement.blur();
-    }
-
-    window.setTimeout(() => {
-      if (!earlyEmailSubmitIntentRef.current) return;
-      earlyEmailSubmitIntentRef.current = false;
-      handleEarlyEmailSave();
-    }, 80);
-  }, [handleEarlyEmailSave]);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
@@ -886,7 +876,9 @@ const AgenticLandingPage = () => {
                 className="px-4 pb-4 pt-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  requestEarlyEmailSubmit();
+                  const formData = new FormData(e.currentTarget);
+                  const submittedEmail = String(formData.get("early-email") ?? "").trim();
+                  handleEarlyEmailSave(submittedEmail);
                 }}
               >
                 <div
@@ -910,6 +902,7 @@ const AgenticLandingPage = () => {
                     </svg>
                     <input
                       ref={earlyEmailInputRef}
+                      name="early-email"
                       type="email"
                       value={earlyEmail}
                       onChange={(e) => setEarlyEmail(e.target.value)}
@@ -917,17 +910,8 @@ const AgenticLandingPage = () => {
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
-                          requestEarlyEmailSubmit();
+                          handleEarlyEmailSave((e.currentTarget as HTMLInputElement).value);
                         }
-                      }}
-                      onBlur={() => {
-                        if (!earlyEmailSubmitIntentRef.current) return;
-
-                        window.setTimeout(() => {
-                          if (!earlyEmailSubmitIntentRef.current) return;
-                          earlyEmailSubmitIntentRef.current = false;
-                          handleEarlyEmailSave();
-                        }, 0);
                       }}
                       placeholder="tu@email.com"
                       className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
@@ -939,20 +923,9 @@ const AgenticLandingPage = () => {
                     />
                   </div>
                   <button
-                    type="button"
-                    onTouchStart={() => {
-                      requestEarlyEmailSubmit();
-                    }}
-                    onPointerDown={(e) => {
-                      e.preventDefault();
-                      requestEarlyEmailSubmit();
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      requestEarlyEmailSubmit();
-                    }}
-                    aria-disabled={!earlyEmail.trim()}
-                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] aria-disabled:opacity-30 touch-manipulation"
+                    type="submit"
+                    disabled={!earlyEmail.trim() || earlyEmailSubmittingRef.current}
+                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
                     Continuar →
