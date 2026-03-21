@@ -127,24 +127,28 @@ export default function ConversationsPage() {
     const ids = Array.from(selectedIds);
     try {
       const storedCreds = localStorage.getItem("admin_agent_creds");
-      const creds = storedCreds ? JSON.parse(storedCreds) : {};
-      const res = await fetch(
-        `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/delete-conversations`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ids, username: creds.username, password: creds.password }),
-        }
-      );
+      if (!storedCreds) {
+        alert("Sesión expirada. Por favor cierra sesión y vuelve a iniciar.");
+        setDeleting(false);
+        return;
+      }
+      const creds = JSON.parse(storedCreds);
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-conversations`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids, username: creds.username, password: creds.password }),
+      });
       const data = await res.json();
-      if (!data.success) {
+      if (data.success) {
+        setConversations(prev => prev.filter(c => !selectedIds.has(c.id)));
+      } else {
         alert(`Error al eliminar: ${data.error || "Error desconocido"}`);
       }
-    } catch (err) {
-      alert("Error de conexión al eliminar conversaciones");
+    } catch (err: any) {
+      alert(`Error de conexión: ${err.message || "desconocido"}`);
     }
     setSelectedIds(new Set());
-    await fetchConversations();
     setDeleting(false);
   };
 
