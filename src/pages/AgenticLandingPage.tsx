@@ -361,8 +361,7 @@ const AgenticLandingPage = () => {
       console.log("[saveConversationMeta] saving:", { convId, meta });
       const { error } = await supabase
         .from("conversations")
-        .update(meta as any)
-        .eq("id", convId);
+        .upsert({ id: convId, ...(meta as any) }, { onConflict: "id" });
       if (error) console.error("[saveConversationMeta] error:", error);
     },
     []
@@ -410,12 +409,11 @@ const AgenticLandingPage = () => {
       questionProgressRef.current = 5;
     }
 
-    // Save to conversation metadata
-    if (conversationId && Object.keys(convMeta).length > 0) {
-      void saveConversationMeta(conversationId, convMeta);
+    const currentConversationId = conversationIdRef.current || conversationId;
+    if (currentConversationId && Object.keys(convMeta).length > 0) {
+      void saveConversationMeta(currentConversationId, convMeta);
     }
 
-    // Always sync if we have an email
     const email = getCurrentEmail();
     if (email) {
       console.log(`[processAnswerForHubSpot] progress ${progress}→${questionProgressRef.current}, syncing buffer:`, { ...buf });
