@@ -177,8 +177,12 @@ serve(async (req) => {
       name, email, context, summary, availability_preference,
       selected_slot, conversation_id, score, flag, nurturing_only,
       utm_source, utm_medium, utm_campaign, utm_content,
-      conversation_messages,
+      conversation_messages, answers_buffer, attribution,
     } = await req.json();
+
+    // Build attribution properties from the attribution object
+    const attrProps = attribution ? buildAttributionProperties(attribution as Attribution) : {};
+    const utmContentValue = attribution?.utm_content || utm_content || "";
 
     // Format conversation transcript for HubSpot notes
     const formatTranscript = (msgs: { role: string; text: string }[] | undefined): string => {
@@ -190,8 +194,8 @@ serve(async (req) => {
     };
     const transcript = formatTranscript(conversation_messages);
 
-    // Extract job title from first user message (answer to "¿cuál es tu cargo?")
-    const jobTitle = conversation_messages?.find((m: { role: string }) => m.role === "user")?.text || "";
+    // Use answers_buffer for jobtitle instead of extracting from first message
+    const jobTitle = answers_buffer?.nivel_del_cargo || "";
 
     if (!email) {
       return new Response(JSON.stringify({ error: "Missing email" }), {
