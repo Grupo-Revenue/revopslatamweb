@@ -591,12 +591,18 @@ const AgenticLandingPage = () => {
         const f = result.flag || (result.score >= 65 ? "alta" : result.score >= 40 ? "media" : "baja");
         const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || nurturingEmail || null;
         syncScoreToHubSpot(result.score, f, currentEmail);
+        // Save score/flag/status to conversation
+        if (conversationId) {
+          const status = result.phase === "discarded" ? "descartado" : result.phase === "nurturing" ? "nurturing" : result.phase === "availability" ? "incompleto" : "incompleto";
+          void saveConversationMeta(conversationId, { score: result.score, flag: f, status });
+        }
       }
       if (result.flag) setLeadFlag(result.flag);
       if (result.summary) setSummary(result.summary);
       if (conversationId) {
-        const extra: Record<string, string> = {};
+        const extra: Record<string, any> = {};
         if (result.summary) extra.summary = result.summary;
+        if (result.flag) extra.flag = result.flag;
         saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
       }
 
