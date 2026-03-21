@@ -335,47 +335,46 @@ const AgenticLandingPage = () => {
     []
   );
 
-  // Process user answer and sync to HubSpot based on turn
-  const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number) => {
+  // Process user answer and sync to HubSpot based on question progress (not turn number)
+  const processAnswerForHubSpot = useCallback((userAnswer: string, _answerTurn: number) => {
     const buf = answersBufferRef.current;
     const convMeta: Record<string, any> = {};
+    const progress = questionProgressRef.current;
 
-    switch (answerTurn) {
-      case 2: { // User answered Q1 (cargo+empresa) — turn 2 = first user answer
-        buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
-        convMeta.cargo = buf.nivel_del_cargo;
-        // Try to extract company name from the same answer
-        const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
-        if (companyMatch && companyMatch[1]) {
-          buf.company = companyMatch[1].trim();
-          convMeta.company = buf.company;
-        }
-        break;
+    if (progress === 0) {
+      // Q1: cargo + empresa
+      buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
+      convMeta.cargo = buf.nivel_del_cargo;
+      const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
+      if (companyMatch && companyMatch[1]) {
+        buf.company = companyMatch[1].trim();
+        convMeta.company = buf.company;
       }
-      case 3: { // User answered Q2 (rubro)
-        buf.rubro = mapRubroToHubSpot(userAnswer);
-        convMeta.rubro = buf.rubro;
-        break;
-      }
-      case 4: { // User answered Q3 (equipo)
-        buf.cantidad_de_vendedores = mapEquipoToHubSpot(userAnswer);
-        convMeta.equipo_comercial = buf.cantidad_de_vendedores;
-        break;
-      }
-      case 5: { // User answered Q4 (CRM)
-        const mapped = mapCrmToHubSpot(userAnswer);
-        buf.cuenta_con_crm = mapped.value;
-        detectedCrmStatusRef.current = mapped.status;
-        convMeta.crm = mapped.value;
-        break;
-      }
-      case 6: { // User answered Q5 (problema)
-        const propName = getQ5PropertyName(detectedCrmStatusRef.current);
-        const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
-        buf[propName] = exactValue;
-        convMeta.problema_principal = exactValue;
-        break;
-      }
+      questionProgressRef.current = 1;
+    } else if (progress === 1) {
+      // Q2: rubro
+      buf.rubro = mapRubroToHubSpot(userAnswer);
+      convMeta.rubro = buf.rubro;
+      questionProgressRef.current = 2;
+    } else if (progress === 2) {
+      // Q3: equipo
+      buf.cantidad_de_vendedores = mapEquipoToHubSpot(userAnswer);
+      convMeta.equipo_comercial = buf.cantidad_de_vendedores;
+      questionProgressRef.current = 3;
+    } else if (progress === 3) {
+      // Q4: CRM
+      const mapped = mapCrmToHubSpot(userAnswer);
+      buf.cuenta_con_crm = mapped.value;
+      detectedCrmStatusRef.current = mapped.status;
+      convMeta.crm = mapped.value;
+      questionProgressRef.current = 4;
+    } else if (progress === 4) {
+      // Q5: problema
+      const propName = getQ5PropertyName(detectedCrmStatusRef.current);
+      const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
+      buf[propName] = exactValue;
+      convMeta.problema_principal = exactValue;
+      questionProgressRef.current = 5;
     }
 
     // Save to conversation metadata
@@ -383,13 +382,13 @@ const AgenticLandingPage = () => {
       void saveConversationMeta(conversationId, convMeta);
     }
 
-    // Always sync if we have an email — don't wait for hubspotContactId
+    // Always sync if we have an email
     const email = getCurrentEmail();
     if (email) {
-      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, syncing buffer:`, { ...buf });
+      console.log(`[processAnswerForHubSpot] progress ${progress}→${questionProgressRef.current}, syncing buffer:`, { ...buf });
       void syncToHubSpot(email, { ...buf }, false);
     } else {
-      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, no email yet — buffering:`, { ...buf });
+      console.log(`[processAnswerForHubSpot] progress ${progress}→${questionProgressRef.current}, no email yet — buffering:`, { ...buf });
     }
   }, [syncToHubSpot, getCurrentEmail, conversationId, saveConversationMeta]);
 
