@@ -940,6 +940,18 @@ const AgenticLandingPage = () => {
 
       void saveConversion(emailInput.trim(), hubspotContactId, "meeting_booked");
 
+      // Save meeting status to conversation
+      if (conversationId) {
+        void saveConversationMeta(conversationId, {
+          meeting_booked: true,
+          status: "agendo",
+          meeting_date: data.display_date,
+          meeting_time: data.display_time,
+          visitor_email: emailInput.trim(),
+          hubspot_sync_status: "synced",
+        });
+      }
+
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
       setScreen(8);
