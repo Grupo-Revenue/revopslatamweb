@@ -128,13 +128,28 @@ export default function ConversationsPage() {
     const ids = Array.from(selectedIds);
 
     try {
-      const { error } = await supabase
-        .from("conversations")
-        .delete()
-        .in("id", ids);
+      const storedCreds = localStorage.getItem("admin_agent_creds");
+      if (!storedCreds) {
+        alert("Sesión expirada. Vuelve a iniciar sesión en el admin-agent.");
+        return;
+      }
+
+      const creds = JSON.parse(storedCreds);
+      const { data, error } = await supabase.functions.invoke("delete-conversations", {
+        body: {
+          ids,
+          username: creds.username,
+          password: creds.password,
+        },
+      });
 
       if (error) {
         alert(`Error al eliminar: ${error.message}`);
+        return;
+      }
+
+      if (!data?.success) {
+        alert(`Error al eliminar: ${data?.error || "Error desconocido"}`);
         return;
       }
 
