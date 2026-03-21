@@ -1184,7 +1184,7 @@ const AgenticLandingPage = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Email capture overlay — maximum robustness rewrite */}
+            {/* Email capture overlay — with corporate validation + fallback */}
             {showEmailCapture && !isAITyping && !isTypewriting ? (
               <motion.form
                 initial={{ opacity: 0, y: 16 }}
@@ -1193,7 +1193,11 @@ const AgenticLandingPage = () => {
                 className="px-4 pb-4 pt-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail);
+                  if (emailFallbackMode) {
+                    void handleEmailFallbackContinue();
+                  } else {
+                    void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail);
+                  }
                 }}
               >
                 <div
@@ -1204,71 +1208,116 @@ const AgenticLandingPage = () => {
                     backdropFilter: "blur(12px)",
                   }}
                 >
-                  <p className="text-white/70 text-[14px] leading-snug text-center">
-                      Así no perdemos el contacto si se corta la conversación.
-                  </p>
-                  <div
-                    className="flex items-center gap-2 rounded-xl px-4 py-3"
-                    style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                      <rect width="20" height="16" x="2" y="4" rx="2" />
-                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                    </svg>
-                    <input
-                      ref={earlyEmailInputRef}
-                      name="early-email"
-                      type="text"
-                      value={earlyEmail}
-                      onChange={(e) => {
-                        setEarlyEmail(e.target.value);
-                        if (earlyEmailError) setEarlyEmailError("");
-                      }}
-                      placeholder="tu@email.com"
-                      className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
-                      autoFocus
-                      inputMode="email"
-                      enterKeyHint="done"
-                      autoCapitalize="none"
-                      autoCorrect="off"
-                      autoComplete="email"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          e.preventDefault();
-                          void handleEarlyEmailSave((e.currentTarget as HTMLInputElement).value);
-                        }
-                      }}
-                    />
-                  </div>
-                  {earlyEmailError ? (
-                    <p className="text-[12px] text-center text-white/60">
-                      {earlyEmailError}
-                    </p>
-                  ) : null}
-                  <button
-                    type="button"
-                    onClick={() => void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail)}
-                    disabled={!earlyEmail.trim()}
-                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
-                    style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
-                  >
-                    Continuar →
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail)}
-                    className="text-[12px] text-white/20 hover:text-white/50 transition-colors self-center underline"
-                    style={{ display: earlyEmail.trim() ? "block" : "none" }}
-                  >
-                    Continuar manualmente
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleSkipEmail}
-                    className="text-[13px] text-white/25 hover:text-white/45 transition-colors self-center"
-                  >
-                    Prefiero no darlo ahora
-                  </button>
+                  {emailFallbackMode ? (
+                    /* ── Fallback: phone-only mode ── */
+                    <>
+                      <p className="text-white/70 text-[14px] leading-snug text-center">
+                        Si no tienes correo corporativo aún, igual podemos conversar — ingresa tu nombre completo y te contactamos por teléfono.
+                      </p>
+                      {!visitorName && (
+                        <input
+                          type="text"
+                          value={fallbackName}
+                          onChange={(e) => setFallbackName(e.target.value)}
+                          placeholder="Tu nombre completo"
+                          className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                          style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
+                        />
+                      )}
+                      <div
+                        className="flex items-center rounded-xl overflow-hidden"
+                        style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
+                      >
+                        <span className="pl-4 pr-2 text-[15px] text-white/50 font-[Lexend] select-none whitespace-nowrap">🇨🇱 +56</span>
+                        <input
+                          type="tel"
+                          inputMode="numeric"
+                          value={fallbackPhone}
+                          onChange={(e) => {
+                            let cleaned = e.target.value.replace(/[^\d]/g, "");
+                            if (cleaned.startsWith("56") && cleaned.length > 2) cleaned = cleaned.slice(2);
+                            setFallbackPhone(cleaned);
+                            if (earlyEmailError) setEarlyEmailError("");
+                          }}
+                          placeholder="9 1234 5678"
+                          className="flex-1 py-3 pr-4 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend] bg-transparent"
+                          autoFocus
+                        />
+                      </div>
+                      {earlyEmailError && (
+                        <p className="text-[12px] text-center text-red-400">{earlyEmailError}</p>
+                      )}
+                      <button
+                        type="submit"
+                        disabled={!fallbackPhone.trim()}
+                        className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
+                        style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
+                      >
+                        Continuar →
+                      </button>
+                    </>
+                  ) : (
+                    /* ── Normal: corporate email capture ── */
+                    <>
+                      <p className="text-white/70 text-[14px] leading-snug text-center">
+                        Así no perdemos el contacto si se corta la conversación.
+                      </p>
+                      <div
+                        className="flex items-center gap-2 rounded-xl px-4 py-3"
+                        style={{ background: "rgba(255,255,255,0.08)", border: earlyEmailError ? "1px solid rgba(239,68,68,0.5)" : "1px solid rgba(255,255,255,0.12)" }}
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                          <rect width="20" height="16" x="2" y="4" rx="2" />
+                          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                        <input
+                          ref={earlyEmailInputRef}
+                          name="early-email"
+                          type="text"
+                          value={earlyEmail}
+                          onChange={(e) => {
+                            setEarlyEmail(e.target.value);
+                            if (earlyEmailError) setEarlyEmailError("");
+                          }}
+                          placeholder="tu@empresa.com"
+                          className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
+                          autoFocus
+                          inputMode="email"
+                          enterKeyHint="done"
+                          autoCapitalize="none"
+                          autoCorrect="off"
+                          autoComplete="email"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              void handleEarlyEmailSave((e.currentTarget as HTMLInputElement).value);
+                            }
+                          }}
+                        />
+                      </div>
+                      {earlyEmailError ? (
+                        <p className="text-[12px] text-center text-red-400/90 leading-snug">
+                          {earlyEmailError}
+                        </p>
+                      ) : null}
+                      <button
+                        type="button"
+                        onClick={() => void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail)}
+                        disabled={!earlyEmail.trim()}
+                        className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
+                        style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
+                      >
+                        Continuar →
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleSkipEmail}
+                        className="text-[13px] text-white/25 hover:text-white/45 transition-colors self-center"
+                      >
+                        Prefiero no darlo ahora
+                      </button>
+                    </>
+                  )}
                 </div>
               </motion.form>
             ) : showQ5Buttons && !isAITyping && !isTypewriting ? (
