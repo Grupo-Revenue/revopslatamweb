@@ -8,7 +8,7 @@ import LidiaAvatar from "@/assets/lidia-avatar.png";
 const BG_COLORS = [
   "#22262A", // Screen 0: Welcome Lidia
   "#1C1240", "#1E1550", "#16203A", "#0F2030",
-  "#0A2028", // Screen 5: availability picker / nurturing
+  "#0F2030", // Screen 5: same as screen 4 for seamless transition
   "#0A2028", // Screen 6: name+email
   "#082018", // Screen 7: loading
   "#0A1F1A", // Screen 8: confirmation
