@@ -382,11 +382,22 @@ const AgenticLandingPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isAITyping, showEmailCapture]);
 
-  // Create conversation in Supabase
+  // Create conversation in Supabase — save attribution from the start
   const createConversation = useCallback(async () => {
+    const attr = attributionRef.current;
     const { data, error } = await supabase
       .from("conversations")
-      .insert({ context: contextRef.current })
+      .insert({
+        context: contextRef.current,
+        fbclid: attr.fbclid || null,
+        utm_source: attr.utm_source || null,
+        utm_medium: attr.utm_medium || null,
+        utm_campaign: attr.utm_campaign || null,
+        utm_content: attr.utm_content || null,
+        utm_term: attr.utm_term || null,
+        full_url: attr.full_url || null,
+        referrer: attr.referrer || null,
+      } as any)
       .select("id")
       .single();
     if (!error && data) {
