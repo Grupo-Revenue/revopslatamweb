@@ -252,8 +252,8 @@ serve(async (req) => {
         hs_content_membership_notes: `Score: ${score || 0} | Flag: no_calificado\n${summary || ""}`,
         ...attrProps,
         ...(answers_buffer?.company ? { company: answers_buffer.company } : {}),
-        ...(answers_buffer?.rubro ? { rubro: answers_buffer.rubro } : {}),
-        ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: answers_buffer.cantidad_de_vendedores } : {}),
+        ...(answers_buffer?.rubro ? { rubro: normalizeRubro(answers_buffer.rubro) } : {}),
+        ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: normalizeVendedores(answers_buffer.cantidad_de_vendedores) } : {}),
         ...(answers_buffer?.cuenta_con_crm ? { cuenta_con_crm: answers_buffer.cuenta_con_crm } : {}),
       };
 
