@@ -257,6 +257,7 @@ const AgenticLandingPage = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const earlyEmailInputRef = useRef<HTMLInputElement>(null);
   const earlyEmailSubmittingRef = useRef(false);
+  const earlyEmailLastAttemptRef = useRef(0);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
@@ -551,12 +552,17 @@ const AgenticLandingPage = () => {
   const handleEarlyEmailSave = useCallback(async (emailArg?: string) => {
     const domValue = earlyEmailInputRef.current?.value ?? "";
     const trimmedEmail = (emailArg ?? domValue ?? earlyEmail ?? "").trim();
+    const now = Date.now();
 
     if (!trimmedEmail || !conversationId) return;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) return;
-    if (earlyEmailSubmittingRef.current) return;
+    if (earlyEmailSubmittingRef.current) {
+      if (now - earlyEmailLastAttemptRef.current < 3000) return;
+      earlyEmailSubmittingRef.current = false;
+    }
 
     earlyEmailSubmittingRef.current = true;
+    earlyEmailLastAttemptRef.current = now;
     setEarlyEmail(trimmedEmail);
 
     try {
@@ -593,20 +599,9 @@ const AgenticLandingPage = () => {
     } finally {
       window.setTimeout(() => {
         earlyEmailSubmittingRef.current = false;
-      }, 250);
+      }, 400);
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot, earlyEmail]);
-
-  const triggerEarlyEmailSubmit = useCallback((emailArg?: string) => {
-    const activeElement = document.activeElement;
-    if (activeElement instanceof HTMLElement) {
-      activeElement.blur();
-    }
-
-    window.setTimeout(() => {
-      void handleEarlyEmailSave(emailArg);
-    }, 120);
-  }, [handleEarlyEmailSave]);
 
   useEffect(() => {
     return () => {};
@@ -894,7 +889,7 @@ const AgenticLandingPage = () => {
                 className="px-4 pb-4 pt-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
+                  void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail);
                 }}
               >
                 <div
@@ -906,7 +901,7 @@ const AgenticLandingPage = () => {
                   }}
                 >
                   <p className="text-white/70 text-[14px] leading-snug text-center">
-                    Así no perdemos el contacto si se corta la conversación
+                      Así no perdemos el contacto si se corta la conversación. Si en iPhone se cierra el teclado, avanzamos automáticamente.
                   </p>
                   <div
                     className="flex items-center gap-2 rounded-xl px-4 py-3"
@@ -930,10 +925,16 @@ const AgenticLandingPage = () => {
                       autoCapitalize="none"
                       autoCorrect="off"
                       autoComplete="email"
+                      onBlur={(e) => {
+                        const nextValue = e.currentTarget.value;
+                        window.setTimeout(() => {
+                          void handleEarlyEmailSave(nextValue);
+                        }, 220);
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
-                          triggerEarlyEmailSubmit((e.currentTarget as HTMLInputElement).value);
+                          void handleEarlyEmailSave((e.currentTarget as HTMLInputElement).value);
                         }
                       }}
                     />
@@ -941,14 +942,6 @@ const AgenticLandingPage = () => {
                   <button
                     type="submit"
                     disabled={!earlyEmail.trim() || earlyEmailSubmittingRef.current}
-                    onTouchEnd={(e) => {
-                      e.preventDefault();
-                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
-                    }}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
-                    }}
                     className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
@@ -956,19 +949,11 @@ const AgenticLandingPage = () => {
                   </button>
                   <button
                     type="button"
-                    onTouchEnd={(e) => {
-                      e.preventDefault();
-                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
-                    }}
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
-                    }}
-                    onClick={() => triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail)}
+                    onClick={() => void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail)}
                     className="text-[12px] text-white/20 hover:text-white/50 transition-colors self-center underline"
                     style={{ display: earlyEmail.trim() ? "block" : "none" }}
                   >
-                    Toca aquí si el botón no responde
+                    Continuar manualmente
                   </button>
                   <button
                     type="button"
