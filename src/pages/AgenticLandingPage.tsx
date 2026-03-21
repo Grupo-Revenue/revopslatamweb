@@ -600,10 +600,6 @@ const AgenticLandingPage = () => {
 
   useEffect(() => {
     return () => {
-      if (earlyEmailBlurTimeoutRef.current) {
-        window.clearTimeout(earlyEmailBlurTimeoutRef.current);
-      }
-    };
   }, []);
 
   // Skip email capture
