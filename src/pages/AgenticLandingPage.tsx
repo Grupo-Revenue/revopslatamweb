@@ -798,8 +798,8 @@ const AgenticLandingPage = () => {
     const normalizedPhone = normalizePhone(fallbackPhone);
     const digits = fallbackPhone.replace(/\D/g, "");
     const local = digits.startsWith("56") ? digits.slice(2) : digits;
-    if (local.length < 8 || local.length > 9) {
-      setEarlyEmailError("Ingresa un número válido, por ejemplo: 9 1234 5678");
+    if (local.length !== 9 || !local.startsWith("9")) {
+      setEarlyEmailError("Ingresa un número válido de 9 dígitos, por ejemplo: 9 1234 5678");
       return;
     }
 
