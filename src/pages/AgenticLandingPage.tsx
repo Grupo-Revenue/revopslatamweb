@@ -247,6 +247,7 @@ const AgenticLandingPage = () => {
   const [nurturingEmail, setNurturingEmail] = useState("");
   const [earlyEmail, setEarlyEmail] = useState("");
   const [earlyEmailSaved, setEarlyEmailSaved] = useState(false);
+  const [earlyEmailError, setEarlyEmailError] = useState("");
   const [showEmailCapture, setShowEmailCapture] = useState(false);
   const [emailCaptureHandled, setEmailCaptureHandled] = useState(false);
   const [pendingClaudeCall, setPendingClaudeCall] = useState<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
@@ -548,14 +549,53 @@ const AgenticLandingPage = () => {
     if (convId) saveMessages(convId, [{ role: "ai", text: nameQuestion }]);
   }, [createConversation, typewriterEffect, saveMessages]);
 
-  // Save early email — maximum robustness for iOS Safari
+  const continuePendingClaudeCall = useCallback(async (showThanksMessage = false) => {
+    const pending = pendingClaudeCallRef.current;
+    if (!pending) return;
+
+    pendingClaudeCallRef.current = null;
+    setPendingClaudeCall(null);
+
+    if (showThanksMessage) {
+      await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
+    }
+
+    const result = await callClaude(pending.messages, pending.turn);
+    if (result) {
+      await processClaudeResult(result, pending.messages, pending.turn);
+    }
+  }, [callClaude, processClaudeResult, typewriterEffect]);
+
+  // Save early email — make chat advance immediately, persist in background
   const handleEarlyEmailSave = useCallback(async (emailArg?: string) => {
     const domValue = earlyEmailInputRef.current?.value ?? "";
     const trimmedEmail = (emailArg ?? domValue ?? earlyEmail ?? "").trim();
     const now = Date.now();
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
 
-    if (!trimmedEmail || !conversationId) return;
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) return;
+    setEarlyEmail(trimmedEmail);
+
+    if (!trimmedEmail) {
+      setEarlyEmailError("Escribe un email para continuar o sáltalo.");
+      return;
+    }
+
+    if (!isValidEmail) {
+      setEarlyEmailError("Revisa el formato del email.");
+      return;
+    }
+
+    setEarlyEmailError("");
+    setEarlyEmailSaved(true);
+    setShowEmailCapture(false);
+    setEmailCaptureHandled(true);
+    setEmailInput(trimmedEmail);
+    setNurturingEmail(trimmedEmail);
+
+    void continuePendingClaudeCall(true);
+
+    if (!conversationId) return;
+
     if (earlyEmailSubmittingRef.current) {
       if (now - earlyEmailLastAttemptRef.current < 3000) return;
       earlyEmailSubmittingRef.current = false;
@@ -563,45 +603,29 @@ const AgenticLandingPage = () => {
 
     earlyEmailSubmittingRef.current = true;
     earlyEmailLastAttemptRef.current = now;
-    setEarlyEmail(trimmedEmail);
 
-    try {
-      setEarlyEmailSaved(true);
-      setShowEmailCapture(false);
-      setEmailCaptureHandled(true);
-      setEmailInput(trimmedEmail);
-      setNurturingEmail(trimmedEmail);
-
-      await supabase
-        .from("conversations")
-        .update({ availability_preference: `early_email:${trimmedEmail}` })
-        .eq("id", conversationId)
-        .then(({ error }) => {
-          if (error) {
-            console.error("early email conversation update error:", error);
-          }
-        });
-
-      syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true).catch((error) => {
-        console.error("early email HubSpot sync error:", error);
+    void supabase
+      .from("conversations")
+      .update({ availability_preference: `early_email:${trimmedEmail}` })
+      .eq("id", conversationId)
+      .then(({ error }) => {
+        if (error) {
+          console.error("early email conversation update error:", error);
+        }
+      })
+      .catch((error) => {
+        console.error("early email conversation update exception:", error);
+      })
+      .finally(() => {
+        window.setTimeout(() => {
+          earlyEmailSubmittingRef.current = false;
+        }, 400);
       });
 
-      const pending = pendingClaudeCallRef.current;
-      if (pending) {
-        pendingClaudeCallRef.current = null;
-        setPendingClaudeCall(null);
-        await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
-        const result = await callClaude(pending.messages, pending.turn);
-        if (result) {
-          await processClaudeResult(result, pending.messages, pending.turn);
-        }
-      }
-    } finally {
-      window.setTimeout(() => {
-        earlyEmailSubmittingRef.current = false;
-      }, 400);
-    }
-  }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot, earlyEmail]);
+    syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true).catch((error) => {
+      console.error("early email HubSpot sync error:", error);
+    });
+  }, [conversationId, continuePendingClaudeCall, syncToHubSpot, earlyEmail]);
 
   useEffect(() => {
     return () => {};
@@ -611,15 +635,9 @@ const AgenticLandingPage = () => {
   const handleSkipEmail = useCallback(async () => {
     setShowEmailCapture(false);
     setEmailCaptureHandled(true);
-    // Continue with Claude call
-    const pending = pendingClaudeCallRef.current;
-    if (pending) {
-      pendingClaudeCallRef.current = null;
-      setPendingClaudeCall(null);
-      const result = await callClaude(pending.messages, pending.turn);
-      if (result) await processClaudeResult(result, pending.messages, pending.turn);
-    }
-  }, [callClaude, processClaudeResult]);
+    setEarlyEmailError("");
+    await continuePendingClaudeCall(false);
+  }, [continuePendingClaudeCall]);
 
   // Handle user sending a message
   const handleUserSend = useCallback(async () => {
@@ -916,7 +934,10 @@ const AgenticLandingPage = () => {
                       name="early-email"
                       type="text"
                       value={earlyEmail}
-                      onChange={(e) => setEarlyEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEarlyEmail(e.target.value);
+                        if (earlyEmailError) setEarlyEmailError("");
+                      }}
                       placeholder="tu@email.com"
                       className="flex-1 bg-transparent text-white text-[16px] placeholder:text-white/30 outline-none font-[Lexend]"
                       autoFocus
@@ -925,12 +946,6 @@ const AgenticLandingPage = () => {
                       autoCapitalize="none"
                       autoCorrect="off"
                       autoComplete="email"
-                      onBlur={(e) => {
-                        const nextValue = e.currentTarget.value;
-                        window.setTimeout(() => {
-                          void handleEarlyEmailSave(nextValue);
-                        }, 220);
-                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
@@ -939,9 +954,15 @@ const AgenticLandingPage = () => {
                       }}
                     />
                   </div>
+                  {earlyEmailError ? (
+                    <p className="text-[12px] text-center text-white/60">
+                      {earlyEmailError}
+                    </p>
+                  ) : null}
                   <button
-                    type="submit"
-                    disabled={!earlyEmail.trim() || earlyEmailSubmittingRef.current}
+                    type="button"
+                    onClick={() => void handleEarlyEmailSave(earlyEmailInputRef.current?.value ?? earlyEmail)}
+                    disabled={!earlyEmail.trim()}
                     className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
