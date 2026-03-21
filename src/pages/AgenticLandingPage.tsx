@@ -293,7 +293,7 @@ const AgenticLandingPage = () => {
   const syncToHubSpot = useCallback(async (email: string, properties: Record<string, string>, createIfNotExists = false) => {
     try {
       const { data, error } = await supabase.functions.invoke("update-contact", {
-        body: { email, properties, createIfNotExists },
+        body: { email, properties, createIfNotExists, attribution: attributionRef.current },
       });
       if (error) {
         console.error("update-contact invoke error:", error);
