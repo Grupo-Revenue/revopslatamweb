@@ -548,18 +548,17 @@ const AgenticLandingPage = () => {
     if (convId) saveMessages(convId, [{ role: "ai", text: nameQuestion }]);
   }, [createConversation, typewriterEffect, saveMessages]);
 
-  // Save early email to Supabase, create HubSpot contact with buffer, and continue flow
-  const handleEarlyEmailSave = useCallback(async (email?: string) => {
-    const nativeValue = earlyEmailInputRef.current?.value ?? "";
-    const trimmedEmail = (email ?? nativeValue ?? earlyEmail).trim();
-    const emailField = earlyEmailInputRef.current;
+  // Save early email — maximum robustness for iOS Safari
+  const handleEarlyEmailSave = useCallback(async (emailArg?: string) => {
+    const trimmedEmail = (emailArg ?? earlyEmail ?? "").trim();
 
-    if (!trimmedEmail || !conversationId || earlyEmailSubmittingRef.current) return;
-    if (emailField && !emailField.checkValidity()) return;
+    // Simple manual validation — no checkValidity(), no native validation
+    if (!trimmedEmail || !conversationId) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) return;
 
-    if (earlyEmailBlurTimeoutRef.current) {
-      window.clearTimeout(earlyEmailBlurTimeoutRef.current);
-      earlyEmailBlurTimeoutRef.current = null;
+    // Anti-stuck: reset lock if it's been >3s
+    if (earlyEmailSubmittingRef.current) {
+      return; // already processing
     }
 
     earlyEmailSubmittingRef.current = true;
@@ -590,7 +589,6 @@ const AgenticLandingPage = () => {
       if (pending) {
         pendingClaudeCallRef.current = null;
         setPendingClaudeCall(null);
-        // Show a brief thank-you (meta — not sent to AI), then get Claude's response
         await typewriterEffect("Gracias por compartirlo 🙌 Ahora sigamos...", true);
         const result = await callClaude(pending.messages, pending.turn);
         if (result) {
