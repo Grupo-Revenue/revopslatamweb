@@ -773,7 +773,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, earlyEmail, emailInput, nameCollected, conversationId, saveMessages]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, nameCollected, conversationId, saveMessages]);
 
   // Handle Q5 button click
   const handleQ5ButtonClick = useCallback(async (option: string) => {
