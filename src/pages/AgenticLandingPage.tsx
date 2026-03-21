@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
-import LidiaAvatar from "@/assets/lidia-avatar.webp";
+import LidiaAvatar from "@/assets/lidia-avatar.png";
 
 /* ─── palette per screen ─── */
 const BG_COLORS = [
