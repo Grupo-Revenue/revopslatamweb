@@ -753,8 +753,7 @@ const AgenticLandingPage = () => {
     setTurn(newTurn);
 
     // Process answer for HubSpot sync
-    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
-    processAnswerForHubSpot(val, newTurn, currentEmail);
+    processAnswerForHubSpot(val, newTurn);
 
     // After 2nd user answer (turn 3), show email capture BEFORE calling Claude
     if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
