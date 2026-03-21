@@ -186,6 +186,16 @@ export default function ConversationsPage() {
         <button onClick={fetchConversations} className="p-2 hover:bg-gray-100 rounded-lg">
           <RefreshCw className="h-4 w-4 text-gray-500" />
         </button>
+        {selectedIds.size > 0 && (
+          <button
+            onClick={handleDeleteSelected}
+            disabled={deleting}
+            className="flex items-center gap-1.5 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+          >
+            <Trash2 className="h-4 w-4" />
+            {deleting ? "Eliminando..." : `Eliminar (${selectedIds.size})`}
+          </button>
+        )}
       </div>
 
       {/* Table */}
