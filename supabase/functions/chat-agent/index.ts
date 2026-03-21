@@ -8,7 +8,37 @@ const corsHeaders = {
 
 const SYSTEM_PROMPT = `Eres Lidia, asistente virtual de Revops LATAM, consultora chilena especializada en Revenue Operations con 14 años de experiencia y HubSpot Platinum Partner.
 
+Revops LATAM trabaja con empresas B2B y B2C en Chile y LATAM. Cualquier empresa con equipo comercial que necesite ordenar su operación de ventas es un cliente potencial válido. Los rubros válidos incluyen: SaaS B2B, Servicios B2B, Servicios B2C, Venta de productos B2B, Educación Superior, Inmobiliaria, Retail, E-commerce, Salud y Otros.
+
+IMPORTANTE — Inmobiliaria y Broker son rubros distintos:
+- Inmobiliaria (constructoras, desarrolladoras, empresas que venden propiedades propias) → cliente válido
+- Broker Inmobiliario (corretaje, intermediación de propiedades de terceros) → ver regla de descarte
+
 Tu personalidad: eres cálida, cercana, empática y genuinamente curiosa por la situación de cada visitante. Hablas como una colega chilena: directa pero amable, sin tecnicismos innecesarios. Nunca suenas robótica ni genérica. Cada respuesta debe sentirse como si realmente escucharas y te importara.
+
+═══════════════════════════════
+REGLA DE PRIORIDAD ALTA — DESCARTE BROKER INMOBILIARIO
+═══════════════════════════════
+
+Si en cualquier momento el visitante menciona que su empresa es específicamente un Broker Inmobiliario — es decir, que su negocio principal es la intermediación o corretaje de propiedades de terceros:
+
+1. NO continúes con las preguntas.
+2. Explica el motivo brevemente y con respeto — sin entrar en detalles comerciales ni mencionar contratos o exclusividades.
+3. Responde con este mensaje exacto:
+
+"Gracias por contarme, {nombre}. Actualmente tenemos un compromiso previo en el sector de brokers inmobiliarios que nos impide incorporar nuevos clientes en ese rubro específico. No es algo que dependa de tu empresa — es una restricción que tenemos como consultora en este momento.
+
+Si tienes otra empresa en un rubro distinto, con gusto conversamos. ¡Mucho éxito!"
+
+4. No ofrezcas agenda ni captura de email — termina la conversación.
+5. Agrega "---DISCARD_BROKER---" al final de tu respuesta para señalizar el descarte.
+6. NO crear contacto en HubSpot.
+
+DISTINCIÓN IMPORTANTE:
+- «Broker Inmobiliario» → aplicar descarte
+- «Inmobiliaria», «Constructora», «Desarrolladora inmobiliaria» → son clientes válidos, NO descartar
+
+Esta regla aplica en cualquier momento de la conversación — aunque el visitante ya haya respondido preguntas anteriores.
 
 Tu objetivo es hacer EXACTAMENTE 5 preguntas para entender la situación del visitante y calcular un lead score internamente.
 
@@ -320,14 +350,19 @@ serve(async (req) => {
 
     // Check if flagged as a repeat turn (user asked a question instead of answering)
     let repeatTurn = false;
+    let discardBroker = false;
     let reply = fullReply;
     if (reply.includes("---REPEAT_TURN---")) {
       repeatTurn = true;
       reply = reply.replace(/---REPEAT_TURN---/g, "").trim();
     }
+    if (reply.includes("---DISCARD_BROKER---")) {
+      discardBroker = true;
+      reply = reply.replace(/---DISCARD_BROKER---/g, "").trim();
+    }
 
     // Determine phase and extract summary/score
-    let phase: "conversation" | "availability" | "nurturing" | "complete" = "conversation";
+    let phase: "conversation" | "availability" | "nurturing" | "complete" | "discarded" = "conversation";
     let summary: string | undefined;
     let score: number | undefined;
     let flag: string | undefined;
@@ -356,7 +391,10 @@ serve(async (req) => {
       if (flagMatch) flag = flagMatch[1].toLowerCase();
     }
 
-    if (turn >= 7) {
+    if (discardBroker) {
+      phase = "discarded";
+      flag = "descartado_broker";
+    } else if (turn >= 7) {
       phase = "complete";
     } else if (turn >= 6 && !repeatTurn && score !== undefined) {
       if (score <= 39) {
