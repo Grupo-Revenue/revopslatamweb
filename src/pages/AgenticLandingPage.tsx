@@ -604,23 +604,24 @@ const AgenticLandingPage = () => {
     earlyEmailSubmittingRef.current = true;
     earlyEmailLastAttemptRef.current = now;
 
-    void supabase
-      .from("conversations")
-      .update({ availability_preference: `early_email:${trimmedEmail}` })
-      .eq("id", conversationId)
-      .then(({ error }) => {
+    void (async () => {
+      try {
+        const { error } = await supabase
+          .from("conversations")
+          .update({ availability_preference: `early_email:${trimmedEmail}` })
+          .eq("id", conversationId);
+
         if (error) {
           console.error("early email conversation update error:", error);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("early email conversation update exception:", error);
-      })
-      .finally(() => {
+      } finally {
         window.setTimeout(() => {
           earlyEmailSubmittingRef.current = false;
         }, 400);
-      });
+      }
+    })();
 
     void (async () => {
       try {
