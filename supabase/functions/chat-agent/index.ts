@@ -350,14 +350,19 @@ serve(async (req) => {
 
     // Check if flagged as a repeat turn (user asked a question instead of answering)
     let repeatTurn = false;
+    let discardBroker = false;
     let reply = fullReply;
     if (reply.includes("---REPEAT_TURN---")) {
       repeatTurn = true;
       reply = reply.replace(/---REPEAT_TURN---/g, "").trim();
     }
+    if (reply.includes("---DISCARD_BROKER---")) {
+      discardBroker = true;
+      reply = reply.replace(/---DISCARD_BROKER---/g, "").trim();
+    }
 
     // Determine phase and extract summary/score
-    let phase: "conversation" | "availability" | "nurturing" | "complete" = "conversation";
+    let phase: "conversation" | "availability" | "nurturing" | "complete" | "discarded" = "conversation";
     let summary: string | undefined;
     let score: number | undefined;
     let flag: string | undefined;
