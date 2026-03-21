@@ -372,7 +372,7 @@ serve(async (req) => {
         let found = false;
         for (let tryH = h + 1; tryH <= 17; tryH++) {
           const tryStart = `${slot.date}T${String(tryH).padStart(2, "0")}:00:00`;
-          const tryEnd = `${slot.date}T${String(tryH).padStart(2, "0")}:30:00`;
+          const tryEnd = `${slot.date}T${String(tryH).padStart(2, "0")}:45:00`;
           const tryAvailable = await checkAvailability(
             googleToken, FEBE_CALENDAR_ID,
             `${tryStart}-03:00`, `${tryEnd}-03:00`
