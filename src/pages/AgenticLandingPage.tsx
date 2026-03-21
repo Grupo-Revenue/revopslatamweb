@@ -5,7 +5,7 @@ import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
 
 /* ─── palette per screen ─── */
 const BG_COLORS = [
-  "#1A1033", // Screen 0: Welcome Lidia
+  "#22262A", // Screen 0: Welcome Lidia
   "#1C1240", "#1E1550", "#16203A", "#0F2030",
   "#0A2028", // Screen 5: availability picker / nurturing
   "#0A2028", // Screen 6: name+email
