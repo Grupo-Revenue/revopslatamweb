@@ -444,16 +444,7 @@ const AgenticLandingPage = () => {
     []
   );
 
-  // Save enriched conversation metadata to Supabase
-  const saveConversationMeta = useCallback(
-    async (convId: string, meta: Record<string, any>) => {
-      await supabase
-        .from("conversations")
-        .update(meta as any)
-        .eq("id", convId);
-    },
-    []
-  );
+
 
   // Typewriter effect — optionally mark message as meta (not sent to AI)
   const typewriterEffect = useCallback(
