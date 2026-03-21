@@ -788,8 +788,10 @@ const AgenticLandingPage = () => {
     setEmailCaptureHandled(true);
     setEarlyEmailError("");
 
+    const currentConversationId = conversationIdRef.current || conversationId;
+
     // Save fallback info to conversation
-    if (conversationId) {
+    if (currentConversationId) {
       const fallbackMeta: Record<string, any> = {
         phone: normalizedPhone,
         flag: "sin_email_corporativo",
@@ -797,7 +799,7 @@ const AgenticLandingPage = () => {
       if (fallbackName.trim() && !visitorName) {
         fallbackMeta.visitor_name = fallbackName.trim();
       }
-      void saveConversationMeta(conversationId, fallbackMeta);
+      void saveConversationMeta(currentConversationId, fallbackMeta);
     }
 
     void continuePendingClaudeCall(false);
