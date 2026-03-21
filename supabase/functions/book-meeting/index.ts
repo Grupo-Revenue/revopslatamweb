@@ -174,7 +174,7 @@ serve(async (req) => {
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Supabase env vars not configured");
 
     const {
-      name, email, context, summary, availability_preference,
+      name, email, phone: phoneFromBody, context, summary, availability_preference,
       selected_slot, conversation_id, score, flag, nurturing_only,
       utm_source, utm_medium, utm_campaign, utm_content,
       conversation_messages, answers_buffer, attribution,
