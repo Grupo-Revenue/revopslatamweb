@@ -141,7 +141,7 @@ function buildAttributionProperties(attr: Attribution): Record<string, string> {
     props.hs_latest_source = "DIRECT_TRAFFIC";
   }
 
-  if (attr.full_url) props.hs_analytics_first_url = attr.full_url;
+  // hs_analytics_first_url is READ-ONLY in HubSpot — do NOT set it
   if (attr.referrer) props.hs_analytics_first_referrer = attr.referrer;
   if (fbclid) props.hs_facebook_click_id = fbclid;
   if (attr.utm_source) props.utm_source_original = attr.utm_source;
