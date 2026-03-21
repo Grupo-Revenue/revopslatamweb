@@ -123,33 +123,32 @@ export default function ConversationsPage() {
     if (selectedIds.size === 0) return;
     const confirmed = window.confirm(`¿Eliminar ${selectedIds.size} conversación(es)? Esta acción no se puede deshacer.`);
     if (!confirmed) return;
+
     setDeleting(true);
     const ids = Array.from(selectedIds);
+
     try {
-      const storedCreds = localStorage.getItem("admin_agent_creds");
-      if (!storedCreds) {
-        alert("Sesión expirada. Por favor cierra sesión y vuelve a iniciar.");
-        setDeleting(false);
+      const { error } = await supabase
+        .from("conversations")
+        .delete()
+        .in("id", ids);
+
+      if (error) {
+        alert(`Error al eliminar: ${error.message}`);
         return;
       }
-      const creds = JSON.parse(storedCreds);
-      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-conversations`;
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids, username: creds.username, password: creds.password }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setConversations(prev => prev.filter(c => !selectedIds.has(c.id)));
-      } else {
-        alert(`Error al eliminar: ${data.error || "Error desconocido"}`);
+
+      setConversations((prev) => prev.filter((c) => !ids.includes(c.id)));
+      setSelectedIds(new Set());
+
+      if (selected?.id && ids.includes(selected.id)) {
+        setSelected(null);
       }
     } catch (err: any) {
-      alert(`Error de conexión: ${err.message || "desconocido"}`);
+      alert(`Error al eliminar: ${err?.message || "desconocido"}`);
+    } finally {
+      setDeleting(false);
     }
-    setSelectedIds(new Set());
-    setDeleting(false);
   };
 
   return (
