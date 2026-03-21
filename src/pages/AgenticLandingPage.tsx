@@ -327,10 +327,12 @@ const AgenticLandingPage = () => {
   // Save enriched conversation metadata to Supabase
   const saveConversationMeta = useCallback(
     async (convId: string, meta: Record<string, any>) => {
-      await supabase
+      console.log("[saveConversationMeta] saving:", { convId, meta });
+      const { error } = await supabase
         .from("conversations")
         .update(meta as any)
         .eq("id", convId);
+      if (error) console.error("[saveConversationMeta] error:", error);
     },
     []
   );
@@ -417,12 +419,14 @@ const AgenticLandingPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isAITyping, showEmailCapture]);
 
-  // Create conversation in Supabase — save attribution from the start
+  // Create conversation in Supabase — generate ID client-side to avoid SELECT RLS restriction
   const createConversation = useCallback(async () => {
     const attr = attributionRef.current;
-    const { data, error } = await supabase
+    const clientId = crypto.randomUUID();
+    const { error } = await supabase
       .from("conversations")
       .insert({
+        id: clientId,
         context: contextRef.current,
         fbclid: attr.fbclid || null,
         utm_source: attr.utm_source || null,
@@ -432,12 +436,11 @@ const AgenticLandingPage = () => {
         utm_term: attr.utm_term || null,
         full_url: attr.full_url || null,
         referrer: attr.referrer || null,
-      } as any)
-      .select("id")
-      .single();
-    if (!error && data) {
-      setConversationId(data.id);
-      return data.id;
+      } as any);
+    if (!error) {
+      setConversationId(clientId);
+      console.log("[createConversation] created with ID:", clientId);
+      return clientId;
     }
     console.error("Failed to create conversation:", error);
     return null;
