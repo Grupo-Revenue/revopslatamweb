@@ -1529,7 +1529,7 @@ const AgenticLandingPage = () => {
           setPhoneError("");
         };
 
-        const isFormValid = validatePhone(phoneInput) && (hasEmail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.trim()));
+        const isFormValid = validatePhone(phoneInput) && (hasEmail || validateCorporateEmail(emailInput.trim()).valid);
 
         return (
           <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
