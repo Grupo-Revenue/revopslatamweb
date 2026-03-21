@@ -277,6 +277,7 @@ const AgenticLandingPage = () => {
   const earlyEmailLastAttemptRef = useRef(0);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
+  const attributionRef = useRef(getAttributionData());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
 
   // Visitor name state (collected before diagnostic)
