@@ -646,18 +646,22 @@ serve(async (req) => {
       }
     }
 
-    /* ── PASO 6: Actualizar Supabase ── */
+    /* ── PASO 7: Actualizar Supabase ── */
     if (conversation_id && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
       try {
         const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+        const updateData: Record<string, unknown> = {
+          scheduled: true,
+          scheduled_at: new Date().toISOString(),
+          meeting_date: finalDisplayDate,
+          meeting_time: finalDisplayTime,
+          hubspot_form_submitted: hubspotFormSubmitted,
+          hubspot_form_submitted_at: hubspotFormSubmitted ? new Date().toISOString() : null,
+          hubspot_form_error: hubspotFormError,
+        };
         await supabaseAdmin
           .from("conversations")
-          .update({
-            scheduled: true,
-            scheduled_at: new Date().toISOString(),
-            meeting_date: finalDisplayDate,
-            meeting_time: finalDisplayTime,
-          })
+          .update(updateData)
           .eq("id", conversation_id);
       } catch (e) {
         console.error("Supabase update error:", e);
