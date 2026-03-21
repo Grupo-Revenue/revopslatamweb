@@ -566,9 +566,17 @@ const AgenticLandingPage = () => {
       await supabase
         .from("conversations")
         .update({ availability_preference: `early_email:${trimmedEmail}` })
-        .eq("id", conversationId);
-      // Create or update HubSpot contact with everything accumulated so far
-      syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true);
+        .eq("id", conversationId)
+        .then(({ error }) => {
+          if (error) {
+            console.error("early email conversation update error:", error);
+          }
+        });
+
+      syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true).catch((error) => {
+        console.error("early email HubSpot sync error:", error);
+      });
+
       // Now call Claude to continue the conversation (empathy + next question)
       const pending = pendingClaudeCallRef.current;
       if (pending) {
