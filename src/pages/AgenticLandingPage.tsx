@@ -1002,8 +1002,9 @@ const AgenticLandingPage = () => {
       setEmailError("Ingresa tu correo electrónico");
       return;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(effectiveEmail)) {
-      setEmailError("Ingresa un correo válido");
+    const emailValidation = validateCorporateEmail(effectiveEmail);
+    if (!emailValidation.valid) {
+      setEmailError(CORPORATE_EMAIL_ERRORS[emailValidation.error!]);
       return;
     }
     if (!validatePhone(phoneInput)) {
