@@ -55,6 +55,14 @@ const AdminMedia = lazy(() => import("./pages/admin/AdminMedia"));
 const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const AdminSetup = lazy(() => import("./pages/admin/AdminSetup"));
 
+// Admin Agent pages
+const AdminAgentLogin = lazy(() => import("./pages/admin-agent/AdminAgentLogin"));
+const AdminAgentLayout = lazy(() => import("./pages/admin-agent/AdminAgentLayout"));
+const ConversationsPage = lazy(() => import("./pages/admin-agent/ConversationsPage"));
+const ScoringPage = lazy(() => import("./pages/admin-agent/ScoringPage"));
+const KnowledgePage = lazy(() => import("./pages/admin-agent/KnowledgePage"));
+const ConfigPage = lazy(() => import("./pages/admin-agent/ConfigPage"));
+
 const BlogRedirect = () => {
   const path = window.location.pathname.replace(/^\/blog/, '');
   window.location.replace(`https://blog.revopslatam.com${path}`);
