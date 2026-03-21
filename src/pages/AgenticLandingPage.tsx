@@ -320,40 +320,63 @@ const AgenticLandingPage = () => {
     return earlyEmail?.trim() || emailInput?.trim() || nurturingEmail?.trim() || null;
   }, [earlyEmail, emailInput, nurturingEmail]);
 
+  // Save enriched conversation metadata to Supabase
+  const saveConversationMeta = useCallback(
+    async (convId: string, meta: Record<string, any>) => {
+      await supabase
+        .from("conversations")
+        .update(meta as any)
+        .eq("id", convId);
+    },
+    []
+  );
+
   // Process user answer and sync to HubSpot based on turn
   const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number) => {
     const buf = answersBufferRef.current;
+    const convMeta: Record<string, any> = {};
 
     switch (answerTurn) {
       case 2: { // User answered Q1 (cargo+empresa) — turn 2 = first user answer
         buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
+        convMeta.cargo = buf.nivel_del_cargo;
         // Try to extract company name from the same answer
         const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
         if (companyMatch && companyMatch[1]) {
           buf.company = companyMatch[1].trim();
+          convMeta.company = buf.company;
         }
         break;
       }
       case 3: { // User answered Q2 (rubro)
         buf.rubro = mapRubroToHubSpot(userAnswer);
+        convMeta.rubro = buf.rubro;
         break;
       }
       case 4: { // User answered Q3 (equipo)
         buf.cantidad_de_vendedores = mapEquipoToHubSpot(userAnswer);
+        convMeta.equipo_comercial = buf.cantidad_de_vendedores;
         break;
       }
       case 5: { // User answered Q4 (CRM)
         const mapped = mapCrmToHubSpot(userAnswer);
         buf.cuenta_con_crm = mapped.value;
         detectedCrmStatusRef.current = mapped.status;
+        convMeta.crm = mapped.value;
         break;
       }
       case 6: { // User answered Q5 (problema)
         const propName = getQ5PropertyName(detectedCrmStatusRef.current);
         const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
         buf[propName] = exactValue;
+        convMeta.problema_principal = exactValue;
         break;
       }
+    }
+
+    // Save to conversation metadata
+    if (conversationId && Object.keys(convMeta).length > 0) {
+      void saveConversationMeta(conversationId, convMeta);
     }
 
     // Always sync if we have an email — don't wait for hubspotContactId
@@ -364,7 +387,7 @@ const AgenticLandingPage = () => {
     } else {
       console.log(`[processAnswerForHubSpot] turn ${answerTurn}, no email yet — buffering:`, { ...buf });
     }
-  }, [syncToHubSpot, getCurrentEmail]);
+  }, [syncToHubSpot, getCurrentEmail, conversationId, saveConversationMeta]);
 
   // Sync score and lead status to HubSpot
   const syncScoreToHubSpot = useCallback((score: number, flag: string, _email: string | null) => {
@@ -419,18 +442,20 @@ const AgenticLandingPage = () => {
 
   // Save messages to Supabase
   const saveMessages = useCallback(
-    async (convId: string, msgs: { role: string; text: string }[], extra?: { summary?: string; availability_preference?: string }) => {
+    async (convId: string, msgs: { role: string; text: string }[], extra?: Record<string, any>) => {
       const anthropicMessages = msgs.map((m) => ({
         role: m.role === "ai" ? "assistant" : "user",
         content: m.text,
       }));
       await supabase
         .from("conversations")
-        .update({ messages: anthropicMessages as any, ...extra })
+        .update({ messages: anthropicMessages as any, ...extra } as any)
         .eq("id", convId);
     },
     []
   );
+
+
 
   // Typewriter effect — optionally mark message as meta (not sent to AI)
   const typewriterEffect = useCallback(
@@ -566,12 +591,18 @@ const AgenticLandingPage = () => {
         const f = result.flag || (result.score >= 65 ? "alta" : result.score >= 40 ? "media" : "baja");
         const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || nurturingEmail || null;
         syncScoreToHubSpot(result.score, f, currentEmail);
+        // Save score/flag/status to conversation
+        if (conversationId) {
+          const status = result.phase === "discarded" ? "descartado" : result.phase === "nurturing" ? "nurturing" : result.phase === "availability" ? "incompleto" : "incompleto";
+          void saveConversationMeta(conversationId, { score: result.score, flag: f, status });
+        }
       }
       if (result.flag) setLeadFlag(result.flag);
       if (result.summary) setSummary(result.summary);
       if (conversationId) {
-        const extra: Record<string, string> = {};
+        const extra: Record<string, any> = {};
         if (result.summary) extra.summary = result.summary;
+        if (result.flag) extra.flag = result.flag;
         saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
       }
 
@@ -655,6 +686,11 @@ const AgenticLandingPage = () => {
     setEmailInput(trimmedEmail);
     setNurturingEmail(trimmedEmail);
 
+    // Save email to conversation
+    if (conversationId) {
+      void saveConversationMeta(conversationId, { visitor_email: trimmedEmail });
+    }
+
     void continuePendingClaudeCall(true);
 
     if (!conversationId) return;
@@ -732,6 +768,11 @@ const AgenticLandingPage = () => {
       if (lastName) answersBufferRef.current.lastname = lastName;
 
       setNameCollected(true);
+
+      // Save visitor name to conversation
+      if (conversationId) {
+        void saveConversationMeta(conversationId, { visitor_name: normalizedFull });
+      }
 
       // Now show Q1 (cargo+empresa) via typewriter — this IS sent to Claude
       const firstQuestion = `Qué bueno tenerte aquí, ${firstName}. Cuéntame, ¿cuál es tu cargo y en qué empresa trabajas?`;
@@ -898,6 +939,18 @@ const AgenticLandingPage = () => {
       }
 
       void saveConversion(emailInput.trim(), hubspotContactId, "meeting_booked");
+
+      // Save meeting status to conversation
+      if (conversationId) {
+        void saveConversationMeta(conversationId, {
+          meeting_booked: true,
+          status: "agendo",
+          meeting_date: data.display_date,
+          meeting_time: data.display_time,
+          visitor_email: emailInput.trim(),
+          hubspot_sync_status: "synced",
+        });
+      }
 
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
