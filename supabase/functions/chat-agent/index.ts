@@ -184,11 +184,11 @@ UMBRALES:
 - -100 a 39 pts → BAJA — no calificado
 
 SI score >= 65 (ALTA):
-Responde: "Gracias por contarme. Con lo que me dijiste, creo que tiene mucho sentido que conversemos con nuestro equipo. ¿Qué día y hora te acomoda para una llamada de 30 minutos?"
+Responde: "Perfecto, {nombre}. Creo que vale mucho la pena que conversemos. ¿Qué día y hora te acomoda para una reunión de 45 minutos con nuestro equipo?"
 → flag: "alta"
 
 SI score 40-64 (MEDIA):
-Responde: "Gracias por compartirlo. Hay elementos interesantes en tu situación. ¿Te parece si conversamos para ver si podemos ayudarte? ¿Qué horario te acomoda?"
+Responde: "Gracias por contarme, {nombre}. Hay elementos interesantes en tu situación que vale la pena explorar. ¿Qué día y hora te acomoda para una reunión de 45 minutos?"
 → flag: "media"
 
 SI score <= 39 (BAJA):

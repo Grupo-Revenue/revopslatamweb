@@ -400,9 +400,45 @@ serve(async (req) => {
     }
 
     /* ── PASO 2: Crear evento en calendario ── */
+    const companyName = answers_buffer?.company || "";
+    const cargoValue = answers_buffer?.nivel_del_cargo || jobTitle || "";
+    const cantidadVendedores = answers_buffer?.cantidad_de_vendedores || "";
+    const cuentaConCrm = answers_buffer?.cuenta_con_crm || "";
+    const contactFirstName = answers_buffer?.firstname || name.trim().split(/\s+/)[0] || "";
+    const contactLastName = answers_buffer?.lastname || name.trim().split(/\s+/).slice(1).join(" ") || "";
+    const fullContactName = contactLastName ? `${contactFirstName} ${contactLastName}` : contactFirstName;
+
+    const eventTitle = companyName
+      ? `Revops LATAM / ${fullContactName} + ${companyName} — Conversación inicial`
+      : `Revops LATAM / ${fullContactName} — Conversación inicial`;
+
+    // Build description lines, omitting empty fields
+    const descLines: string[] = [
+      "Reunión de diagnóstico inicial con Revops LATAM.",
+      "",
+    ];
+    if (fullContactName) descLines.push(`👤 Contacto: ${fullContactName}`);
+    if (companyName) descLines.push(`🏢 Empresa: ${companyName}`);
+    if (cargoValue) descLines.push(`💼 Cargo: ${cargoValue}`);
+    if (cantidadVendedores) descLines.push(`📊 Equipo comercial: ${cantidadVendedores}`);
+    if (cuentaConCrm) descLines.push(`🛠 CRM actual: ${cuentaConCrm}`);
+    if (summary) {
+      descLines.push("");
+      descLines.push(`📋 Resumen de la conversación con Lidia:`);
+      descLines.push(summary);
+    }
+    if (score !== undefined) {
+      const flagLabel = flag || (score >= 65 ? "alta" : score >= 40 ? "media" : "baja");
+      descLines.push("");
+      descLines.push(`⚡ Lead Score: ${score}/100 — ${flagLabel}`);
+    }
+    descLines.push("");
+    descLines.push("—");
+    descLines.push("Este evento fue generado automáticamente por Lidia, asistente virtual de Revops LATAM.");
+
     const eventBody = {
-      summary: `Conversación RevOps LATAM — ${name}`,
-      description: `Contexto: ${context}\nResumen IA: ${summary || "Sin resumen"}`,
+      summary: eventTitle,
+      description: descLines.join("\n"),
       start: { dateTime: finalStart, timeZone: "America/Santiago" },
       end: { dateTime: finalEnd, timeZone: "America/Santiago" },
       attendees: [

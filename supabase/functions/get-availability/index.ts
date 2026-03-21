@@ -136,7 +136,7 @@ serve(async (req) => {
       console.error("FreeBusy error:", await freeBusyRes.text());
     }
 
-    // Generate 30-min slots for each business day, 9:00-17:30
+    // Generate 45-min slots for each business day, 9:00-17:15
     const allSlots: Slot[] = [];
     
     for (const day of businessDays) {
@@ -144,14 +144,17 @@ serve(async (req) => {
       const dayName = DAY_NAMES[day.getDay()];
       const displayDate = `${dayName} ${day.getDate()} de ${MONTH_NAMES[day.getMonth()]}`;
 
+      // Generate slots every 30 min but with 45-min duration
       for (let hour = 9; hour <= 17; hour++) {
         for (const min of [0, 30]) {
-          if (hour === 17 && min === 30) continue; // Don't start at 17:30
+          // Don't start a 45-min slot after 17:15
+          const startMinutes = hour * 60 + min;
+          if (startMinutes + 45 > 18 * 60) continue;
           
           const startTime = `${String(hour).padStart(2, "0")}:${String(min).padStart(2, "0")}`;
-          const endMin = min + 30;
-          const endHour = endMin >= 60 ? hour + 1 : hour;
-          const endMinFinal = endMin >= 60 ? endMin - 60 : endMin;
+          const endTotalMin = startMinutes + 45;
+          const endHour = Math.floor(endTotalMin / 60);
+          const endMinFinal = endTotalMin % 60;
           const endTime = `${String(endHour).padStart(2, "0")}:${String(endMinFinal).padStart(2, "0")}`;
 
           const slotStart = new Date(`${dateStr}T${startTime}:00-03:00`);
