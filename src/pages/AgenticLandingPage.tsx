@@ -327,10 +327,12 @@ const AgenticLandingPage = () => {
   // Save enriched conversation metadata to Supabase
   const saveConversationMeta = useCallback(
     async (convId: string, meta: Record<string, any>) => {
-      await supabase
+      console.log("[saveConversationMeta] saving:", { convId, meta });
+      const { error } = await supabase
         .from("conversations")
         .update(meta as any)
         .eq("id", convId);
+      if (error) console.error("[saveConversationMeta] error:", error);
     },
     []
   );
