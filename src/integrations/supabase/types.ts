@@ -72,6 +72,9 @@ export type Database = {
           flag: string | null
           full_url: string | null
           hubspot_contact_id: string | null
+          hubspot_form_error: string | null
+          hubspot_form_submitted: boolean | null
+          hubspot_form_submitted_at: string | null
           hubspot_sync_error: string | null
           hubspot_sync_status: string | null
           id: string
@@ -109,6 +112,9 @@ export type Database = {
           flag?: string | null
           full_url?: string | null
           hubspot_contact_id?: string | null
+          hubspot_form_error?: string | null
+          hubspot_form_submitted?: boolean | null
+          hubspot_form_submitted_at?: string | null
           hubspot_sync_error?: string | null
           hubspot_sync_status?: string | null
           id?: string
@@ -146,6 +152,9 @@ export type Database = {
           flag?: string | null
           full_url?: string | null
           hubspot_contact_id?: string | null
+          hubspot_form_error?: string | null
+          hubspot_form_submitted?: boolean | null
+          hubspot_form_submitted_at?: string | null
           hubspot_sync_error?: string | null
           hubspot_sync_status?: string | null
           id?: string
