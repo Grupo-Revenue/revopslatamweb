@@ -8,6 +8,83 @@ const corsHeaders = {
 
 const HUBSPOT_API = "https://api.hubapi.com";
 
+/* ─── Attribution source mapping ─── */
+interface Attribution {
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  fbclid?: string;
+  full_url?: string;
+  referrer?: string;
+}
+
+function buildAttributionProperties(attr: Attribution): Record<string, string> {
+  const src = (attr.utm_source || "").toLowerCase();
+  const fbclid = attr.fbclid || "";
+  const campaign = attr.utm_campaign || "";
+  const props: Record<string, string> = {};
+
+  // Determine source category
+  if (src === "meta" || src === "facebook" || src === "instagram" || fbclid) {
+    props.hs_analytics_source = "PAID_SOCIAL";
+    props.hs_analytics_source_data_1 = "META Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SOCIAL";
+    props.hs_latest_source_data_1 = "META Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "google" || src === "cpc") {
+    props.hs_analytics_source = "PAID_SEARCH";
+    props.hs_analytics_source_data_1 = "Google Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SEARCH";
+    props.hs_latest_source_data_1 = "Google Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "linkedin") {
+    props.hs_analytics_source = "PAID_SOCIAL";
+    props.hs_analytics_source_data_1 = "LinkedIn Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SOCIAL";
+    props.hs_latest_source_data_1 = "LinkedIn Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "email" || src === "newsletter") {
+    props.hs_analytics_source = "EMAIL_MARKETING";
+    props.hs_analytics_source_data_1 = campaign;
+    props.hs_latest_source = "EMAIL_MARKETING";
+    props.hs_latest_source_data_1 = campaign;
+  } else if (!src && attr.referrer) {
+    props.hs_analytics_source = "ORGANIC_SEARCH";
+    props.hs_latest_source = "ORGANIC_SEARCH";
+  } else if (!src) {
+    props.hs_analytics_source = "DIRECT_TRAFFIC";
+    props.hs_latest_source = "DIRECT_TRAFFIC";
+  }
+
+  // First URL — critical for HubSpot
+  if (attr.full_url) {
+    props.hs_analytics_first_url = attr.full_url;
+  }
+
+  // First referrer
+  if (attr.referrer) {
+    props.hs_analytics_first_referrer = attr.referrer;
+  }
+
+  // fbclid — critical for CAPI META
+  if (fbclid) {
+    props.hs_facebook_click_id = fbclid;
+  }
+
+  // UTM originals for reference
+  if (attr.utm_source) props.utm_source_original = attr.utm_source;
+  if (attr.utm_medium) props.utm_medium_original = attr.utm_medium;
+  if (campaign) props.utm_campaign_original = campaign;
+  if (attr.utm_content) props.utm_content_original = attr.utm_content;
+
+  return props;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -22,7 +99,7 @@ serve(async (req) => {
       );
     }
 
-    const { email, properties, createIfNotExists } = await req.json();
+    const { email, properties, createIfNotExists, attribution } = await req.json();
 
     if (!email) {
       return new Response(
@@ -30,6 +107,10 @@ serve(async (req) => {
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
+
+    // Merge attribution properties with user-provided properties
+    const attrProps = attribution ? buildAttributionProperties(attribution as Attribution) : {};
+    const mergedProperties = { ...attrProps, ...(properties || {}) };
 
     const headers = {
       Authorization: `Bearer ${HUBSPOT_API_KEY}`,
@@ -69,7 +150,7 @@ serve(async (req) => {
       const updateRes = await fetch(`${HUBSPOT_API}/crm/v3/objects/contacts/${contactId}`, {
         method: "PATCH",
         headers,
-        body: JSON.stringify({ properties: properties || {} }),
+        body: JSON.stringify({ properties: mergedProperties }),
       });
 
       if (!updateRes.ok) {
@@ -92,7 +173,7 @@ serve(async (req) => {
       const createRes = await fetch(`${HUBSPOT_API}/crm/v3/objects/contacts`, {
         method: "POST",
         headers,
-        body: JSON.stringify({ properties: { email, ...(properties || {}) } }),
+        body: JSON.stringify({ properties: { email, ...mergedProperties } }),
       });
 
       if (!createRes.ok) {

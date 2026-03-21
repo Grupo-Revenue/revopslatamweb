@@ -878,6 +878,7 @@ const AgenticLandingPage = () => {
           flag: leadFlag || "calificado",
           conversation_messages: messages,
           answers_buffer: answersBufferRef.current,
+          attribution: attributionRef.current,
           ...utmRef.current,
         },
       });
@@ -890,6 +891,8 @@ const AgenticLandingPage = () => {
         return;
       }
 
+      void saveConversion(emailInput.trim(), hubspotContactId, "meeting_booked");
+
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
       setScreen(8);
@@ -897,7 +900,7 @@ const AgenticLandingPage = () => {
       console.error("book-meeting exception:", e);
       setScreen(8);
     }
-  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag]);
+  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId]);
 
 
   /* ─── render current screen ─── */
