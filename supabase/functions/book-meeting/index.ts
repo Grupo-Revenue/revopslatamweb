@@ -89,6 +89,69 @@ async function checkAvailability(
   return busy.length === 0;
 }
 
+/* ─── Attribution source mapping (same logic as update-contact) ─── */
+interface Attribution {
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  fbclid?: string;
+  full_url?: string;
+  referrer?: string;
+}
+
+function buildAttributionProperties(attr: Attribution): Record<string, string> {
+  const src = (attr.utm_source || "").toLowerCase();
+  const fbclid = attr.fbclid || "";
+  const campaign = attr.utm_campaign || "";
+  const props: Record<string, string> = {};
+
+  if (src === "meta" || src === "facebook" || src === "instagram" || fbclid) {
+    props.hs_analytics_source = "PAID_SOCIAL";
+    props.hs_analytics_source_data_1 = "META Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SOCIAL";
+    props.hs_latest_source_data_1 = "META Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "google" || src === "cpc") {
+    props.hs_analytics_source = "PAID_SEARCH";
+    props.hs_analytics_source_data_1 = "Google Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SEARCH";
+    props.hs_latest_source_data_1 = "Google Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "linkedin") {
+    props.hs_analytics_source = "PAID_SOCIAL";
+    props.hs_analytics_source_data_1 = "LinkedIn Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SOCIAL";
+    props.hs_latest_source_data_1 = "LinkedIn Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "email" || src === "newsletter") {
+    props.hs_analytics_source = "EMAIL_MARKETING";
+    props.hs_analytics_source_data_1 = campaign;
+    props.hs_latest_source = "EMAIL_MARKETING";
+    props.hs_latest_source_data_1 = campaign;
+  } else if (!src && attr.referrer) {
+    props.hs_analytics_source = "ORGANIC_SEARCH";
+    props.hs_latest_source = "ORGANIC_SEARCH";
+  } else if (!src) {
+    props.hs_analytics_source = "DIRECT_TRAFFIC";
+    props.hs_latest_source = "DIRECT_TRAFFIC";
+  }
+
+  if (attr.full_url) props.hs_analytics_first_url = attr.full_url;
+  if (attr.referrer) props.hs_analytics_first_referrer = attr.referrer;
+  if (fbclid) props.hs_facebook_click_id = fbclid;
+  if (attr.utm_source) props.utm_source_original = attr.utm_source;
+  if (attr.utm_medium) props.utm_medium_original = attr.utm_medium;
+  if (campaign) props.utm_campaign_original = campaign;
+  if (attr.utm_content) props.utm_content_original = attr.utm_content;
+
+  return props;
+}
+
 /* ─── Main handler ─── */
 serve(async (req) => {
   if (req.method === "OPTIONS") {
