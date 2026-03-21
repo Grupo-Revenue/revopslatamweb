@@ -397,13 +397,12 @@ const AgenticLandingPage = () => {
   // Sync score and lead status to HubSpot
   const syncScoreToHubSpot = useCallback((score: number, flag: string, _email: string | null) => {
     const statusMap: Record<string, string> = {
-      alta: "IN_PROGRESS",
-      media: "OPEN",
-      baja: "UNQUALIFIED",
-      no_calificado: "UNQUALIFIED",
+      alta: "Calificado",
+      media: "En Prospección",
+      baja: "No califica",
+      no_calificado: "No califica",
     };
     const props: Record<string, string> = {
-      lead_score_ia: String(score),
       hs_lead_status: statusMap[flag] || "OPEN",
     };
     answersBufferRef.current = { ...answersBufferRef.current, ...props };
