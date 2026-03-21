@@ -599,7 +599,7 @@ const AgenticLandingPage = () => {
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot, earlyEmail]);
 
   useEffect(() => {
-    return () => {
+    return () => {};
   }, []);
 
   // Skip email capture
