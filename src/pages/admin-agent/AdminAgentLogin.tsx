@@ -26,6 +26,7 @@ export default function AdminAgentLogin() {
       if (data.success) {
         localStorage.setItem("admin_agent_token", data.token);
         localStorage.setItem("admin_agent_expires", String(data.expiresAt));
+        localStorage.setItem("admin_agent_creds", JSON.stringify({ username, password }));
         navigate("/admin-agent");
       } else {
         setError(data.error || "Credenciales inválidas");

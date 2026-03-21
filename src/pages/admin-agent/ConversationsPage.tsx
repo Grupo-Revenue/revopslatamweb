@@ -125,7 +125,24 @@ export default function ConversationsPage() {
     if (!confirmed) return;
     setDeleting(true);
     const ids = Array.from(selectedIds);
-    await supabase.from("conversations").delete().in("id", ids);
+    try {
+      const storedCreds = localStorage.getItem("admin_agent_creds");
+      const creds = storedCreds ? JSON.parse(storedCreds) : {};
+      const res = await fetch(
+        `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/delete-conversations`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ids, username: creds.username, password: creds.password }),
+        }
+      );
+      const data = await res.json();
+      if (!data.success) {
+        alert(`Error al eliminar: ${data.error || "Error desconocido"}`);
+      }
+    } catch (err) {
+      alert("Error de conexión al eliminar conversaciones");
+    }
     setSelectedIds(new Set());
     await fetchConversations();
     setDeleting(false);
