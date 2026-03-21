@@ -289,6 +289,10 @@ const AgenticLandingPage = () => {
   const answersBufferRef = useRef<Record<string, string>>({});
   const detectedCrmStatusRef = useRef<"sin_crm" | "hubspot" | "otro_crm">("sin_crm");
 
+  // Question progress tracker — immune to turn desync from repeat_turn
+  // 0=none, 1=cargo done, 2=rubro done, 3=equipo done, 4=crm done, 5=problema done
+  const questionProgressRef = useRef(0);
+
   // Silent HubSpot sync — never interrupts the conversation
   const syncToHubSpot = useCallback(async (email: string, properties: Record<string, string>, createIfNotExists = false) => {
     try {
