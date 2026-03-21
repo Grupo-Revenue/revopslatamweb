@@ -320,6 +320,17 @@ const AgenticLandingPage = () => {
     return earlyEmail?.trim() || emailInput?.trim() || nurturingEmail?.trim() || null;
   }, [earlyEmail, emailInput, nurturingEmail]);
 
+  // Save enriched conversation metadata to Supabase
+  const saveConversationMeta = useCallback(
+    async (convId: string, meta: Record<string, any>) => {
+      await supabase
+        .from("conversations")
+        .update(meta as any)
+        .eq("id", convId);
+    },
+    []
+  );
+
   // Process user answer and sync to HubSpot based on turn
   const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number) => {
     const buf = answersBufferRef.current;
