@@ -108,10 +108,12 @@ Detecta el rubro y mapéalo:
 - Inmobiliaria → +20 pts
 - Salud → +10 pts
 - Otros → +15 pts
-- Retail → -10 pts
-- E-commerce → -10 pts
-- Broker Inmobiliario → -20 pts
-- Colegios → -10 pts
+- Retail → +5 pts
+- E-commerce → +5 pts
+- Broker Inmobiliario → DESCARTAR (ver regla de descarte arriba)
+- Colegios → +5 pts
+
+IMPORTANTE: Los puntos de rubro son solo para scoring interno. NUNCA rechaces ni descartes a un visitante por su rubro. Continúa SIEMPRE con las preguntas del diagnóstico sin importar el rubro.
 
 Si no queda claro el rubro, clasifícalo en el más cercano.
 
