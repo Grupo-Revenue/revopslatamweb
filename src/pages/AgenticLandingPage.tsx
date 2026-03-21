@@ -274,6 +274,7 @@ const AgenticLandingPage = () => {
   const [emailError, setEmailError] = useState("");
   const [turn, setTurn] = useState(0);
   const [conversationId, setConversationId] = useState<string | null>(null);
+  const conversationIdRef = useRef<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [availabilitySlots, setAvailabilitySlots] = useState<Record<string, { display_date: string; slots: { date: string; startTime: string; endTime: string; display_date: string; display_time: string }[] }>>({});
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -360,8 +361,7 @@ const AgenticLandingPage = () => {
       console.log("[saveConversationMeta] saving:", { convId, meta });
       const { error } = await supabase
         .from("conversations")
-        .update(meta as any)
-        .eq("id", convId);
+        .upsert({ id: convId, ...(meta as any) }, { onConflict: "id" });
       if (error) console.error("[saveConversationMeta] error:", error);
     },
     []
@@ -409,12 +409,11 @@ const AgenticLandingPage = () => {
       questionProgressRef.current = 5;
     }
 
-    // Save to conversation metadata
-    if (conversationId && Object.keys(convMeta).length > 0) {
-      void saveConversationMeta(conversationId, convMeta);
+    const currentConversationId = conversationIdRef.current || conversationId;
+    if (currentConversationId && Object.keys(convMeta).length > 0) {
+      void saveConversationMeta(currentConversationId, convMeta);
     }
 
-    // Always sync if we have an email
     const email = getCurrentEmail();
     if (email) {
       console.log(`[processAnswerForHubSpot] progress ${progress}→${questionProgressRef.current}, syncing buffer:`, { ...buf });
@@ -454,7 +453,7 @@ const AgenticLandingPage = () => {
     const clientId = crypto.randomUUID();
     const { error } = await supabase
       .from("conversations")
-      .insert({
+      .upsert({
         id: clientId,
         context: contextRef.current,
         fbclid: attr.fbclid || null,
@@ -465,8 +464,9 @@ const AgenticLandingPage = () => {
         utm_term: attr.utm_term || null,
         full_url: attr.full_url || null,
         referrer: attr.referrer || null,
-      } as any);
+      } as any, { onConflict: "id" });
     if (!error) {
+      conversationIdRef.current = clientId;
       setConversationId(clientId);
       console.log("[createConversation] created with ID:", clientId);
       return clientId;
@@ -482,10 +482,10 @@ const AgenticLandingPage = () => {
         role: m.role === "ai" ? "assistant" : "user",
         content: m.text,
       }));
-      await supabase
+      const { error } = await supabase
         .from("conversations")
-        .update({ messages: anthropicMessages as any, ...extra } as any)
-        .eq("id", convId);
+        .upsert({ id: convId, messages: anthropicMessages as any, ...(extra || {}) } as any, { onConflict: "id" });
+      if (error) console.error("[saveMessages] error:", error);
     },
     []
   );
@@ -617,6 +617,7 @@ const AgenticLandingPage = () => {
     async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string; meta?: boolean }[], currentTurn?: number) => {
       await typewriterEffect(result.reply);
       const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
+      const currentConversationId = conversationIdRef.current || conversationId;
       // If repeat_turn, roll back the turn counter AND question progress
       if (result.repeat_turn) {
         setTurn((prev) => Math.max(prev - 1, 1));
@@ -627,19 +628,18 @@ const AgenticLandingPage = () => {
         const f = result.flag || (result.score >= 65 ? "alta" : result.score >= 40 ? "media" : "baja");
         const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || nurturingEmail || null;
         syncScoreToHubSpot(result.score, f, currentEmail);
-        // Save score/flag/status to conversation
-        if (conversationId) {
+        if (currentConversationId) {
           const status = result.phase === "discarded" ? "descartado" : result.phase === "nurturing" ? "nurturing" : result.phase === "availability" ? "incompleto" : "incompleto";
-          void saveConversationMeta(conversationId, { score: result.score, flag: f, status });
+          void saveConversationMeta(currentConversationId, { score: result.score, flag: f, status });
         }
       }
       if (result.flag) setLeadFlag(result.flag);
       if (result.summary) setSummary(result.summary);
-      if (conversationId) {
+      if (currentConversationId) {
         const extra: Record<string, any> = {};
         if (result.summary) extra.summary = result.summary;
         if (result.flag) extra.flag = result.flag;
-        saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
+        saveMessages(currentConversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
       }
 
       // Detect Q5 — show buttons when CRM was just answered (progress === 4)
@@ -728,14 +728,16 @@ const AgenticLandingPage = () => {
     setEmailInput(trimmedEmail);
     setNurturingEmail(trimmedEmail);
 
+    const currentConversationId = conversationIdRef.current || conversationId;
+
     // Save email to conversation
-    if (conversationId) {
-      void saveConversationMeta(conversationId, { visitor_email: trimmedEmail });
+    if (currentConversationId) {
+      void saveConversationMeta(currentConversationId, { visitor_email: trimmedEmail });
     }
 
     void continuePendingClaudeCall(true);
 
-    if (!conversationId) return;
+    if (!currentConversationId) return;
 
     if (earlyEmailSubmittingRef.current) {
       if (now - earlyEmailLastAttemptRef.current < 3000) return;
@@ -749,8 +751,7 @@ const AgenticLandingPage = () => {
       try {
         const { error } = await supabase
           .from("conversations")
-          .update({ availability_preference: `early_email:${trimmedEmail}` })
-          .eq("id", conversationId);
+          .upsert({ id: currentConversationId, availability_preference: `early_email:${trimmedEmail}` } as any, { onConflict: "id" });
 
         if (error) {
           console.error("early email conversation update error:", error);
@@ -787,8 +788,10 @@ const AgenticLandingPage = () => {
     setEmailCaptureHandled(true);
     setEarlyEmailError("");
 
+    const currentConversationId = conversationIdRef.current || conversationId;
+
     // Save fallback info to conversation
-    if (conversationId) {
+    if (currentConversationId) {
       const fallbackMeta: Record<string, any> = {
         phone: normalizedPhone,
         flag: "sin_email_corporativo",
@@ -796,7 +799,7 @@ const AgenticLandingPage = () => {
       if (fallbackName.trim() && !visitorName) {
         fallbackMeta.visitor_name = fallbackName.trim();
       }
-      void saveConversationMeta(conversationId, fallbackMeta);
+      void saveConversationMeta(currentConversationId, fallbackMeta);
     }
 
     void continuePendingClaudeCall(false);
@@ -818,6 +821,7 @@ const AgenticLandingPage = () => {
   const handleUserSend = useCallback(async () => {
     const val = chatInput.trim();
     if (!val || inputDisabled) return;
+    const currentConversationId = conversationIdRef.current || conversationId;
 
     // ── Name step: before diagnostic ──
     if (!nameCollected) {
@@ -841,16 +845,16 @@ const AgenticLandingPage = () => {
       setNameCollected(true);
 
       // Save visitor name to conversation
-      if (conversationId) {
-        void saveConversationMeta(conversationId, { visitor_name: normalizedFull });
+      if (currentConversationId) {
+        void saveConversationMeta(currentConversationId, { visitor_name: normalizedFull });
       }
 
       // Now show Q1 (cargo+empresa) via typewriter — this IS sent to Claude
       const firstQuestion = `Qué bueno tenerte aquí, ${firstName}. Cuéntame, ¿cuál es tu cargo y en qué empresa trabajas?`;
       setTurn(1);
       await typewriterEffect(firstQuestion);
-      if (conversationId) {
-        saveMessages(conversationId, [
+      if (currentConversationId) {
+        saveMessages(currentConversationId, [
           ...messages, userMsg,
           { role: "ai", text: firstQuestion },
         ]);
@@ -928,6 +932,7 @@ const AgenticLandingPage = () => {
   // Save conversion record to Supabase
   const saveConversion = useCallback(async (email: string, contactId: string | null, convType = "meeting_booked") => {
     const attr = attributionRef.current;
+    const currentConversationId = conversationIdRef.current || conversationId;
     try {
       await supabase.from("conversions").insert({
         contact_email: email,
@@ -941,7 +946,7 @@ const AgenticLandingPage = () => {
         full_url: attr.full_url || null,
         referrer: attr.referrer || null,
         conversion_type: convType,
-        conversation_id: conversationId,
+        conversation_id: currentConversationId,
       } as any);
     } catch (e) {
       console.error("saveConversion error:", e);
@@ -961,7 +966,7 @@ const AgenticLandingPage = () => {
           context: contextRef.current,
           summary,
           availability_preference: "",
-          conversation_id: conversationId,
+          conversation_id: conversationIdRef.current || conversationId,
           score: leadScore,
           flag: "no_calificado",
           nurturing_only: true,
@@ -995,6 +1000,7 @@ const AgenticLandingPage = () => {
   const handleConfirmData = useCallback(async () => {
     // Determine the effective email
     const effectiveEmail = earlyEmail?.trim() || emailInput.trim();
+    const currentConversationId = conversationIdRef.current || conversationId;
     setPhoneError("");
     setEmailError("");
 
@@ -1026,7 +1032,7 @@ const AgenticLandingPage = () => {
           summary,
           availability_preference: `${selectedSlot.display_date} a las ${selectedSlot.display_time}`,
           selected_slot: selectedSlot,
-          conversation_id: conversationId,
+          conversation_id: currentConversationId,
           score: leadScore,
           flag: leadFlag || "calificado",
           conversation_messages: messages,
@@ -1050,8 +1056,8 @@ const AgenticLandingPage = () => {
       void syncToHubSpot(effectiveEmail, { ...answersBufferRef.current, phone: normalizedPhone }, false);
 
       // Save meeting status to conversation
-      if (conversationId) {
-        void saveConversationMeta(conversationId, {
+      if (currentConversationId) {
+        void saveConversationMeta(currentConversationId, {
           meeting_booked: true,
           status: "agendo",
           meeting_date: data.display_date,
