@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import LogoBlanco from "@/assets/Logo_REVOPSLATAM_Blanco.png";
+import LidiaAvatar from "@/assets/lidia-avatar.png";
 
 /* ─── palette per screen ─── */
 const BG_COLORS = [
@@ -856,17 +857,16 @@ const AgenticLandingPage = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mt-4 mb-0"
+              className="relative mt-1 mb-0"
             >
-              <div
-                className="w-[80px] h-[80px] rounded-full flex items-center justify-center"
+              <img
+                src={LidiaAvatar}
+                alt="Lidia — Asistente Virtual"
+                className="w-[80px] h-[80px] rounded-full object-cover"
                 style={{
-                  background: "linear-gradient(135deg, #6224BE, #BE1869)",
                   boxShadow: "0 0 0 4px transparent, 0 0 0 6px rgba(190,24,105,0.3)",
                 }}
-              >
-                <span className="text-white text-[28px] font-medium select-none">L</span>
-              </div>
+              />
             </motion.div>
 
             {/* Name + role */}
