@@ -686,6 +686,11 @@ const AgenticLandingPage = () => {
     setEmailInput(trimmedEmail);
     setNurturingEmail(trimmedEmail);
 
+    // Save email to conversation
+    if (conversationId) {
+      void saveConversationMeta(conversationId, { visitor_email: trimmedEmail });
+    }
+
     void continuePendingClaudeCall(true);
 
     if (!conversationId) return;
