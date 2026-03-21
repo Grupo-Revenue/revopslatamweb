@@ -622,9 +622,13 @@ const AgenticLandingPage = () => {
         }, 400);
       });
 
-    syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true).catch((error) => {
-      console.error("early email HubSpot sync error:", error);
-    });
+    void (async () => {
+      try {
+        await syncToHubSpot(trimmedEmail, { ...answersBufferRef.current }, true);
+      } catch (error) {
+        console.error("early email HubSpot sync error:", error);
+      }
+    })();
   }, [conversationId, continuePendingClaudeCall, syncToHubSpot, earlyEmail]);
 
   useEffect(() => {
