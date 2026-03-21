@@ -453,7 +453,7 @@ const AgenticLandingPage = () => {
     const clientId = crypto.randomUUID();
     const { error } = await supabase
       .from("conversations")
-      .insert({
+      .upsert({
         id: clientId,
         context: contextRef.current,
         fbclid: attr.fbclid || null,
@@ -464,8 +464,9 @@ const AgenticLandingPage = () => {
         utm_term: attr.utm_term || null,
         full_url: attr.full_url || null,
         referrer: attr.referrer || null,
-      } as any);
+      } as any, { onConflict: "id" });
     if (!error) {
+      conversationIdRef.current = clientId;
       setConversationId(clientId);
       console.log("[createConversation] created with ID:", clientId);
       return clientId;
@@ -481,10 +482,10 @@ const AgenticLandingPage = () => {
         role: m.role === "ai" ? "assistant" : "user",
         content: m.text,
       }));
-      await supabase
+      const { error } = await supabase
         .from("conversations")
-        .update({ messages: anthropicMessages as any, ...extra } as any)
-        .eq("id", convId);
+        .upsert({ id: convId, messages: anthropicMessages as any, ...(extra || {}) } as any, { onConflict: "id" });
+      if (error) console.error("[saveMessages] error:", error);
     },
     []
   );
