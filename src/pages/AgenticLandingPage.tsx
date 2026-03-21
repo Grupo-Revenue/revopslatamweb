@@ -932,6 +932,7 @@ const AgenticLandingPage = () => {
   // Save conversion record to Supabase
   const saveConversion = useCallback(async (email: string, contactId: string | null, convType = "meeting_booked") => {
     const attr = attributionRef.current;
+    const currentConversationId = conversationIdRef.current || conversationId;
     try {
       await supabase.from("conversions").insert({
         contact_email: email,
@@ -945,7 +946,7 @@ const AgenticLandingPage = () => {
         full_url: attr.full_url || null,
         referrer: attr.referrer || null,
         conversion_type: convType,
-        conversation_id: conversationId,
+        conversation_id: currentConversationId,
       } as any);
     } catch (e) {
       console.error("saveConversion error:", e);
