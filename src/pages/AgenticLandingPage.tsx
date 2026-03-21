@@ -289,6 +289,10 @@ const AgenticLandingPage = () => {
   const answersBufferRef = useRef<Record<string, string>>({});
   const detectedCrmStatusRef = useRef<"sin_crm" | "hubspot" | "otro_crm">("sin_crm");
 
+  // Question progress tracker — immune to turn desync from repeat_turn
+  // 0=none, 1=cargo done, 2=rubro done, 3=equipo done, 4=crm done, 5=problema done
+  const questionProgressRef = useRef(0);
+
   // Silent HubSpot sync — never interrupts the conversation
   const syncToHubSpot = useCallback(async (email: string, properties: Record<string, string>, createIfNotExists = false) => {
     try {
@@ -331,47 +335,46 @@ const AgenticLandingPage = () => {
     []
   );
 
-  // Process user answer and sync to HubSpot based on turn
-  const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number) => {
+  // Process user answer and sync to HubSpot based on question progress (not turn number)
+  const processAnswerForHubSpot = useCallback((userAnswer: string, _answerTurn: number) => {
     const buf = answersBufferRef.current;
     const convMeta: Record<string, any> = {};
+    const progress = questionProgressRef.current;
 
-    switch (answerTurn) {
-      case 2: { // User answered Q1 (cargo+empresa) — turn 2 = first user answer
-        buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
-        convMeta.cargo = buf.nivel_del_cargo;
-        // Try to extract company name from the same answer
-        const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
-        if (companyMatch && companyMatch[1]) {
-          buf.company = companyMatch[1].trim();
-          convMeta.company = buf.company;
-        }
-        break;
+    if (progress === 0) {
+      // Q1: cargo + empresa
+      buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
+      convMeta.cargo = buf.nivel_del_cargo;
+      const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
+      if (companyMatch && companyMatch[1]) {
+        buf.company = companyMatch[1].trim();
+        convMeta.company = buf.company;
       }
-      case 3: { // User answered Q2 (rubro)
-        buf.rubro = mapRubroToHubSpot(userAnswer);
-        convMeta.rubro = buf.rubro;
-        break;
-      }
-      case 4: { // User answered Q3 (equipo)
-        buf.cantidad_de_vendedores = mapEquipoToHubSpot(userAnswer);
-        convMeta.equipo_comercial = buf.cantidad_de_vendedores;
-        break;
-      }
-      case 5: { // User answered Q4 (CRM)
-        const mapped = mapCrmToHubSpot(userAnswer);
-        buf.cuenta_con_crm = mapped.value;
-        detectedCrmStatusRef.current = mapped.status;
-        convMeta.crm = mapped.value;
-        break;
-      }
-      case 6: { // User answered Q5 (problema)
-        const propName = getQ5PropertyName(detectedCrmStatusRef.current);
-        const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
-        buf[propName] = exactValue;
-        convMeta.problema_principal = exactValue;
-        break;
-      }
+      questionProgressRef.current = 1;
+    } else if (progress === 1) {
+      // Q2: rubro
+      buf.rubro = mapRubroToHubSpot(userAnswer);
+      convMeta.rubro = buf.rubro;
+      questionProgressRef.current = 2;
+    } else if (progress === 2) {
+      // Q3: equipo
+      buf.cantidad_de_vendedores = mapEquipoToHubSpot(userAnswer);
+      convMeta.equipo_comercial = buf.cantidad_de_vendedores;
+      questionProgressRef.current = 3;
+    } else if (progress === 3) {
+      // Q4: CRM
+      const mapped = mapCrmToHubSpot(userAnswer);
+      buf.cuenta_con_crm = mapped.value;
+      detectedCrmStatusRef.current = mapped.status;
+      convMeta.crm = mapped.value;
+      questionProgressRef.current = 4;
+    } else if (progress === 4) {
+      // Q5: problema
+      const propName = getQ5PropertyName(detectedCrmStatusRef.current);
+      const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
+      buf[propName] = exactValue;
+      convMeta.problema_principal = exactValue;
+      questionProgressRef.current = 5;
     }
 
     // Save to conversation metadata
@@ -379,13 +382,13 @@ const AgenticLandingPage = () => {
       void saveConversationMeta(conversationId, convMeta);
     }
 
-    // Always sync if we have an email — don't wait for hubspotContactId
+    // Always sync if we have an email
     const email = getCurrentEmail();
     if (email) {
-      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, syncing buffer:`, { ...buf });
+      console.log(`[processAnswerForHubSpot] progress ${progress}→${questionProgressRef.current}, syncing buffer:`, { ...buf });
       void syncToHubSpot(email, { ...buf }, false);
     } else {
-      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, no email yet — buffering:`, { ...buf });
+      console.log(`[processAnswerForHubSpot] progress ${progress}→${questionProgressRef.current}, no email yet — buffering:`, { ...buf });
     }
   }, [syncToHubSpot, getCurrentEmail, conversationId, saveConversationMeta]);
 
@@ -582,9 +585,10 @@ const AgenticLandingPage = () => {
     async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string; meta?: boolean }[], currentTurn?: number) => {
       await typewriterEffect(result.reply);
       const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
-      // If repeat_turn, roll back the turn counter so the question doesn't count
+      // If repeat_turn, roll back the turn counter AND question progress
       if (result.repeat_turn) {
         setTurn((prev) => Math.max(prev - 1, 1));
+        questionProgressRef.current = Math.max(questionProgressRef.current - 1, 0);
       }
       if (result.score !== undefined) {
         setLeadScore(result.score);
@@ -606,18 +610,13 @@ const AgenticLandingPage = () => {
         saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
       }
 
-      // Detect if this is Q5 — AI just asked the problem question after user answered Q4
-      // Turn 5 = user answered Q4, AI responds with Q5
-      const effectiveTurn = currentTurn ?? 0;
-      if (effectiveTurn === 5 && result.phase === "conversation" && !result.repeat_turn) {
-        // Find the user's last message (Q4 answer) to detect crm_status
-        const lastUserMsg = baseMsgs.filter(m => m.role === "user" && !m.meta).pop();
-        if (lastUserMsg) {
-          const crmStatus = detectCrmStatus(lastUserMsg.text);
-          setQ5Options([...Q5_OPTIONS[crmStatus], "Otro — cuéntame con tus palabras"]);
-          setShowQ5Buttons(true);
-          setQ5FreeText(false);
-        }
+      // Detect Q5 — show buttons when CRM was just answered (progress === 4)
+      // Uses questionProgressRef instead of turn numbers to avoid desync from repeat_turn
+      if (questionProgressRef.current === 4 && result.phase === "conversation" && !result.repeat_turn) {
+        const crmStatus = detectedCrmStatusRef.current;
+        setQ5Options([...Q5_OPTIONS[crmStatus], "Otro — cuéntame con tus palabras"]);
+        setShowQ5Buttons(true);
+        setQ5FreeText(false);
       }
 
        if (result.phase === "discarded") {
@@ -630,7 +629,7 @@ const AgenticLandingPage = () => {
          void fetchAvailability();
        }
     },
-    [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
+    [typewriterEffect, conversationId, saveMessages, fetchAvailability, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
   );
 
   // Start conversation — Screen 0 → 1 (ask name first)
