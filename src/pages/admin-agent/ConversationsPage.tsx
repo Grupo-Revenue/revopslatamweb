@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Search, Filter, Eye, RefreshCw, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Filter, Eye, RefreshCw, X, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 
 interface Conversation {
   id: string;
@@ -54,6 +54,8 @@ export default function ConversationsPage() {
   const [filterStatus, setFilterStatus] = useState("");
   const [selected, setSelected] = useState<Conversation | null>(null);
   const [page, setPage] = useState(0);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const PER_PAGE = 25;
 
   const fetchConversations = async () => {
@@ -100,6 +102,34 @@ export default function ConversationsPage() {
 
   const getStatus = (c: Conversation) =>
     c.scheduled ? "agendo" : c.flag === "descartado_broker" ? "descartado" : c.flag === "baja" ? "nurturing" : (c.status || "incompleto");
+
+  const toggleId = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (selectedIds.size === paged.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(paged.map(c => c.id)));
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.size === 0) return;
+    const confirmed = window.confirm(`¿Eliminar ${selectedIds.size} conversación(es)? Esta acción no se puede deshacer.`);
+    if (!confirmed) return;
+    setDeleting(true);
+    const ids = Array.from(selectedIds);
+    await supabase.from("conversations").delete().in("id", ids);
+    setSelectedIds(new Set());
+    await fetchConversations();
+    setDeleting(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -156,6 +186,16 @@ export default function ConversationsPage() {
         <button onClick={fetchConversations} className="p-2 hover:bg-gray-100 rounded-lg">
           <RefreshCw className="h-4 w-4 text-gray-500" />
         </button>
+        {selectedIds.size > 0 && (
+          <button
+            onClick={handleDeleteSelected}
+            disabled={deleting}
+            className="flex items-center gap-1.5 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+          >
+            <Trash2 className="h-4 w-4" />
+            {deleting ? "Eliminando..." : `Eliminar (${selectedIds.size})`}
+          </button>
+        )}
       </div>
 
       {/* Table */}
@@ -163,6 +203,14 @@ export default function ConversationsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-[#F8F8F8] border-b border-gray-200">
+              <th className="px-3 py-2.5 w-8">
+                <input
+                  type="checkbox"
+                  checked={paged.length > 0 && selectedIds.size === paged.length}
+                  onChange={toggleAll}
+                  className="rounded border-gray-300 text-[#BE1869] focus:ring-[#BE1869]/30"
+                />
+              </th>
               {["Fecha", "Nombre", "Email", "Empresa", "Cargo", "Rubro", "Equipo", "CRM", "Problema", "Score", "Calif.", "Estado", "Fuente", ""].map(h => (
                 <th key={h} className="px-3 py-2.5 text-left text-xs font-medium text-gray-500 whitespace-nowrap">{h}</th>
               ))}
@@ -170,11 +218,19 @@ export default function ConversationsPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={14} className="text-center py-8 text-gray-400">Cargando...</td></tr>
+              <tr><td colSpan={15} className="text-center py-8 text-gray-400">Cargando...</td></tr>
             ) : paged.length === 0 ? (
-              <tr><td colSpan={14} className="text-center py-8 text-gray-400">Sin resultados</td></tr>
+              <tr><td colSpan={15} className="text-center py-8 text-gray-400">Sin resultados</td></tr>
             ) : paged.map((c) => (
-              <tr key={c.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+              <tr key={c.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${selectedIds.has(c.id) ? "bg-red-50/50" : ""}`}>
+                <td className="px-3 py-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.has(c.id)}
+                    onChange={() => toggleId(c.id)}
+                    className="rounded border-gray-300 text-[#BE1869] focus:ring-[#BE1869]/30"
+                  />
+                </td>
                 <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-600">
                   {format(new Date(c.created_at), "dd MMM HH:mm", { locale: es })}
                 </td>
