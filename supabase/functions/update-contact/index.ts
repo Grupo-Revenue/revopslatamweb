@@ -148,6 +148,9 @@ serve(async (req) => {
 
     // Merge attribution properties with user-provided properties
     const attrProps = attribution ? buildAttributionProperties(attribution as Attribution) : {};
+    // Normalize rubro and cantidad_de_vendedores before sending to HubSpot
+    if (properties?.rubro) properties.rubro = normalizeRubro(properties.rubro);
+    if (properties?.cantidad_de_vendedores) properties.cantidad_de_vendedores = normalizeVendedores(properties.cantidad_de_vendedores);
     const mergedProperties = { ...attrProps, ...(properties || {}) };
 
     console.log("[update-contact] merged properties to send:", JSON.stringify(mergedProperties));
