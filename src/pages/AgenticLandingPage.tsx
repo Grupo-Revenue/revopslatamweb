@@ -419,14 +419,25 @@ const AgenticLandingPage = () => {
 
   // Save messages to Supabase
   const saveMessages = useCallback(
-    async (convId: string, msgs: { role: string; text: string }[], extra?: { summary?: string; availability_preference?: string }) => {
+    async (convId: string, msgs: { role: string; text: string }[], extra?: Record<string, any>) => {
       const anthropicMessages = msgs.map((m) => ({
         role: m.role === "ai" ? "assistant" : "user",
         content: m.text,
       }));
       await supabase
         .from("conversations")
-        .update({ messages: anthropicMessages as any, ...extra })
+        .update({ messages: anthropicMessages as any, ...extra } as any)
+        .eq("id", convId);
+    },
+    []
+  );
+
+  // Save enriched conversation metadata to Supabase
+  const saveConversationMeta = useCallback(
+    async (convId: string, meta: Record<string, any>) => {
+      await supabase
+        .from("conversations")
+        .update(meta as any)
         .eq("id", convId);
     },
     []
