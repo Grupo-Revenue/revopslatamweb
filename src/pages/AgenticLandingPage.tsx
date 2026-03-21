@@ -464,7 +464,7 @@ const AgenticLandingPage = () => {
   // Scroll chat to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isAITyping, showEmailCapture]);
+  }, [messages, isAITyping, showEmailCapture, loadingSlots, availabilitySlots, selectedDay, selectedSlot]);
 
   // Create conversation in Supabase — generate ID client-side to avoid SELECT RLS restriction
   const createConversation = useCallback(async () => {
