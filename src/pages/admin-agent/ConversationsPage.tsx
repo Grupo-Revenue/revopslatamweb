@@ -96,7 +96,7 @@ export default function ConversationsPage() {
   const totalThisMonth = thisMonth.length;
   const altaRate = totalThisMonth ? Math.round(thisMonth.filter(c => c.flag === "alta").length / totalThisMonth * 100) : 0;
   const schedRate = totalThisMonth ? Math.round(thisMonth.filter(c => c.scheduled).length / totalThisMonth * 100) : 0;
-  const completionRate = totalThisMonth ? Math.round(thisMonth.filter(c => c.score !== null).length / totalThisMonth * 100) : 0;
+  const completionRate = totalThisMonth ? Math.round(thisMonth.filter(c => c.scheduled || c.status === "agendo" || c.status === "nurturing" || c.flag === "descartado_broker").length / totalThisMonth * 100) : 0;
 
   const getStatus = (c: Conversation) =>
     c.scheduled ? "agendo" : c.flag === "descartado_broker" ? "descartado" : c.flag === "baja" ? "nurturing" : (c.status || "incompleto");
