@@ -353,7 +353,7 @@ serve(async (req) => {
 
       if (!slot.endTime) {
         const [h, m] = slot.startTime.split(":").map(Number);
-        const end = new Date(2000, 0, 1, h, m + 30);
+        const end = new Date(2000, 0, 1, h, m + 45);
         slot.endTime = `${String(end.getHours()).padStart(2, "0")}:${String(end.getMinutes()).padStart(2, "0")}`;
       }
 
