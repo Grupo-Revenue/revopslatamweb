@@ -787,8 +787,7 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
     // Process Q5 answer for HubSpot
-    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
-    processAnswerForHubSpot(option, newTurn, currentEmail);
+    processAnswerForHubSpot(option, newTurn);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
