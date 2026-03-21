@@ -54,6 +54,8 @@ export default function ConversationsPage() {
   const [filterStatus, setFilterStatus] = useState("");
   const [selected, setSelected] = useState<Conversation | null>(null);
   const [page, setPage] = useState(0);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
   const PER_PAGE = 25;
 
   const fetchConversations = async () => {
