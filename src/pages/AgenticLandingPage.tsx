@@ -240,6 +240,27 @@ const Q5_BUTTON_TO_EXACT: Record<string, string> = {
   "Queremos migrar a HubSpot": "Queremos migrarnos a HubSpot",
 };
 
+/* ─── Corporate email validation ─── */
+const FREE_EMAIL_DOMAINS = [
+  'gmail.com', 'googlemail.com', 'hotmail.com', 'hotmail.cl', 'hotmail.es',
+  'outlook.com', 'outlook.cl', 'outlook.es', 'live.com', 'live.cl',
+  'yahoo.com', 'yahoo.es', 'yahoo.cl', 'icloud.com', 'me.com', 'mac.com',
+  'protonmail.com', 'proton.me', 'tutanota.com', 'zoho.com',
+  'yandex.com', 'mail.com', 'aol.com', 'msn.com', 'gmx.com', 'gmx.net',
+];
+
+function validateCorporateEmail(email: string): { valid: boolean; error?: 'formato' | 'gratuito' } {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { valid: false, error: 'formato' };
+  const domain = email.split('@')[1].toLowerCase();
+  if (FREE_EMAIL_DOMAINS.includes(domain)) return { valid: false, error: 'gratuito' };
+  return { valid: true };
+}
+
+const CORPORATE_EMAIL_ERRORS = {
+  formato: 'Ingresa un email válido.',
+  gratuito: 'Por favor ingresa tu correo corporativo — no aceptamos cuentas de Gmail, Hotmail u otros proveedores gratuitos.',
+};
+
 const AgenticLandingPage = () => {
   const [screen, setScreen] = useState(0);
   const [chatInput, setChatInput] = useState("");
