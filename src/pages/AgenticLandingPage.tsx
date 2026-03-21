@@ -274,6 +274,7 @@ const AgenticLandingPage = () => {
   const [emailError, setEmailError] = useState("");
   const [turn, setTurn] = useState(0);
   const [conversationId, setConversationId] = useState<string | null>(null);
+  const conversationIdRef = useRef<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [availabilitySlots, setAvailabilitySlots] = useState<Record<string, { display_date: string; slots: { date: string; startTime: string; endTime: string; display_date: string; display_time: string }[] }>>({});
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
