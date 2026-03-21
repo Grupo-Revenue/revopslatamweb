@@ -353,7 +353,7 @@ serve(async (req) => {
 
       if (!slot.endTime) {
         const [h, m] = slot.startTime.split(":").map(Number);
-        const end = new Date(2000, 0, 1, h, m + 30);
+        const end = new Date(2000, 0, 1, h, m + 45);
         slot.endTime = `${String(end.getHours()).padStart(2, "0")}:${String(end.getMinutes()).padStart(2, "0")}`;
       }
 
@@ -372,7 +372,7 @@ serve(async (req) => {
         let found = false;
         for (let tryH = h + 1; tryH <= 17; tryH++) {
           const tryStart = `${slot.date}T${String(tryH).padStart(2, "0")}:00:00`;
-          const tryEnd = `${slot.date}T${String(tryH).padStart(2, "0")}:30:00`;
+          const tryEnd = `${slot.date}T${String(tryH).padStart(2, "0")}:45:00`;
           const tryAvailable = await checkAvailability(
             googleToken, FEBE_CALENDAR_ID,
             `${tryStart}-03:00`, `${tryEnd}-03:00`
@@ -392,7 +392,7 @@ serve(async (req) => {
           const nextDayName = dayNames[nextDay.getDay()];
           const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
           finalStart = `${nextDateStr}T09:00:00`;
-          finalEnd = `${nextDateStr}T09:30:00`;
+          finalEnd = `${nextDateStr}T09:45:00`;
           finalDisplayDate = `${nextDayName} ${nextDay.getDate()} de ${monthNames[nextDay.getMonth()]}`;
           finalDisplayTime = "09:00";
         }
@@ -400,9 +400,45 @@ serve(async (req) => {
     }
 
     /* ── PASO 2: Crear evento en calendario ── */
+    const companyName = answers_buffer?.company || "";
+    const cargoValue = answers_buffer?.nivel_del_cargo || jobTitle || "";
+    const cantidadVendedores = answers_buffer?.cantidad_de_vendedores || "";
+    const cuentaConCrm = answers_buffer?.cuenta_con_crm || "";
+    const contactFirstName = answers_buffer?.firstname || name.trim().split(/\s+/)[0] || "";
+    const contactLastName = answers_buffer?.lastname || name.trim().split(/\s+/).slice(1).join(" ") || "";
+    const fullContactName = contactLastName ? `${contactFirstName} ${contactLastName}` : contactFirstName;
+
+    const eventTitle = companyName
+      ? `Revops LATAM / ${fullContactName} + ${companyName} — Conversación inicial`
+      : `Revops LATAM / ${fullContactName} — Conversación inicial`;
+
+    // Build description lines, omitting empty fields
+    const descLines: string[] = [
+      "Reunión de diagnóstico inicial con Revops LATAM.",
+      "",
+    ];
+    if (fullContactName) descLines.push(`👤 Contacto: ${fullContactName}`);
+    if (companyName) descLines.push(`🏢 Empresa: ${companyName}`);
+    if (cargoValue) descLines.push(`💼 Cargo: ${cargoValue}`);
+    if (cantidadVendedores) descLines.push(`📊 Equipo comercial: ${cantidadVendedores}`);
+    if (cuentaConCrm) descLines.push(`🛠 CRM actual: ${cuentaConCrm}`);
+    if (summary) {
+      descLines.push("");
+      descLines.push(`📋 Resumen de la conversación con Lidia:`);
+      descLines.push(summary);
+    }
+    if (score !== undefined) {
+      const flagLabel = flag || (score >= 65 ? "alta" : score >= 40 ? "media" : "baja");
+      descLines.push("");
+      descLines.push(`⚡ Lead Score: ${score}/100 — ${flagLabel}`);
+    }
+    descLines.push("");
+    descLines.push("—");
+    descLines.push("Este evento fue generado automáticamente por Lidia, asistente virtual de Revops LATAM.");
+
     const eventBody = {
-      summary: `Conversación RevOps LATAM — ${name}`,
-      description: `Contexto: ${context}\nResumen IA: ${summary || "Sin resumen"}`,
+      summary: eventTitle,
+      description: descLines.join("\n"),
       start: { dateTime: finalStart, timeZone: "America/Santiago" },
       end: { dateTime: finalEnd, timeZone: "America/Santiago" },
       attendees: [
