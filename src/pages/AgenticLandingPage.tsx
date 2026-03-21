@@ -1000,6 +1000,7 @@ const AgenticLandingPage = () => {
   const handleConfirmData = useCallback(async () => {
     // Determine the effective email
     const effectiveEmail = earlyEmail?.trim() || emailInput.trim();
+    const currentConversationId = conversationIdRef.current || conversationId;
     setPhoneError("");
     setEmailError("");
 
@@ -1031,7 +1032,7 @@ const AgenticLandingPage = () => {
           summary,
           availability_preference: `${selectedSlot.display_date} a las ${selectedSlot.display_time}`,
           selected_slot: selectedSlot,
-          conversation_id: conversationId,
+          conversation_id: currentConversationId,
           score: leadScore,
           flag: leadFlag || "calificado",
           conversation_messages: messages,
@@ -1055,8 +1056,8 @@ const AgenticLandingPage = () => {
       void syncToHubSpot(effectiveEmail, { ...answersBufferRef.current, phone: normalizedPhone }, false);
 
       // Save meeting status to conversation
-      if (conversationId) {
-        void saveConversationMeta(conversationId, {
+      if (currentConversationId) {
+        void saveConversationMeta(currentConversationId, {
           meeting_booked: true,
           status: "agendo",
           meeting_date: data.display_date,
