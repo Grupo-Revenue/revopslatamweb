@@ -323,37 +323,49 @@ const AgenticLandingPage = () => {
   // Process user answer and sync to HubSpot based on turn
   const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number) => {
     const buf = answersBufferRef.current;
+    const convMeta: Record<string, any> = {};
 
     switch (answerTurn) {
       case 2: { // User answered Q1 (cargo+empresa) — turn 2 = first user answer
         buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
+        convMeta.cargo = buf.nivel_del_cargo;
         // Try to extract company name from the same answer
         const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
         if (companyMatch && companyMatch[1]) {
           buf.company = companyMatch[1].trim();
+          convMeta.company = buf.company;
         }
         break;
       }
       case 3: { // User answered Q2 (rubro)
         buf.rubro = mapRubroToHubSpot(userAnswer);
+        convMeta.rubro = buf.rubro;
         break;
       }
       case 4: { // User answered Q3 (equipo)
         buf.cantidad_de_vendedores = mapEquipoToHubSpot(userAnswer);
+        convMeta.equipo_comercial = buf.cantidad_de_vendedores;
         break;
       }
       case 5: { // User answered Q4 (CRM)
         const mapped = mapCrmToHubSpot(userAnswer);
         buf.cuenta_con_crm = mapped.value;
         detectedCrmStatusRef.current = mapped.status;
+        convMeta.crm = mapped.value;
         break;
       }
       case 6: { // User answered Q5 (problema)
         const propName = getQ5PropertyName(detectedCrmStatusRef.current);
         const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
         buf[propName] = exactValue;
+        convMeta.problema_principal = exactValue;
         break;
       }
+    }
+
+    // Save to conversation metadata
+    if (conversationId && Object.keys(convMeta).length > 0) {
+      void saveConversationMeta(conversationId, convMeta);
     }
 
     // Always sync if we have an email — don't wait for hubspotContactId
@@ -364,7 +376,7 @@ const AgenticLandingPage = () => {
     } else {
       console.log(`[processAnswerForHubSpot] turn ${answerTurn}, no email yet — buffering:`, { ...buf });
     }
-  }, [syncToHubSpot, getCurrentEmail]);
+  }, [syncToHubSpot, getCurrentEmail, conversationId, saveConversationMeta]);
 
   // Sync score and lead status to HubSpot
   const syncScoreToHubSpot = useCallback((score: number, flag: string, _email: string | null) => {
