@@ -771,7 +771,36 @@ const AgenticLandingPage = () => {
         console.error("early email HubSpot sync error:", error);
       }
     })();
-  }, [conversationId, continuePendingClaudeCall, syncToHubSpot, earlyEmail]);
+  }, [conversationId, continuePendingClaudeCall, syncToHubSpot, earlyEmail, freeEmailAttempts]);
+
+  // Fallback: continue without corporate email (phone-only)
+  const handleEmailFallbackContinue = useCallback(async () => {
+    const normalizedPhone = normalizePhone(fallbackPhone);
+    const digits = fallbackPhone.replace(/\D/g, "");
+    const local = digits.startsWith("56") ? digits.slice(2) : digits;
+    if (local.length < 8 || local.length > 9) {
+      setEarlyEmailError("Ingresa un número válido, por ejemplo: 9 1234 5678");
+      return;
+    }
+
+    setShowEmailCapture(false);
+    setEmailCaptureHandled(true);
+    setEarlyEmailError("");
+
+    // Save fallback info to conversation
+    if (conversationId) {
+      const fallbackMeta: Record<string, any> = {
+        phone: normalizedPhone,
+        flag: "sin_email_corporativo",
+      };
+      if (fallbackName.trim() && !visitorName) {
+        fallbackMeta.visitor_name = fallbackName.trim();
+      }
+      void saveConversationMeta(conversationId, fallbackMeta);
+    }
+
+    void continuePendingClaudeCall(false);
+  }, [fallbackPhone, fallbackName, conversationId, visitorName, saveConversationMeta, continuePendingClaudeCall]);
 
   useEffect(() => {
     return () => {};
