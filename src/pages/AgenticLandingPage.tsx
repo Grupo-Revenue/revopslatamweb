@@ -240,6 +240,7 @@ const AgenticLandingPage = () => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<{ date: string; startTime: string; endTime: string; display_date: string; display_time: string } | null>(null);
   const [loadingSlots, setLoadingSlots] = useState(false);
+  const [availabilityError, setAvailabilityError] = useState<string | null>(null);
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
   const [leadScore, setLeadScore] = useState<number | undefined>();
@@ -453,13 +454,32 @@ const AgenticLandingPage = () => {
   // Fetch real availability from Febe's calendar
   const fetchAvailability = useCallback(async () => {
     setLoadingSlots(true);
+    setAvailabilityError(null);
+    setAvailabilitySlots({});
+    setSelectedDay(null);
+    setSelectedSlot(null);
+
     try {
       const { data, error } = await supabase.functions.invoke("get-availability");
-      if (!error && data?.availability) setAvailabilitySlots(data.availability);
+      if (error) {
+        console.error("get-availability invoke error:", error);
+        setAvailabilityError("No pudimos cargar los horarios en este momento.");
+        return;
+      }
+
+      const nextAvailability = data?.availability ?? {};
+      if (Object.keys(nextAvailability).length === 0) {
+        setAvailabilityError("No encontré horarios disponibles por ahora.");
+        return;
+      }
+
+      setAvailabilitySlots(nextAvailability);
     } catch (e) {
       console.error("get-availability error:", e);
+      setAvailabilityError("No pudimos cargar los horarios en este momento.");
+    } finally {
+      setLoadingSlots(false);
     }
-    setLoadingSlots(false);
   }, []);
 
   // Detect crm_status from user's Q4 answer
@@ -533,8 +553,11 @@ const AgenticLandingPage = () => {
         }
       }
 
-      if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
-      else if (result.phase === "availability") { fetchAvailability(); setScreen(5); }
+       if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
+       else if (result.phase === "availability") {
+         setScreen(5);
+         void fetchAvailability();
+       }
     },
     [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
   );
@@ -1079,18 +1102,37 @@ const AgenticLandingPage = () => {
         return (
           <motion.div key="s5-avail" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
-              {/* Last AI message */}
-              {messages.length > 0 && (
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-                  <AIBubble>{messages[messages.length - 1].text}</AIBubble>
+              {messages.slice(-3).map((m, i) => (
+                <motion.div key={`${m.role}-${messages.length - 3 + i}-${m.text.slice(0, 20)}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: i * 0.05 }}>
+                  {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
                 </motion.div>
-              )}
+              ))}
 
               {/* Slots */}
               {loadingSlots ? (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center gap-3 py-6">
                   <TypingDots />
                   <span className="text-white/40 text-[13px]">Buscando horarios disponibles...</span>
+                </motion.div>
+              ) : availabilityError ? (
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="flex flex-col gap-3 mt-2">
+                  <AIBubble>Estoy teniendo un problema para traer los horarios.</AIBubble>
+                  <div
+                    className="rounded-2xl p-4 flex flex-col gap-3"
+                    style={{
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
+                  >
+                    <p className="text-white/65 text-[14px] leading-relaxed text-center">{availabilityError}</p>
+                    <button
+                      onClick={() => void fetchAvailability()}
+                      className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 active:scale-[0.97]"
+                      style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
+                    >
+                      Reintentar horarios
+                    </button>
+                  </div>
                 </motion.div>
               ) : !selectedDay ? (
                 /* Step 1: Pick a day */
