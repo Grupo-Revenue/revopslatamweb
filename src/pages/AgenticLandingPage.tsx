@@ -841,26 +841,6 @@ const AgenticLandingPage = () => {
     }
   }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag]);
 
-  /* ─── Welcome screen typewriter ─── */
-  const [welcomeText, setWelcomeText] = useState("");
-  const [welcomeDone, setWelcomeDone] = useState(false);
-  const welcomeFullText = "Hola, soy Lidia 👋\n\nSoy asistente virtual de Revops LATAM.\n\nEn 5 preguntas voy a entender tu situación comercial y, si tiene sentido, te conectaré con nuestro equipo.\n\n¿Empezamos?";
-
-  useEffect(() => {
-    if (screen !== 0) return;
-    setWelcomeText("");
-    setWelcomeDone(false);
-    let i = 0;
-    const interval = setInterval(() => {
-      i++;
-      setWelcomeText(welcomeFullText.slice(0, i));
-      if (i >= welcomeFullText.length) {
-        clearInterval(interval);
-        setWelcomeDone(true);
-      }
-    }, WELCOME_TYPEWRITER_MS);
-    return () => clearInterval(interval);
-  }, [screen]);
 
   /* ─── render current screen ─── */
   const renderScreen = () => {
@@ -868,34 +848,86 @@ const AgenticLandingPage = () => {
       /* ── Screen 0: Welcome Lidia ── */
       case 0:
         return (
-          <motion.div key="s0" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-6">
-            {/* Lidia Avatar */}
-            <div
-              className="w-[72px] h-[72px] rounded-full flex items-center justify-center shrink-0"
-              style={{ background: "linear-gradient(135deg, #6224BE, #BE1869)" }}
-            >
-              <span className="text-white text-[24px] font-medium select-none">L</span>
-            </div>
-
-            {/* Typewriter text */}
-            <div className="text-[16px] leading-relaxed text-white/85 font-light whitespace-pre-line max-w-[320px] min-h-[180px]">
-              {welcomeText}
-              {!welcomeDone && (
-                <span className="inline-block w-[2px] h-[18px] bg-white/50 ml-0.5 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
-              )}
-            </div>
-
-            {/* CTA button — fade in after typewriter */}
-            <motion.button
+          <motion.div key="s0" {...screenVariants} className="flex flex-col items-center justify-center h-full text-center" style={{ padding: "0 28px" }}>
+            {/* Avatar */}
+            <motion.div
               initial={{ opacity: 0, y: 8 }}
-              animate={welcomeDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              onClick={() => startChat()}
-              disabled={!welcomeDone}
-              className="w-full max-w-[320px] py-4 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
-              style={{ background: "#BE1869", boxShadow: "0 8px 32px rgba(190,24,105,0.35)" }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="relative mt-12 mb-0"
             >
-              Empecemos →
+              <div
+                className="w-[80px] h-[80px] rounded-full flex items-center justify-center"
+                style={{
+                  background: "linear-gradient(135deg, #6224BE, #BE1869)",
+                  boxShadow: "0 0 0 4px transparent, 0 0 0 6px rgba(190,24,105,0.3)",
+                }}
+              >
+                <span className="text-white text-[28px] font-medium select-none">L</span>
+              </div>
+            </motion.div>
+
+            {/* Name + role */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-5"
+            >
+              <p className="text-white text-[20px] font-medium">Hola, soy Lidia 👋</p>
+              <p className="text-[14px] font-normal mt-2" style={{ color: "rgba(255,255,255,0.6)" }}>
+                Soy asistente virtual de Revops LATAM.
+              </p>
+            </motion.div>
+
+            {/* Separator */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+              className="my-6 mx-auto"
+              style={{ width: 40, height: 1, background: "rgba(255,255,255,0.15)" }}
+            />
+
+            {/* Main text */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-[320px]"
+            >
+              <p className="text-[15px] font-normal leading-[1.65] mb-4" style={{ color: "rgba(255,255,255,0.85)" }}>
+                Gracias por llegar hasta aquí.{"\n"}
+                Si algo del video te resonó,{"\n"}
+                probablemente tenemos algo que decirte.
+              </p>
+              <p className="text-[15px] font-normal leading-[1.65] mb-6" style={{ color: "rgba(255,255,255,0.85)" }}>
+                Ayudamos a empresas a ordenar su{"\n"}
+                operación comercial para que el{"\n"}
+                revenue fluya sin fricción.
+              </p>
+            </motion.div>
+
+            {/* CTA question */}
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-white text-[16px] font-medium leading-[1.5] max-w-[300px] mb-8"
+            >
+              ¿Te parece si te hago algunas preguntas para ver si podemos ayudarte?
+            </motion.p>
+
+            {/* Button */}
+            <motion.button
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              onClick={() => startChat()}
+              className="w-full py-[14px] rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
+              style={{ background: "#BE1869", height: 52 }}
+            >
+              Sí, hablemos →
             </motion.button>
           </motion.div>
         );
