@@ -374,13 +374,32 @@ const AgenticLandingPage = () => {
     const progress = questionProgressRef.current;
 
     if (progress === 0) {
-      // Q1: cargo + empresa
+      // Q1: cargo + empresa — split intelligently
       buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
       convMeta.cargo = buf.nivel_del_cargo;
-      const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
+      // Try to extract company: "cargo en/de empresa", "cargo, empresa", "cargo - empresa"
+      const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i)
+        || userAnswer.match(/[,\-–—]\s*(.+?)$/i);
       if (companyMatch && companyMatch[1]) {
         buf.company = companyMatch[1].trim();
         convMeta.company = buf.company;
+      } else {
+        // If no separator found, try splitting: last meaningful words after the role keyword
+        const roleParts = userAnswer.toLowerCase();
+        const rolePatterns = [
+          /(?:gerente\s+general|gerente\s+comercial|gerente\s+de\s+\w+|director\s+\w+|ceo|coo|cfo|cmo|cro|due[ñn]o|socio|founder|fundador|jefe|supervisor|coordinador|vendedor|ejecutivo|asesor)\s+(?:de\s+)?/i,
+        ];
+        for (const pattern of rolePatterns) {
+          const match = userAnswer.match(pattern);
+          if (match) {
+            const afterRole = userAnswer.slice((match.index || 0) + match[0].length).trim();
+            if (afterRole.length > 1) {
+              buf.company = afterRole;
+              convMeta.company = afterRole;
+              break;
+            }
+          }
+        }
       }
       questionProgressRef.current = 1;
     } else if (progress === 1) {
