@@ -273,6 +273,28 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
+    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY");
+
+    // Fetch dynamic knowledge base docs
+    let knowledgeBaseContent = "";
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+      try {
+        const kbRes = await fetch(`${SUPABASE_URL}/rest/v1/knowledge_base?is_active=eq.true&select=name,category,content`, {
+          headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` },
+        });
+        if (kbRes.ok) {
+          const kbDocs = await kbRes.json();
+          if (kbDocs.length > 0) {
+            knowledgeBaseContent = "\n\n═══════════════════════════════\nBASE DE CONOCIMIENTO DINÁMICA:\n═══════════════════════════════\n" +
+              kbDocs.map((d: any) => `[${d.category}] ${d.name}:\n${d.content}`).join("\n\n---\n\n");
+          }
+        }
+      } catch (e) {
+        console.error("Error fetching knowledge base:", e);
+      }
+    }
+
     const { messages, context, turn, visitorName } = await req.json();
 
     if (!Array.isArray(messages)) {
