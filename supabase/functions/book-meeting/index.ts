@@ -89,6 +89,45 @@ async function checkAvailability(
   return busy.length === 0;
 }
 
+/* ─── Normalize free-text rubro to HubSpot allowed options ─── */
+const VALID_RUBROS = [
+  "SaaS B2B", "Servicios B2C", "Servicios B2B", "Venta de productos B2B",
+  "Educación Superior", "Inmobiliaria", "Broker Inmobiliario",
+  "Retail", "E-commerce", "Salud", "Colegios", "Otros",
+];
+
+function normalizeRubro(raw: string): string {
+  if (!raw) return "";
+  const lower = raw.toLowerCase().trim();
+  const exact = VALID_RUBROS.find((v) => v.toLowerCase() === lower);
+  if (exact) return exact;
+  if (lower.includes("saas") || lower.includes("software")) return "SaaS B2B";
+  if (lower.includes("inmobiliaria") || lower.includes("constructora") || lower.includes("construcción") || lower.includes("construccion") || lower.includes("desarrolladora")) return "Inmobiliaria";
+  if (lower.includes("broker") || lower.includes("corretaje") || lower.includes("corredora")) return "Broker Inmobiliario";
+  if (lower.includes("retail") || lower.includes("tienda")) return "Retail";
+  if (lower.includes("e-commerce") || lower.includes("ecommerce") || lower.includes("comercio electr")) return "E-commerce";
+  if (lower.includes("salud") || lower.includes("clínica") || lower.includes("hospital") || lower.includes("médic")) return "Salud";
+  if (lower.includes("colegio") || lower.includes("escuela")) return "Colegios";
+  if (lower.includes("educación") || lower.includes("educacion") || lower.includes("universidad") || lower.includes("instituto")) return "Educación Superior";
+  if (lower.includes("servicio")) {
+    if (lower.includes("b2c")) return "Servicios B2C";
+    return "Servicios B2B";
+  }
+  if (lower.includes("producto") || lower.includes("manufactura") || lower.includes("industrial")) return "Venta de productos B2B";
+  return "Otros";
+}
+
+function normalizeVendedores(raw: string): string {
+  if (!raw) return "";
+  const lower = raw.toLowerCase().trim();
+  if (lower.includes("solo") || lower.includes("dueño")) return "Solo el dueño vende";
+  if (lower.includes("1 vendedor") || lower === "1") return "1 vendedor";
+  if (lower.includes("2") && lower.includes("3")) return "2–3 vendedores";
+  if (lower.includes("4") || lower.includes("10 vend") || (lower.includes("5") && !lower.includes("10+"))) return "4–10 vendedores";
+  if (lower.includes("10+") || lower.includes("más de 10") || lower.includes("mas de 10")) return "10+ vendedores";
+  return raw;
+}
+
 /* ─── Attribution source mapping (same logic as update-contact) ─── */
 interface Attribution {
   utm_source?: string;
