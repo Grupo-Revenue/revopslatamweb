@@ -292,23 +292,25 @@ const AgenticLandingPage = () => {
   // Silent HubSpot sync — never interrupts the conversation
   const syncToHubSpot = useCallback(async (email: string, properties: Record<string, string>, createIfNotExists = false) => {
     try {
+      console.log("[syncToHubSpot] calling update-contact:", { email, properties, createIfNotExists });
       const { data, error } = await supabase.functions.invoke("update-contact", {
         body: { email, properties, createIfNotExists, attribution: attributionRef.current },
       });
       if (error) {
-        console.error("update-contact invoke error:", error);
+        console.error("[syncToHubSpot] invoke error:", error);
         return null;
       }
+      console.log("[syncToHubSpot] response:", data);
       if (data?.success && data?.contactId) {
         setHubspotContactId(data.contactId);
         return data.contactId;
       }
       if (!data?.success && data?.error) {
-        console.error("update-contact error:", data.error);
+        console.error("[syncToHubSpot] HubSpot error:", data.error);
       }
       return null;
     } catch (e) {
-      console.error("syncToHubSpot exception:", e);
+      console.error("[syncToHubSpot] exception:", e);
       return null;
     }
   }, []);
