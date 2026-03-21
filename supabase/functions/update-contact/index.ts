@@ -64,52 +64,16 @@ interface Attribution {
 }
 
 function buildAttributionProperties(attr: Attribution): Record<string, string> {
-  const src = (attr.utm_source || "").toLowerCase();
-  const fbclid = attr.fbclid || "";
-  const campaign = attr.utm_campaign || "";
   const props: Record<string, string> = {};
 
-  if (src === "meta" || src === "facebook" || src === "instagram" || fbclid) {
-    props.hs_analytics_source = "PAID_SOCIAL";
-    props.hs_analytics_source_data_1 = "META Ads";
-    props.hs_analytics_source_data_2 = campaign;
-    props.hs_latest_source = "PAID_SOCIAL";
-    props.hs_latest_source_data_1 = "META Ads";
-    props.hs_latest_source_data_2 = campaign;
-  } else if (src === "google" || src === "cpc") {
-    props.hs_analytics_source = "PAID_SEARCH";
-    props.hs_analytics_source_data_1 = "Google Ads";
-    props.hs_analytics_source_data_2 = campaign;
-    props.hs_latest_source = "PAID_SEARCH";
-    props.hs_latest_source_data_1 = "Google Ads";
-    props.hs_latest_source_data_2 = campaign;
-  } else if (src === "linkedin") {
-    props.hs_analytics_source = "PAID_SOCIAL";
-    props.hs_analytics_source_data_1 = "LinkedIn Ads";
-    props.hs_analytics_source_data_2 = campaign;
-    props.hs_latest_source = "PAID_SOCIAL";
-    props.hs_latest_source_data_1 = "LinkedIn Ads";
-    props.hs_latest_source_data_2 = campaign;
-  } else if (src === "email" || src === "newsletter") {
-    props.hs_analytics_source = "EMAIL_MARKETING";
-    props.hs_analytics_source_data_1 = campaign;
-    props.hs_latest_source = "EMAIL_MARKETING";
-    props.hs_latest_source_data_1 = campaign;
-  } else if (!src && attr.referrer) {
-    props.hs_analytics_source = "ORGANIC_SEARCH";
-    props.hs_latest_source = "ORGANIC_SEARCH";
-  } else if (!src) {
-    props.hs_analytics_source = "DIRECT_TRAFFIC";
-    props.hs_latest_source = "DIRECT_TRAFFIC";
-  }
+  // Only set hs_facebook_click_id — it's writable
+  if (attr.fbclid) props.hs_facebook_click_id = attr.fbclid;
 
-  // hs_analytics_first_url is READ-ONLY in HubSpot — do NOT set it
-  if (attr.referrer) props.hs_analytics_first_referrer = attr.referrer;
-  if (fbclid) props.hs_facebook_click_id = fbclid;
-  if (attr.utm_source) props.utm_source_original = attr.utm_source;
-  if (attr.utm_medium) props.utm_medium_original = attr.utm_medium;
-  if (campaign) props.utm_campaign_original = campaign;
-  if (attr.utm_content) props.utm_content_original = attr.utm_content;
+  // NOTE: hs_analytics_source*, hs_latest_source*, hs_analytics_first_referrer
+  // are READ-ONLY in HubSpot and cannot be set via API.
+  // utm_source_original, utm_medium_original, utm_campaign_original, utm_content_original
+  // do NOT exist as properties in this HubSpot portal.
+  // Attribution is handled by HubSpot automatically via form submissions with pageUri/hutk.
 
   return props;
 }
