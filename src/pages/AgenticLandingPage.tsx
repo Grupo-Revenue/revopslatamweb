@@ -292,29 +292,36 @@ const AgenticLandingPage = () => {
   // Silent HubSpot sync — never interrupts the conversation
   const syncToHubSpot = useCallback(async (email: string, properties: Record<string, string>, createIfNotExists = false) => {
     try {
+      console.log("[syncToHubSpot] calling update-contact:", { email, properties, createIfNotExists });
       const { data, error } = await supabase.functions.invoke("update-contact", {
         body: { email, properties, createIfNotExists, attribution: attributionRef.current },
       });
       if (error) {
-        console.error("update-contact invoke error:", error);
+        console.error("[syncToHubSpot] invoke error:", error);
         return null;
       }
+      console.log("[syncToHubSpot] response:", data);
       if (data?.success && data?.contactId) {
         setHubspotContactId(data.contactId);
         return data.contactId;
       }
       if (!data?.success && data?.error) {
-        console.error("update-contact error:", data.error);
+        console.error("[syncToHubSpot] HubSpot error:", data.error);
       }
       return null;
     } catch (e) {
-      console.error("syncToHubSpot exception:", e);
+      console.error("[syncToHubSpot] exception:", e);
       return null;
     }
   }, []);
 
+  // Helper to get current email from any source
+  const getCurrentEmail = useCallback(() => {
+    return earlyEmail?.trim() || emailInput?.trim() || nurturingEmail?.trim() || null;
+  }, [earlyEmail, emailInput, nurturingEmail]);
+
   // Process user answer and sync to HubSpot based on turn
-  const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number, currentEmail: string | null) => {
+  const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number) => {
     const buf = answersBufferRef.current;
 
     switch (answerTurn) {
@@ -324,9 +331,6 @@ const AgenticLandingPage = () => {
         const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
         if (companyMatch && companyMatch[1]) {
           buf.company = companyMatch[1].trim();
-        } else if (!buf.company) {
-          // If no company extracted and no previous company, the follow-up will provide it
-          // Next turn (still turn 2 after repeat_turn) will try again
         }
         break;
       }
@@ -346,21 +350,24 @@ const AgenticLandingPage = () => {
       }
       case 6: { // User answered Q5 (problema)
         const propName = getQ5PropertyName(detectedCrmStatusRef.current);
-        // Check if it's a known button value
         const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
         buf[propName] = exactValue;
         break;
       }
     }
 
-    // If we have an email and contactId, sync immediately
-    if (currentEmail && hubspotContactId) {
-      syncToHubSpot(currentEmail, { ...buf }, false);
+    // Always sync if we have an email — don't wait for hubspotContactId
+    const email = getCurrentEmail();
+    if (email) {
+      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, syncing buffer:`, { ...buf });
+      void syncToHubSpot(email, { ...buf }, false);
+    } else {
+      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, no email yet — buffering:`, { ...buf });
     }
-  }, [hubspotContactId, syncToHubSpot]);
+  }, [syncToHubSpot, getCurrentEmail]);
 
   // Sync score and lead status to HubSpot
-  const syncScoreToHubSpot = useCallback((score: number, flag: string, email: string | null) => {
+  const syncScoreToHubSpot = useCallback((score: number, flag: string, _email: string | null) => {
     const statusMap: Record<string, string> = {
       alta: "IN_PROGRESS",
       media: "OPEN",
@@ -372,10 +379,12 @@ const AgenticLandingPage = () => {
       hs_lead_status: statusMap[flag] || "OPEN",
     };
     answersBufferRef.current = { ...answersBufferRef.current, ...props };
-    if (email && hubspotContactId) {
-      syncToHubSpot(email, props, false);
+    const email = _email || getCurrentEmail();
+    if (email) {
+      console.log("[syncScoreToHubSpot] syncing score:", { score, flag, email });
+      void syncToHubSpot(email, { ...answersBufferRef.current }, false);
     }
-  }, [hubspotContactId, syncToHubSpot]);
+  }, [syncToHubSpot, getCurrentEmail]);
 
   // Scroll chat to bottom
   useEffect(() => {
@@ -746,8 +755,7 @@ const AgenticLandingPage = () => {
     setTurn(newTurn);
 
     // Process answer for HubSpot sync
-    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
-    processAnswerForHubSpot(val, newTurn, currentEmail);
+    processAnswerForHubSpot(val, newTurn);
 
     // After 2nd user answer (turn 3), show email capture BEFORE calling Claude
     if (newTurn === 3 && !emailCaptureHandled && !earlyEmailSaved) {
@@ -765,7 +773,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, earlyEmail, emailInput, nameCollected, conversationId, saveMessages]);
+  }, [chatInput, inputDisabled, messages, turn, callClaude, typewriterEffect, processClaudeResult, emailCaptureHandled, earlyEmailSaved, processAnswerForHubSpot, nameCollected, conversationId, saveMessages]);
 
   // Handle Q5 button click
   const handleQ5ButtonClick = useCallback(async (option: string) => {
@@ -781,12 +789,11 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
     // Process Q5 answer for HubSpot
-    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
-    processAnswerForHubSpot(option, newTurn, currentEmail);
+    processAnswerForHubSpot(option, newTurn);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
+  }, [messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot]);
 
   // Handle Q5 free text send
   const handleQ5FreeTextSend = useCallback(async () => {
@@ -800,12 +807,11 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
     // Process Q5 free text for HubSpot
-    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
-    processAnswerForHubSpot(val, newTurn, currentEmail);
+    processAnswerForHubSpot(val, newTurn);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
+  }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot]);
 
   // Save conversion record to Supabase
   const saveConversion = useCallback(async (email: string, contactId: string | null, convType = "meeting_booked") => {
