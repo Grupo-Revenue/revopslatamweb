@@ -248,6 +248,9 @@ const AgenticLandingPage = () => {
   const [isTypewriting, setIsTypewriting] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [turn, setTurn] = useState(0);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
@@ -908,15 +911,49 @@ const AgenticLandingPage = () => {
     setScreen(8); // confirmation
   }, [nurturingEmail, conversationId, summary, leadScore, saveConversion, hubspotContactId]);
 
+  // Normalize phone to +56XXXXXXXXX
+  const normalizePhone = (raw: string): string => {
+    const digits = raw.replace(/\D/g, "");
+    if (digits.startsWith("56") && digits.length >= 10) return `+${digits}`;
+    return `+56${digits}`;
+  };
+
+  const validatePhone = (raw: string): boolean => {
+    const digits = raw.replace(/\D/g, "");
+    // Remove leading 56 if present
+    const local = digits.startsWith("56") ? digits.slice(2) : digits;
+    return local.length >= 8 && local.length <= 9;
+  };
+
   const handleConfirmData = useCallback(async () => {
-    if (!nameInput.trim() || !emailInput.trim() || !selectedSlot) return;
+    // Determine the effective email
+    const effectiveEmail = earlyEmail?.trim() || emailInput.trim();
+    setPhoneError("");
+    setEmailError("");
+
+    if (!effectiveEmail) {
+      setEmailError("Ingresa tu correo electrónico");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(effectiveEmail)) {
+      setEmailError("Ingresa un correo válido");
+      return;
+    }
+    if (!validatePhone(phoneInput)) {
+      setPhoneError("Ingresa un número válido, por ejemplo: 9 1234 5678");
+      return;
+    }
+    if (!selectedSlot) return;
+
+    const normalizedPhone = normalizePhone(phoneInput);
     setScreen(7); // loading
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
         body: {
           name: nameInput.trim(),
-          email: emailInput.trim(),
+          email: effectiveEmail,
+          phone: normalizedPhone,
           context: contextRef.current,
           summary,
           availability_preference: `${selectedSlot.display_date} a las ${selectedSlot.display_time}`,
@@ -939,7 +976,10 @@ const AgenticLandingPage = () => {
         return;
       }
 
-      void saveConversion(emailInput.trim(), hubspotContactId, "meeting_booked");
+      void saveConversion(effectiveEmail, hubspotContactId, "meeting_booked");
+
+      // Sync phone to HubSpot
+      void syncToHubSpot(effectiveEmail, { ...answersBufferRef.current, phone: normalizedPhone }, false);
 
       // Save meeting status to conversation
       if (conversationId) {
@@ -948,7 +988,8 @@ const AgenticLandingPage = () => {
           status: "agendo",
           meeting_date: data.display_date,
           meeting_time: data.display_time,
-          visitor_email: emailInput.trim(),
+          visitor_email: effectiveEmail,
+          phone: normalizedPhone,
           hubspot_sync_status: "synced",
         });
       }
@@ -960,7 +1001,7 @@ const AgenticLandingPage = () => {
       console.error("book-meeting exception:", e);
       setScreen(8);
     }
-  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId]);
+  }, [nameInput, emailInput, earlyEmail, phoneInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId, syncToHubSpot, saveConversationMeta]);
 
 
   /* ─── render current screen ─── */
@@ -1355,47 +1396,78 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 6: Name + Email ── */
-      case 6:
+      /* ── Screen 6: Phone + conditional Email ── */
+      case 6: {
+        const hasEmail = !!(earlyEmail?.trim());
+        const displayName = visitorName || nameInput || "amigo";
+        const bubbleText = hasEmail
+          ? `Casi listo, ${displayName}. ¿A qué teléfono te avisamos para confirmar la reunión?`
+          : `Casi listo, ${displayName}. Para confirmar la reunión necesito tu correo y un teléfono donde avisarte.`;
+
+        const handlePhoneChange = (raw: string) => {
+          // Strip non-digits, auto-remove leading +56 or 56
+          let cleaned = raw.replace(/[^\d]/g, "");
+          if (cleaned.startsWith("56") && cleaned.length > 2) cleaned = cleaned.slice(2);
+          setPhoneInput(cleaned);
+          setPhoneError("");
+        };
+
+        const isFormValid = validatePhone(phoneInput) && (hasEmail || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.trim()));
+
         return (
           <motion.div key="s6" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3 justify-center">
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-                <AIBubble>
-                  {selectedSlot
-                    ? `Perfecto, ${selectedSlot.display_date} a las ${selectedSlot.display_time}. ¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión.`
-                    : "¿Cómo te llamas y cuál es tu correo? Así confirmamos la reunión."}
-                </AIBubble>
+                <AIBubble>{bubbleText}</AIBubble>
               </motion.div>
             </div>
             <div className="px-4 pb-4 pt-2 flex flex-col gap-3">
-              <input
-                type="text"
-                value={nameInput}
-                onChange={(e) => setNameInput(e.target.value)}
-                placeholder="Tu nombre"
-                className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
-                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
-              />
-              <input
-                type="email"
-                value={emailInput}
-                onChange={(e) => setEmailInput(e.target.value)}
-                placeholder="Tu correo electrónico"
-                className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
-                style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.08)" }}
-              />
+              {/* Email field — only if not captured earlier */}
+              {!hasEmail && (
+                <div>
+                  <input
+                    type="email"
+                    value={emailInput}
+                    onChange={(e) => { setEmailInput(e.target.value); setEmailError(""); }}
+                    placeholder="Tu correo electrónico"
+                    className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
+                    style={{ background: "rgba(255,255,255,0.07)", border: emailError ? "1px solid rgba(239,68,68,0.6)" : "1px solid rgba(255,255,255,0.08)" }}
+                  />
+                  {emailError && <p className="text-red-400 text-[13px] mt-1 pl-1">{emailError}</p>}
+                </div>
+              )}
+
+              {/* Phone field with +56 prefix */}
+              <div>
+                <div
+                  className="flex items-center w-full rounded-xl overflow-hidden"
+                  style={{ background: "rgba(255,255,255,0.07)", border: phoneError ? "1px solid rgba(239,68,68,0.6)" : "1px solid rgba(255,255,255,0.08)" }}
+                >
+                  <span className="pl-4 pr-2 text-[15px] text-white/50 font-[Lexend] select-none whitespace-nowrap">🇨🇱 +56</span>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    value={phoneInput}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                    placeholder="9 1234 5678"
+                    className="flex-1 py-3 pr-4 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend] bg-transparent"
+                  />
+                </div>
+                {phoneError && <p className="text-red-400 text-[13px] mt-1 pl-1">{phoneError}</p>}
+              </div>
+
               <button
                 onClick={handleConfirmData}
-                disabled={!nameInput.trim() || !emailInput.trim()}
+                disabled={!isFormValid}
                 className="w-full py-3.5 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-40"
                 style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
               >
-                Confirmar →
+                Confirmar reunión →
               </button>
             </div>
           </motion.div>
         );
+      }
 
       /* ── Screen 7: Loading ── */
       case 7:
