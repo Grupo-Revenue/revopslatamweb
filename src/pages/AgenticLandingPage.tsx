@@ -966,7 +966,7 @@ const AgenticLandingPage = () => {
           context: contextRef.current,
           summary,
           availability_preference: "",
-          conversation_id: conversationId,
+          conversation_id: conversationIdRef.current || conversationId,
           score: leadScore,
           flag: "no_calificado",
           nurturing_only: true,
