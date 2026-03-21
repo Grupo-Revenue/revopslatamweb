@@ -392,7 +392,7 @@ serve(async (req) => {
           const nextDayName = dayNames[nextDay.getDay()];
           const monthNames = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
           finalStart = `${nextDateStr}T09:00:00`;
-          finalEnd = `${nextDateStr}T09:30:00`;
+          finalEnd = `${nextDateStr}T09:45:00`;
           finalDisplayDate = `${nextDayName} ${nextDay.getDate()} de ${monthNames[nextDay.getMonth()]}`;
           finalDisplayTime = "09:00";
         }
