@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import { Search, Filter, Eye, RefreshCw, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Filter, Eye, RefreshCw, X, ChevronLeft, ChevronRight, Trash2 } from "lucide-react";
 
 interface Conversation {
   id: string;
