@@ -793,7 +793,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
+  }, [messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot]);
 
   // Handle Q5 free text send
   const handleQ5FreeTextSend = useCallback(async () => {
