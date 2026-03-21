@@ -807,6 +807,29 @@ const AgenticLandingPage = () => {
     await processClaudeResult(result, updatedMessages, newTurn);
   }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
 
+  // Save conversion record to Supabase
+  const saveConversion = useCallback(async (email: string, contactId: string | null, convType = "meeting_booked") => {
+    const attr = attributionRef.current;
+    try {
+      await supabase.from("conversions").insert({
+        contact_email: email,
+        contact_id_hubspot: contactId,
+        fbclid: attr.fbclid || null,
+        utm_source: attr.utm_source || null,
+        utm_medium: attr.utm_medium || null,
+        utm_campaign: attr.utm_campaign || null,
+        utm_content: attr.utm_content || null,
+        utm_term: attr.utm_term || null,
+        full_url: attr.full_url || null,
+        referrer: attr.referrer || null,
+        conversion_type: convType,
+        conversation_id: conversationId,
+      } as any);
+    } catch (e) {
+      console.error("saveConversion error:", e);
+    }
+  }, [conversationId]);
+
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
     if (!nurturingEmail.trim()) return;
@@ -826,14 +849,16 @@ const AgenticLandingPage = () => {
           nurturing_only: true,
           conversation_messages: messages,
           answers_buffer: answersBufferRef.current,
+          attribution: attributionRef.current,
           ...utmRef.current,
         },
       });
+      void saveConversion(nurturingEmail.trim(), hubspotContactId, "nurturing_email");
     } catch (e) {
       console.error("nurturing submit error:", e);
     }
     setScreen(8); // confirmation
-  }, [nurturingEmail, conversationId, summary, leadScore]);
+  }, [nurturingEmail, conversationId, summary, leadScore, saveConversion, hubspotContactId]);
 
   const handleConfirmData = useCallback(async () => {
     if (!nameInput.trim() || !emailInput.trim() || !selectedSlot) return;
