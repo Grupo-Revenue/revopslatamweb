@@ -203,6 +203,14 @@ export default function ConversationsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-[#F8F8F8] border-b border-gray-200">
+              <th className="px-3 py-2.5 w-8">
+                <input
+                  type="checkbox"
+                  checked={paged.length > 0 && selectedIds.size === paged.length}
+                  onChange={toggleAll}
+                  className="rounded border-gray-300 text-[#BE1869] focus:ring-[#BE1869]/30"
+                />
+              </th>
               {["Fecha", "Nombre", "Email", "Empresa", "Cargo", "Rubro", "Equipo", "CRM", "Problema", "Score", "Calif.", "Estado", "Fuente", ""].map(h => (
                 <th key={h} className="px-3 py-2.5 text-left text-xs font-medium text-gray-500 whitespace-nowrap">{h}</th>
               ))}
@@ -210,11 +218,19 @@ export default function ConversationsPage() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={14} className="text-center py-8 text-gray-400">Cargando...</td></tr>
+              <tr><td colSpan={15} className="text-center py-8 text-gray-400">Cargando...</td></tr>
             ) : paged.length === 0 ? (
-              <tr><td colSpan={14} className="text-center py-8 text-gray-400">Sin resultados</td></tr>
+              <tr><td colSpan={15} className="text-center py-8 text-gray-400">Sin resultados</td></tr>
             ) : paged.map((c) => (
-              <tr key={c.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+              <tr key={c.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${selectedIds.has(c.id) ? "bg-red-50/50" : ""}`}>
+                <td className="px-3 py-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.has(c.id)}
+                    onChange={() => toggleId(c.id)}
+                    className="rounded border-gray-300 text-[#BE1869] focus:ring-[#BE1869]/30"
+                  />
+                </td>
                 <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-600">
                   {format(new Date(c.created_at), "dd MMM HH:mm", { locale: es })}
                 </td>
