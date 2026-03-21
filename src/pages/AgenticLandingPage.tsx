@@ -805,8 +805,7 @@ const AgenticLandingPage = () => {
     const newTurn = turn + 1;
     setTurn(newTurn);
     // Process Q5 free text for HubSpot
-    const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || null;
-    processAnswerForHubSpot(val, newTurn, currentEmail);
+    processAnswerForHubSpot(val, newTurn);
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
