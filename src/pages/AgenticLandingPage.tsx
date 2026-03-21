@@ -8,7 +8,7 @@ import LidiaAvatar from "@/assets/lidia-avatar.png";
 const BG_COLORS = [
   "#22262A", // Screen 0: Welcome Lidia
   "#1C1240", "#1E1550", "#16203A", "#0F2030",
-  "#0A2028", // Screen 5: availability picker / nurturing
+  "#0F2030", // Screen 5: same as screen 4 for seamless transition
   "#0A2028", // Screen 6: name+email
   "#082018", // Screen 7: loading
   "#0A1F1A", // Screen 8: confirmation
@@ -1410,8 +1410,8 @@ const AgenticLandingPage = () => {
         return (
           <motion.div key="s5-avail" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
-              {messages.slice(-3).map((m, i) => (
-                <motion.div key={`${m.role}-${messages.length - 3 + i}-${m.text.slice(0, 20)}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: i * 0.05 }}>
+              {messages.map((m, i) => (
+                <motion.div key={`${m.role}-${i}-${m.text.slice(0, 20)}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: i < messages.length - 3 ? 0 : (i - (messages.length - 3)) * 0.05 }}>
                   {m.role === "ai" ? <AIBubble>{m.text}</AIBubble> : <UserBubble>{m.text}</UserBubble>}
                 </motion.div>
               ))}
