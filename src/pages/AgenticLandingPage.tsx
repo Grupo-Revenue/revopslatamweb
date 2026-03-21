@@ -1041,6 +1041,7 @@ const AgenticLandingPage = () => {
     if (!selectedSlot) return;
 
     const normalizedPhone = normalizePhone(phoneInput);
+    setBookingFailed(false);
     setScreen(7); // loading
 
     try {
