@@ -629,7 +629,7 @@ const AgenticLandingPage = () => {
          void fetchAvailability();
        }
     },
-    [typewriterEffect, conversationId, saveMessages, fetchAvailability, detectCrmStatus, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
+    [typewriterEffect, conversationId, saveMessages, fetchAvailability, syncScoreToHubSpot, earlyEmail, earlyEmailSaved, emailInput, nurturingEmail]
   );
 
   // Start conversation — Screen 0 → 1 (ask name first)
