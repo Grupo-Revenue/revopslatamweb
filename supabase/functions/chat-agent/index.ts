@@ -66,7 +66,8 @@ Espera respuesta con el cargo. Luego continúa a Pregunta 2.
 Agrega "---REPEAT_TURN---" al final para indicar que la pregunta no está completa.
 
 CASO C — Dio ambos en una sola respuesta:
-Ejemplo: "Soy gerente comercial en Constructora XYZ"
+Ejemplo: "Soy gerente comercial en Constructora XYZ", "Direcxtor en cosmeticos pro", "CEO de empresa ABC"
+IMPORTANTE: Los visitantes escriben con errores ortográficos, abreviaciones y sin tildes. Interpreta generosamente. Si escriben "Direcxtor" entiende "Director", si escriben "jente" entiende "Gerente", etc. La palabra después de "en", "de" o "@" es SIEMPRE el nombre de la empresa.
 Responde con 1 línea específica sobre el cargo y continúa directo a Pregunta 2.
 
 CASO D — Respuesta ambigua o muy corta:
