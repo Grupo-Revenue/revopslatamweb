@@ -126,6 +126,7 @@ const App = () => (
                 <Route path="/hubspot-partner" element={<Navigate to="/hubspot-partner-chile" replace />} />
                 <Route path="/lp/conoce-tu-pista" element={<ConoceTuPistaLanding />} />
                 <Route path="/lp/implementacion-hubspot" element={<ImplementacionHubspotLanding />} />
+                <Route path="/lp/hablemos" element={<AgenticLandingPage />} />
                 <Route path="/lp/agentic" element={<AgenticLandingPage />} />
                 <Route path="/politica-de-privacidad" element={<PoliticaPrivacidad />} />
                 {/* Admin routes */}
