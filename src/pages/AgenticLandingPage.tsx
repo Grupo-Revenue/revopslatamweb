@@ -728,14 +728,16 @@ const AgenticLandingPage = () => {
     setEmailInput(trimmedEmail);
     setNurturingEmail(trimmedEmail);
 
+    const currentConversationId = conversationIdRef.current || conversationId;
+
     // Save email to conversation
-    if (conversationId) {
-      void saveConversationMeta(conversationId, { visitor_email: trimmedEmail });
+    if (currentConversationId) {
+      void saveConversationMeta(currentConversationId, { visitor_email: trimmedEmail });
     }
 
     void continuePendingClaudeCall(true);
 
-    if (!conversationId) return;
+    if (!currentConversationId) return;
 
     if (earlyEmailSubmittingRef.current) {
       if (now - earlyEmailLastAttemptRef.current < 3000) return;
@@ -749,8 +751,7 @@ const AgenticLandingPage = () => {
       try {
         const { error } = await supabase
           .from("conversations")
-          .update({ availability_preference: `early_email:${trimmedEmail}` })
-          .eq("id", conversationId);
+          .upsert({ id: currentConversationId, availability_preference: `early_email:${trimmedEmail}` } as any, { onConflict: "id" });
 
         if (error) {
           console.error("early email conversation update error:", error);
