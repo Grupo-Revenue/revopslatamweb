@@ -326,7 +326,7 @@ serve(async (req) => {
 
     const firstMsgInstruction = "\n\nIMPORTANTE PARA EL PRIMER MENSAJE: Si es tu primera intervención (turn 1, sin mensajes previos del visitante), ve directo a la primera pregunta sin saludos, sin presentación, sin emojis. Usa exactamente este texto: \"" + firstQuestionText + "\"";
 
-    const fullSystemPrompt = `${SYSTEM_PROMPT}${nameInstruction}\n\nContexto del visitante: ${contextDetail}\n\nTurn actual: ${turn}${phaseInstruction}${turn <= 1 ? firstMsgInstruction : ""}`;
+    const fullSystemPrompt = `${SYSTEM_PROMPT}${knowledgeBaseContent}${nameInstruction}\n\nContexto del visitante: ${contextDetail}\n\nTurn actual: ${turn}${phaseInstruction}${turn <= 1 ? firstMsgInstruction : ""}`;
 
     // Ensure messages array is never empty
     const apiMessages = messages.length > 0
