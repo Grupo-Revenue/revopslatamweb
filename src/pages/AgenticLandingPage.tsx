@@ -315,8 +315,13 @@ const AgenticLandingPage = () => {
     }
   }, []);
 
+  // Helper to get current email from any source
+  const getCurrentEmail = useCallback(() => {
+    return earlyEmail?.trim() || emailInput?.trim() || nurturingEmail?.trim() || null;
+  }, [earlyEmail, emailInput, nurturingEmail]);
+
   // Process user answer and sync to HubSpot based on turn
-  const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number, currentEmail: string | null) => {
+  const processAnswerForHubSpot = useCallback((userAnswer: string, answerTurn: number) => {
     const buf = answersBufferRef.current;
 
     switch (answerTurn) {
@@ -326,9 +331,6 @@ const AgenticLandingPage = () => {
         const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
         if (companyMatch && companyMatch[1]) {
           buf.company = companyMatch[1].trim();
-        } else if (!buf.company) {
-          // If no company extracted and no previous company, the follow-up will provide it
-          // Next turn (still turn 2 after repeat_turn) will try again
         }
         break;
       }
@@ -348,18 +350,21 @@ const AgenticLandingPage = () => {
       }
       case 6: { // User answered Q5 (problema)
         const propName = getQ5PropertyName(detectedCrmStatusRef.current);
-        // Check if it's a known button value
         const exactValue = Q5_BUTTON_TO_EXACT[userAnswer] || userAnswer;
         buf[propName] = exactValue;
         break;
       }
     }
 
-    // If we have an email and contactId, sync immediately
-    if (currentEmail && hubspotContactId) {
-      syncToHubSpot(currentEmail, { ...buf }, false);
+    // Always sync if we have an email — don't wait for hubspotContactId
+    const email = getCurrentEmail();
+    if (email) {
+      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, syncing buffer:`, { ...buf });
+      void syncToHubSpot(email, { ...buf }, false);
+    } else {
+      console.log(`[processAnswerForHubSpot] turn ${answerTurn}, no email yet — buffering:`, { ...buf });
     }
-  }, [hubspotContactId, syncToHubSpot]);
+  }, [syncToHubSpot, getCurrentEmail]);
 
   // Sync score and lead status to HubSpot
   const syncScoreToHubSpot = useCallback((score: number, flag: string, email: string | null) => {
