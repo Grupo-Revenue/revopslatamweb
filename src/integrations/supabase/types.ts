@@ -19,39 +19,125 @@ export type Database = {
           availability_preference: string | null
           context: string
           created_at: string
+          fbclid: string | null
+          full_url: string | null
           id: string
           meeting_date: string | null
           meeting_time: string | null
           messages: Json
+          referrer: string | null
           scheduled: boolean
           scheduled_at: string | null
           summary: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
         }
         Insert: {
           availability_preference?: string | null
           context?: string
           created_at?: string
+          fbclid?: string | null
+          full_url?: string | null
           id?: string
           meeting_date?: string | null
           meeting_time?: string | null
           messages?: Json
+          referrer?: string | null
           scheduled?: boolean
           scheduled_at?: string | null
           summary?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Update: {
           availability_preference?: string | null
           context?: string
           created_at?: string
+          fbclid?: string | null
+          full_url?: string | null
           id?: string
           meeting_date?: string | null
           meeting_time?: string | null
           messages?: Json
+          referrer?: string | null
           scheduled?: boolean
           scheduled_at?: string | null
           summary?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
         }
         Relationships: []
+      }
+      conversions: {
+        Row: {
+          contact_email: string
+          contact_id_hubspot: string | null
+          conversation_id: string | null
+          conversion_type: string
+          converted_at: string
+          created_at: string
+          fbclid: string | null
+          full_url: string | null
+          id: string
+          referrer: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          contact_email: string
+          contact_id_hubspot?: string | null
+          conversation_id?: string | null
+          conversion_type?: string
+          converted_at?: string
+          created_at?: string
+          fbclid?: string | null
+          full_url?: string | null
+          id?: string
+          referrer?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          contact_email?: string
+          contact_id_hubspot?: string | null
+          conversation_id?: string | null
+          conversion_type?: string
+          converted_at?: string
+          created_at?: string
+          fbclid?: string | null
+          full_url?: string | null
+          id?: string
+          referrer?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversions_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       cta_styles: {
         Row: {
