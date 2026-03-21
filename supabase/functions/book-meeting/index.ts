@@ -555,7 +555,83 @@ serve(async (req) => {
       }
     }
 
-    /* ── PASO 5: Notificar Slack ── */
+    /* ── PASO 5: Enviar formulario HubSpot ── */
+    let hubspotFormSubmitted = false;
+    let hubspotFormError: string | null = null;
+    try {
+      const phone = answers_buffer?.phone || "";
+      const problemaNoCrm = answers_buffer?.problema_principal__no_usan_crm || "";
+      const problemaHubspot = answers_buffer?.problema_principal__usan_hubspot || "";
+      const problemaOtro = answers_buffer?.problema_principal || "";
+
+      const formFields = [
+        { name: "email", value: email },
+        { name: "firstname", value: firstName },
+        { name: "lastname", value: lastName || "" },
+        { name: "phone", value: phone },
+        { name: "company", value: companyName || "" },
+        { name: "nivel_del_cargo", value: cargoValue || "" },
+        { name: "rubro", value: answers_buffer?.rubro || "" },
+        { name: "cantidad_de_vendedores", value: cantidadVendedores || "" },
+        { name: "cuenta_con_crm", value: cuentaConCrm || "" },
+        { name: "problema_principal__no_usan_crm", value: problemaNoCrm },
+        { name: "problema_principal__usan_hubspot", value: problemaHubspot },
+        { name: "problema_principal", value: problemaOtro },
+        { name: "lead_score_ia", value: String(score || 0) },
+        { name: "hs_analytics_source", value: attrProps.hs_analytics_source || "" },
+        { name: "hs_analytics_source_data_1", value: attrProps.hs_analytics_source_data_1 || "" },
+        { name: "hs_analytics_source_data_2", value: attribution?.utm_campaign || "" },
+        { name: "hs_latest_source", value: attrProps.hs_latest_source || "" },
+        { name: "hs_latest_source_data_1", value: attrProps.hs_latest_source_data_1 || "" },
+        { name: "hs_latest_source_data_2", value: attribution?.utm_campaign || "" },
+        { name: "hs_facebook_click_id", value: attribution?.fbclid || "" },
+      ];
+
+      const formBody = {
+        fields: formFields,
+        context: {
+          hutk: "",
+          pageUri: attribution?.full_url || "",
+          pageName: "Agente Lidia — Landing RevOps LATAM",
+          ipAddress: "",
+        },
+        legalConsentOptions: {
+          consent: {
+            consentToProcess: true,
+            text: "Acepto que RevOps LATAM procese mis datos para contactarme.",
+          },
+        },
+      };
+
+      console.log("[book-meeting] Submitting HubSpot form...");
+      const formRes = await fetch(
+        "https://api.hsforms.com/submissions/v3/integration/submit/1537563/b7cb5d1f-eeea-43f9-a1f3-ae9cb0e2ddfd",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${HUBSPOT_API_KEY}`,
+          },
+          body: JSON.stringify(formBody),
+        }
+      );
+
+      if (formRes.ok || formRes.status === 204) {
+        hubspotFormSubmitted = true;
+        console.log("[book-meeting] HubSpot form submitted successfully");
+        // Consume body if present
+        if (formRes.status !== 204) await formRes.text();
+      } else {
+        const errText = await formRes.text();
+        hubspotFormError = errText;
+        console.error(`[book-meeting] HubSpot form error [${formRes.status}]:`, errText);
+      }
+    } catch (e) {
+      hubspotFormError = e instanceof Error ? e.message : String(e);
+      console.error("[book-meeting] HubSpot form exception:", e);
+    }
+
+    /* ── PASO 6: Notificar Slack ── */
     if (SLACK_WEBHOOK_URL) {
       try {
         await fetch(SLACK_WEBHOOK_URL, {
