@@ -680,10 +680,12 @@ const AgenticLandingPage = () => {
 
       // Parse first/last name
       const parts = val.split(/\s+/);
-      const firstName = parts[0] || val;
-      const lastName = parts.slice(1).join(" ") || "";
+      const capitalize = (w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+      const firstName = capitalize(parts[0] || val);
+      const lastName = parts.slice(1).map(capitalize).join(" ") || "";
+      const normalizedFull = lastName ? `${firstName} ${lastName}` : firstName;
       setVisitorName(firstName);
-      setNameInput(val); // pre-fill for booking screen
+      setNameInput(normalizedFull); // pre-fill for booking screen
 
       // Save to HubSpot buffer
       answersBufferRef.current.firstname = firstName;
@@ -692,7 +694,7 @@ const AgenticLandingPage = () => {
       setNameCollected(true);
 
       // Now show Q1 (cargo+empresa) via typewriter — this IS sent to Claude
-      const firstQuestion = `Bueno ${firstName}, vamos directo al grano — ¿cuál es tu cargo y en qué empresa trabajas?`;
+      const firstQuestion = `Qué bueno tenerte aquí, ${firstName}. Cuéntame, ¿cuál es tu cargo y en qué empresa trabajas?`;
       setTurn(1);
       await typewriterEffect(firstQuestion);
       if (conversationId) {
