@@ -994,7 +994,8 @@ const AgenticLandingPage = () => {
     const digits = raw.replace(/\D/g, "");
     // Remove leading 56 if present
     const local = digits.startsWith("56") ? digits.slice(2) : digits;
-    return local.length >= 8 && local.length <= 9;
+    // Chilean mobile numbers must be exactly 9 digits starting with 9
+    return local.length === 9 && local.startsWith("9");
   };
 
   const handleConfirmData = useCallback(async () => {
