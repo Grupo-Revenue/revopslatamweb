@@ -257,6 +257,7 @@ const AgenticLandingPage = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const earlyEmailInputRef = useRef<HTMLInputElement>(null);
   const earlyEmailSubmittingRef = useRef(false);
+  const earlyEmailBlurTimeoutRef = useRef<number | null>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
@@ -551,8 +552,15 @@ const AgenticLandingPage = () => {
   const handleEarlyEmailSave = useCallback(async (email?: string) => {
     const nativeValue = earlyEmailInputRef.current?.value ?? "";
     const trimmedEmail = (email ?? nativeValue ?? earlyEmail).trim();
+    const emailField = earlyEmailInputRef.current;
 
     if (!trimmedEmail || !conversationId || earlyEmailSubmittingRef.current) return;
+    if (emailField && !emailField.checkValidity()) return;
+
+    if (earlyEmailBlurTimeoutRef.current) {
+      window.clearTimeout(earlyEmailBlurTimeoutRef.current);
+      earlyEmailBlurTimeoutRef.current = null;
+    }
 
     earlyEmailSubmittingRef.current = true;
     setEarlyEmail(trimmedEmail);
@@ -593,6 +601,14 @@ const AgenticLandingPage = () => {
       earlyEmailSubmittingRef.current = false;
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot, earlyEmail]);
+
+  useEffect(() => {
+    return () => {
+      if (earlyEmailBlurTimeoutRef.current) {
+        window.clearTimeout(earlyEmailBlurTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Skip email capture
   const handleSkipEmail = useCallback(async () => {
@@ -907,6 +923,24 @@ const AgenticLandingPage = () => {
                       value={earlyEmail}
                       onChange={(e) => setEarlyEmail(e.target.value)}
                       onInput={(e) => setEarlyEmail((e.target as HTMLInputElement).value)}
+                      onFocus={() => {
+                        if (earlyEmailBlurTimeoutRef.current) {
+                          window.clearTimeout(earlyEmailBlurTimeoutRef.current);
+                          earlyEmailBlurTimeoutRef.current = null;
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const nextValue = e.currentTarget.value.trim();
+                        if (!nextValue || !e.currentTarget.checkValidity() || earlyEmailSubmittingRef.current) return;
+
+                        if (earlyEmailBlurTimeoutRef.current) {
+                          window.clearTimeout(earlyEmailBlurTimeoutRef.current);
+                        }
+
+                        earlyEmailBlurTimeoutRef.current = window.setTimeout(() => {
+                          handleEarlyEmailSave(nextValue);
+                        }, 40);
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           e.preventDefault();
@@ -923,15 +957,23 @@ const AgenticLandingPage = () => {
                     />
                   </div>
                   <button
-                    type="submit"
-                    disabled={!earlyEmail.trim() || earlyEmailSubmittingRef.current}
-                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
+                    type="button"
+                    aria-disabled={!earlyEmail.trim() || earlyEmailSubmittingRef.current}
+                    onPointerDown={() => handleEarlyEmailSave()}
+                    onClick={() => handleEarlyEmailSave()}
+                    className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] aria-disabled:opacity-30 touch-manipulation"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
                     Continuar →
                   </button>
                   <button
                     type="button"
+                    onPointerDown={() => {
+                      if (earlyEmailBlurTimeoutRef.current) {
+                        window.clearTimeout(earlyEmailBlurTimeoutRef.current);
+                        earlyEmailBlurTimeoutRef.current = null;
+                      }
+                    }}
                     onClick={handleSkipEmail}
                     className="text-[13px] text-white/25 hover:text-white/45 transition-colors self-center"
                   >
