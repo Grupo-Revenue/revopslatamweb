@@ -705,8 +705,19 @@ const AgenticLandingPage = () => {
       return;
     }
 
-    if (!isValidEmail) {
-      setEarlyEmailError("Revisa el formato del email.");
+    // Corporate email validation
+    const validation = validateCorporateEmail(trimmedEmail);
+    if (!validation.valid) {
+      if (validation.error === 'gratuito') {
+        const newAttempts = freeEmailAttempts + 1;
+        setFreeEmailAttempts(newAttempts);
+        if (newAttempts >= 2) {
+          setEmailFallbackMode(true);
+          setEarlyEmailError("");
+          return;
+        }
+      }
+      setEarlyEmailError(CORPORATE_EMAIL_ERRORS[validation.error!]);
       return;
     }
 
