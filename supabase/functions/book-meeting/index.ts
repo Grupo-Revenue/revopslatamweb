@@ -626,14 +626,15 @@ serve(async (req) => {
         { name: "hs_facebook_click_id", value: attribution?.fbclid || "" },
       ];
 
+      // Build context — omit hutk and ipAddress if empty to avoid HubSpot validation errors
+      const formContext: Record<string, string> = {
+        pageUri: attribution?.full_url || "",
+        pageName: "Agente Lidia — Landing RevOps LATAM",
+      };
+
       const formBody = {
         fields: formFields,
-        context: {
-          hutk: "",
-          pageUri: attribution?.full_url || "",
-          pageName: "Agente Lidia — Landing RevOps LATAM",
-          ipAddress: "",
-        },
+        context: formContext,
         legalConsentOptions: {
           consent: {
             consentToProcess: true,
