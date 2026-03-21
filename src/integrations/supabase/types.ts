@@ -79,6 +79,7 @@ export type Database = {
           meeting_date: string | null
           meeting_time: string | null
           messages: Json
+          phone: string | null
           problema_principal: string | null
           referrer: string | null
           rubro: string | null
@@ -115,6 +116,7 @@ export type Database = {
           meeting_date?: string | null
           meeting_time?: string | null
           messages?: Json
+          phone?: string | null
           problema_principal?: string | null
           referrer?: string | null
           rubro?: string | null
@@ -151,6 +153,7 @@ export type Database = {
           meeting_date?: string | null
           meeting_time?: string | null
           messages?: Json
+          phone?: string | null
           problema_principal?: string | null
           referrer?: string | null
           rubro?: string | null
