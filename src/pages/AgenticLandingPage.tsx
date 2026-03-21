@@ -924,7 +924,7 @@ const AgenticLandingPage = () => {
                   }}
                 >
                   <p className="text-white/70 text-[14px] leading-snug text-center">
-                      Así no perdemos el contacto si se corta la conversación. Si en iPhone se cierra el teclado, avanzamos automáticamente.
+                      Así no perdemos el contacto si se corta la conversación.
                   </p>
                   <div
                     className="flex items-center gap-2 rounded-xl px-4 py-3"
