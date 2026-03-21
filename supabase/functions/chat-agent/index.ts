@@ -391,7 +391,10 @@ serve(async (req) => {
       if (flagMatch) flag = flagMatch[1].toLowerCase();
     }
 
-    if (turn >= 7) {
+    if (discardBroker) {
+      phase = "discarded";
+      flag = "descartado_broker";
+    } else if (turn >= 7) {
       phase = "complete";
     } else if (turn >= 6 && !repeatTurn && score !== undefined) {
       if (score <= 39) {
