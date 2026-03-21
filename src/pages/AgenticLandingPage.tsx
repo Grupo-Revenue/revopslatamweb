@@ -811,7 +811,7 @@ const AgenticLandingPage = () => {
     const result = await callClaude(updatedMessages, newTurn);
     if (!result) return;
     await processClaudeResult(result, updatedMessages, newTurn);
-  }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
+  }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot]);
 
   // Save conversion record to Supabase
   const saveConversion = useCallback(async (email: string, contactId: string | null, convType = "meeting_booked") => {
