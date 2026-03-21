@@ -18,7 +18,7 @@ const TOTAL_SCREENS = 9;
 const TYPEWRITER_MS = 18;
 const WELCOME_TYPEWRITER_MS = 15;
 
-/* ─── capture UTMs from URL ─── */
+/* ─── capture UTMs + attribution from URL ─── */
 function getUTMParams() {
   const params = new URLSearchParams(window.location.search);
   return {
@@ -26,6 +26,20 @@ function getUTMParams() {
     utm_medium: params.get("utm_medium") || "",
     utm_campaign: params.get("utm_campaign") || "",
     utm_content: params.get("utm_content") || "",
+  };
+}
+
+function getAttributionData() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utm_source: params.get("utm_source") || "",
+    utm_medium: params.get("utm_medium") || "",
+    utm_campaign: params.get("utm_campaign") || "",
+    utm_content: params.get("utm_content") || "",
+    utm_term: params.get("utm_term") || "",
+    fbclid: params.get("fbclid") || "",
+    full_url: window.location.href,
+    referrer: document.referrer || "",
   };
 }
 
@@ -263,6 +277,7 @@ const AgenticLandingPage = () => {
   const earlyEmailLastAttemptRef = useRef(0);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
+  const attributionRef = useRef(getAttributionData());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
 
   // Visitor name state (collected before diagnostic)
@@ -278,7 +293,7 @@ const AgenticLandingPage = () => {
   const syncToHubSpot = useCallback(async (email: string, properties: Record<string, string>, createIfNotExists = false) => {
     try {
       const { data, error } = await supabase.functions.invoke("update-contact", {
-        body: { email, properties, createIfNotExists },
+        body: { email, properties, createIfNotExists, attribution: attributionRef.current },
       });
       if (error) {
         console.error("update-contact invoke error:", error);
@@ -367,11 +382,22 @@ const AgenticLandingPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isAITyping, showEmailCapture]);
 
-  // Create conversation in Supabase
+  // Create conversation in Supabase — save attribution from the start
   const createConversation = useCallback(async () => {
+    const attr = attributionRef.current;
     const { data, error } = await supabase
       .from("conversations")
-      .insert({ context: contextRef.current })
+      .insert({
+        context: contextRef.current,
+        fbclid: attr.fbclid || null,
+        utm_source: attr.utm_source || null,
+        utm_medium: attr.utm_medium || null,
+        utm_campaign: attr.utm_campaign || null,
+        utm_content: attr.utm_content || null,
+        utm_term: attr.utm_term || null,
+        full_url: attr.full_url || null,
+        referrer: attr.referrer || null,
+      } as any)
       .select("id")
       .single();
     if (!error && data) {
@@ -781,6 +807,29 @@ const AgenticLandingPage = () => {
     await processClaudeResult(result, updatedMessages, newTurn);
   }, [chatInput, messages, turn, callClaude, processClaudeResult, processAnswerForHubSpot, earlyEmailSaved, earlyEmail, emailInput]);
 
+  // Save conversion record to Supabase
+  const saveConversion = useCallback(async (email: string, contactId: string | null, convType = "meeting_booked") => {
+    const attr = attributionRef.current;
+    try {
+      await supabase.from("conversions").insert({
+        contact_email: email,
+        contact_id_hubspot: contactId,
+        fbclid: attr.fbclid || null,
+        utm_source: attr.utm_source || null,
+        utm_medium: attr.utm_medium || null,
+        utm_campaign: attr.utm_campaign || null,
+        utm_content: attr.utm_content || null,
+        utm_term: attr.utm_term || null,
+        full_url: attr.full_url || null,
+        referrer: attr.referrer || null,
+        conversion_type: convType,
+        conversation_id: conversationId,
+      } as any);
+    } catch (e) {
+      console.error("saveConversion error:", e);
+    }
+  }, [conversationId]);
+
   // Handle nurturing email submit (unqualified leads)
   const handleNurturingSubmit = useCallback(async () => {
     if (!nurturingEmail.trim()) return;
@@ -800,14 +849,16 @@ const AgenticLandingPage = () => {
           nurturing_only: true,
           conversation_messages: messages,
           answers_buffer: answersBufferRef.current,
+          attribution: attributionRef.current,
           ...utmRef.current,
         },
       });
+      void saveConversion(nurturingEmail.trim(), hubspotContactId, "nurturing_email");
     } catch (e) {
       console.error("nurturing submit error:", e);
     }
     setScreen(8); // confirmation
-  }, [nurturingEmail, conversationId, summary, leadScore]);
+  }, [nurturingEmail, conversationId, summary, leadScore, saveConversion, hubspotContactId]);
 
   const handleConfirmData = useCallback(async () => {
     if (!nameInput.trim() || !emailInput.trim() || !selectedSlot) return;
@@ -827,6 +878,7 @@ const AgenticLandingPage = () => {
           flag: leadFlag || "calificado",
           conversation_messages: messages,
           answers_buffer: answersBufferRef.current,
+          attribution: attributionRef.current,
           ...utmRef.current,
         },
       });
@@ -839,6 +891,8 @@ const AgenticLandingPage = () => {
         return;
       }
 
+      void saveConversion(emailInput.trim(), hubspotContactId, "meeting_booked");
+
       setMeetingDate(data.display_date);
       setMeetingTime(data.display_time);
       setScreen(8);
@@ -846,7 +900,7 @@ const AgenticLandingPage = () => {
       console.error("book-meeting exception:", e);
       setScreen(8);
     }
-  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag]);
+  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId]);
 
 
   /* ─── render current screen ─── */
