@@ -549,16 +549,12 @@ const AgenticLandingPage = () => {
 
   // Save early email — maximum robustness for iOS Safari
   const handleEarlyEmailSave = useCallback(async (emailArg?: string) => {
-    const trimmedEmail = (emailArg ?? earlyEmail ?? "").trim();
+    const domValue = earlyEmailInputRef.current?.value ?? "";
+    const trimmedEmail = (emailArg ?? domValue ?? earlyEmail ?? "").trim();
 
-    // Simple manual validation — no checkValidity(), no native validation
     if (!trimmedEmail || !conversationId) return;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) return;
-
-    // Anti-stuck: reset lock if it's been >3s
-    if (earlyEmailSubmittingRef.current) {
-      return; // already processing
-    }
+    if (earlyEmailSubmittingRef.current) return;
 
     earlyEmailSubmittingRef.current = true;
     setEarlyEmail(trimmedEmail);
@@ -569,6 +565,7 @@ const AgenticLandingPage = () => {
       setEmailCaptureHandled(true);
       setEmailInput(trimmedEmail);
       setNurturingEmail(trimmedEmail);
+
       await supabase
         .from("conversations")
         .update({ availability_preference: `early_email:${trimmedEmail}` })
@@ -583,7 +580,6 @@ const AgenticLandingPage = () => {
         console.error("early email HubSpot sync error:", error);
       });
 
-      // Now call Claude to continue the conversation (empathy + next question)
       const pending = pendingClaudeCallRef.current;
       if (pending) {
         pendingClaudeCallRef.current = null;
@@ -595,9 +591,22 @@ const AgenticLandingPage = () => {
         }
       }
     } finally {
-      earlyEmailSubmittingRef.current = false;
+      window.setTimeout(() => {
+        earlyEmailSubmittingRef.current = false;
+      }, 250);
     }
   }, [conversationId, callClaude, processClaudeResult, typewriterEffect, syncToHubSpot, earlyEmail]);
+
+  const triggerEarlyEmailSubmit = useCallback((emailArg?: string) => {
+    const activeElement = document.activeElement;
+    if (activeElement instanceof HTMLElement) {
+      activeElement.blur();
+    }
+
+    window.setTimeout(() => {
+      void handleEarlyEmailSave(emailArg);
+    }, 120);
+  }, [handleEarlyEmailSave]);
 
   useEffect(() => {
     return () => {};
