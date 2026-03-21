@@ -103,6 +103,34 @@ export default function ConversationsPage() {
   const getStatus = (c: Conversation) =>
     c.scheduled ? "agendo" : c.flag === "descartado_broker" ? "descartado" : c.flag === "baja" ? "nurturing" : (c.status || "incompleto");
 
+  const toggleId = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAll = () => {
+    if (selectedIds.size === paged.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(paged.map(c => c.id)));
+    }
+  };
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.size === 0) return;
+    const confirmed = window.confirm(`¿Eliminar ${selectedIds.size} conversación(es)? Esta acción no se puede deshacer.`);
+    if (!confirmed) return;
+    setDeleting(true);
+    const ids = Array.from(selectedIds);
+    await supabase.from("conversations").delete().in("id", ids);
+    setSelectedIds(new Set());
+    await fetchConversations();
+    setDeleting(false);
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">📊 Conversaciones</h1>
