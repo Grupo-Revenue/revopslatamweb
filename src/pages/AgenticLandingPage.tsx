@@ -283,6 +283,7 @@ const AgenticLandingPage = () => {
   const [availabilityError, setAvailabilityError] = useState<string | null>(null);
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
+  const [bookingFailed, setBookingFailed] = useState(false);
   const [leadScore, setLeadScore] = useState<number | undefined>();
   const [leadFlag, setLeadFlag] = useState<string | undefined>();
   const [nurturingEmail, setNurturingEmail] = useState("");
@@ -1040,6 +1041,7 @@ const AgenticLandingPage = () => {
     if (!selectedSlot) return;
 
     const normalizedPhone = normalizePhone(phoneInput);
+    setBookingFailed(false);
     setScreen(7); // loading
 
     try {
@@ -1064,8 +1066,7 @@ const AgenticLandingPage = () => {
 
       if (error || !data?.success) {
         console.error("book-meeting error:", error, data);
-        setMeetingDate("");
-        setMeetingTime("");
+        setBookingFailed(true);
         setScreen(8);
         return;
       }
@@ -1093,6 +1094,7 @@ const AgenticLandingPage = () => {
       setScreen(8);
     } catch (e) {
       console.error("book-meeting exception:", e);
+      setBookingFailed(true);
       setScreen(8);
     }
   }, [nameInput, emailInput, earlyEmail, phoneInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId, syncToHubSpot, saveConversationMeta]);
@@ -1633,8 +1635,46 @@ const AgenticLandingPage = () => {
           </motion.div>
         );
 
-      /* ── Screen 8: Confirmation ── */
-      case 8:
+      case 8: {
+        // Booking failed — show error with retry
+        if (bookingFailed && leadFlag !== "no_calificado") {
+          return (
+            <motion.div key="s8-err" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center"
+                style={{ background: "rgba(220,60,60,0.15)", border: "2px solid rgba(220,60,60,0.3)" }}
+              >
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#DC3C3C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="8" x2="12" y2="12" />
+                  <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+              </div>
+              <h2 className="text-[22px] font-semibold text-white leading-snug text-balance">
+                Tuvimos un problema al agendar
+                <br />
+                <span className="text-white/60 font-normal text-[17px]">
+                  No pudimos confirmar tu reunión, pero no te preocupes — puedes intentarlo de nuevo.
+                </span>
+              </h2>
+              <button
+                onClick={() => {
+                  setBookingFailed(false);
+                  setScreen(6);
+                }}
+                className="w-full max-w-[300px] py-3.5 rounded-full text-white font-medium text-[16px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97]"
+                style={{ background: "#BE1869", boxShadow: "0 6px 24px rgba(190,24,105,0.3)" }}
+              >
+                Reintentar →
+              </button>
+              <div className="mt-4 text-white/20 text-[12px] tracking-wide leading-relaxed">
+                Revops LATAM · HubSpot Platinum Partner · 14 años generando Revenue
+              </div>
+            </motion.div>
+          );
+        }
+
+        // Success confirmation
         return (
           <motion.div key="s8" {...screenVariants} className="flex flex-col items-center justify-center h-full px-6 text-center gap-5">
             <div
@@ -1661,9 +1701,7 @@ const AgenticLandingPage = () => {
                   <span className="text-white/60 font-normal text-[17px]">
                     {meetingDate && meetingTime
                       ? `Te esperamos el ${meetingDate} a las ${meetingTime}.`
-                      : selectedSlot
-                        ? `Te esperamos el ${selectedSlot.display_date} a las ${selectedSlot.display_time}.`
-                        : "Te contactaremos pronto para confirmar tu reunión."}
+                      : "Te contactaremos pronto para confirmar tu reunión."}
                   </span>
                 </>
               )}
@@ -1707,6 +1745,7 @@ const AgenticLandingPage = () => {
             </div>
           </motion.div>
         );
+      }
 
       default:
         return null;
