@@ -80,26 +80,30 @@ serve(async (req) => {
 
     const googleToken = await getGoogleAccessToken(GOOGLE_SA_JSON, FEBE_CALENDAR_ID);
 
-    // Look at next 5 business days
-    const now = new Date();
+    // Look at next 5 business days in Chile time
+    const chileNow = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Santiago" }));
     const businessDays: Date[] = [];
-    const cursor = new Date(now);
-    
-    // If it's past 17:00 Chile time (UTC-3 or UTC-4), skip today
-    // Use a simple heuristic: check UTC hour
+    const startOfToday = new Date(chileNow);
+    startOfToday.setHours(0, 0, 0, 0);
+
+    let offset = 0;
     while (businessDays.length < 5) {
-      cursor.setDate(cursor.getDate() + (businessDays.length === 0 && cursor.toDateString() === now.toDateString() ? 0 : 1));
-      if (businessDays.length === 0 && cursor.toDateString() === now.toDateString()) {
-        // First iteration — check if today is a weekday
-        if (cursor.getDay() === 0 || cursor.getDay() === 6) {
-          continue;
-        }
-        businessDays.push(new Date(cursor));
+      const candidate = new Date(startOfToday);
+      candidate.setDate(startOfToday.getDate() + offset);
+      offset += 1;
+
+      if (candidate.getDay() === 0 || candidate.getDay() === 6) {
         continue;
       }
-      if (cursor.getDay() !== 0 && cursor.getDay() !== 6) {
-        businessDays.push(new Date(cursor));
+
+      const isToday = candidate.toDateString() === startOfToday.toDateString();
+      const isTooLateToday = chileNow.getHours() > 17 || (chileNow.getHours() === 17 && chileNow.getMinutes() >= 30);
+
+      if (isToday && isTooLateToday) {
+        continue;
       }
+
+      businessDays.push(candidate);
     }
 
     // Query FreeBusy for the full range
@@ -154,7 +158,7 @@ serve(async (req) => {
           const slotEnd = new Date(`${dateStr}T${endTime}:00-03:00`);
 
           // Skip slots in the past
-          if (slotStart <= now) continue;
+           if (slotStart <= chileNow) continue;
 
           // Check against busy periods
           const isBusy = busyPeriods.some(bp => {
