@@ -585,9 +585,10 @@ const AgenticLandingPage = () => {
     async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string; meta?: boolean }[], currentTurn?: number) => {
       await typewriterEffect(result.reply);
       const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
-      // If repeat_turn, roll back the turn counter so the question doesn't count
+      // If repeat_turn, roll back the turn counter AND question progress
       if (result.repeat_turn) {
         setTurn((prev) => Math.max(prev - 1, 1));
+        questionProgressRef.current = Math.max(questionProgressRef.current - 1, 0);
       }
       if (result.score !== undefined) {
         setLeadScore(result.score);
@@ -609,18 +610,13 @@ const AgenticLandingPage = () => {
         saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
       }
 
-      // Detect if this is Q5 — AI just asked the problem question after user answered Q4
-      // Turn 5 = user answered Q4, AI responds with Q5
-      const effectiveTurn = currentTurn ?? 0;
-      if (effectiveTurn === 5 && result.phase === "conversation" && !result.repeat_turn) {
-        // Find the user's last message (Q4 answer) to detect crm_status
-        const lastUserMsg = baseMsgs.filter(m => m.role === "user" && !m.meta).pop();
-        if (lastUserMsg) {
-          const crmStatus = detectCrmStatus(lastUserMsg.text);
-          setQ5Options([...Q5_OPTIONS[crmStatus], "Otro — cuéntame con tus palabras"]);
-          setShowQ5Buttons(true);
-          setQ5FreeText(false);
-        }
+      // Detect Q5 — show buttons when CRM was just answered (progress === 4)
+      // Uses questionProgressRef instead of turn numbers to avoid desync from repeat_turn
+      if (questionProgressRef.current === 4 && result.phase === "conversation" && !result.repeat_turn) {
+        const crmStatus = detectedCrmStatusRef.current;
+        setQ5Options([...Q5_OPTIONS[crmStatus], "Otro — cuéntame con tus palabras"]);
+        setShowQ5Buttons(true);
+        setQ5FreeText(false);
       }
 
        if (result.phase === "discarded") {
