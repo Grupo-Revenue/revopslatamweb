@@ -1546,7 +1546,7 @@ const AgenticLandingPage = () => {
                     type="email"
                     value={emailInput}
                     onChange={(e) => { setEmailInput(e.target.value); setEmailError(""); }}
-                    placeholder="Tu correo electrónico"
+                    placeholder="tu@empresa.com"
                     className="w-full rounded-xl px-4 py-3 text-[16px] text-white placeholder:text-white/30 outline-none font-[Lexend]"
                     style={{ background: "rgba(255,255,255,0.07)", border: emailError ? "1px solid rgba(239,68,68,0.6)" : "1px solid rgba(255,255,255,0.08)" }}
                   />
