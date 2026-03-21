@@ -1673,7 +1673,36 @@ const AgenticLandingPage = () => {
                 ? "Revisa tu bandeja de entrada en los próximos días."
                 : "Recibirás una invitación en tu correo con todos los detalles."}
             </p>
-            <div className="mt-8 text-white/20 text-[12px] tracking-wide leading-relaxed">
+
+            {/* CTA: Conoce RevOps LATAM */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.8 }}
+              className="w-full max-w-[320px] flex flex-col items-center"
+            >
+              <div className="w-full" style={{ height: 1, background: "rgba(255,255,255,0.1)", margin: "28px 0" }} />
+              <p className="text-[14px] mb-4 text-center" style={{ color: "rgba(255,255,255,0.6)" }}>
+                Mientras tanto, conoce cómo trabajamos y qué dicen nuestros clientes.
+              </p>
+              <a
+                href="https://www.revopslatam.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 rounded-full text-white text-[14px] font-medium text-center transition-all duration-200"
+                style={{
+                  background: "transparent",
+                  border: "1px solid rgba(255,255,255,0.3)",
+                  padding: "12px 28px",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                Conoce RevOps LATAM →
+              </a>
+            </motion.div>
+
+            <div className="mt-4 text-white/20 text-[12px] tracking-wide leading-relaxed">
               Revops LATAM · HubSpot Platinum Partner · 14 años generando Revenue
             </div>
           </motion.div>
