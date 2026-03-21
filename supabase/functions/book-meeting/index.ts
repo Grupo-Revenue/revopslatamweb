@@ -559,7 +559,7 @@ serve(async (req) => {
     let hubspotFormSubmitted = false;
     let hubspotFormError: string | null = null;
     try {
-      const phone = answers_buffer?.phone || "";
+      const phone = phoneFromBody || answers_buffer?.phone || "";
       const problemaNoCrm = answers_buffer?.problema_principal__no_usan_crm || "";
       const problemaHubspot = answers_buffer?.problema_principal__usan_hubspot || "";
       const problemaOtro = answers_buffer?.problema_principal || "";
