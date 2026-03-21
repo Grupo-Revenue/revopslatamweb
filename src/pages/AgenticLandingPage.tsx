@@ -367,7 +367,7 @@ const AgenticLandingPage = () => {
   }, [syncToHubSpot, getCurrentEmail]);
 
   // Sync score and lead status to HubSpot
-  const syncScoreToHubSpot = useCallback((score: number, flag: string, email: string | null) => {
+  const syncScoreToHubSpot = useCallback((score: number, flag: string, _email: string | null) => {
     const statusMap: Record<string, string> = {
       alta: "IN_PROGRESS",
       media: "OPEN",
@@ -379,10 +379,12 @@ const AgenticLandingPage = () => {
       hs_lead_status: statusMap[flag] || "OPEN",
     };
     answersBufferRef.current = { ...answersBufferRef.current, ...props };
-    if (email && hubspotContactId) {
-      syncToHubSpot(email, props, false);
+    const email = _email || getCurrentEmail();
+    if (email) {
+      console.log("[syncScoreToHubSpot] syncing score:", { score, flag, email });
+      void syncToHubSpot(email, { ...answersBufferRef.current }, false);
     }
-  }, [hubspotContactId, syncToHubSpot]);
+  }, [syncToHubSpot, getCurrentEmail]);
 
   // Scroll chat to bottom
   useEffect(() => {

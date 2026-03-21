@@ -26,7 +26,6 @@ function buildAttributionProperties(attr: Attribution): Record<string, string> {
   const campaign = attr.utm_campaign || "";
   const props: Record<string, string> = {};
 
-  // Determine source category
   if (src === "meta" || src === "facebook" || src === "instagram" || fbclid) {
     props.hs_analytics_source = "PAID_SOCIAL";
     props.hs_analytics_source_data_1 = "META Ads";
@@ -61,22 +60,9 @@ function buildAttributionProperties(attr: Attribution): Record<string, string> {
     props.hs_latest_source = "DIRECT_TRAFFIC";
   }
 
-  // First URL — critical for HubSpot
-  if (attr.full_url) {
-    props.hs_analytics_first_url = attr.full_url;
-  }
-
-  // First referrer
-  if (attr.referrer) {
-    props.hs_analytics_first_referrer = attr.referrer;
-  }
-
-  // fbclid — critical for CAPI META
-  if (fbclid) {
-    props.hs_facebook_click_id = fbclid;
-  }
-
-  // UTM originals for reference
+  if (attr.full_url) props.hs_analytics_first_url = attr.full_url;
+  if (attr.referrer) props.hs_analytics_first_referrer = attr.referrer;
+  if (fbclid) props.hs_facebook_click_id = fbclid;
   if (attr.utm_source) props.utm_source_original = attr.utm_source;
   if (attr.utm_medium) props.utm_medium_original = attr.utm_medium;
   if (campaign) props.utm_campaign_original = campaign;
@@ -93,13 +79,22 @@ serve(async (req) => {
   try {
     const HUBSPOT_API_KEY = Deno.env.get("HUBSPOT_API_KEY");
     if (!HUBSPOT_API_KEY) {
+      console.error("[update-contact] HUBSPOT_API_KEY not configured");
       return new Response(
         JSON.stringify({ success: false, error: "HUBSPOT_API_KEY not configured" }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    const { email, properties, createIfNotExists, attribution } = await req.json();
+    const body = await req.json();
+    const { email, properties, createIfNotExists, attribution } = body;
+
+    console.log("[update-contact] called with:", JSON.stringify({
+      email,
+      properties,
+      createIfNotExists,
+      hasAttribution: !!attribution,
+    }));
 
     if (!email) {
       return new Response(
@@ -112,6 +107,8 @@ serve(async (req) => {
     const attrProps = attribution ? buildAttributionProperties(attribution as Attribution) : {};
     const mergedProperties = { ...attrProps, ...(properties || {}) };
 
+    console.log("[update-contact] merged properties to send:", JSON.stringify(mergedProperties));
+
     const headers = {
       Authorization: `Bearer ${HUBSPOT_API_KEY}`,
       "Content-Type": "application/json",
@@ -122,19 +119,15 @@ serve(async (req) => {
       method: "POST",
       headers,
       body: JSON.stringify({
-        filterGroups: [
-          {
-            filters: [
-              { propertyName: "email", operator: "EQ", value: email },
-            ],
-          },
-        ],
+        filterGroups: [{
+          filters: [{ propertyName: "email", operator: "EQ", value: email }],
+        }],
       }),
     });
 
     if (!searchRes.ok) {
       const errText = await searchRes.text();
-      console.error(`HubSpot search failed [${searchRes.status}]:`, errText);
+      console.error(`[update-contact] HubSpot search failed [${searchRes.status}]:`, errText);
       return new Response(
         JSON.stringify({ success: false, error: `Search failed: ${errText}` }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -143,6 +136,7 @@ serve(async (req) => {
 
     const searchData = await searchRes.json();
     const existingContact = searchData.results?.[0];
+    console.log("[update-contact] search result:", { found: !!existingContact, contactId: existingContact?.id || null });
 
     // 2. Contact exists → update
     if (existingContact) {
@@ -155,13 +149,14 @@ serve(async (req) => {
 
       if (!updateRes.ok) {
         const errText = await updateRes.text();
-        console.error(`HubSpot update failed [${updateRes.status}]:`, errText);
+        console.error(`[update-contact] HubSpot update failed [${updateRes.status}]:`, errText);
         return new Response(
           JSON.stringify({ success: false, error: `Update failed: ${errText}` }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
 
+      console.log("[update-contact] updated contact:", contactId);
       return new Response(
         JSON.stringify({ success: true, contactId, created: false }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -178,7 +173,7 @@ serve(async (req) => {
 
       if (!createRes.ok) {
         const errText = await createRes.text();
-        console.error(`HubSpot create failed [${createRes.status}]:`, errText);
+        console.error(`[update-contact] HubSpot create failed [${createRes.status}]:`, errText);
         return new Response(
           JSON.stringify({ success: false, error: `Create failed: ${errText}` }),
           { headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -186,6 +181,7 @@ serve(async (req) => {
       }
 
       const createData = await createRes.json();
+      console.log("[update-contact] created contact:", createData.id);
       return new Response(
         JSON.stringify({ success: true, contactId: createData.id, created: true }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -193,12 +189,13 @@ serve(async (req) => {
     }
 
     // 4. Contact doesn't exist + createIfNotExists = false
+    console.log("[update-contact] contact not found, createIfNotExists=false — skipping");
     return new Response(
       JSON.stringify({ success: false, contactId: null }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("update-contact error:", error);
+    console.error("[update-contact] error:", error);
     return new Response(
       JSON.stringify({ success: false, error: String(error) }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
