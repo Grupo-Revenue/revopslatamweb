@@ -862,7 +862,8 @@ const AgenticLandingPage = () => {
               <img
                 src={LidiaAvatar}
                 alt="Lidia — Asistente Virtual"
-                className="w-[80px] h-[80px] rounded-full object-cover object-top"
+                className="w-[96px] h-[96px] rounded-full object-cover"
+                style={{ objectPosition: "50% 20%" }}
               />
             </motion.div>
 
