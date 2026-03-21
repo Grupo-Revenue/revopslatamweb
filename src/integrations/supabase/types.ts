@@ -14,66 +14,159 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_logs: {
+        Row: {
+          action: string
+          changed_by: string | null
+          created_at: string
+          id: string
+          new_value: Json | null
+          old_value: Json | null
+        }
+        Insert: {
+          action: string
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+        }
+        Update: {
+          action?: string
+          changed_by?: string | null
+          created_at?: string
+          id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+        }
+        Relationships: []
+      }
+      agent_config: {
+        Row: {
+          config: Json
+          created_at: string
+          id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           availability_preference: string | null
+          cargo: string | null
+          company: string | null
           context: string
           created_at: string
+          crm: string | null
+          equipo_comercial: string | null
           fbclid: string | null
+          flag: string | null
           full_url: string | null
+          hubspot_contact_id: string | null
+          hubspot_sync_error: string | null
+          hubspot_sync_status: string | null
           id: string
+          meeting_booked: boolean | null
           meeting_date: string | null
           meeting_time: string | null
           messages: Json
+          problema_principal: string | null
           referrer: string | null
+          rubro: string | null
           scheduled: boolean
           scheduled_at: string | null
+          score: number | null
+          score_breakdown: Json | null
+          status: string | null
           summary: string | null
           utm_campaign: string | null
           utm_content: string | null
           utm_medium: string | null
           utm_source: string | null
           utm_term: string | null
+          visitor_email: string | null
+          visitor_name: string | null
         }
         Insert: {
           availability_preference?: string | null
+          cargo?: string | null
+          company?: string | null
           context?: string
           created_at?: string
+          crm?: string | null
+          equipo_comercial?: string | null
           fbclid?: string | null
+          flag?: string | null
           full_url?: string | null
+          hubspot_contact_id?: string | null
+          hubspot_sync_error?: string | null
+          hubspot_sync_status?: string | null
           id?: string
+          meeting_booked?: boolean | null
           meeting_date?: string | null
           meeting_time?: string | null
           messages?: Json
+          problema_principal?: string | null
           referrer?: string | null
+          rubro?: string | null
           scheduled?: boolean
           scheduled_at?: string | null
+          score?: number | null
+          score_breakdown?: Json | null
+          status?: string | null
           summary?: string | null
           utm_campaign?: string | null
           utm_content?: string | null
           utm_medium?: string | null
           utm_source?: string | null
           utm_term?: string | null
+          visitor_email?: string | null
+          visitor_name?: string | null
         }
         Update: {
           availability_preference?: string | null
+          cargo?: string | null
+          company?: string | null
           context?: string
           created_at?: string
+          crm?: string | null
+          equipo_comercial?: string | null
           fbclid?: string | null
+          flag?: string | null
           full_url?: string | null
+          hubspot_contact_id?: string | null
+          hubspot_sync_error?: string | null
+          hubspot_sync_status?: string | null
           id?: string
+          meeting_booked?: boolean | null
           meeting_date?: string | null
           meeting_time?: string | null
           messages?: Json
+          problema_principal?: string | null
           referrer?: string | null
+          rubro?: string | null
           scheduled?: boolean
           scheduled_at?: string | null
+          score?: number | null
+          score_breakdown?: Json | null
+          status?: string | null
           summary?: string | null
           utm_campaign?: string | null
           utm_content?: string | null
           utm_medium?: string | null
           utm_source?: string | null
           utm_term?: string | null
+          visitor_email?: string | null
+          visitor_name?: string | null
         }
         Relationships: []
       }
@@ -165,6 +258,36 @@ export type Database = {
           sort_order?: number
           style_key?: string
           styles?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      knowledge_base: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
           updated_at?: string
         }
         Relationships: []
@@ -342,6 +465,30 @@ export type Database = {
           id?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      scoring_config: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          criteria: Json
+          id: string
+          thresholds: Json
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          criteria?: Json
+          id?: string
+          thresholds?: Json
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          criteria?: Json
+          id?: string
+          thresholds?: Json
         }
         Relationships: []
       }
