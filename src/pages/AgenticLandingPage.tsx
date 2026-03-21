@@ -1066,8 +1066,7 @@ const AgenticLandingPage = () => {
 
       if (error || !data?.success) {
         console.error("book-meeting error:", error, data);
-        setMeetingDate("");
-        setMeetingTime("");
+        setBookingFailed(true);
         setScreen(8);
         return;
       }
