@@ -821,6 +821,7 @@ const AgenticLandingPage = () => {
   const handleUserSend = useCallback(async () => {
     const val = chatInput.trim();
     if (!val || inputDisabled) return;
+    const currentConversationId = conversationIdRef.current || conversationId;
 
     // ── Name step: before diagnostic ──
     if (!nameCollected) {
@@ -844,16 +845,16 @@ const AgenticLandingPage = () => {
       setNameCollected(true);
 
       // Save visitor name to conversation
-      if (conversationId) {
-        void saveConversationMeta(conversationId, { visitor_name: normalizedFull });
+      if (currentConversationId) {
+        void saveConversationMeta(currentConversationId, { visitor_name: normalizedFull });
       }
 
       // Now show Q1 (cargo+empresa) via typewriter — this IS sent to Claude
       const firstQuestion = `Qué bueno tenerte aquí, ${firstName}. Cuéntame, ¿cuál es tu cargo y en qué empresa trabajas?`;
       setTurn(1);
       await typewriterEffect(firstQuestion);
-      if (conversationId) {
-        saveMessages(conversationId, [
+      if (currentConversationId) {
+        saveMessages(currentConversationId, [
           ...messages, userMsg,
           { role: "ai", text: firstQuestion },
         ]);
