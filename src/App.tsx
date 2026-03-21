@@ -140,6 +140,14 @@ const App = () => (
                   <Route path="media" element={<AdminMedia />} />
                   <Route path="users" element={<AdminUsers />} />
                 </Route>
+                {/* Admin Agent routes */}
+                <Route path="/admin-agent/login" element={<AdminAgentLogin />} />
+                <Route path="/admin-agent" element={<AdminAgentLayout />}>
+                  <Route index element={<ConversationsPage />} />
+                  <Route path="scoring" element={<ScoringPage />} />
+                  <Route path="knowledge" element={<KnowledgePage />} />
+                  <Route path="config" element={<ConfigPage />} />
+                </Route>
                 <Route path="/blog/*" element={<BlogRedirect />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
