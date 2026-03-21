@@ -1094,6 +1094,7 @@ const AgenticLandingPage = () => {
       setScreen(8);
     } catch (e) {
       console.error("book-meeting exception:", e);
+      setBookingFailed(true);
       setScreen(8);
     }
   }, [nameInput, emailInput, earlyEmail, phoneInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId, syncToHubSpot, saveConversationMeta]);
