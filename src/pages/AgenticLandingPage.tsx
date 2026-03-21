@@ -464,7 +464,7 @@ const AgenticLandingPage = () => {
   // Scroll chat to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isAITyping, showEmailCapture]);
+  }, [messages, isAITyping, showEmailCapture, loadingSlots, availabilitySlots, selectedDay, selectedSlot]);
 
   // Create conversation in Supabase — generate ID client-side to avoid SELECT RLS restriction
   const createConversation = useCallback(async () => {
@@ -1434,7 +1434,7 @@ const AgenticLandingPage = () => {
         }
         // Availability picker for qualified/tibio — days first, then times
         return (
-          <motion.div key="s5-avail" {...screenVariants} className="flex flex-col h-full">
+          <motion.div key="chat" {...screenVariants} className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 flex flex-col gap-3">
               {messages.map((m, i) => (
                 <motion.div key={`${m.role}-${i}-${m.text.slice(0, 20)}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, delay: i < messages.length - 3 ? 0 : (i - (messages.length - 3)) * 0.05 }}>
