@@ -255,9 +255,7 @@ const AgenticLandingPage = () => {
   const [q5FreeText, setQ5FreeText] = useState(false);
   const pendingClaudeCallRef = useRef<{ messages: { role: "ai" | "user"; text: string }[]; turn: number } | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const earlyEmailInputRef = useRef<HTMLInputElement>(null);
   const earlyEmailSubmittingRef = useRef(false);
-  const earlyEmailBlurTimeoutRef = useRef<number | null>(null);
   const contextRef = useRef(getContextFromURL());
   const utmRef = useRef(getUTMParams());
   const inputDisabled = isAITyping || isTypewriting || showEmailCapture || showQ5Buttons;
