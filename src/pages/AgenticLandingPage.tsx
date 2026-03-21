@@ -18,7 +18,7 @@ const TOTAL_SCREENS = 9;
 const TYPEWRITER_MS = 18;
 const WELCOME_TYPEWRITER_MS = 15;
 
-/* ─── capture UTMs from URL ─── */
+/* ─── capture UTMs + attribution from URL ─── */
 function getUTMParams() {
   const params = new URLSearchParams(window.location.search);
   return {
@@ -26,6 +26,20 @@ function getUTMParams() {
     utm_medium: params.get("utm_medium") || "",
     utm_campaign: params.get("utm_campaign") || "",
     utm_content: params.get("utm_content") || "",
+  };
+}
+
+function getAttributionData() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    utm_source: params.get("utm_source") || "",
+    utm_medium: params.get("utm_medium") || "",
+    utm_campaign: params.get("utm_campaign") || "",
+    utm_content: params.get("utm_content") || "",
+    utm_term: params.get("utm_term") || "",
+    fbclid: params.get("fbclid") || "",
+    full_url: window.location.href,
+    referrer: document.referrer || "",
   };
 }
 
