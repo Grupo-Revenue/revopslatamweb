@@ -554,7 +554,11 @@ const AgenticLandingPage = () => {
         }
       }
 
-       if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
+       if (result.phase === "discarded") {
+         // Broker inmobiliario — end conversation, no email/scheduling
+         setSummary(result.summary || "Descartado: Broker Inmobiliario");
+         // Don't transition to email/scheduling screens — stay on chat
+       } else if (result.phase === "nurturing") { setSummary(result.summary || null); setScreen(5); }
        else if (result.phase === "availability") {
          setScreen(5);
          void fetchAvailability();
