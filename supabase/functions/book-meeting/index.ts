@@ -431,8 +431,8 @@ serve(async (req) => {
 
     /* ── PASO 4: Crear contacto en HubSpot con atribución ── */
     const nameParts = name.trim().split(/\s+/);
-    const firstName = nameParts[0] || "";
-    const lastName = nameParts.slice(1).join(" ") || "";
+    const firstName = answers_buffer?.firstname || nameParts[0] || "";
+    const lastName = answers_buffer?.lastname || nameParts.slice(1).join(" ") || "";
 
     const hubspotLeadStatus = flag === "tibio" ? "OPEN" : "Agendado";
     const hubspotProps: Record<string, string> = {
@@ -441,10 +441,13 @@ serve(async (req) => {
       lastname: lastName,
       jobtitle: jobTitle,
       hs_lead_status: hubspotLeadStatus,
-      hs_analytics_source: "PAID_SOCIAL",
-      hs_latest_source: "PAID_SOCIAL",
-      hs_latest_source_data_2: utm_campaign || "",
       hs_content_membership_notes: `Score: ${score || "N/A"} | Flag: ${flag || "N/A"}\n${summary || ""}`,
+      ...attrProps,
+      ...(answers_buffer?.company ? { company: answers_buffer.company } : {}),
+      ...(answers_buffer?.rubro ? { rubro: answers_buffer.rubro } : {}),
+      ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: answers_buffer.cantidad_de_vendedores } : {}),
+      ...(answers_buffer?.cuenta_con_crm ? { cuenta_con_crm: answers_buffer.cuenta_con_crm } : {}),
+      ...(answers_buffer?.lead_score_ia ? { lead_score_ia: answers_buffer.lead_score_ia } : {}),
     };
 
     let contactId: string | null = null;
