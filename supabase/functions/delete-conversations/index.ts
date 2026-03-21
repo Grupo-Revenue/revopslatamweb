@@ -38,12 +38,26 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    const { error: conversionsError } = await supabase
+      .from("conversions")
+      .delete()
+      .in("conversation_id", ids);
+
+    if (conversionsError) {
+      console.error("Error deleting conversions", conversionsError);
+      return new Response(
+        JSON.stringify({ error: conversionsError.message }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const { error } = await supabase
       .from("conversations")
       .delete()
       .in("id", ids);
 
     if (error) {
+      console.error("Error deleting conversations", error);
       return new Response(
         JSON.stringify({ error: error.message }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
