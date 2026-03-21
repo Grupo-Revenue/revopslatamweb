@@ -89,6 +89,69 @@ async function checkAvailability(
   return busy.length === 0;
 }
 
+/* ─── Attribution source mapping (same logic as update-contact) ─── */
+interface Attribution {
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  fbclid?: string;
+  full_url?: string;
+  referrer?: string;
+}
+
+function buildAttributionProperties(attr: Attribution): Record<string, string> {
+  const src = (attr.utm_source || "").toLowerCase();
+  const fbclid = attr.fbclid || "";
+  const campaign = attr.utm_campaign || "";
+  const props: Record<string, string> = {};
+
+  if (src === "meta" || src === "facebook" || src === "instagram" || fbclid) {
+    props.hs_analytics_source = "PAID_SOCIAL";
+    props.hs_analytics_source_data_1 = "META Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SOCIAL";
+    props.hs_latest_source_data_1 = "META Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "google" || src === "cpc") {
+    props.hs_analytics_source = "PAID_SEARCH";
+    props.hs_analytics_source_data_1 = "Google Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SEARCH";
+    props.hs_latest_source_data_1 = "Google Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "linkedin") {
+    props.hs_analytics_source = "PAID_SOCIAL";
+    props.hs_analytics_source_data_1 = "LinkedIn Ads";
+    props.hs_analytics_source_data_2 = campaign;
+    props.hs_latest_source = "PAID_SOCIAL";
+    props.hs_latest_source_data_1 = "LinkedIn Ads";
+    props.hs_latest_source_data_2 = campaign;
+  } else if (src === "email" || src === "newsletter") {
+    props.hs_analytics_source = "EMAIL_MARKETING";
+    props.hs_analytics_source_data_1 = campaign;
+    props.hs_latest_source = "EMAIL_MARKETING";
+    props.hs_latest_source_data_1 = campaign;
+  } else if (!src && attr.referrer) {
+    props.hs_analytics_source = "ORGANIC_SEARCH";
+    props.hs_latest_source = "ORGANIC_SEARCH";
+  } else if (!src) {
+    props.hs_analytics_source = "DIRECT_TRAFFIC";
+    props.hs_latest_source = "DIRECT_TRAFFIC";
+  }
+
+  if (attr.full_url) props.hs_analytics_first_url = attr.full_url;
+  if (attr.referrer) props.hs_analytics_first_referrer = attr.referrer;
+  if (fbclid) props.hs_facebook_click_id = fbclid;
+  if (attr.utm_source) props.utm_source_original = attr.utm_source;
+  if (attr.utm_medium) props.utm_medium_original = attr.utm_medium;
+  if (campaign) props.utm_campaign_original = campaign;
+  if (attr.utm_content) props.utm_content_original = attr.utm_content;
+
+  return props;
+}
+
 /* ─── Main handler ─── */
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -114,8 +177,12 @@ serve(async (req) => {
       name, email, context, summary, availability_preference,
       selected_slot, conversation_id, score, flag, nurturing_only,
       utm_source, utm_medium, utm_campaign, utm_content,
-      conversation_messages,
+      conversation_messages, answers_buffer, attribution,
     } = await req.json();
+
+    // Build attribution properties from the attribution object
+    const attrProps = attribution ? buildAttributionProperties(attribution as Attribution) : {};
+    const utmContentValue = attribution?.utm_content || utm_content || "";
 
     // Format conversation transcript for HubSpot notes
     const formatTranscript = (msgs: { role: string; text: string }[] | undefined): string => {
@@ -127,8 +194,8 @@ serve(async (req) => {
     };
     const transcript = formatTranscript(conversation_messages);
 
-    // Extract job title from first user message (answer to "¿cuál es tu cargo?")
-    const jobTitle = conversation_messages?.find((m: { role: string }) => m.role === "user")?.text || "";
+    // Use answers_buffer for jobtitle instead of extracting from first message
+    const jobTitle = answers_buffer?.nivel_del_cargo || "";
 
     if (!email) {
       return new Response(JSON.stringify({ error: "Missing email" }), {
@@ -138,15 +205,17 @@ serve(async (req) => {
 
     /* ── NURTURING ONLY: no calendar, HubSpot UNQUALIFIED ── */
     if (nurturing_only) {
-      // Create HubSpot contact with UNQUALIFIED status
+      // Create HubSpot contact with UNQUALIFIED status + attribution + answers_buffer
       const hubspotNurturingProps: Record<string, string> = {
         email,
         jobtitle: jobTitle,
         hs_lead_status: "OPEN",
-        hs_analytics_source: "PAID_SOCIAL",
-        hs_latest_source: "PAID_SOCIAL",
-        hs_latest_source_data_2: utm_campaign || "",
         hs_content_membership_notes: `Score: ${score || 0} | Flag: no_calificado\n${summary || ""}`,
+        ...attrProps,
+        ...(answers_buffer?.company ? { company: answers_buffer.company } : {}),
+        ...(answers_buffer?.rubro ? { rubro: answers_buffer.rubro } : {}),
+        ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: answers_buffer.cantidad_de_vendedores } : {}),
+        ...(answers_buffer?.cuenta_con_crm ? { cuenta_con_crm: answers_buffer.cuenta_con_crm } : {}),
       };
 
       try {
@@ -177,7 +246,7 @@ serve(async (req) => {
 
         // Create note with full conversation transcript for nurturing contact
         if (nurturingContactId) {
-          const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: META Ads — ${utm_content || "directo"}\nScore: ${score || 0} | Flag: no_calificado\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
+          const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nScore: ${score || 0} | Flag: no_calificado\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
           const noteRes = await fetch("https://api.hubapi.com/crm/v3/objects/notes", {
             method: "POST",
             headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
@@ -199,7 +268,7 @@ serve(async (req) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              text: `📋 Lead no calificado (nurturing)\nEmail: ${email}\nScore: ${score || 0}\nFuente: META Ads — ${utm_content || "directo"}\nResumen: ${summary || "Sin resumen"}`,
+              text: `📋 Lead no calificado (nurturing)\nEmail: ${email}\nScore: ${score || 0}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nResumen: ${summary || "Sin resumen"}`,
             }),
           });
         } catch (e) {
@@ -362,8 +431,8 @@ serve(async (req) => {
 
     /* ── PASO 4: Crear contacto en HubSpot con atribución ── */
     const nameParts = name.trim().split(/\s+/);
-    const firstName = nameParts[0] || "";
-    const lastName = nameParts.slice(1).join(" ") || "";
+    const firstName = answers_buffer?.firstname || nameParts[0] || "";
+    const lastName = answers_buffer?.lastname || nameParts.slice(1).join(" ") || "";
 
     const hubspotLeadStatus = flag === "tibio" ? "OPEN" : "Agendado";
     const hubspotProps: Record<string, string> = {
@@ -372,10 +441,13 @@ serve(async (req) => {
       lastname: lastName,
       jobtitle: jobTitle,
       hs_lead_status: hubspotLeadStatus,
-      hs_analytics_source: "PAID_SOCIAL",
-      hs_latest_source: "PAID_SOCIAL",
-      hs_latest_source_data_2: utm_campaign || "",
       hs_content_membership_notes: `Score: ${score || "N/A"} | Flag: ${flag || "N/A"}\n${summary || ""}`,
+      ...attrProps,
+      ...(answers_buffer?.company ? { company: answers_buffer.company } : {}),
+      ...(answers_buffer?.rubro ? { rubro: answers_buffer.rubro } : {}),
+      ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: answers_buffer.cantidad_de_vendedores } : {}),
+      ...(answers_buffer?.cuenta_con_crm ? { cuenta_con_crm: answers_buffer.cuenta_con_crm } : {}),
+      ...(answers_buffer?.lead_score_ia ? { lead_score_ia: answers_buffer.lead_score_ia } : {}),
     };
 
     let contactId: string | null = null;
@@ -418,7 +490,7 @@ serve(async (req) => {
     // Create note associated to contact
     if (contactId) {
       try {
-        const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: META Ads — ${utm_content || "directo"}\nPreferencia horario: ${availability_preference}\nReunión agendada: ${finalDisplayDate} ${finalDisplayTime}\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
+        const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nPreferencia horario: ${availability_preference}\nReunión agendada: ${finalDisplayDate} ${finalDisplayTime}\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
 
         const noteRes = await fetch("https://api.hubapi.com/crm/v3/objects/notes", {
           method: "POST",
@@ -454,7 +526,7 @@ serve(async (req) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            text: `🎯 Nueva reunión agendada\n\nNombre: ${name} | Email: ${email}\nFecha: ${finalDisplayDate} a las ${finalDisplayTime}\nFuente: META Ads — ${utm_content || "directo"}\nContexto: ${context}\nResumen: ${summary || "Sin resumen"}`,
+            text: `🎯 Nueva reunión agendada\n\nNombre: ${name} | Email: ${email}\nFecha: ${finalDisplayDate} a las ${finalDisplayTime}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nContexto: ${context}\nResumen: ${summary || "Sin resumen"}`,
           }),
         });
       } catch (e) {
