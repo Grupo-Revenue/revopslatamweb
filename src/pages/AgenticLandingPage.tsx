@@ -911,15 +911,49 @@ const AgenticLandingPage = () => {
     setScreen(8); // confirmation
   }, [nurturingEmail, conversationId, summary, leadScore, saveConversion, hubspotContactId]);
 
+  // Normalize phone to +56XXXXXXXXX
+  const normalizePhone = (raw: string): string => {
+    const digits = raw.replace(/\D/g, "");
+    if (digits.startsWith("56") && digits.length >= 10) return `+${digits}`;
+    return `+56${digits}`;
+  };
+
+  const validatePhone = (raw: string): boolean => {
+    const digits = raw.replace(/\D/g, "");
+    // Remove leading 56 if present
+    const local = digits.startsWith("56") ? digits.slice(2) : digits;
+    return local.length >= 8 && local.length <= 9;
+  };
+
   const handleConfirmData = useCallback(async () => {
-    if (!nameInput.trim() || !emailInput.trim() || !selectedSlot) return;
+    // Determine the effective email
+    const effectiveEmail = earlyEmail?.trim() || emailInput.trim();
+    setPhoneError("");
+    setEmailError("");
+
+    if (!effectiveEmail) {
+      setEmailError("Ingresa tu correo electrónico");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(effectiveEmail)) {
+      setEmailError("Ingresa un correo válido");
+      return;
+    }
+    if (!validatePhone(phoneInput)) {
+      setPhoneError("Ingresa un número válido, por ejemplo: 9 1234 5678");
+      return;
+    }
+    if (!selectedSlot) return;
+
+    const normalizedPhone = normalizePhone(phoneInput);
     setScreen(7); // loading
 
     try {
       const { data, error } = await supabase.functions.invoke("book-meeting", {
         body: {
           name: nameInput.trim(),
-          email: emailInput.trim(),
+          email: effectiveEmail,
+          phone: normalizedPhone,
           context: contextRef.current,
           summary,
           availability_preference: `${selectedSlot.display_date} a las ${selectedSlot.display_time}`,
@@ -942,7 +976,10 @@ const AgenticLandingPage = () => {
         return;
       }
 
-      void saveConversion(emailInput.trim(), hubspotContactId, "meeting_booked");
+      void saveConversion(effectiveEmail, hubspotContactId, "meeting_booked");
+
+      // Sync phone to HubSpot
+      void syncToHubSpot(effectiveEmail, { ...answersBufferRef.current, phone: normalizedPhone }, false);
 
       // Save meeting status to conversation
       if (conversationId) {
@@ -951,7 +988,8 @@ const AgenticLandingPage = () => {
           status: "agendo",
           meeting_date: data.display_date,
           meeting_time: data.display_time,
-          visitor_email: emailInput.trim(),
+          visitor_email: effectiveEmail,
+          phone: normalizedPhone,
           hubspot_sync_status: "synced",
         });
       }
@@ -963,7 +1001,7 @@ const AgenticLandingPage = () => {
       console.error("book-meeting exception:", e);
       setScreen(8);
     }
-  }, [nameInput, emailInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId]);
+  }, [nameInput, emailInput, earlyEmail, phoneInput, selectedSlot, conversationId, summary, leadScore, leadFlag, saveConversion, hubspotContactId, syncToHubSpot, saveConversationMeta]);
 
 
   /* ─── render current screen ─── */
