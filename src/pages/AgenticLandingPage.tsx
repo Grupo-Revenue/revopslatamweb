@@ -617,6 +617,7 @@ const AgenticLandingPage = () => {
     async (result: { reply: string; phase: string; summary?: string; score?: number; flag?: string; repeat_turn?: boolean }, baseMsgs: { role: "ai" | "user"; text: string; meta?: boolean }[], currentTurn?: number) => {
       await typewriterEffect(result.reply);
       const finalMessages = [...baseMsgs, { role: "ai" as const, text: result.reply }];
+      const currentConversationId = conversationIdRef.current || conversationId;
       // If repeat_turn, roll back the turn counter AND question progress
       if (result.repeat_turn) {
         setTurn((prev) => Math.max(prev - 1, 1));
@@ -627,19 +628,18 @@ const AgenticLandingPage = () => {
         const f = result.flag || (result.score >= 65 ? "alta" : result.score >= 40 ? "media" : "baja");
         const currentEmail = earlyEmailSaved ? earlyEmail : emailInput || nurturingEmail || null;
         syncScoreToHubSpot(result.score, f, currentEmail);
-        // Save score/flag/status to conversation
-        if (conversationId) {
+        if (currentConversationId) {
           const status = result.phase === "discarded" ? "descartado" : result.phase === "nurturing" ? "nurturing" : result.phase === "availability" ? "incompleto" : "incompleto";
-          void saveConversationMeta(conversationId, { score: result.score, flag: f, status });
+          void saveConversationMeta(currentConversationId, { score: result.score, flag: f, status });
         }
       }
       if (result.flag) setLeadFlag(result.flag);
       if (result.summary) setSummary(result.summary);
-      if (conversationId) {
+      if (currentConversationId) {
         const extra: Record<string, any> = {};
         if (result.summary) extra.summary = result.summary;
         if (result.flag) extra.flag = result.flag;
-        saveMessages(conversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
+        saveMessages(currentConversationId, finalMessages, Object.keys(extra).length ? extra : undefined);
       }
 
       // Detect Q5 — show buttons when CRM was just answered (progress === 4)
