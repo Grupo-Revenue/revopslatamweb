@@ -9,8 +9,8 @@ const BG_COLORS = [
   "#22262A", // Screen 0: Welcome Lidia
   "#1C1240", "#1E1550", "#16203A", "#0F2030",
   "#0F2030", // Screen 5: same as screen 4 for seamless transition
-  "#0A2028", // Screen 6: name+email
-  "#082018", // Screen 7: loading
+  "#0F2030", // Screen 6: same as screen 5 for seamless transition
+  "#0F2030", // Screen 7: loading
   "#0A1F1A", // Screen 8: confirmation
 ];
 
@@ -374,13 +374,32 @@ const AgenticLandingPage = () => {
     const progress = questionProgressRef.current;
 
     if (progress === 0) {
-      // Q1: cargo + empresa
+      // Q1: cargo + empresa — split intelligently
       buf.nivel_del_cargo = mapCargoToHubSpot(userAnswer);
       convMeta.cargo = buf.nivel_del_cargo;
-      const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i);
+      // Try to extract company: "cargo en/de empresa", "cargo, empresa", "cargo - empresa"
+      const companyMatch = userAnswer.match(/(?:en|de|@)\s+(.+?)(?:\s*[.,]|$)/i)
+        || userAnswer.match(/[,\-–—]\s*(.+?)$/i);
       if (companyMatch && companyMatch[1]) {
         buf.company = companyMatch[1].trim();
         convMeta.company = buf.company;
+      } else {
+        // If no separator found, try splitting: last meaningful words after the role keyword
+        const roleParts = userAnswer.toLowerCase();
+        const rolePatterns = [
+          /(?:gerente\s+general|gerente\s+comercial|gerente\s+de\s+\w+|director\s+\w+|ceo|coo|cfo|cmo|cro|due[ñn]o|socio|founder|fundador|jefe|supervisor|coordinador|vendedor|ejecutivo|asesor)\s+(?:de\s+)?/i,
+        ];
+        for (const pattern of rolePatterns) {
+          const match = userAnswer.match(pattern);
+          if (match) {
+            const afterRole = userAnswer.slice((match.index || 0) + match[0].length).trim();
+            if (afterRole.length > 1) {
+              buf.company = afterRole;
+              convMeta.company = afterRole;
+              break;
+            }
+          }
+        }
       }
       questionProgressRef.current = 1;
     } else if (progress === 1) {
@@ -779,8 +798,8 @@ const AgenticLandingPage = () => {
     const normalizedPhone = normalizePhone(fallbackPhone);
     const digits = fallbackPhone.replace(/\D/g, "");
     const local = digits.startsWith("56") ? digits.slice(2) : digits;
-    if (local.length < 8 || local.length > 9) {
-      setEarlyEmailError("Ingresa un número válido, por ejemplo: 9 1234 5678");
+    if (local.length !== 9 || !local.startsWith("9")) {
+      setEarlyEmailError("Ingresa un número válido de 9 dígitos, por ejemplo: 9 1234 5678");
       return;
     }
 
@@ -994,7 +1013,8 @@ const AgenticLandingPage = () => {
     const digits = raw.replace(/\D/g, "");
     // Remove leading 56 if present
     const local = digits.startsWith("56") ? digits.slice(2) : digits;
-    return local.length >= 8 && local.length <= 9;
+    // Chilean mobile numbers must be exactly 9 digits starting with 9
+    return local.length === 9 && local.startsWith("9");
   };
 
   const handleConfirmData = useCallback(async () => {
@@ -1653,7 +1673,36 @@ const AgenticLandingPage = () => {
                 ? "Revisa tu bandeja de entrada en los próximos días."
                 : "Recibirás una invitación en tu correo con todos los detalles."}
             </p>
-            <div className="mt-8 text-white/20 text-[12px] tracking-wide leading-relaxed">
+
+            {/* CTA: Conoce RevOps LATAM */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.8 }}
+              className="w-full max-w-[320px] flex flex-col items-center"
+            >
+              <div className="w-full" style={{ height: 1, background: "rgba(255,255,255,0.1)", margin: "28px 0" }} />
+              <p className="text-[14px] mb-4 text-center" style={{ color: "rgba(255,255,255,0.6)" }}>
+                Mientras tanto, conoce cómo trabajamos y qué dicen nuestros clientes.
+              </p>
+              <a
+                href="https://www.revopslatam.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-3 rounded-full text-white text-[14px] font-medium text-center transition-all duration-200"
+                style={{
+                  background: "transparent",
+                  border: "1px solid rgba(255,255,255,0.3)",
+                  padding: "12px 28px",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.6)"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                Conoce RevOps LATAM →
+              </a>
+            </motion.div>
+
+            <div className="mt-4 text-white/20 text-[12px] tracking-wide leading-relaxed">
               Revops LATAM · HubSpot Platinum Partner · 14 años generando Revenue
             </div>
           </motion.div>
