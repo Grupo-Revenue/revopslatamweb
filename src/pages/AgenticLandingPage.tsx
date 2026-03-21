@@ -308,6 +308,12 @@ const AgenticLandingPage = () => {
   const [visitorName, setVisitorName] = useState("");
   const [nameCollected, setNameCollected] = useState(false);
 
+  // Corporate email validation state
+  const [freeEmailAttempts, setFreeEmailAttempts] = useState(0);
+  const [emailFallbackMode, setEmailFallbackMode] = useState(false);
+  const [fallbackPhone, setFallbackPhone] = useState("");
+  const [fallbackName, setFallbackName] = useState("");
+
   // HubSpot real-time sync state
   const [hubspotContactId, setHubspotContactId] = useState<string | null>(null);
   const answersBufferRef = useRef<Record<string, string>>({});
