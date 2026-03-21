@@ -894,7 +894,7 @@ const AgenticLandingPage = () => {
                 className="px-4 pb-4 pt-3"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  handleEarlyEmailSave(earlyEmail);
+                  triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
                 }}
               >
                 <div
@@ -917,6 +917,7 @@ const AgenticLandingPage = () => {
                       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                     </svg>
                     <input
+                      ref={earlyEmailInputRef}
                       name="early-email"
                       type="text"
                       value={earlyEmail}
@@ -929,20 +930,41 @@ const AgenticLandingPage = () => {
                       autoCapitalize="none"
                       autoCorrect="off"
                       autoComplete="email"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          triggerEarlyEmailSubmit((e.currentTarget as HTMLInputElement).value);
+                        }
+                      }}
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={!earlyEmail.trim() || earlyEmailSubmittingRef.current}
+                    onTouchEnd={(e) => {
+                      e.preventDefault();
+                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
+                    }}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
+                    }}
                     className="w-full py-3 rounded-full text-white font-medium text-[15px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.97] disabled:opacity-30 touch-manipulation"
                     style={{ background: "#BE1869", boxShadow: "0 4px 16px rgba(190,24,105,0.3)" }}
                   >
                     Continuar →
                   </button>
-                  {/* Fallback link for iOS Safari edge cases */}
                   <button
                     type="button"
-                    onClick={() => handleEarlyEmailSave(earlyEmail)}
+                    onTouchEnd={(e) => {
+                      e.preventDefault();
+                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
+                    }}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail);
+                    }}
+                    onClick={() => triggerEarlyEmailSubmit(earlyEmailInputRef.current?.value ?? earlyEmail)}
                     className="text-[12px] text-white/20 hover:text-white/50 transition-colors self-center underline"
                     style={{ display: earlyEmail.trim() ? "block" : "none" }}
                   >
