@@ -283,6 +283,7 @@ const AgenticLandingPage = () => {
   const [availabilityError, setAvailabilityError] = useState<string | null>(null);
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingTime, setMeetingTime] = useState("");
+  const [bookingFailed, setBookingFailed] = useState(false);
   const [leadScore, setLeadScore] = useState<number | undefined>();
   const [leadFlag, setLeadFlag] = useState<string | undefined>();
   const [nurturingEmail, setNurturingEmail] = useState("");
