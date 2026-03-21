@@ -8,6 +8,49 @@ const corsHeaders = {
 
 const HUBSPOT_API = "https://api.hubapi.com";
 
+/* ─── Normalize free-text rubro to HubSpot allowed options ─── */
+const VALID_RUBROS = [
+  "SaaS B2B", "Servicios B2C", "Servicios B2B", "Venta de productos B2B",
+  "Educación Superior", "Inmobiliaria", "Broker Inmobiliario",
+  "Retail", "E-commerce", "Salud", "Colegios", "Otros",
+];
+
+function normalizeRubro(raw: string): string {
+  if (!raw) return "";
+  const lower = raw.toLowerCase().trim();
+  // Direct match first
+  const exact = VALID_RUBROS.find((v) => v.toLowerCase() === lower);
+  if (exact) return exact;
+  // Keyword matching
+  if (lower.includes("saas")) return "SaaS B2B";
+  if (lower.includes("software")) return "SaaS B2B";
+  if (lower.includes("inmobiliaria") || lower.includes("constructora") || lower.includes("construcción") || lower.includes("construccion") || lower.includes("desarrolladora")) return "Inmobiliaria";
+  if (lower.includes("broker") || lower.includes("corretaje") || lower.includes("corredora")) return "Broker Inmobiliario";
+  if (lower.includes("retail") || lower.includes("tienda")) return "Retail";
+  if (lower.includes("e-commerce") || lower.includes("ecommerce") || lower.includes("comercio electr")) return "E-commerce";
+  if (lower.includes("salud") || lower.includes("clínica") || lower.includes("hospital") || lower.includes("médic")) return "Salud";
+  if (lower.includes("colegio") || lower.includes("escuela")) return "Colegios";
+  if (lower.includes("educación") || lower.includes("educacion") || lower.includes("universidad") || lower.includes("instituto")) return "Educación Superior";
+  if (lower.includes("servicio")) {
+    if (lower.includes("b2c")) return "Servicios B2C";
+    return "Servicios B2B";
+  }
+  if (lower.includes("producto") || lower.includes("manufactura") || lower.includes("industrial")) return "Venta de productos B2B";
+  return "Otros";
+}
+
+/* ─── Normalize cantidad de vendedores to HubSpot allowed options (uses en-dash –) ─── */
+function normalizeVendedores(raw: string): string {
+  if (!raw) return "";
+  const lower = raw.toLowerCase().trim();
+  if (lower.includes("solo") || lower.includes("dueño")) return "Solo el dueño vende";
+  if (lower.includes("1 vendedor") || lower === "1") return "1 vendedor";
+  if (lower.includes("2") && lower.includes("3")) return "2–3 vendedores";
+  if (lower.includes("4") || lower.includes("10 vend") || (lower.includes("5") && !lower.includes("10+"))) return "4–10 vendedores";
+  if (lower.includes("10+") || lower.includes("más de 10") || lower.includes("mas de 10")) return "10+ vendedores";
+  return raw;
+}
+
 /* ─── Attribution source mapping ─── */
 interface Attribution {
   utm_source?: string;
@@ -60,7 +103,7 @@ function buildAttributionProperties(attr: Attribution): Record<string, string> {
     props.hs_latest_source = "DIRECT_TRAFFIC";
   }
 
-  if (attr.full_url) props.hs_analytics_first_url = attr.full_url;
+  // hs_analytics_first_url is READ-ONLY in HubSpot — do NOT set it
   if (attr.referrer) props.hs_analytics_first_referrer = attr.referrer;
   if (fbclid) props.hs_facebook_click_id = fbclid;
   if (attr.utm_source) props.utm_source_original = attr.utm_source;
@@ -105,6 +148,9 @@ serve(async (req) => {
 
     // Merge attribution properties with user-provided properties
     const attrProps = attribution ? buildAttributionProperties(attribution as Attribution) : {};
+    // Normalize rubro and cantidad_de_vendedores before sending to HubSpot
+    if (properties?.rubro) properties.rubro = normalizeRubro(properties.rubro);
+    if (properties?.cantidad_de_vendedores) properties.cantidad_de_vendedores = normalizeVendedores(properties.cantidad_de_vendedores);
     const mergedProperties = { ...attrProps, ...(properties || {}) };
 
     console.log("[update-contact] merged properties to send:", JSON.stringify(mergedProperties));

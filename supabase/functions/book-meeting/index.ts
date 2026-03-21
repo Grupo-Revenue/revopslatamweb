@@ -89,6 +89,45 @@ async function checkAvailability(
   return busy.length === 0;
 }
 
+/* ─── Normalize free-text rubro to HubSpot allowed options ─── */
+const VALID_RUBROS = [
+  "SaaS B2B", "Servicios B2C", "Servicios B2B", "Venta de productos B2B",
+  "Educación Superior", "Inmobiliaria", "Broker Inmobiliario",
+  "Retail", "E-commerce", "Salud", "Colegios", "Otros",
+];
+
+function normalizeRubro(raw: string): string {
+  if (!raw) return "";
+  const lower = raw.toLowerCase().trim();
+  const exact = VALID_RUBROS.find((v) => v.toLowerCase() === lower);
+  if (exact) return exact;
+  if (lower.includes("saas") || lower.includes("software")) return "SaaS B2B";
+  if (lower.includes("inmobiliaria") || lower.includes("constructora") || lower.includes("construcción") || lower.includes("construccion") || lower.includes("desarrolladora")) return "Inmobiliaria";
+  if (lower.includes("broker") || lower.includes("corretaje") || lower.includes("corredora")) return "Broker Inmobiliario";
+  if (lower.includes("retail") || lower.includes("tienda")) return "Retail";
+  if (lower.includes("e-commerce") || lower.includes("ecommerce") || lower.includes("comercio electr")) return "E-commerce";
+  if (lower.includes("salud") || lower.includes("clínica") || lower.includes("hospital") || lower.includes("médic")) return "Salud";
+  if (lower.includes("colegio") || lower.includes("escuela")) return "Colegios";
+  if (lower.includes("educación") || lower.includes("educacion") || lower.includes("universidad") || lower.includes("instituto")) return "Educación Superior";
+  if (lower.includes("servicio")) {
+    if (lower.includes("b2c")) return "Servicios B2C";
+    return "Servicios B2B";
+  }
+  if (lower.includes("producto") || lower.includes("manufactura") || lower.includes("industrial")) return "Venta de productos B2B";
+  return "Otros";
+}
+
+function normalizeVendedores(raw: string): string {
+  if (!raw) return "";
+  const lower = raw.toLowerCase().trim();
+  if (lower.includes("solo") || lower.includes("dueño")) return "Solo el dueño vende";
+  if (lower.includes("1 vendedor") || lower === "1") return "1 vendedor";
+  if (lower.includes("2") && lower.includes("3")) return "2–3 vendedores";
+  if (lower.includes("4") || lower.includes("10 vend") || (lower.includes("5") && !lower.includes("10+"))) return "4–10 vendedores";
+  if (lower.includes("10+") || lower.includes("más de 10") || lower.includes("mas de 10")) return "10+ vendedores";
+  return raw;
+}
+
 /* ─── Attribution source mapping (same logic as update-contact) ─── */
 interface Attribution {
   utm_source?: string;
@@ -141,7 +180,7 @@ function buildAttributionProperties(attr: Attribution): Record<string, string> {
     props.hs_latest_source = "DIRECT_TRAFFIC";
   }
 
-  if (attr.full_url) props.hs_analytics_first_url = attr.full_url;
+  // hs_analytics_first_url is READ-ONLY in HubSpot — do NOT set it
   if (attr.referrer) props.hs_analytics_first_referrer = attr.referrer;
   if (fbclid) props.hs_facebook_click_id = fbclid;
   if (attr.utm_source) props.utm_source_original = attr.utm_source;
@@ -213,8 +252,8 @@ serve(async (req) => {
         hs_content_membership_notes: `Score: ${score || 0} | Flag: no_calificado\n${summary || ""}`,
         ...attrProps,
         ...(answers_buffer?.company ? { company: answers_buffer.company } : {}),
-        ...(answers_buffer?.rubro ? { rubro: answers_buffer.rubro } : {}),
-        ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: answers_buffer.cantidad_de_vendedores } : {}),
+        ...(answers_buffer?.rubro ? { rubro: normalizeRubro(answers_buffer.rubro) } : {}),
+        ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: normalizeVendedores(answers_buffer.cantidad_de_vendedores) } : {}),
         ...(answers_buffer?.cuenta_con_crm ? { cuenta_con_crm: answers_buffer.cuenta_con_crm } : {}),
       };
 
@@ -480,8 +519,8 @@ serve(async (req) => {
       hs_content_membership_notes: `Score: ${score || "N/A"} | Flag: ${flag || "N/A"}\n${summary || ""}`,
       ...attrProps,
       ...(answers_buffer?.company ? { company: answers_buffer.company } : {}),
-      ...(answers_buffer?.rubro ? { rubro: answers_buffer.rubro } : {}),
-      ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: answers_buffer.cantidad_de_vendedores } : {}),
+      ...(answers_buffer?.rubro ? { rubro: normalizeRubro(answers_buffer.rubro) } : {}),
+      ...(answers_buffer?.cantidad_de_vendedores ? { cantidad_de_vendedores: normalizeVendedores(answers_buffer.cantidad_de_vendedores) } : {}),
       ...(answers_buffer?.cuenta_con_crm ? { cuenta_con_crm: answers_buffer.cuenta_con_crm } : {}),
       ...(answers_buffer?.lead_score_ia ? { lead_score_ia: answers_buffer.lead_score_ia } : {}),
     };
@@ -571,8 +610,8 @@ serve(async (req) => {
         { name: "phone", value: phone },
         { name: "company", value: companyName || "" },
         { name: "nivel_del_cargo", value: cargoValue || "" },
-        { name: "rubro", value: answers_buffer?.rubro || "" },
-        { name: "cantidad_de_vendedores", value: cantidadVendedores || "" },
+        { name: "rubro", value: normalizeRubro(answers_buffer?.rubro || "") },
+        { name: "cantidad_de_vendedores", value: normalizeVendedores(cantidadVendedores || "") },
         { name: "cuenta_con_crm", value: cuentaConCrm || "" },
         { name: "problema_principal__no_usan_crm", value: problemaNoCrm },
         { name: "problema_principal__usan_hubspot", value: problemaHubspot },
@@ -587,14 +626,15 @@ serve(async (req) => {
         { name: "hs_facebook_click_id", value: attribution?.fbclid || "" },
       ];
 
+      // Build context — omit hutk and ipAddress if empty to avoid HubSpot validation errors
+      const formContext: Record<string, string> = {
+        pageUri: attribution?.full_url || "",
+        pageName: "Agente Lidia — Landing RevOps LATAM",
+      };
+
       const formBody = {
         fields: formFields,
-        context: {
-          hutk: "",
-          pageUri: attribution?.full_url || "",
-          pageName: "Agente Lidia — Landing RevOps LATAM",
-          ipAddress: "",
-        },
+        context: formContext,
         legalConsentOptions: {
           consent: {
             consentToProcess: true,
