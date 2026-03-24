@@ -318,7 +318,7 @@ serve(async (req) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              text: `📋 Lead no calificado (nurturing)\nEmail: ${email}\nScore: ${score || 0}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nResumen: ${summary || "Sin resumen"}`,
+              text: `📋 Lead no calificado (nurturing)\nEmail: ${email}\nScore: ${score || 0}\nFuente: ${attribution?.utm_source || "Directo"} — ${utmContentValue || "directo"}\nResumen: ${summary || "Sin resumen"}`,
             }),
           });
         } catch (e) {
