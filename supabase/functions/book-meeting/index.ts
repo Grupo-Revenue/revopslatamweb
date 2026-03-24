@@ -579,18 +579,25 @@ serve(async (req) => {
         { name: "problema_principal__usan_hubspot", value: problemaHubspot },
         { name: "problema_principal", value: problemaOtro },
         { name: "lead_score_ia", value: String(score || 0) },
-        { name: "hs_analytics_source", value: attrProps.hs_analytics_source || "" },
-        { name: "hs_analytics_source_data_1", value: attrProps.hs_analytics_source_data_1 || "" },
-        { name: "hs_analytics_source_data_2", value: attribution?.utm_campaign || "" },
-        { name: "hs_latest_source", value: attrProps.hs_latest_source || "" },
-        { name: "hs_latest_source_data_1", value: attrProps.hs_latest_source_data_1 || "" },
-        { name: "hs_latest_source_data_2", value: attribution?.utm_campaign || "" },
-        { name: "hs_facebook_click_id", value: attribution?.fbclid || "" },
       ];
 
-      // Build context — omit hutk and ipAddress if empty to avoid HubSpot validation errors
+      // Build pageUri with UTMs so HubSpot can attribute the source correctly
+      let pageUri = attribution?.full_url || "";
+      if (pageUri && attribution) {
+        const utmParams = new URLSearchParams();
+        if (attribution.utm_source) utmParams.set("utm_source", attribution.utm_source);
+        if (attribution.utm_medium) utmParams.set("utm_medium", attribution.utm_medium);
+        if (attribution.utm_campaign) utmParams.set("utm_campaign", attribution.utm_campaign);
+        if (attribution.utm_content) utmParams.set("utm_content", attribution.utm_content);
+        if (attribution.utm_term) utmParams.set("utm_term", attribution.utm_term);
+        const utmString = utmParams.toString();
+        if (utmString && !pageUri.includes("utm_source")) {
+          pageUri += (pageUri.includes("?") ? "&" : "?") + utmString;
+        }
+      }
+
       const formContext: Record<string, string> = {
-        pageUri: attribution?.full_url || "",
+        pageUri,
         pageName: "Agente Lidia — Landing RevOps LATAM",
       };
 
