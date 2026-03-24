@@ -247,7 +247,8 @@ serve(async (req) => {
 
         // Create note with full conversation transcript for nurturing contact
         if (nurturingContactId) {
-          const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nScore: ${score || 0} | Flag: no_calificado\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
+          const utmLabel = attribution?.utm_source ? `${attribution.utm_source} / ${attribution.utm_campaign || "directo"}` : "Directo";
+          const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: ${utmLabel}\nScore: ${score || 0} | Flag: no_calificado\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
           const noteRes = await fetch("https://api.hubapi.com/crm/v3/objects/notes", {
             method: "POST",
             headers: { Authorization: `Bearer ${HUBSPOT_API_KEY}`, "Content-Type": "application/json" },
@@ -257,6 +258,54 @@ serve(async (req) => {
             }),
           });
           if (!noteRes.ok) console.error(`HubSpot nurturing note error [${noteRes.status}]:`, await noteRes.text());
+        }
+
+        // Submit HubSpot form for proper source attribution
+        try {
+          const nameParts = (name || email.split("@")[0]).trim().split(/\s+/);
+          const nFirstName = answers_buffer?.firstname || nameParts[0] || "";
+          const nLastName = answers_buffer?.lastname || nameParts.slice(1).join(" ") || "";
+
+          let nPageUri = attribution?.full_url || "";
+          if (nPageUri && attribution) {
+            const utmParams = new URLSearchParams();
+            if (attribution.utm_source) utmParams.set("utm_source", attribution.utm_source);
+            if (attribution.utm_medium) utmParams.set("utm_medium", attribution.utm_medium);
+            if (attribution.utm_campaign) utmParams.set("utm_campaign", attribution.utm_campaign);
+            if (attribution.utm_content) utmParams.set("utm_content", attribution.utm_content);
+            if (attribution.utm_term) utmParams.set("utm_term", attribution.utm_term);
+            const utmStr = utmParams.toString();
+            if (utmStr && !nPageUri.includes("utm_source")) {
+              nPageUri += (nPageUri.includes("?") ? "&" : "?") + utmStr;
+            }
+          }
+
+          const nFormRes = await fetch(
+            "https://api.hsforms.com/submissions/v3/integration/submit/1537563/b7cb5d1f-eeea-43f9-a1f3-ae9cb0e2ddfd",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                fields: [
+                  { name: "email", value: email },
+                  { name: "firstname", value: nFirstName },
+                  { name: "lastname", value: nLastName },
+                  { name: "company", value: answers_buffer?.company || "" },
+                  { name: "nivel_del_cargo", value: jobTitle },
+                  { name: "rubro", value: normalizeRubro(answers_buffer?.rubro || "") },
+                  { name: "cantidad_de_vendedores", value: normalizeVendedores(answers_buffer?.cantidad_de_vendedores || "") },
+                  { name: "cuenta_con_crm", value: answers_buffer?.cuenta_con_crm || "" },
+                  { name: "lead_score_ia", value: String(score || 0) },
+                ],
+                context: { pageUri: nPageUri, pageName: "Agente Lidia — Nurturing" },
+                legalConsentOptions: { consent: { consentToProcess: true, text: "Acepto que RevOps LATAM procese mis datos." } },
+              }),
+            }
+          );
+          if (!nFormRes.ok) console.error(`[book-meeting] Nurturing form error [${nFormRes.status}]:`, await nFormRes.text());
+          else console.log("[book-meeting] Nurturing form submitted for attribution");
+        } catch (e) {
+          console.error("[book-meeting] Nurturing form exception:", e);
         }
       } catch (e) {
         console.error("HubSpot nurturing error:", e);
@@ -269,7 +318,7 @@ serve(async (req) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              text: `📋 Lead no calificado (nurturing)\nEmail: ${email}\nScore: ${score || 0}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nResumen: ${summary || "Sin resumen"}`,
+              text: `📋 Lead no calificado (nurturing)\nEmail: ${email}\nScore: ${score || 0}\nFuente: ${attribution?.utm_source || "Directo"} — ${utmContentValue || "directo"}\nResumen: ${summary || "Sin resumen"}`,
             }),
           });
         } catch (e) {
@@ -527,7 +576,8 @@ serve(async (req) => {
     // Create note associated to contact
     if (contactId) {
       try {
-        const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nPreferencia horario: ${availability_preference}\nReunión agendada: ${finalDisplayDate} ${finalDisplayTime}\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
+        const utmLabel = attribution?.utm_source ? `${attribution.utm_source} / ${attribution?.utm_campaign || "directo"}` : "Directo";
+        const noteBody = `🤖 Conversación con agente IA RevOps LATAM\n\nContexto: ${context}\nFuente: ${utmLabel}\nPreferencia horario: ${availability_preference}\nReunión agendada: ${finalDisplayDate} ${finalDisplayTime}\n\nResumen IA:\n${summary || "Sin resumen"}\n\n──────────────────\n📝 CONVERSACIÓN COMPLETA:\n──────────────────\n${transcript}`;
 
         const noteRes = await fetch("https://api.hubapi.com/crm/v3/objects/notes", {
           method: "POST",
@@ -579,18 +629,25 @@ serve(async (req) => {
         { name: "problema_principal__usan_hubspot", value: problemaHubspot },
         { name: "problema_principal", value: problemaOtro },
         { name: "lead_score_ia", value: String(score || 0) },
-        { name: "hs_analytics_source", value: attrProps.hs_analytics_source || "" },
-        { name: "hs_analytics_source_data_1", value: attrProps.hs_analytics_source_data_1 || "" },
-        { name: "hs_analytics_source_data_2", value: attribution?.utm_campaign || "" },
-        { name: "hs_latest_source", value: attrProps.hs_latest_source || "" },
-        { name: "hs_latest_source_data_1", value: attrProps.hs_latest_source_data_1 || "" },
-        { name: "hs_latest_source_data_2", value: attribution?.utm_campaign || "" },
-        { name: "hs_facebook_click_id", value: attribution?.fbclid || "" },
       ];
 
-      // Build context — omit hutk and ipAddress if empty to avoid HubSpot validation errors
+      // Build pageUri with UTMs so HubSpot can attribute the source correctly
+      let pageUri = attribution?.full_url || "";
+      if (pageUri && attribution) {
+        const utmParams = new URLSearchParams();
+        if (attribution.utm_source) utmParams.set("utm_source", attribution.utm_source);
+        if (attribution.utm_medium) utmParams.set("utm_medium", attribution.utm_medium);
+        if (attribution.utm_campaign) utmParams.set("utm_campaign", attribution.utm_campaign);
+        if (attribution.utm_content) utmParams.set("utm_content", attribution.utm_content);
+        if (attribution.utm_term) utmParams.set("utm_term", attribution.utm_term);
+        const utmString = utmParams.toString();
+        if (utmString && !pageUri.includes("utm_source")) {
+          pageUri += (pageUri.includes("?") ? "&" : "?") + utmString;
+        }
+      }
+
       const formContext: Record<string, string> = {
-        pageUri: attribution?.full_url || "",
+        pageUri,
         pageName: "Agente Lidia — Landing RevOps LATAM",
       };
 
@@ -640,7 +697,7 @@ serve(async (req) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            text: `🎯 Nueva reunión agendada\n\nNombre: ${name} | Email: ${email}\nFecha: ${finalDisplayDate} a las ${finalDisplayTime}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nContexto: ${context}\nResumen: ${summary || "Sin resumen"}`,
+            text: `🎯 Nueva reunión agendada\n\nNombre: ${name} | Email: ${email}\nFecha: ${finalDisplayDate} a las ${finalDisplayTime}\nFuente: ${attribution?.utm_source || "Directo"} — ${utmContentValue || "directo"}\nContexto: ${context}\nResumen: ${summary || "Sin resumen"}`,
           }),
         });
       } catch (e) {
