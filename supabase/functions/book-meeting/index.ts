@@ -697,7 +697,7 @@ serve(async (req) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            text: `🎯 Nueva reunión agendada\n\nNombre: ${name} | Email: ${email}\nFecha: ${finalDisplayDate} a las ${finalDisplayTime}\nFuente: ${attrProps.hs_analytics_source_data_1 || "Directo"} — ${utmContentValue || "directo"}\nContexto: ${context}\nResumen: ${summary || "Sin resumen"}`,
+            text: `🎯 Nueva reunión agendada\n\nNombre: ${name} | Email: ${email}\nFecha: ${finalDisplayDate} a las ${finalDisplayTime}\nFuente: ${attribution?.utm_source || "Directo"} — ${utmContentValue || "directo"}\nContexto: ${context}\nResumen: ${summary || "Sin resumen"}`,
           }),
         });
       } catch (e) {
