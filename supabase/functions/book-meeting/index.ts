@@ -495,11 +495,17 @@ serve(async (req) => {
         { email },
       ],
       sendUpdates: "all",
+      conferenceData: {
+        createRequest: {
+          requestId: `revops-${Date.now()}`,
+          conferenceSolutionKey: { type: "hangoutsMeet" },
+        },
+      },
     };
 
     // Create on Febe's calendar via impersonation
     const createRes = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(FEBE_CALENDAR_ID)}/events?sendUpdates=all`,
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(FEBE_CALENDAR_ID)}/events?sendUpdates=all&conferenceDataVersion=1`,
       {
         method: "POST",
         headers: {
