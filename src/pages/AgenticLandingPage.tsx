@@ -38,6 +38,7 @@ function getAttributionData() {
     utm_content: params.get("utm_content") || "",
     utm_term: params.get("utm_term") || "",
     fbclid: params.get("fbclid") || "",
+    hutk: document.cookie.split("; ").find((c) => c.startsWith("hubspotutk="))?.split("=")[1] || "",
     full_url: window.location.href,
     referrer: document.referrer || "",
   };

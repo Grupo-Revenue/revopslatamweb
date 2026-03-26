@@ -59,6 +59,7 @@ interface Attribution {
   utm_content?: string;
   utm_term?: string;
   fbclid?: string;
+  hutk?: string;
   full_url?: string;
   referrer?: string;
 }
@@ -76,6 +77,73 @@ function buildAttributionProperties(attr: Attribution): Record<string, string> {
   // Attribution is handled by HubSpot automatically via form submissions with pageUri/hutk.
 
   return props;
+}
+
+function buildPageUri(attr?: Attribution): string {
+  if (!attr?.full_url) return "";
+
+  try {
+    const url = new URL(attr.full_url);
+    if (attr.utm_source) url.searchParams.set("utm_source", attr.utm_source);
+    if (attr.utm_medium) url.searchParams.set("utm_medium", attr.utm_medium);
+    if (attr.utm_campaign) url.searchParams.set("utm_campaign", attr.utm_campaign);
+    if (attr.utm_content) url.searchParams.set("utm_content", attr.utm_content);
+    if (attr.utm_term) url.searchParams.set("utm_term", attr.utm_term);
+    if (attr.fbclid) url.searchParams.set("fbclid", attr.fbclid);
+    return url.toString();
+  } catch {
+    return attr.full_url;
+  }
+}
+
+async function submitHubspotTrackingForm(payload: {
+  email: string;
+  properties: Record<string, string>;
+  attribution?: Attribution;
+}) {
+  const firstName = payload.properties.firstname || "";
+  const lastName = payload.properties.lastname || "";
+  const pageUri = buildPageUri(payload.attribution);
+
+  const fields = [
+    { name: "email", value: payload.email },
+    { name: "firstname", value: firstName },
+    { name: "lastname", value: lastName },
+    { name: "company", value: payload.properties.company || "" },
+    { name: "jobtitle", value: payload.properties.jobtitle || payload.properties.nivel_del_cargo || "" },
+    { name: "nivel_del_cargo", value: payload.properties.nivel_del_cargo || payload.properties.jobtitle || "" },
+    { name: "rubro", value: payload.properties.rubro || "" },
+    { name: "cantidad_de_vendedores", value: payload.properties.cantidad_de_vendedores || "" },
+    { name: "cuenta_con_crm", value: payload.properties.cuenta_con_crm || "" },
+    { name: "lead_score_ia", value: payload.properties.lead_score_ia || "" },
+  ];
+
+  const formRes = await fetch(
+    "https://api.hsforms.com/submissions/v3/integration/submit/1537563/b7cb5d1f-eeea-43f9-a1f3-ae9cb0e2ddfd",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fields,
+        context: {
+          hutk: payload.attribution?.hutk || undefined,
+          pageUri,
+          pageName: "Agente Lidia — Landing RevOps LATAM",
+        },
+        legalConsentOptions: {
+          consent: {
+            consentToProcess: true,
+            text: "Acepto que RevOps LATAM procese mis datos para contactarme.",
+          },
+        },
+      }),
+    }
+  );
+
+  if (!formRes.ok && formRes.status !== 204) {
+    const errText = await formRes.text();
+    throw new Error(`Tracking form failed [${formRes.status}]: ${errText}`);
+  }
 }
 
 serve(async (req) => {
@@ -175,6 +243,16 @@ serve(async (req) => {
 
     // 3. Contact doesn't exist + createIfNotExists
     if (createIfNotExists) {
+      try {
+        await submitHubspotTrackingForm({
+          email,
+          properties: mergedProperties,
+          attribution: attribution as Attribution | undefined,
+        });
+      } catch (trackingError) {
+        console.error("[update-contact] tracking form submit failed before create:", trackingError);
+      }
+
       const createRes = await fetch(`${HUBSPOT_API}/crm/v3/objects/contacts`, {
         method: "POST",
         headers,
