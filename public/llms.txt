@@ -1,0 +1,51 @@
+# Revops LATAM
+
+> Consultora de Revenue Operations y HubSpot Platinum Partner en Chile y LATAM. Diseñamos, implementamos y operamos el motor de ingresos de empresas B2B.
+
+Revops LATAM ayuda a empresas latinoamericanas a ordenar su operación comercial: procesos, datos, tecnología y equipos alineados para crecer de forma predecible. Combinamos consultoría, implementación HubSpot y operación continua (RevOps as a Service).
+
+## Páginas principales
+
+- [Inicio](/): Arquitectos del Revenue — diagnóstico, diseño y operación.
+- [Nosotros](/nosotros): Equipo, manifiesto y propósito.
+- [Qué Hacemos](/que-hacemos): Servicios RevOps end-to-end.
+- [Partner HubSpot Chile y LATAM](/hubspot-partner-chile): Implementación HubSpot Platinum Partner.
+
+## Soluciones por rol
+
+- [Para CEOs y Gerentes Generales](/para-ceos-y-gerentes-generales): Visibilidad de pipeline y forecast.
+- [Para Directores Comerciales](/para-directores-comerciales): Pipeline claro y forecast confiable.
+- [Para Directores de Marketing](/para-directores-y-gerentes-de-marketing): Atribución real e impacto en revenue.
+- [Para Customer Success](/para-customer-success-y-servicio-al-cliente): Retención y alertas de churn.
+- [Para Operaciones](/para-los-que-operan-el-negocio-sin-el-titulo): Procesos, datos y herramientas para escalar.
+
+## Conoce tu Pista (Diagnóstico)
+
+- [Conoce tu Pista](/conoce-tu-pista): Hub de diagnóstico RevOps.
+- [RevOps Checkup](/revops-checkup): Evaluación rápida.
+- [Diagnóstico RevOps](/diagnostico-revops): Análisis profundo.
+- [Motor de Ingresos](/motor-de-ingresos): Diagnóstico integral.
+
+## Diseña y Construye
+
+- [Diseña y Construye tu Pista](/diseña-y-construye-tu-pista): Implementación RevOps.
+- [Diseño de Procesos](/diseño-de-procesos): Flujos comerciales escalables.
+- [Onboarding HubSpot](/onboarding-hubspot): Puesta en marcha guiada.
+- [Implementación HubSpot](/implementacion-hubspot): Configuración avanzada.
+- [Personalización CRM](/personalizacion-crm): HubSpot a tu medida.
+- [Integraciones y Desarrollo](/integraciones-desarrollo): Conecta tus sistemas.
+
+## Opera tu Pista
+
+- [Opera tu Pista](/opera-tu-pista): Operación RevOps continua.
+- [RevOps as a Service](/revops-as-a-service): Equipo dedicado de operaciones.
+- [Marketing Ops](/marketing-ops): Operación técnica de marketing.
+- [Soporte HubSpot](/soporte-hubspot): Asistencia técnica continua.
+
+## IA
+
+- [Potencia con IA](/potencia-con-ia): Inteligencia artificial aplicada a HubSpot.
+
+## Optional
+
+- [Política de Privacidad](/politica-de-privacidad): Protección de datos (Ley 21.719 Chile).
