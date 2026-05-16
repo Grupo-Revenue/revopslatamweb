@@ -20,15 +20,17 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <Hero section={getSection("hero")} />
-      <ClientLogos section={getSection("client-logos")} />
-      <Symptoms section={getSection("symptoms")} />
-      <Methodology section={getSection("methodology")} />
-      <PulsoComercial section={getSection("pulso-comercial")} />
-      <Testimonials section={getSection("testimonials")} />
-      {/* <Credibility section={getSection("credibility")} /> */}
-      <AboutTeaser section={getSection("about-teaser")} />
-      <FinalCTA section={getSection("final-cta")} />
+      <main>
+        <Hero section={getSection("hero")} />
+        <ClientLogos section={getSection("client-logos")} />
+        <Symptoms section={getSection("symptoms")} />
+        <Methodology section={getSection("methodology")} />
+        <PulsoComercial section={getSection("pulso-comercial")} />
+        <Testimonials section={getSection("testimonials")} />
+        {/* <Credibility section={getSection("credibility")} /> */}
+        <AboutTeaser section={getSection("about-teaser")} />
+        <FinalCTA section={getSection("final-cta")} />
+      </main>
       <Footer />
     </div>
   );

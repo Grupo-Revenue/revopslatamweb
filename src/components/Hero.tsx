@@ -115,6 +115,10 @@ const Hero = ({ section }: { section?: HomeSection }) => {
             <motion.img
               src={sideImage}
               alt={section?.title ?? "Hero"}
+              width={920}
+              height={920}
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-auto relative z-10"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
